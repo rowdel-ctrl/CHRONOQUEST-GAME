@@ -17,13 +17,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   final _classCodeController = TextEditingController();
   final _usernameController = TextEditingController();
   final _nameController = TextEditingController();
-  final _pinController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
   
   bool _isNewStudent = true;
+  bool _obscurePassword = true;
+  bool _obscureConfirm = true;
 
   @override
   void initState() {
@@ -44,7 +47,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     _classCodeController.dispose();
     _usernameController.dispose();
     _nameController.dispose();
-    _pinController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _animController.dispose();
     super.dispose();
   }
@@ -56,79 +60,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           classCode: _classCodeController.text.trim(),
           username: _usernameController.text.trim(),
           name: _isNewStudent ? _nameController.text.trim() : null,
-          pin: !_isNewStudent ? _pinController.text.trim() : null,
+          password: _passwordController.text,
         );
 
     if (result['success'] == true && mounted) {
-      final pin = result['pin'];
-      if (pin != null) {
-        _showPinDialog(pin);
-      } else {
-        context.go('/character-selection');
-      }
+      context.go('/character-selection');
     }
-  }
-
-  void _showPinDialog(String pin) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Center(
-          child: Text(
-            'Ito ang iyong PIN!',
-            style: GoogleFonts.playfairDisplay(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
-            ),
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Isulat at tandaan ang 4-digit PIN na ito. Gagamitin mo ito sa pag-login muli!',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.textPrimary, fontSize: 14),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceAlt,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.accent, width: 2),
-              ),
-              child: Text(
-                pin,
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryDark,
-                  letterSpacing: 4,
-                ),
-              ),
-            ),
-          ],
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.go('/character-selection');
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-            ),
-            child: const Text('NAISULAT KO NA', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -307,15 +244,51 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                 decoration: _inputDeco(Icons.person, 'Buong pangalan para kay titser'),
                                 validator: (v) => v == null || v.trim().isEmpty ? 'Kailangan ang tunay na pangalan' : null,
                               ),
-                            ] else ...[
-                              _buildLabel('4-Digit PIN'),
+                              const SizedBox(height: 12),
+                            ],
+
+                            _buildLabel('Password'),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: _obscurePassword,
+                              decoration: _inputDeco(Icons.lock, 'Lagyan ng password').copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                    color: AppColors.textMuted,
+                                    size: 20,
+                                  ),
+                                  onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                                ),
+                              ),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return 'Kailangan ang password';
+                                if (v.length < 6) return 'Hindi bababa sa 6 na characters';
+                                return null;
+                              },
+                            ),
+
+                            if (_isNewStudent) ...[
+                              const SizedBox(height: 12),
+                              _buildLabel('Kumpirmahin ang Password'),
                               TextFormField(
-                                controller: _pinController,
-                                keyboardType: TextInputType.number,
-                                maxLength: 4,
-                                obscureText: true,
-                                decoration: _inputDeco(Icons.lock, 'XXXX').copyWith(counterText: ''),
-                                validator: (v) => v == null || v.trim().isEmpty ? 'Kailangan ang PIN' : null,
+                                controller: _confirmPasswordController,
+                                obscureText: _obscureConfirm,
+                                decoration: _inputDeco(Icons.lock_outline, 'Ulitin ang password').copyWith(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _obscureConfirm ? Icons.visibility_off : Icons.visibility,
+                                      color: AppColors.textMuted,
+                                      size: 20,
+                                    ),
+                                    onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                                  ),
+                                ),
+                                validator: (v) {
+                                  if (v == null || v.isEmpty) return 'Kailangan kumpirmahin ang password';
+                                  if (v != _passwordController.text) return 'Hindi magkatugma ang password';
+                                  return null;
+                                },
                               ),
                             ],
                             const SizedBox(height: 8),

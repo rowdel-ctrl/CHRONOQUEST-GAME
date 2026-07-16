@@ -6,6 +6,7 @@ import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
+import '../data/question_bank.dart';
 import 'components/player_component.dart';
 import 'components/enemy_component.dart';
 import 'components/boss_component.dart';
@@ -95,8 +96,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
     try {
       questions = await apiService.getQuestions(currentEra, currentLevel);
     } catch (e) {
-      // Fallback: create sample questions if API fails
-      questions = _createSampleQuestions();
+      // Fallback: use real hardcoded bank if API fails
+      questions = QuestionBank.getQuestions(currentEra, currentLevel);
     }
 
     spawner = EnemySpawner(game: this, questions: questions);

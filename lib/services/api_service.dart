@@ -14,13 +14,24 @@ class ApiService {
   Dio get _dio => DioClient.instance;
 
   // ─── AUTH ─────────────────────────────────────────────────────────────────
-  Future<Map<String, dynamic>> login(String classCode, String name) async {
+  Future<Map<String, dynamic>> login({
+    required String classCode,
+    required String username,
+    String? name,
+    required String password,
+  }) async {
     try {
-      final response = await _dio.post('/student/login', data: {
+      final body = <String, dynamic>{
         'classCode': classCode,
-        'name': name,
-      });
-      final data = response.data as Map<String, dynamic>;
+        'username': username,
+        'password': password,
+      };
+      if (name != null && name.isNotEmpty) {
+        body['name'] = name;
+      }
+
+      final response = await _dio.post('/student/login', data: body);
+      final data = (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>;
       final token = data['token'] as String;
       await StorageService.saveToken(token);
 
@@ -37,8 +48,8 @@ class ApiService {
   Future<Student> getProfile() async {
     try {
       final response = await _dio.get('/student/profile');
-      final student =
-          Student.fromJson(response.data as Map<String, dynamic>);
+      final envelope = response.data as Map<String, dynamic>;
+      final student = Student.fromJson(envelope['data'] as Map<String, dynamic>);
       await StorageService.saveStudent(student);
       return student;
     } on DioException catch (e) {
@@ -105,12 +116,9 @@ class ApiService {
   Future<List<QuizResult>> getResults() async {
     try {
       final response = await _dio.get('/student/results');
-      final List<dynamic> data = response.data is List
-          ? response.data as List<dynamic>
-          : (response.data['results'] as List<dynamic>?) ?? [];
-      return data
-          .map((r) => QuizResult.fromJson(r as Map<String, dynamic>))
-          .toList();
+      final data = (response.data as Map<String, dynamic>)['data'];
+      final List<dynamic> list = data is List ? data : [];
+      return list.map((r) => QuizResult.fromJson(r as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -120,7 +128,7 @@ class ApiService {
   Future<Map<String, EraProgress>> getEraProgress() async {
     try {
       final response = await _dio.get('/student/era-progress');
-      final data = response.data;
+      final data = (response.data as Map<String, dynamic>)['data']['progress'];
 
       final Map<String, EraProgress> progress = {};
 
@@ -174,10 +182,10 @@ class ApiService {
         '/student/leaderboard',
         queryParameters: {'scope': scope},
       );
-      final List<dynamic> data = response.data is List
-          ? response.data as List<dynamic>
-          : (response.data['leaderboard'] as List<dynamic>?) ?? [];
-      return data.cast<Map<String, dynamic>>();
+      final envelope = response.data as Map<String, dynamic>;
+      final data = envelope['data']['leaders'];
+      final List<dynamic> list = data is List ? data : [];
+      return list.cast<Map<String, dynamic>>();
     } on DioException catch (e) {
       throw _handleError(e);
     }

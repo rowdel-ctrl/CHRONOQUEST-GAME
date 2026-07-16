@@ -48,10 +48,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> login(String classCode, String name) async {
+  Future<Map<String, dynamic>> login({
+    required String classCode,
+    required String username,
+    String? name,
+    required String password,
+  }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final data = await _api.login(classCode, name);
+      final data = await _api.login(
+        classCode: classCode,
+        username: username,
+        name: name,
+        password: password,
+      );
       final student =
           Student.fromJson(data['user'] as Map<String, dynamic>);
       state = AuthState(
@@ -59,13 +69,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
         isLoggedIn: true,
         isLoading: false,
       );
-      return true;
+      return {'success': true, 'isNewStudent': data['isNewStudent'] ?? false};
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),
       );
-      return false;
+      return {'success': false};
     }
   }
 

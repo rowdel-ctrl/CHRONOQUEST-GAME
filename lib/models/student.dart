@@ -32,7 +32,7 @@ class Student {
   final String schoolName;
   final String gradeLevel;
   int score;
-  int levelReached;
+  String levelReached;
   int coins;
   PowerUps powerUps;
   final bool isActive;
@@ -46,7 +46,7 @@ class Student {
     this.schoolName = '',
     required this.gradeLevel,
     this.score = 0,
-    this.levelReached = 1,
+    this.levelReached = 'pre-colonial',
     this.coins = 0,
     PowerUps? powerUps,
     this.isActive = true,
@@ -62,7 +62,7 @@ class Student {
       schoolName: json['schoolName'] as String? ?? '',
       gradeLevel: json['gradeLevel'] as String? ?? 'grade5',
       score: json['score'] as int? ?? 0,
-      levelReached: json['levelReached'] as int? ?? 1,
+      levelReached: json['levelReached'] as String? ?? 'pre-colonial',
       coins: json['coins'] as int? ?? 0,
       powerUps: json['powerUps'] != null
           ? PowerUps.fromJson(json['powerUps'] as Map<String, dynamic>)
