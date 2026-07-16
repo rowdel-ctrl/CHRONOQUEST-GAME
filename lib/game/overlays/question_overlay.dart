@@ -236,7 +236,11 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                           }
                         }
 
-                        return GestureDetector(
+                        return Semantics(
+                          button: true,
+                          label: 'Sagot ${option.label}: ${option.text}',
+                          selected: answered && option.label == selectedAnswer,
+                          child: GestureDetector(
                           onTap: () => handleTap(option.label),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
@@ -265,12 +269,17 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          ),
                         );
                       }).toList(),
                     ),
                     const SizedBox(height: 14),
 
                     // Powerup row (not shown during boss fight or pre-test)
+                    // Note: "Freeze" is intentionally omitted here — the
+                    // timeFreeze power-up has no working use during
+                    // questions anywhere in the game, so showing it as a
+                    // permanently greyed-out button only confused players.
                     if (!widget.game.bossPhase)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -282,16 +291,6 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                             onTap: _useFiftyFifty,
                             enabled: !answered &&
                                 hiddenOptions.isEmpty,
-                          ),
-                          const SizedBox(width: 16),
-                          _PowerupButton(
-                            icon: Icons.ac_unit,
-                            label: 'Freeze',
-                            count: widget.game.playerPowerUps.timeFreeze,
-                            onTap: () {
-                              // Time freeze doesn't apply during question
-                            },
-                            enabled: false,
                           ),
                           const SizedBox(width: 16),
                           _PowerupButton(

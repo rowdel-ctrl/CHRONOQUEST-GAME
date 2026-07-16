@@ -185,10 +185,12 @@ class _CharacterSelectionScreenState
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Character avatar placeholder
+                            // Character avatar — real sprite, falls back to
+                            // an initial if the asset is ever missing.
                             Container(
                               width: 72,
                               height: 72,
+                              clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 color: _getCharColor(char.id),
                                 shape: BoxShape.circle,
@@ -197,13 +199,18 @@ class _CharacterSelectionScreenState
                                   width: 2,
                                 ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  char.name[0],
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
+                              child: Image.asset(
+                                'assets/characters/${char.id}_walk_1.png',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stack) =>
+                                    Center(
+                                  child: Text(
+                                    char.name[0],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -347,7 +354,9 @@ class _SideCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Tooltip(
+      message: label,
+      child: GestureDetector(
       onTap: onTap,
       child: Container(
         width: 64,
@@ -370,6 +379,7 @@ class _SideCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

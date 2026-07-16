@@ -98,21 +98,27 @@ class HudOverlayWidget extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             // Pause button
-            GestureDetector(
-              onTap: () {
-                game.pauseEngine();
-                game.overlays.add('PauseOverlay');
-              },
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: Colors.black54,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.pause,
-                  color: Colors.white,
-                  size: 22,
+            Semantics(
+              button: true,
+              label: 'I-pause ang laro',
+              child: GestureDetector(
+                onTap: () {
+                  game.pauseEngine();
+                  game.overlays.add('PauseOverlay');
+                },
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Colors.black54,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.pause,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ),
             ),

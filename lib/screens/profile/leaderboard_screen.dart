@@ -17,6 +17,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
   List<Map<String, dynamic>> classLeaderboard = [];
   List<Map<String, dynamic>> schoolLeaderboard = [];
   bool isLoading = true;
+  bool hasError = false;
 
   @override
   void initState() {
@@ -26,6 +27,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
   }
 
   Future<void> _loadLeaderboards() async {
+    setState(() {
+      isLoading = true;
+      hasError = false;
+    });
     try {
       final classData = await ApiService().getLeaderboard('class');
       final schoolData = await ApiService().getLeaderboard('school');
@@ -35,24 +40,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
         isLoading = false;
       });
     } catch (_) {
-      // Use sample data for display
+      // Don't fabricate fake student rankings — show a real error state
+      // so students never mistake placeholder names for actual classmates.
       setState(() {
-        classLeaderboard = _sampleData();
-        schoolLeaderboard = _sampleData();
+        classLeaderboard = [];
+        schoolLeaderboard = [];
         isLoading = false;
+        hasError = true;
       });
     }
-  }
-
-  List<Map<String, dynamic>> _sampleData() {
-    return List.generate(
-      10,
-      (i) => {
-        'name': 'Student ${i + 1}',
-        'score': (10 - i) * 100 + 50,
-        'rank': i + 1,
-      },
-    );
   }
 
   @override
@@ -86,6 +82,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                   children: [
                     IconButton(
                       onPressed: () => context.pop(),
+                      tooltip: 'Bumalik',
                       icon:
                           const Icon(Icons.arrow_back, color: Colors.white70),
                     ),
@@ -102,6 +99,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                     ),
                     IconButton(
                       onPressed: _loadLeaderboards,
+                      tooltip: 'I-refresh',
                       icon:
                           const Icon(Icons.refresh, color: Colors.white70),
                     ),
@@ -143,16 +141,54 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                     ? const Center(
                         child: CircularProgressIndicator(
                             color: AppColors.accent))
-                    : TabBarView(
-                        controller: _tabController,
-                        children: [
-                          _LeaderboardList(data: classLeaderboard),
-                          _LeaderboardList(data: schoolLeaderboard),
-                        ],
-                      ),
+                    : hasError
+                        ? _ErrorState(onRetry: _loadLeaderboards)
+                        : TabBarView(
+                            controller: _tabController,
+                            children: [
+                              _LeaderboardList(data: classLeaderboard),
+                              _LeaderboardList(data: schoolLeaderboard),
+                            ],
+                          ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  final VoidCallback onRetry;
+  const _ErrorState({required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.cloud_off, color: Colors.white54, size: 40),
+            const SizedBox(height: 12),
+            const Text(
+              'Hindi ma-load ang leaderboard.\nSubukang muli.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh, color: AppColors.accent),
+              label: const Text('Subukang Muli',
+                  style: TextStyle(color: AppColors.accent)),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.accent),
+              ),
+            ),
+          ],
         ),
       ),
     );

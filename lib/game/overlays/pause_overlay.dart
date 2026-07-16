@@ -69,11 +69,7 @@ class PauseOverlayWidget extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      game.overlays.remove('PauseOverlay');
-                      game.resumeEngine();
-                      Navigator.of(game.buildContext!).pop();
-                    },
+                    onPressed: () => _confirmQuit(context),
                     icon: const Icon(Icons.exit_to_app),
                     label: const Text('UMALIS'),
                     style: OutlinedButton.styleFrom(
@@ -87,6 +83,34 @@ class PauseOverlayWidget extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _confirmQuit(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Umalis sa Level?'),
+        content: const Text(
+          'Mawawala ang iyong progress sa level na ito kung aalis ka ngayon.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Kanselahin'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              game.overlays.remove('PauseOverlay');
+              game.resumeEngine();
+              Navigator.of(game.buildContext!).pop();
+            },
+            style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+            child: const Text('Umalis'),
+          ),
+        ],
       ),
     );
   }
