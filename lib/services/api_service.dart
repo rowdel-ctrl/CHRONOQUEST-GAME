@@ -60,48 +60,7 @@ class ApiService {
     }
   }
 
-  // ─── QUESTIONS ────────────────────────────────────────────────────────────
-  Future<List<Question>> getQuestions(
-    String era,
-    int level, {
-    String? gradeLevel,
-    int limit = 10,
-  }) async {
-    // Try cache first for offline support
-    final cached = StorageService.getCachedQuestions(era, level);
-    if (cached != null) {
-      return cached.map((q) => Question.fromJson(q)).toList();
-    }
 
-    try {
-      final response = await _dio.get(
-        '/questions/by-era/$era',
-        queryParameters: {
-          'level': level,
-          if (gradeLevel != null) 'gradeLevel': gradeLevel,
-          'limit': limit,
-        },
-      );
-
-      final List<dynamic> data = response.data is List
-          ? response.data as List<dynamic>
-          : (response.data['questions'] as List<dynamic>?) ?? [];
-
-      final questions =
-          data.map((q) => Question.fromJson(q as Map<String, dynamic>)).toList();
-
-      // Cache for offline
-      await StorageService.cacheQuestions(
-        era,
-        level,
-        data.cast<Map<String, dynamic>>(),
-      );
-
-      return questions;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
 
   // ─── RESULTS ──────────────────────────────────────────────────────────────
   Future<void> submitResult(QuizResult result) async {

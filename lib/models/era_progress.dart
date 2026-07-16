@@ -48,23 +48,14 @@ class EraProgress {
   }
 
   factory EraProgress.fromJson(Map<String, dynamic> json) {
-    final Map<int, LevelResult> results = {};
-    if (json['levelResults'] != null) {
-      final lr = json['levelResults'] as Map<String, dynamic>;
-      lr.forEach((key, value) {
-        results[int.parse(key)] =
-            LevelResult.fromJson(value as Map<String, dynamic>);
-      });
-    }
-
+    final completed = (json['completedLevels'] as List?)?.cast<num>() ?? const [];
     return EraProgress(
-      eraId: json['eraId'] as String? ?? '',
-      preTestTaken: json['preTestTaken'] as bool? ?? false,
-      preTestScore: json['preTestScore'] as int? ?? 0,
-      levelsCompleted: json['levelsCompleted'] as int? ?? 0,
-      levelResults: results,
-      bossDefeated: json['bossDefeated'] as bool? ?? false,
-      postTestScore: json['postTestScore'] as int? ?? 0,
+      eraId: json['era'] as String? ?? '',
+      preTestTaken: json['coldPreTestScore'] != null,
+      preTestScore: (json['coldPreTestScore'] as num?)?.toInt() ?? 0,
+      levelsCompleted: completed.length,
+      bossDefeated: json['isComplete'] as bool? ?? false,
+      postTestScore: (json['postTestScore'] as num?)?.toInt() ?? 0,
     );
   }
 

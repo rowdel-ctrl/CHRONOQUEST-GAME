@@ -5,6 +5,7 @@ import '../../core/constants.dart';
 import '../../models/question.dart';
 import '../../models/quiz_result.dart';
 import '../../services/api_service.dart';
+import '../../data/question_bank.dart';
 
 class PreTestScreen extends StatefulWidget {
   final String eraId;
@@ -32,7 +33,8 @@ class _PreTestScreenState extends State<PreTestScreen> {
 
   Future<void> _loadQuestions() async {
     try {
-      final qs = await ApiService().getQuestions(widget.eraId, 1, limit: 10);
+      // Use local question bank for level 1 (pre-test)
+      final qs = QuestionBank.getQuestions(widget.eraId, 1);
       setState(() {
         questions = qs;
         isLoading = false;

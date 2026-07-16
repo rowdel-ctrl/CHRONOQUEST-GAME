@@ -91,14 +91,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
     player = PlayerComponent(characterId: selectedCharacterId);
     add(player);
 
-    // Load questions and create enemy spawner
-    List<Question> questions;
-    try {
-      questions = await apiService.getQuestions(currentEra, currentLevel);
-    } catch (e) {
-      // Fallback: use real hardcoded bank if API fails
-      questions = QuestionBank.getQuestions(currentEra, currentLevel);
-    }
+    // Questions are intentionally bundled with the app — no backend round-trip.
+    final questions = QuestionBank.getQuestions(currentEra, currentLevel);
 
     spawner = EnemySpawner(game: this, questions: questions);
 

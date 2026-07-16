@@ -883,6 +883,32 @@ class QuestionBank {
       return _fallbackQuestions(era, level);
     }
 
+    if (questions.length < 10) {
+      final padded = List<Question>.from(questions);
+      final startIndex = padded.length;
+      final grade = questions.isNotEmpty ? questions.first.gradeLevel : 'grade5';
+      
+      padded.addAll(List.generate(10 - startIndex, (i) {
+        final qNum = startIndex + i + 1;
+        return Question(
+          id: '${era}_${level}_$qNum',
+          era: era,
+          level: level,
+          gradeLevel: grade,
+          questionText: 'Dagdag na tanong $qNum para sa $era antas $level. (Kailangang palitan ng totoong tanong)',
+          options: const [
+            QuestionOption(label: 'A', text: 'Tamang Sagot'),
+            QuestionOption(label: 'B', text: 'Maling Sagot 1'),
+            QuestionOption(label: 'C', text: 'Maling Sagot 2'),
+            QuestionOption(label: 'D', text: 'Maling Sagot 3'),
+          ],
+          correctAnswer: 'A',
+          explanation: 'Paliwanag ng placeholder.',
+        );
+      }));
+      return padded;
+    }
+
     return questions;
   }
 

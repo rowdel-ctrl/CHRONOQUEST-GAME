@@ -58,19 +58,6 @@ class StorageService {
     return appBox.get(_characterKey, defaultValue: 'rizal') as String;
   }
 
-  // ─── QUESTION CACHE ──────────────────────────────────────────────────────
-  static Future<void> cacheQuestions(
-      String era, int level, List<Map<String, dynamic>> questions) async {
-    await appBox.put('questions_${era}_$level', questions);
-  }
-
-  static List<Map<String, dynamic>>? getCachedQuestions(
-      String era, int level) {
-    final data = appBox.get('questions_${era}_$level');
-    if (data == null) return null;
-    return (data as List).cast<Map<String, dynamic>>();
-  }
-
   // ─── ERA PROGRESS CACHE ───────────────────────────────────────────────────
   static Future<void> cacheEraProgress(
       String eraId, Map<String, dynamic> progress) async {
