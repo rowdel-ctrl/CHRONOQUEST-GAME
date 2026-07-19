@@ -193,7 +193,6 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
 
                     // Powerup earned indicator
                     if (widget.level == 3 ||
-                        widget.level == 5 ||
                         widget.level == 7)
                       Padding(
                         padding: const EdgeInsets.only(top: 12),
@@ -265,8 +264,6 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
     switch (level) {
       case 3:
         return 'Nakakuha ng 50/50!';
-      case 5:
-        return 'Nakakuha ng Time Freeze!';
       case 7:
         return 'Nakakuha ng Shield!';
       default:

@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import '../core/constants.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import '../models/student.dart';
@@ -39,6 +40,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
   EnemyComponent? currentEnemy;
   BossComponent? boss;
   List<QuestionSnapshot> answers = [];
+  List<Question> bossQuestions = [];
   int wrongAttemptsOnCurrentQuestion = 0;
 
   // Powerups
@@ -94,7 +96,14 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
     // Questions are intentionally bundled with the app — no backend round-trip.
     final questions = QuestionBank.getQuestions(currentEra, currentLevel);
 
-    spawner = EnemySpawner(game: this, questions: questions);
+    if (currentLevel == 10) {
+      // Split into warm-up (regular enemies) and boss-phase (asked while fighting).
+      final warmup = questions.take(GameConstants.bossWarmupQuestions).toList();
+      bossQuestions = questions.skip(GameConstants.bossWarmupQuestions).toList();
+      spawner = EnemySpawner(game: this, questions: warmup);
+    } else {
+      spawner = EnemySpawner(game: this, questions: questions);
+    }
 
     // Start timer
     _stopwatch.start();

@@ -89,10 +89,11 @@ class GameNotifier extends StateNotifier<GameState> {
 
   void awardPowerUp(int level) {
     // Powerup earned at milestones
+    // NOTE: level 5 used to award Time Freeze, which has no working use in the
+    // game (see question_overlay.dart). Removed rather than left dead — if you
+    // want a level-5 reward, consider granting an extra fiftyFifty or shield here.
     if (level == 3) {
       state.powerUps.fiftyFifty++;
-    } else if (level == 5) {
-      state.powerUps.timeFreeze++;
     } else if (level == 7) {
       state.powerUps.shield++;
     }

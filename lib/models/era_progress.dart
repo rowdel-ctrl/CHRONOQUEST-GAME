@@ -1,7 +1,6 @@
+// Destination in your repo: lib/models/era_progress.dart
 class EraProgress {
   final String eraId;
-  final bool preTestTaken;
-  final int preTestScore;
   final int levelsCompleted;
   final Map<int, LevelResult> levelResults;
   final bool bossDefeated;
@@ -9,8 +8,6 @@ class EraProgress {
 
   const EraProgress({
     required this.eraId,
-    this.preTestTaken = false,
-    this.preTestScore = 0,
     this.levelsCompleted = 0,
     this.levelResults = const {},
     this.bossDefeated = false,
@@ -18,8 +15,8 @@ class EraProgress {
   });
 
   bool get isCompleted => bossDefeated;
-  bool get isInProgress => preTestTaken && !bossDefeated;
-  bool get isNotStarted => !preTestTaken;
+  bool get isInProgress => levelsCompleted > 0 && !bossDefeated;
+  bool get isNotStarted => levelsCompleted == 0 && !bossDefeated;
 
   bool isLevelUnlocked(int level) {
     if (level == 1) return true;
@@ -51,8 +48,6 @@ class EraProgress {
     final completed = (json['completedLevels'] as List?)?.cast<num>() ?? const [];
     return EraProgress(
       eraId: json['era'] as String? ?? '',
-      preTestTaken: json['coldPreTestScore'] != null,
-      preTestScore: (json['coldPreTestScore'] as num?)?.toInt() ?? 0,
       levelsCompleted: completed.length,
       bossDefeated: json['isComplete'] as bool? ?? false,
       postTestScore: (json['postTestScore'] as num?)?.toInt() ?? 0,
@@ -61,8 +56,6 @@ class EraProgress {
 
   Map<String, dynamic> toJson() => {
         'eraId': eraId,
-        'preTestTaken': preTestTaken,
-        'preTestScore': preTestScore,
         'levelsCompleted': levelsCompleted,
         'levelResults': levelResults
             .map((k, v) => MapEntry(k.toString(), v.toJson())),

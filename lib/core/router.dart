@@ -1,10 +1,10 @@
+// Destination in your repo: lib/core/router.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/storage_service.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
-import '../screens/game/pre_test_screen.dart';
 import '../screens/game/background_history_screen.dart';
 import '../screens/game/level_select_screen.dart';
 import '../screens/game/game_screen.dart';
@@ -40,12 +40,6 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/era-selection',
       builder: (context, state) => const EraSelectionScreen(),
-    ),
-    GoRoute(
-      path: '/pre-test/:eraId',
-      builder: (context, state) => PreTestScreen(
-        eraId: state.pathParameters['eraId']!,
-      ),
     ),
     GoRoute(
       path: '/background/:eraId',

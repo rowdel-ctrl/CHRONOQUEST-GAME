@@ -23,8 +23,8 @@ class Question {
   final String difficulty;
   final String questionType;
   final String questionText;
-  final List<QuestionOption> options;
-  final String correctAnswer;
+  late final List<QuestionOption> options;
+  late final String correctAnswer;
   final String explanation;
   int elapsedSeconds;
 
@@ -37,11 +37,43 @@ class Question {
     this.difficulty = 'medium',
     this.questionType = 'multiple_choice',
     required this.questionText,
-    required this.options,
-    required this.correctAnswer,
+    required List<QuestionOption> options,
+    required String correctAnswer,
     this.explanation = '',
     this.elapsedSeconds = 0,
-  });
+  }) {
+    if (options.isEmpty) {
+      this.options = [];
+      this.correctAnswer = correctAnswer;
+      return;
+    }
+
+    // Find the text of the correct answer before shuffling
+    final correctOpt = options.firstWhere(
+      (o) => o.label == correctAnswer,
+      orElse: () => options.first,
+    );
+    final correctText = correctOpt.text;
+
+    // Shuffle the options
+    final shuffled = List<QuestionOption>.from(options)..shuffle();
+    final labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+    
+    final newOptions = <QuestionOption>[];
+    String newCorrect = correctAnswer;
+
+    // Reassign labels A, B, C, D...
+    for (int i = 0; i < shuffled.length; i++) {
+      final label = i < labels.length ? labels[i] : String.fromCharCode(65 + i);
+      newOptions.add(QuestionOption(label: label, text: shuffled[i].text));
+      if (shuffled[i].text == correctText) {
+        newCorrect = label;
+      }
+    }
+    
+    this.options = newOptions;
+    this.correctAnswer = newCorrect;
+  }
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(

@@ -2,12 +2,13 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../chrono_game.dart';
 import 'enemy_component.dart';
+import '../../core/constants.dart';
 
 /// Boss component — displays actual images for idle, attack, and defeated states.
 class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   final String eraId;
-  int health = 5;
-  int maxHealth = 5;
+  int health = GameConstants.bossHealth;
+  int maxHealth = GameConstants.bossHealth;
   bool reachedCenter = false;
   static const double walkSpeed = 50.0;
   bool isDefeated = false;
@@ -84,9 +85,8 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   }
 
   void _showBossQuestion() {
-    if (game.spawner.questions.isEmpty) return;
-    final qIndex = _bossQuestionIndex % game.spawner.questions.length;
-    final q = game.spawner.questions[qIndex];
+    if (_bossQuestionIndex >= game.bossQuestions.length) return;
+    final q = game.bossQuestions[_bossQuestionIndex];
     _bossQuestionIndex++;
     game.showBossQuestion(q, this);
   }

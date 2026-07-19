@@ -69,6 +69,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         isLoggedIn: true,
         isLoading: false,
       );
+      // Retry any results that were queued while logged out or with an
+      // expired token — now that we have a fresh one, this should succeed.
+      _api.flushPendingResults();
       return {'success': true, 'isNewStudent': data['isNewStudent'] ?? false};
     } catch (e) {
       state = state.copyWith(

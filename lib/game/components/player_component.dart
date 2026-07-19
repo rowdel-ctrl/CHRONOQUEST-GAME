@@ -5,7 +5,7 @@ import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
-
+import 'gap_component.dart';
 /// Player character — runs at fixed X position, student taps to jump.
 /// Displays real walk, jump, and hurt sprite animations.
 class PlayerComponent extends SpriteAnimationComponent

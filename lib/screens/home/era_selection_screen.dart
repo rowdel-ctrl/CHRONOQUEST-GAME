@@ -1,3 +1,4 @@
+// Destination in your repo: lib/screens/home/era_selection_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -114,12 +115,17 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                                   index: index,
                                   onTap: isUnlocked
                                       ? () {
-                                          if (progress.preTestTaken) {
+                                          // No more separate cold pre-test —
+                                          // first visit goes straight to the
+                                          // background reading, then into
+                                          // Level 1 (which doubles as the
+                                          // real pre-test baseline).
+                                          if (progress.levelsCompleted > 0) {
                                             context.go(
                                                 '/level-select/${era.id}');
                                           } else {
                                             context.go(
-                                                '/pre-test/${era.id}');
+                                                '/background/${era.id}');
                                           }
                                         }
                                       : null,

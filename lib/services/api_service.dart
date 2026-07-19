@@ -67,8 +67,33 @@ class ApiService {
     try {
       await _dio.post('/student/results', data: result.toJson());
     } on DioException catch (e) {
-      // Queue for later submission if offline
+      await StorageService.queuePendingResult(result.toJson());
       throw _handleError(e);
+    }
+  }
+
+  /// Call on app launch and after any successful network call to flush
+  /// results that failed to submit while offline.
+  Future<void> flushPendingResults() async {
+    final pending = StorageService.getPendingResults();
+    if (pending.isEmpty) return;
+
+    final stillFailed = <Map<String, dynamic>>[];
+    for (final json in pending) {
+      try {
+        await _dio.post('/student/results', data: json);
+      } catch (_) {
+        stillFailed.add(json);
+      }
+    }
+
+    if (stillFailed.isEmpty) {
+      await StorageService.clearPendingResults();
+    } else {
+      await StorageService.clearPendingResults();
+      for (final json in stillFailed) {
+        await StorageService.queuePendingResult(json);
+      }
     }
   }
 

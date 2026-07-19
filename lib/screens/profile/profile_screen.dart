@@ -222,13 +222,6 @@ class ProfileScreen extends ConsumerWidget {
                                             0,
                                       ),
                                       _PowerupDisplay(
-                                        icon: Icons.ac_unit,
-                                        label: 'Freeze',
-                                        count: student
-                                                ?.powerUps.timeFreeze ??
-                                            0,
-                                      ),
-                                      _PowerupDisplay(
                                         icon: Icons.shield,
                                         label: 'Shield',
                                         count:

@@ -89,6 +89,26 @@ class StorageService {
         (k, v) => MapEntry(int.parse(k.toString()), v as int));
   }
 
+  // ─── PENDING RESULTS (offline queue) ──────────────────────────────────────
+  static const _pendingResultsKey = 'pending_results';
+
+  static Future<void> queuePendingResult(Map<String, dynamic> resultJson) async {
+    final List<dynamic> pending =
+        List<dynamic>.from(appBox.get(_pendingResultsKey, defaultValue: []) as List);
+    pending.add(resultJson);
+    await appBox.put(_pendingResultsKey, pending);
+  }
+
+  static List<Map<String, dynamic>> getPendingResults() {
+    final List<dynamic> pending =
+        List<dynamic>.from(appBox.get(_pendingResultsKey, defaultValue: []) as List);
+    return pending.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+  }
+
+  static Future<void> clearPendingResults() async {
+    await appBox.put(_pendingResultsKey, []);
+  }
+
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   static Future<void> clearAll() async {
     await _storage.deleteAll();
