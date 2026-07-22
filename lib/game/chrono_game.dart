@@ -70,6 +70,9 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    // Set images prefix to assets/ since the project doesn't use the default assets/images/ structure
+    images.prefix = 'assets/';
+
     // Background — solid color per era (placeholder for parallax)
     final bgColor = _getBackgroundColor(currentEra);
     add(RectangleComponent(

@@ -20,10 +20,12 @@ class HudOverlayWidget extends StatelessWidget {
                 GameConstants.livesPerLevel,
                 (i) => Padding(
                   padding: const EdgeInsets.only(right: 4),
-                  child: Icon(
-                    i < game.lives ? Icons.favorite : Icons.favorite_border,
-                    color: AppColors.danger,
-                    size: 28,
+                  child: Image.asset(
+                    i < game.lives
+                        ? 'assets/ui/heart_full.png'
+                        : 'assets/ui/heart_empty.png',
+                    width: 28,
+                    height: 28,
                   ),
                 ),
               ),
@@ -59,7 +61,7 @@ class HudOverlayWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.star, color: AppColors.accent, size: 18),
+                  Image.asset('assets/ui/star_full.png', width: 18, height: 18),
                   const SizedBox(width: 4),
                   Text(
                     '${game.score}',
@@ -83,8 +85,8 @@ class HudOverlayWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.monetization_on,
-                      color: Color(0xFFD4AF37), size: 18),
+                  Image.asset('assets/collectibles/coin.png',
+                      width: 18, height: 18),
                   const SizedBox(width: 4),
                   Text(
                     '${game.playerCoins}',

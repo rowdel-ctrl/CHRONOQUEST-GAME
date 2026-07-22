@@ -9,7 +9,9 @@ class WallComponent extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
-    sprite = await game.loadSprite('obstacles/${game.currentEra}_wall.png');
+    // Remove the hyphen from the era name to match 'precolonial_wall.png'
+    final eraName = game.currentEra.replaceAll('-', '');
+    sprite = await game.loadSprite('obstacles/${eraName}_wall.png');
     size = Vector2(40, 50);
     position = Vector2(game.size.x + 20, ChronoGame.groundY - size.y);
     add(RectangleHitbox());
