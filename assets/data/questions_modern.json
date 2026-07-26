@@ -1,0 +1,2032 @@
+{
+    "1": [
+        {
+            "id": "mod_1_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan opisyal na ipinagkaloob ng Estados Unidos ang ganap na kalayaan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Hulyo 4, 1946"
+                },
+                {
+                    "label": "B",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "C",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "D",
+                    "text": "Pebrero 25, 1986"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagkaloob ng Estados Unidos ang ganap na kalayaan ng Pilipinas noong Hulyo 4, 1946."
+        },
+        {
+            "id": "mod_1_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang naging unang Pangulo ng ganap na malayang Republika ng Pilipinas noong 1946?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Manuel Roxas"
+                },
+                {
+                    "label": "B",
+                    "text": "Manuel Quezon"
+                },
+                {
+                    "label": "C",
+                    "text": "Sergio Osmena"
+                },
+                {
+                    "label": "D",
+                    "text": "Jose P. Laurel"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Manuel Roxas ang naging unang Pangulo ng ganap na malayang Republika ng Pilipinas noong 1946."
+        },
+        {
+            "id": "mod_1_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing gawain ng pamahalaan matapos makamit ang kalayaan noong 1946?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Rehabilitasyon at muling pagtatayo ng bansa"
+                },
+                {
+                    "label": "B",
+                    "text": "Bagong pananakop sa ibang bansa"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagsasara ng lahat ng paaralan"
+                },
+                {
+                    "label": "D",
+                    "text": "Pagbabalik sa pamahalaang Espanyol"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nakatuon ang unang mga taon ng malayang republika sa rehabilitasyon matapos ang pinsalang dulot ng digmaan."
+        },
+        {
+            "id": "mod_1_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong internasyunal na organisasyon ang sinapian ng Pilipinas bilang isa sa mga unang kasapi?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "United Nations"
+                },
+                {
+                    "label": "B",
+                    "text": "ASEAN"
+                },
+                {
+                    "label": "C",
+                    "text": "European Union"
+                },
+                {
+                    "label": "D",
+                    "text": "NATO"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naging isa sa mga unang kasapi ang Pilipinas ng United Nations, na itinatag noong 1945."
+        },
+        {
+            "id": "mod_1_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang taong 1946 sa kasaysayan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ito ang taon ng ganap na kalayaan mula sa Estados Unidos"
+                },
+                {
+                    "label": "B",
+                    "text": "Ito ang taon ng pagdating ni Magellan"
+                },
+                {
+                    "label": "C",
+                    "text": "Ito ang taon ng Rebolusyong Pilipino"
+                },
+                {
+                    "label": "D",
+                    "text": "Ito ang taon ng EDSA Revolution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang 1946 ay mahalaga dahil ito ang taon ng ganap na kalayaan ng Pilipinas mula sa Estados Unidos."
+        }
+    ],
+    "2": [
+        {
+            "id": "mod_2_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang Pangulo ng Pilipinas na nagdeklara ng Batas Militar noong 1972?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ferdinand Marcos"
+                },
+                {
+                    "label": "B",
+                    "text": "Manuel Roxas"
+                },
+                {
+                    "label": "C",
+                    "text": "Corazon Aquino"
+                },
+                {
+                    "label": "D",
+                    "text": "Diosdado Macapagal"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Idineklara ni Pangulong Ferdinand Marcos ang Batas Militar noong Setyembre 1972 sa pamamagitan ng Proclamation No. 1081."
+        },
+        {
+            "id": "mod_2_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong taon idineklara ang Batas Militar sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1972"
+                },
+                {
+                    "label": "B",
+                    "text": "1946"
+                },
+                {
+                    "label": "C",
+                    "text": "1986"
+                },
+                {
+                    "label": "D",
+                    "text": "1987"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Idineklara ang Batas Militar noong 1972, na nagsimula ng mahigit isang dekadang pamumuno ni Marcos sa ilalim ng espesyal na kapangyarihan."
+        },
+        {
+            "id": "mod_2_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isa sa mga naging epekto ng Batas Militar sa karapatan ng mga mamamayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Paghihigpit sa kalayaan sa pamamahayag at pagpupulong"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagpapalawak ng kalayaan ng bawat mamamayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang epekto sa karapatan ng mga tao"
+                },
+                {
+                    "label": "D",
+                    "text": "Kaagad na demokrasya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa ilalim ng Batas Militar, nagkaroon ng paghihigpit sa kalayaan sa pamamahayag, pagpupulong, at iba pang karapatang sibil."
+        },
+        {
+            "id": "mod_2_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa oras kung kailan bawal lumabas ng bahay na ipinatupad sa panahon ng Batas Militar?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Curfew"
+                },
+                {
+                    "label": "B",
+                    "text": "Fiesta"
+                },
+                {
+                    "label": "C",
+                    "text": "Siesta"
+                },
+                {
+                    "label": "D",
+                    "text": "Recess"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinatupad ang curfew bilang isa sa mga hakbang ng gobyerno sa panahon ng Batas Militar."
+        },
+        {
+            "id": "mod_2_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Gaano katagal ang pamumuno ni Pangulong Marcos sa Pilipinas, mula 1965 hanggang 1986?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mahigit dalawang dekada"
+                },
+                {
+                    "label": "B",
+                    "text": "Isang taon lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Limang taon lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Isang buwan lamang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Namuno si Marcos sa Pilipinas mula 1965 hanggang 1986, mahigit dalawang dekada, kabilang ang panahon ng Batas Militar."
+        }
+    ],
+    "3": [
+        {
+            "id": "mod_3_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong senador ang pinaslang noong 1983 sa paliparan ng Maynila, na naging isa sa mga dahilan ng malawakang protesta?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Benigno \"Ninoy\" Aquino Jr."
+                },
+                {
+                    "label": "B",
+                    "text": "Jose W. Diokno"
+                },
+                {
+                    "label": "C",
+                    "text": "Lorenzo Tanada"
+                },
+                {
+                    "label": "D",
+                    "text": "Jovito Salonga"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinaslang si Senador Benigno \"Ninoy\" Aquino Jr. noong 1983 sa paliparan ng Maynila matapos siyang bumalik mula sa pagkatapon."
+        },
+        {
+            "id": "mod_3_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong taon naganap ang EDSA People Power Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1986"
+                },
+                {
+                    "label": "B",
+                    "text": "1972"
+                },
+                {
+                    "label": "C",
+                    "text": "1946"
+                },
+                {
+                    "label": "D",
+                    "text": "1998"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naganap ang EDSA People Power Revolution noong Pebrero 1986, na nagtapos sa mahigit dalawang dekadang pamumuno ni Marcos."
+        },
+        {
+            "id": "mod_3_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang naging unang babaeng Pangulo ng Pilipinas matapos ang EDSA Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Corazon Aquino"
+                },
+                {
+                    "label": "B",
+                    "text": "Gloria Macapagal-Arroyo"
+                },
+                {
+                    "label": "C",
+                    "text": "Imelda Marcos"
+                },
+                {
+                    "label": "D",
+                    "text": "Leni Robredo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Corazon Aquino, biyuda ni Ninoy Aquino, ang naging unang babaeng Pangulo ng Pilipinas matapos ang EDSA Revolution."
+        },
+        {
+            "id": "mod_3_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang natatanging katangian ng EDSA People Power Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Naging mapayapa at walang dahas (peaceful/non-violent)"
+                },
+                {
+                    "label": "B",
+                    "text": "Puno ito ng armadong labanan"
+                },
+                {
+                    "label": "C",
+                    "text": "Isinagawa sa loob ng ibang bansa"
+                },
+                {
+                    "label": "D",
+                    "text": "Tumagal ng maraming taon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang EDSA People Power Revolution ay kilala sa buong mundo bilang isang mapayapa at walang-dahas na paraan ng pagpapabagsak sa isang pamahalaan."
+        },
+        {
+            "id": "mod_3_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saang lansangan naganap ang malawakang protesta noong 1986 na nagbigay ng pangalan sa \"EDSA Revolution\"?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Epifanio de los Santos Avenue (EDSA)"
+                },
+                {
+                    "label": "B",
+                    "text": "Roxas Boulevard"
+                },
+                {
+                    "label": "C",
+                    "text": "Ayala Avenue"
+                },
+                {
+                    "label": "D",
+                    "text": "Quezon Avenue"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naganap ang malawakang protesta sa Epifanio de los Santos Avenue (EDSA), kung saan hango ang pangalan ng rebolusyon."
+        }
+    ],
+    "4": [
+        {
+            "id": "mod_4_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bagong Saligang Batas ang pinagtibay noong 1987 matapos ang EDSA Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1987 Constitution"
+                },
+                {
+                    "label": "B",
+                    "text": "1935 Constitution"
+                },
+                {
+                    "label": "C",
+                    "text": "1973 Constitution"
+                },
+                {
+                    "label": "D",
+                    "text": "Malolos Constitution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinagtibay ang 1987 Constitution matapos ang EDSA Revolution, na siyang kasalukuyang Saligang Batas ng Pilipinas."
+        },
+        {
+            "id": "mod_4_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang naibalik matapos ang EDSA Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Malayang halalan at malayang pamamahayag"
+                },
+                {
+                    "label": "B",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamahalaang Espanyol"
+                },
+                {
+                    "label": "D",
+                    "text": "Kolonyalismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naibalik ang mga demokratikong institusyon gaya ng malayang halalan at malayang pamamahayag matapos ang EDSA Revolution."
+        },
+        {
+            "id": "mod_4_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bahagi ng 1987 Constitution ang nagpoprotekta sa mga karapatan ng bawat mamamayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bill of Rights"
+                },
+                {
+                    "label": "B",
+                    "text": "Preamble lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "D",
+                    "text": "Local Government Code"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Bill of Rights sa 1987 Constitution ang nagpoprotekta sa mga saligang karapatan ng bawat mamamayan."
+        },
+        {
+            "id": "mod_4_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong batas noong 1991 ang nagbigay ng mas malaking kapangyarihan sa mga lokal na pamahalaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Local Government Code"
+                },
+                {
+                    "label": "B",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "C",
+                    "text": "Jones Law"
+                },
+                {
+                    "label": "D",
+                    "text": "Batas Sedition"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Local Government Code of 1991 ay nagbigay ng mas malaking kapangyarihan at pananagutan sa mga lokal na pamahalaan (decentralization)."
+        },
+        {
+            "id": "mod_4_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang muling pagtatatag ng demokrasya matapos ang Batas Militar?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang maibalik ang karapatan at partisipasyon ng mga mamamayan sa pamahalaan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang sa mga pulitiko"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi ito kailangan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang muling pagtatatag ng demokrasya ay mahalaga upang maibalik ang tinig at partisipasyon ng mga mamamayan sa pamamahala ng bansa."
+        }
+    ],
+    "5": [
+        {
+            "id": "mod_5_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa mga Pilipinong nagtatrabaho sa ibang bansa upang tumulong sa kanilang pamilya at ekonomiya ng bansa?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Overseas Filipino Workers (OFW)"
+                },
+                {
+                    "label": "B",
+                    "text": "Ilustrado"
+                },
+                {
+                    "label": "C",
+                    "text": "Pensionado"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomendero"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga Overseas Filipino Workers (OFW) ay malaking bahagi ng modernong lipunan at ekonomiya ng Pilipinas."
+        },
+        {
+            "id": "mod_5_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa programa ng pamahalaan na naglalayong ipamahagi ang lupang agrikultural sa mga magsasaka?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Comprehensive Agrarian Reform Program (CARP)"
+                },
+                {
+                    "label": "B",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Reduccion"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Comprehensive Agrarian Reform Program (CARP) ay naglalayong ipamahagi ang lupang agrikultural sa mga magsasakang walang lupa."
+        },
+        {
+            "id": "mod_5_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang malaking kontribusyon ng mga OFW sa ekonomiya ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Remittances o padalang salapi sa kanilang pamilya"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang naitutulong"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagpapahina lamang ng ekonomiya"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi sila bahagi ng ekonomiya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang remittances o padalang salapi ng mga OFW sa kanilang pamilya ay isa sa pangunahing saligan ng ekonomiya ng Pilipinas."
+        },
+        {
+            "id": "mod_5_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang patuloy na hamon sa lipunan ng modernong Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kahirapan at hindi pantay na pamamahagi ng yaman"
+                },
+                {
+                    "label": "B",
+                    "text": "Kasaganaan para sa lahat"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang problema sa lipunan"
+                },
+                {
+                    "label": "D",
+                    "text": "Ganap nang nalutas ang lahat ng suliranin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang kahirapan at hindi pantay na pamamahagi ng yaman ay patuloy na hamon sa modernong lipunang Pilipino."
+        },
+        {
+            "id": "mod_5_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong industriya ang lumago nang malaki sa Pilipinas dahil sa mahusay na kasanayan sa Ingles ng mga Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Business Process Outsourcing (BPO)/Call Center"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagmimina ng ginto lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Barter trade"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomienda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Lumago ang industriya ng Business Process Outsourcing (BPO) sa Pilipinas dahil sa mahusay na kasanayan sa Ingles ng mga manggagawa."
+        }
+    ],
+    "6": [
+        {
+            "id": "mod_6_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bulkan ang sumabog noong 1991 at itinuring na isa sa pinakamalaking pagsabog sa ika-20 siglo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mount Pinatubo"
+                },
+                {
+                    "label": "B",
+                    "text": "Mayon Volcano"
+                },
+                {
+                    "label": "C",
+                    "text": "Taal Volcano"
+                },
+                {
+                    "label": "D",
+                    "text": "Kanlaon Volcano"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sumabog ang Mount Pinatubo noong 1991 at itinuring na isa sa pinakamalaking pagsabog ng bulkan sa buong mundo sa ika-20 siglo."
+        },
+        {
+            "id": "mod_6_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang paghahanda laban sa mga bagyo at kalamidad sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Madalas ang bagyo at iba pang kalamidad sa bansa"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang bagyo sa Pilipinas"
+                },
+                {
+                    "label": "C",
+                    "text": "Hindi apektado ang bansa ng kalamidad"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi na kailangan ang paghahanda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Pilipinas ay madalas na dinadaanan ng bagyo at iba pang sakuna dahil sa kinaroroonang lokasyon nito, kaya mahalaga ang paghahanda."
+        },
+        {
+            "id": "mod_6_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang pangunahing epekto ng pagbabago ng klima (climate change) sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mas matinding bagyo at pagtaas ng antas ng dagat"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang epekto"
+                },
+                {
+                    "label": "C",
+                    "text": "Bumababa ang temperatura"
+                },
+                {
+                    "label": "D",
+                    "text": "Wala nang bagyo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pagbabago ng klima ay nagdudulot ng mas matinding bagyo at pagtaas ng antas ng dagat, na nakakaapekto sa Pilipinas."
+        },
+        {
+            "id": "mod_6_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong ahensya ng pamahalaan ang responsable sa pamamahala ng sakuna at kalamidad sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "NDRRMC (National Disaster Risk Reduction and Management Council)"
+                },
+                {
+                    "label": "B",
+                    "text": "DepEd"
+                },
+                {
+                    "label": "C",
+                    "text": "DFA"
+                },
+                {
+                    "label": "D",
+                    "text": "BIR"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang NDRRMC ang pangunahing ahensyang namamahala sa pagtugon at paghahanda para sa mga sakuna at kalamidad sa bansa."
+        },
+        {
+            "id": "mod_6_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang mahalagang papel ng mga batas pangkapaligiran sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Proteksyon ng kalikasan para sa kasalukuyan at susunod na henerasyon"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong papel"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lamang pahirapan ang negosyo"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang epekto sa kalikasan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga batas pangkapaligiran ay mahalaga upang maprotektahan ang kalikasan para sa kasalukuyan at susunod na henerasyon."
+        }
+    ],
+    "7": [
+        {
+            "id": "mod_7_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong teknolohiya ang malaking gumanap sa pagpapabilis ng komunikasyon noong EDSA 2 protests noong 2001?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Text messaging/SMS"
+                },
+                {
+                    "label": "B",
+                    "text": "Telegrama"
+                },
+                {
+                    "label": "C",
+                    "text": "Radyo lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Sulat"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ginamit ang text messaging upang mabilis na maipalaganap ang mga impormasyon at mapatawag ang mga tao sa EDSA 2 noong 2001."
+        },
+        {
+            "id": "mod_7_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano nagbago ang paraan ng komunikasyon ng mga Pilipino sa makabagong panahon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Naging mas mabilis at malawak sa pamamagitan ng internet at social media"
+                },
+                {
+                    "label": "B",
+                    "text": "Nawala ang lahat ng paraan ng komunikasyon"
+                },
+                {
+                    "label": "C",
+                    "text": "Bumalik sa paggamit ng baybayin lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang nagbago"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naging mas mabilis at malawak ang komunikasyon ng mga Pilipino sa pamamagitan ng internet at social media sa makabagong panahon."
+        },
+        {
+            "id": "mod_7_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang isang hamon na dulot ng malawakang paggamit ng internet at social media?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagkalat ng maling impormasyon (fake news)"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong hamon"
+                },
+                {
+                    "label": "C",
+                    "text": "Ganap na tumpak na impormasyon lamang ang lumalabas"
+                },
+                {
+                    "label": "D",
+                    "text": "Nawala ang lahat ng problema"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pagkalat ng maling impormasyon o fake news ay isa sa mga hamon ng malawakang paggamit ng internet at social media."
+        },
+        {
+            "id": "mod_7_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalagang maging mapanuri (critical) ang mga mamamayan sa impormasyong nakikita nila online?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang maiwasan ang paniniwala sa maling impormasyon"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kahalagahan"
+                },
+                {
+                    "label": "C",
+                    "text": "Dapat paniwalaan ang lahat ng nakikita online"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi kailangan mag-isip nang mabuti"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Mahalagang maging mapanuri ang mga mamamayan upang maiwasan ang paniniwala at pagkalat ng maling impormasyon."
+        },
+        {
+            "id": "mod_7_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano makatutulong ang teknolohiya sa pagpapabuti ng edukasyon ng mga Pilipino ngayon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng mas madaling access sa impormasyon at online learning"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong maitutulong"
+                },
+                {
+                    "label": "C",
+                    "text": "Pinapahirap lamang nito ang pag-aaral"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi ito ginagamit sa edukasyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nakatutulong ang teknolohiya sa edukasyon sa pamamagitan ng mas madaling access sa impormasyon at online learning resources."
+        }
+    ],
+    "8": [
+        {
+            "id": "mod_8_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa maling paggamit ng kapangyarihan o pondo ng gobyerno para sa personal na interes?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katiwalian (Corruption)"
+                },
+                {
+                    "label": "B",
+                    "text": "Transparency"
+                },
+                {
+                    "label": "C",
+                    "text": "Accountability"
+                },
+                {
+                    "label": "D",
+                    "text": "Reporma"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang katiwalian (corruption) ay ang maling paggamit ng kapangyarihan o pondo ng gobyerno para sa personal na kapakinabangan."
+        },
+        {
+            "id": "mod_8_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong ahensya ng gobyerno ang responsable sa pag-iimbestiga sa mga reklamo laban sa mga opisyal ng gobyerno?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ombudsman"
+                },
+                {
+                    "label": "B",
+                    "text": "DepEd"
+                },
+                {
+                    "label": "C",
+                    "text": "DSWD"
+                },
+                {
+                    "label": "D",
+                    "text": "NDRRMC"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Ombudsman ang ahensyang responsable sa pag-iimbestiga at paglutas ng mga reklamo laban sa mga opisyal ng gobyerno."
+        },
+        {
+            "id": "mod_8_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang transparency (kalinawan) sa pamahalaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang malaman ng mamamayan kung paano ginagamit ang kanilang buwis"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang sa mga pulitiko"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi ito kailangan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Mahalaga ang transparency upang malaman ng mga mamamayan kung paano ginagamit ang pondo mula sa kanilang buwis."
+        },
+        {
+            "id": "mod_8_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong batas ang naglalayong labanan ang katiwalian sa gobyerno ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Anti-Graft and Corrupt Practices Act"
+                },
+                {
+                    "label": "B",
+                    "text": "Batas Sedition"
+                },
+                {
+                    "label": "C",
+                    "text": "Jones Law"
+                },
+                {
+                    "label": "D",
+                    "text": "Bandala"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Anti-Graft and Corrupt Practices Act (Republic Act 3019) ay isa sa mga batas na naglalayong sugpuin ang katiwalian sa gobyerno."
+        },
+        {
+            "id": "mod_8_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano makatutulong ang mga ordinaryong mamamayan sa paglaban sa katiwalian?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng responsableng pagboto at pagbabantay sa gobyerno"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala silang magagawa"
+                },
+                {
+                    "label": "C",
+                    "text": "Sa pamamagitan ng pananahimik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi na kailangan ang partisipasyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Makatutulong ang mga mamamayan sa paglaban sa katiwalian sa pamamagitan ng responsableng pagboto at aktibong pagbabantay sa mga opisyal ng gobyerno."
+        }
+    ],
+    "9": [
+        {
+            "id": "mod_9_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano nakatutulong ang mga kabataan sa pagpapaunlad ng bansa?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng edukasyon, disiplina, at aktibong partisipasyon sa lipunan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala silang maitutulong"
+                },
+                {
+                    "label": "C",
+                    "text": "Dapat sila ay manahimik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi na kailangan ang kanilang partisipasyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Malaki ang maitutulong ng mga kabataan sa pagpapaunlad ng bansa sa pamamagitan ng edukasyon, disiplina, at aktibong partisipasyon."
+        },
+        {
+            "id": "mod_9_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang aral na maaaring matutunan mula sa kasaysayan ng Pilipinas patungkol sa pagbabantay sa gobyerno?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mahalagang maging mapanuri at aktibo ang mga mamamayan upang mapanatili ang demokrasya"
+                },
+                {
+                    "label": "B",
+                    "text": "Dapat manahimik na lamang ang mga mamamayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang aral na matutunan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi mahalaga ang boto"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinapakita ng kasaysayan ng Pilipinas, lalo na ang EDSA Revolution, ang kahalagahan ng aktibong pagbabantay ng mga mamamayan sa kanilang gobyerno."
+        },
+        {
+            "id": "mod_9_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang pagkakaisa ng iba't ibang rehiyon at kultura sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Nagpapatibay ito sa bansa bilang isang malakas at magkakaisang lipunan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Mas mabuti kung magkakahiwalay ang bawat rehiyon"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi mahalaga ang pagkakaisa"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pagkakaisa sa gitna ng pagkakaiba-iba ng kultura at rehiyon ay nagpapatibay sa Pilipinas bilang isang malakas na bansa."
+        },
+        {
+            "id": "mod_9_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano magagamit ng mga Pilipino ang mga aral ng nakaraan upang bumuo ng mas magandang kinabukasan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng pagpapahalaga sa demokrasya, mabuting pamamahala, at pagkakaisa"
+                },
+                {
+                    "label": "B",
+                    "text": "Sa pamamagitan ng pagkalimot sa kasaysayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Sa pag-uulit ng mga nakaraang pagkakamali"
+                },
+                {
+                    "label": "D",
+                    "text": "Wala itong magagawa"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa pamamagitan ng pagpapahalaga sa demokrasya, mabuting pamamahala, at pagkakaisa, magagamit ng mga Pilipino ang mga aral ng kasaysayan tungo sa mas magandang kinabukasan."
+        },
+        {
+            "id": "mod_9_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing mensahe ng pag-aaral ng buong kasaysayan ng Pilipinas mula sinaunang panahon hanggang ngayon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang pagpapahalaga sa kalayaan, pagkakaisa, at patuloy na pagpapaunlad ng bansa"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang mahalagang matututunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Dapat kalimutan na lamang ang nakaraan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi mahalaga ang kasaysayan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Itinuturo ng buong kasaysayan ng Pilipinas ang kahalagahan ng pagpapahalaga sa kalayaan, pagkakaisa, at patuloy na pagsisikap tungo sa pag-unlad ng bansa."
+        }
+    ],
+    "10": [
+        {
+            "id": "mod_10_1",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan opisyal na ipinagkaloob ng Estados Unidos ang ganap na kalayaan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Hulyo 4, 1946"
+                },
+                {
+                    "label": "B",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "C",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "D",
+                    "text": "Pebrero 25, 1986"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagkaloob ng Estados Unidos ang ganap na kalayaan ng Pilipinas noong Hulyo 4, 1946."
+        },
+        {
+            "id": "mod_10_2",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang Pangulo ng Pilipinas na nagdeklara ng Batas Militar noong 1972?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ferdinand Marcos"
+                },
+                {
+                    "label": "B",
+                    "text": "Manuel Roxas"
+                },
+                {
+                    "label": "C",
+                    "text": "Corazon Aquino"
+                },
+                {
+                    "label": "D",
+                    "text": "Diosdado Macapagal"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Idineklara ni Pangulong Ferdinand Marcos ang Batas Militar noong 1972."
+        },
+        {
+            "id": "mod_10_3",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong senador ang pinaslang noong 1983 sa paliparan ng Maynila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Benigno \"Ninoy\" Aquino Jr."
+                },
+                {
+                    "label": "B",
+                    "text": "Jose W. Diokno"
+                },
+                {
+                    "label": "C",
+                    "text": "Lorenzo Tanada"
+                },
+                {
+                    "label": "D",
+                    "text": "Jovito Salonga"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinaslang si Senador Benigno \"Ninoy\" Aquino Jr. noong 1983."
+        },
+        {
+            "id": "mod_10_4",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong taon naganap ang EDSA People Power Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1986"
+                },
+                {
+                    "label": "B",
+                    "text": "1972"
+                },
+                {
+                    "label": "C",
+                    "text": "1946"
+                },
+                {
+                    "label": "D",
+                    "text": "1998"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naganap ang EDSA People Power Revolution noong 1986."
+        },
+        {
+            "id": "mod_10_5",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang naging unang babaeng Pangulo ng Pilipinas matapos ang EDSA Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Corazon Aquino"
+                },
+                {
+                    "label": "B",
+                    "text": "Gloria Macapagal-Arroyo"
+                },
+                {
+                    "label": "C",
+                    "text": "Imelda Marcos"
+                },
+                {
+                    "label": "D",
+                    "text": "Leni Robredo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Corazon Aquino ang naging unang babaeng Pangulo ng Pilipinas."
+        },
+        {
+            "id": "mod_10_6",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bagong Saligang Batas ang pinagtibay noong 1987?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1987 Constitution"
+                },
+                {
+                    "label": "B",
+                    "text": "1935 Constitution"
+                },
+                {
+                    "label": "C",
+                    "text": "1973 Constitution"
+                },
+                {
+                    "label": "D",
+                    "text": "Malolos Constitution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinagtibay ang 1987 Constitution matapos ang EDSA Revolution."
+        },
+        {
+            "id": "mod_10_7",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa mga Pilipinong nagtatrabaho sa ibang bansa?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Overseas Filipino Workers (OFW)"
+                },
+                {
+                    "label": "B",
+                    "text": "Ilustrado"
+                },
+                {
+                    "label": "C",
+                    "text": "Pensionado"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomendero"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga Overseas Filipino Workers (OFW) ay malaking bahagi ng modernong ekonomiya ng Pilipinas."
+        },
+        {
+            "id": "mod_10_8",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bulkan ang sumabog noong 1991?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mount Pinatubo"
+                },
+                {
+                    "label": "B",
+                    "text": "Mayon Volcano"
+                },
+                {
+                    "label": "C",
+                    "text": "Taal Volcano"
+                },
+                {
+                    "label": "D",
+                    "text": "Kanlaon Volcano"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sumabog ang Mount Pinatubo noong 1991."
+        },
+        {
+            "id": "mod_10_9",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong teknolohiya ang malaking gumanap sa EDSA 2 protests noong 2001?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Text messaging/SMS"
+                },
+                {
+                    "label": "B",
+                    "text": "Telegrama"
+                },
+                {
+                    "label": "C",
+                    "text": "Radyo lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Sulat"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ginamit ang text messaging upang mapatawag ang mga tao sa EDSA 2 noong 2001."
+        },
+        {
+            "id": "mod_10_10",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang natatanging katangian ng EDSA People Power Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Naging mapayapa at walang dahas"
+                },
+                {
+                    "label": "B",
+                    "text": "Puno ito ng armadong labanan"
+                },
+                {
+                    "label": "C",
+                    "text": "Isinagawa sa loob ng ibang bansa"
+                },
+                {
+                    "label": "D",
+                    "text": "Tumagal ng maraming taon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang EDSA People Power Revolution ay kilala bilang isang mapayapa at walang-dahas na rebolusyon."
+        },
+        {
+            "id": "mod_10_11",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa maling paggamit ng kapangyarihan o pondo ng gobyerno para sa personal na interes?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katiwalian (Corruption)"
+                },
+                {
+                    "label": "B",
+                    "text": "Transparency"
+                },
+                {
+                    "label": "C",
+                    "text": "Accountability"
+                },
+                {
+                    "label": "D",
+                    "text": "Reporma"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang katiwalian ay ang maling paggamit ng kapangyarihan o pondo ng gobyerno para sa personal na kapakinabangan."
+        },
+        {
+            "id": "mod_10_12",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong ahensya ng gobyerno ang responsable sa pag-iimbestiga sa mga reklamo laban sa mga opisyal ng gobyerno?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ombudsman"
+                },
+                {
+                    "label": "B",
+                    "text": "DepEd"
+                },
+                {
+                    "label": "C",
+                    "text": "DSWD"
+                },
+                {
+                    "label": "D",
+                    "text": "NDRRMC"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Ombudsman ang ahensyang responsable sa pag-iimbestiga sa mga reklamo laban sa mga opisyal ng gobyerno."
+        },
+        {
+            "id": "mod_10_13",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang transparency (kalinawan) sa pamahalaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang malaman ng mamamayan kung paano ginagamit ang kanilang buwis"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang sa mga pulitiko"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi ito kailangan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Mahalaga ang transparency upang malaman ng mga mamamayan kung paano ginagamit ang pondo mula sa kanilang buwis."
+        },
+        {
+            "id": "mod_10_14",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong batas ang naglalayong labanan ang katiwalian sa gobyerno ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Anti-Graft and Corrupt Practices Act"
+                },
+                {
+                    "label": "B",
+                    "text": "Batas Sedition"
+                },
+                {
+                    "label": "C",
+                    "text": "Jones Law"
+                },
+                {
+                    "label": "D",
+                    "text": "Bandala"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Anti-Graft and Corrupt Practices Act ay naglalayong sugpuin ang katiwalian sa gobyerno."
+        },
+        {
+            "id": "mod_10_15",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano makatutulong ang mga ordinaryong mamamayan sa paglaban sa katiwalian?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng responsableng pagboto at pagbabantay sa gobyerno"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala silang magagawa"
+                },
+                {
+                    "label": "C",
+                    "text": "Sa pamamagitan ng pananahimik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi na kailangan ang partisipasyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Makatutulong ang mga mamamayan sa paglaban sa katiwalian sa pamamagitan ng responsableng pagboto at pagbabantay."
+        },
+        {
+            "id": "mod_10_16",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang naibalik matapos ang EDSA Revolution?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Malayang halalan at malayang pamamahayag"
+                },
+                {
+                    "label": "B",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamahalaang Espanyol"
+                },
+                {
+                    "label": "D",
+                    "text": "Kolonyalismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naibalik ang malayang halalan at malayang pamamahayag matapos ang EDSA Revolution."
+        },
+        {
+            "id": "mod_10_17",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong bahagi ng 1987 Constitution ang nagpoprotekta sa mga karapatan ng bawat mamamayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bill of Rights"
+                },
+                {
+                    "label": "B",
+                    "text": "Preamble lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "D",
+                    "text": "Local Government Code"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Bill of Rights ang nagpoprotekta sa mga saligang karapatan ng bawat mamamayan."
+        },
+        {
+            "id": "mod_10_18",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang patuloy na hamon sa lipunan ng modernong Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kahirapan at hindi pantay na pamamahagi ng yaman"
+                },
+                {
+                    "label": "B",
+                    "text": "Kasaganaan para sa lahat"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang problema sa lipunan"
+                },
+                {
+                    "label": "D",
+                    "text": "Ganap nang nalutas ang lahat ng suliranin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang kahirapan at hindi pantay na pamamahagi ng yaman ay patuloy na hamon sa modernong lipunang Pilipino."
+        },
+        {
+            "id": "mod_10_19",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang isang hamon na dulot ng malawakang paggamit ng internet at social media?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagkalat ng maling impormasyon (fake news)"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong hamon"
+                },
+                {
+                    "label": "C",
+                    "text": "Ganap na tumpak na impormasyon lamang ang lumalabas"
+                },
+                {
+                    "label": "D",
+                    "text": "Nawala ang lahat ng problema"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pagkalat ng fake news ay isa sa mga hamon ng malawakang paggamit ng internet."
+        },
+        {
+            "id": "mod_10_20",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang aral na maaaring matutunan mula sa kasaysayan ng Pilipinas patungkol sa pagbabantay sa gobyerno?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mahalagang maging mapanuri at aktibo ang mga mamamayan upang mapanatili ang demokrasya"
+                },
+                {
+                    "label": "B",
+                    "text": "Dapat manahimik na lamang ang mga mamamayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang aral na matutunan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi mahalaga ang boto"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinapakita ng kasaysayan ng Pilipinas ang kahalagahan ng aktibong pagbabantay ng mga mamamayan sa kanilang gobyerno."
+        },
+        {
+            "id": "mod_10_21",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano nakatutulong ang mga kabataan sa pagpapaunlad ng bansa?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng edukasyon, disiplina, at aktibong partisipasyon sa lipunan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala silang maitutulong"
+                },
+                {
+                    "label": "C",
+                    "text": "Dapat sila ay manahimik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi na kailangan ang kanilang partisipasyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Malaki ang maitutulong ng mga kabataan sa pagpapaunlad ng bansa sa pamamagitan ng edukasyon at partisipasyon."
+        },
+        {
+            "id": "mod_10_22",
+            "era": "modern",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing mensahe ng pag-aaral ng buong kasaysayan ng Pilipinas mula sinaunang panahon hanggang ngayon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang pagpapahalaga sa kalayaan, pagkakaisa, at patuloy na pagpapaunlad ng bansa"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang mahalagang matututunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Dapat kalimutan na lamang ang nakaraan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi mahalaga ang kasaysayan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Itinuturo ng buong kasaysayan ng Pilipinas ang kahalagahan ng pagpapahalaga sa kalayaan, pagkakaisa, at patuloy na pag-unlad."
+        }
+    ]
+}

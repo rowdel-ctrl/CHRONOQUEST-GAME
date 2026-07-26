@@ -11,9 +11,15 @@ class EnemySpawner {
   final ChronoGame game;
   final List<Question> questions;
   double distanceTraveled = 0.0;
-  double spawnInterval = 500.0;
+  double spawnInterval = 300.0; // spawn every ~2 seconds at 150px/s
   int nextIndex = 0;
   bool allEnemiesSpawned = false;
+
+  /// How many enemies have been spawned so far.
+  int get spawnedCount => nextIndex;
+
+  /// Total number of enemies (questions) for this level.
+  int get totalEnemies => questions.length;
 
   final Random _random = Random();
   double _wallTimer = 0;

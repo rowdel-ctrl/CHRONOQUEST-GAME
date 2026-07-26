@@ -10,7 +10,9 @@ class HudOverlayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
+      child: ListenableBuilder(
+        listenable: game,
+        builder: (context, _) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
@@ -109,8 +111,8 @@ class HudOverlayWidget extends StatelessWidget {
                   game.overlays.add('PauseOverlay');
                 },
                 child: Container(
-                  width: 44,
-                  height: 44,
+                  width: 48,
+                  height: 48,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
                     color: Colors.black54,
@@ -126,6 +128,7 @@ class HudOverlayWidget extends StatelessWidget {
             ),
           ],
         ),
+        ),
       ),
     );
   }
@@ -138,10 +141,13 @@ class BossHealthOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final boss = game.boss;
-    if (boss == null) return const SizedBox.shrink();
+    return ListenableBuilder(
+      listenable: game,
+      builder: (context, _) {
+        final boss = game.boss;
+        if (boss == null) return const SizedBox.shrink();
 
-    return Positioned(
+        return Positioned(
       bottom: 80,
       left: 40,
       right: 40,
@@ -187,6 +193,8 @@ class BossHealthOverlayWidget extends StatelessWidget {
           ),
         ],
       ),
+        );
+      },
     );
   }
 

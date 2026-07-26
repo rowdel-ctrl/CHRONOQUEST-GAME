@@ -36,7 +36,7 @@ class EnemyComponent extends SpriteAnimationComponent
     size = Vector2(60, 72);
     position = Vector2(
       game.size.x + 60,
-      ChronoGame.groundY - size.y,
+      game.groundY - size.y,
     );
     add(RectangleHitbox());
   }

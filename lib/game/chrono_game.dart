@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
+import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
 import '../models/question.dart';
@@ -17,16 +18,34 @@ import 'components/enemy_spawner.dart';
 
 /// Main Flame game class for ChronoQuest.
 /// Manages the game loop, player, enemies, questions, and level state.
-class ChronoGame extends FlameGame with HasCollisionDetection {
+///
+/// Mixes in ChangeNotifier so HUD/boss-health overlay widgets can react to
+/// state changes (lives, score, coins, boss health) via ListenableBuilder —
+/// without this, those Flutter overlays are only built once when added and
+/// never update again, since Flame doesn't rebuild overlay widgets on its
+/// own each frame.
+class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   // Game constants
-  static const double groundY = 520.0;
   static const double worldScrollSpeed = 150.0;
+
+  /// Y position of the ground surface. Computed from the actual game
+  /// canvas size (not hardcoded) so it always matches where
+  /// GroundComponent visually draws the ground (game.size.y - 60) —
+  /// this project has no fixed-resolution viewport, so real device
+  /// screens vary and a fixed constant only lined up by coincidence.
+  double get groundY => size.y - 60;
 
   // Game state
   late PlayerComponent player;
   late GroundComponent ground;
   late EnemySpawner spawner;
   late GroundSpawner groundSpawner;
+
+  // Maintained by GroundSection's onMount/onRemove (see gap_component.dart)
+  // so PlayerComponent can check ground collision without scanning/filtering
+  // game.children every frame — that scan runs 60x/sec across every enemy,
+  // coin, and wall on screen too, which adds up.
+  final List<GroundSection> groundSections = [];
 
   String currentEra = 'spanish';
   int currentLevel = 1;
@@ -70,19 +89,16 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Set images prefix to assets/ since the project doesn't use the default assets/images/ structure
+    // IMPORTANT: Flame's Images cache defaults to looking under
+    // 'assets/images/'. Our pubspec.yaml declares images directly under
+    // 'assets/characters/', 'assets/bosses/', 'assets/enemies/', etc.
+    // Without this line, every game.loadSprite(...) call in the whole
+    // game (player, enemies, boss) throws a "file not found" exception,
+    // which is why nothing was rendering.
     images.prefix = 'assets/';
 
-    // Background — solid color per era (placeholder for parallax)
-    final bgColor = _getBackgroundColor(currentEra);
-    add(RectangleComponent(
-      size: size,
-      paint: Paint()..color = bgColor,
-      priority: -10,
-    ));
-
-    // Add parallax-like scrolling elements
-    _addScrollingBackground();
+    // Real parallax background using the actual era artwork.
+    await _addParallaxBackground();
 
     // Ground
     ground = GroundComponent();
@@ -115,63 +131,43 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
     audioService.playBgm(currentEra);
   }
 
-  void _addScrollingBackground() {
-    // Simple scrolling background elements as placeholders
-    final colors = _getEraColors(currentEra);
-    // Far layer — slow moving
-    for (int i = 0; i < 5; i++) {
-      add(_BackgroundElement(
-        elementSize: Vector2(120, 80 + (i * 20).toDouble()),
-        elementPosition: Vector2(i * 200.0, groundY - 200 - (i * 30).toDouble()),
-        color: colors[0],
-        speed: 20,
-        priority: -8,
-      ));
-    }
-    // Near layer — faster moving
-    for (int i = 0; i < 8; i++) {
-      add(_BackgroundElement(
-        elementSize: Vector2(60, 40 + (i * 10).toDouble()),
-        elementPosition: Vector2(i * 130.0, groundY - 80 - (i * 15).toDouble()),
-        color: colors[1],
-        speed: 40,
-        priority: -5,
+  Future<void> _addParallaxBackground() async {
+    final bgKey = _backgroundAssetKeyForEra(currentEra);
+    try {
+      final parallax = await loadParallaxComponent(
+        [
+          ParallaxImageData('backgrounds/${bgKey}_far.png'),
+          ParallaxImageData('backgrounds/${bgKey}_near.png'),
+        ],
+        baseVelocity: Vector2(20, 0),
+        velocityMultiplierDelta: Vector2(2.2, 1.0),
+        fill: LayerFill.height,
+        repeat: ImageRepeat.repeatX,
+        // Explicit size/position — don't rely on ParallaxComponent
+        // auto-sizing to the canvas. It rendered as a small tile in the
+        // corner instead of covering the screen without this.
+        size: size,
+        position: Vector2.zero(),
+        priority: -10,
+      );
+      add(parallax);
+    } catch (e) {
+      // Fallback so the game is still playable if a background asset is
+      // somehow missing, instead of leaving the whole load future unresolved.
+      debugPrint('Failed to load parallax background for $currentEra: $e');
+      add(RectangleComponent(
+        size: size,
+        paint: Paint()..color = const Color(0xFFD4C4A8),
+        priority: -10,
       ));
     }
   }
 
-  List<Color> _getEraColors(String era) {
-    switch (era) {
-      case 'pre-colonial':
-        return [const Color(0xFF2E7D32), const Color(0xFF4CAF50)];
-      case 'spanish':
-        return [const Color(0xFF5D4037), const Color(0xFF795548)];
-      case 'american':
-        return [const Color(0xFF37474F), const Color(0xFF607D8B)];
-      case 'ww2':
-        return [const Color(0xFF424242), const Color(0xFF616161)];
-      case 'modern':
-        return [const Color(0xFF1565C0), const Color(0xFF42A5F5)];
-      default:
-        return [const Color(0xFF5D4037), const Color(0xFF795548)];
-    }
-  }
-
-  Color _getBackgroundColor(String era) {
-    switch (era) {
-      case 'pre-colonial':
-        return const Color(0xFF87CEEB); // tropical sky
-      case 'spanish':
-        return const Color(0xFFD4C4A8); // warm colonial
-      case 'american':
-        return const Color(0xFFB0C4DE); // light blue
-      case 'ww2':
-        return const Color(0xFF808080); // grey war sky
-      case 'modern':
-        return const Color(0xFF90CAF9); // modern blue
-      default:
-        return const Color(0xFFD4C4A8);
-    }
+  /// Background PNGs are named without the hyphen used in era ids
+  /// (e.g. 'precolonial_far.png' for the 'pre-colonial' era).
+  String _backgroundAssetKeyForEra(String era) {
+    if (era == 'pre-colonial') return 'precolonial';
+    return era;
   }
 
   @override
@@ -232,6 +228,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
       }
       questionShowing = false;
       resumeEngine();
+      notifyListeners(); // score changed, and possibly boss health
     } else {
       // Shield absorbs wrong answer
       if (shieldActive) {
@@ -249,6 +246,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
       lives--;
       player.triggerHurt();
       wrongAttemptsOnCurrentQuestion++;
+      notifyListeners(); // lives changed
 
       if (lives <= 0) {
         questionShowing = false;
@@ -278,6 +276,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
   void playerFellInGap() {
     lives--;
     player.triggerHurt();
+    notifyListeners(); // lives changed
     if (lives <= 0) {
       showLevelFailed();
     } else {
@@ -289,6 +288,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
     playerCoins++;
     score += 5;
     audioService.playCoin();
+    notifyListeners(); // coins/score changed
   }
 
   // ─── LEVEL STATE ──────────────────────────────────────────────────────────
@@ -374,56 +374,6 @@ class ChronoGame extends FlameGame with HasCollisionDetection {
         ],
         correctAnswer: 'A',
       ),
-    );
-  }
-}
-
-/// Simple scrolling background element (placeholder for parallax images).
-class _BackgroundElement extends PositionComponent {
-  final Color color;
-  final double speed;
-  final Vector2 elementSize;
-  final Vector2 elementPosition;
-
-  // Cached velocity
-  final Vector2 _velocity = Vector2.zero();
-
-  _BackgroundElement({
-    required this.elementSize,
-    required this.elementPosition,
-    required this.color,
-    required this.speed,
-    int priority = -5,
-  }) : super(priority: priority);
-
-  @override
-  Future<void> onLoad() async {
-    size = elementSize;
-    position = elementPosition;
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    _velocity.setValues(-speed, 0);
-    position.addScaled(_velocity, dt);
-
-    // Wrap around
-    if (position.x < -size.x) {
-      final game = findGame()!;
-      position.x = game.size.x + 50;
-    }
-  }
-
-  @override
-  void render(Canvas canvas) {
-    final paint = Paint()..color = color.withValues(alpha: 0.4);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        size.toRect(),
-        const Radius.circular(4),
-      ),
-      paint,
     );
   }
 }

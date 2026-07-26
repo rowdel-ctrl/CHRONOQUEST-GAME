@@ -43,3 +43,4 @@ flutter:
     - assets/ui/
     - assets/sounds/
     - assets/animations/
+    - assets/data/

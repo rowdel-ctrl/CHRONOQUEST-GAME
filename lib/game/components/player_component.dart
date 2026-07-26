@@ -5,7 +5,6 @@ import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
-import 'gap_component.dart';
 /// Player character — runs at fixed X position, student taps to jump.
 /// Displays real walk, jump, and hurt sprite animations.
 class PlayerComponent extends SpriteAnimationComponent
@@ -27,7 +26,7 @@ class PlayerComponent extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
     size = Vector2(64, 80);
-    position = Vector2(80, ChronoGame.groundY - size.y);
+    position = Vector2(80, game.groundY - size.y);
 
     // Load walk frames as individual sprites and build the animation sequence
     final walkSprites = <Sprite>[];
@@ -73,8 +72,7 @@ class PlayerComponent extends SpriteAnimationComponent
 
     // Check if on any ground section
     bool onGround = false;
-    final groundSections = game.children.whereType<GroundSection>();
-    for (final section in groundSections) {
+    for (final section in game.groundSections) {
       if (position.x + size.x > section.position.x &&
           position.x < section.position.x + section.size.x &&
           position.y + size.y >= section.position.y &&
@@ -93,8 +91,8 @@ class PlayerComponent extends SpriteAnimationComponent
     }
 
     // Ground clamp fallback
-    if (position.y >= ChronoGame.groundY - size.y && !isOnGround) {
-      position.y = ChronoGame.groundY - size.y;
+    if (position.y >= game.groundY - size.y && !isOnGround) {
+      position.y = game.groundY - size.y;
       velocityY = 0;
       isOnGround = true;
     }
@@ -122,7 +120,7 @@ class PlayerComponent extends SpriteAnimationComponent
   }
 
   void respawn() {
-    position = Vector2(80, ChronoGame.groundY - size.y);
+    position = Vector2(80, game.groundY - size.y);
     velocityY = 0;
     isOnGround = true;
     animation = walkAnimation;

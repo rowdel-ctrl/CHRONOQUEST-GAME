@@ -1,0 +1,2032 @@
+{
+    "1": [
+        {
+            "id": "pre_1_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa teoryang nagsasabing ang mga sinaunang Pilipino ay nagmula sa Timog-Silangang Asya gamit ang mga bangka?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Teoryang Austronesian"
+                },
+                {
+                    "label": "B",
+                    "text": "Teoryang Land Bridges"
+                },
+                {
+                    "label": "C",
+                    "text": "Teoryang Continental Drift"
+                },
+                {
+                    "label": "D",
+                    "text": "Teoryang Evolution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ayon kay Peter Bellwood, ang mga Austronesian ay nagmula sa Timog Tsina at Taiwan bago nakarating sa Pilipinas."
+        },
+        {
+            "id": "pre_1_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ilang isla ang bumubuo sa kapuluan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mahigit 7,000"
+                },
+                {
+                    "label": "B",
+                    "text": "Mahigit 500"
+                },
+                {
+                    "label": "C",
+                    "text": "Mahigit 1,000"
+                },
+                {
+                    "label": "D",
+                    "text": "Mahigit 3,000"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Pilipinas ay binubuo ng mahigit 7,000 isla na nahahati sa tatlong pangkat: Luzon, Visayas, at Mindanao."
+        },
+        {
+            "id": "pre_1_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang itinuturing na kauna-unahang naninirahan sa Pilipinas bago dumating ang mga Austronesian?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga Negrito/Aeta"
+                },
+                {
+                    "label": "B",
+                    "text": "Mga Kastila"
+                },
+                {
+                    "label": "C",
+                    "text": "Mga Intsik"
+                },
+                {
+                    "label": "D",
+                    "text": "Mga Indones"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga Negrito o Aeta ay itinuturing na kabilang sa mga pinakaunang naninirahan sa kapuluan ng Pilipinas."
+        },
+        {
+            "id": "pre_1_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan nagmula ang salitang \"barangay\"?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa salitang \"balangay\" na tumutukoy sa bangka"
+                },
+                {
+                    "label": "B",
+                    "text": "Sa salitang Kastila na \"barrio\""
+                },
+                {
+                    "label": "C",
+                    "text": "Sa salitang Intsik na \"barang\""
+                },
+                {
+                    "label": "D",
+                    "text": "Walang kaugnayan sa alinman"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang salitang \"barangay\" ay hango sa \"balangay,\" ang uri ng bangkang ginamit ng mga sinaunang Pilipino sa paglalayag."
+        },
+        {
+            "id": "pre_1_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang katawagan sa pinakamaliit na yunit ng pamayanan sa sinaunang Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Barangay"
+                },
+                {
+                    "label": "B",
+                    "text": "Bayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Probinsya"
+                },
+                {
+                    "label": "D",
+                    "text": "Purok"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang barangay ang pinakapangunahing yunit ng pamayanan, na binubuo ng ilang pamilya at pinamumunuan ng isang datu."
+        }
+    ],
+    "2": [
+        {
+            "id": "pre_2_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang nagsisilbing pinuno at tagapagtanggol ng isang sinaunang barangay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Datu"
+                },
+                {
+                    "label": "B",
+                    "text": "Babaylan"
+                },
+                {
+                    "label": "C",
+                    "text": "Alipin"
+                },
+                {
+                    "label": "D",
+                    "text": "Maharlika"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Datu ang pinuno ng barangay na namamahala sa lipunan, batas, at pagtatanggol."
+        },
+        {
+            "id": "pre_2_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong uri ng mamamayan ang mga \"maharlika\" sa sinaunang lipunan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga mandirigma at maimpluwensyang pamilya"
+                },
+                {
+                    "label": "B",
+                    "text": "Mga alipin"
+                },
+                {
+                    "label": "C",
+                    "text": "Mga dayuhang mangangalakal"
+                },
+                {
+                    "label": "D",
+                    "text": "Mga saserdote lamang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga maharlika ay malayang mamamayan, kadalasang mandirigma, na may mataas na katayuan sa lipunan."
+        },
+        {
+            "id": "pre_2_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa malayang mamamayan na hindi kabilang sa maharlika o alipin?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Timawa"
+                },
+                {
+                    "label": "B",
+                    "text": "Babaylan"
+                },
+                {
+                    "label": "C",
+                    "text": "Panday"
+                },
+                {
+                    "label": "D",
+                    "text": "Datu"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga timawa ay malayang mamamayan na maaaring magmay-ari ng lupa at hindi inaalipin."
+        },
+        {
+            "id": "pre_2_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong uri ng alipin ang naninirahan sa bahay ng kanyang panginoon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Alipin na sagigilid"
+                },
+                {
+                    "label": "B",
+                    "text": "Alipin na namamahay"
+                },
+                {
+                    "label": "C",
+                    "text": "Timawa"
+                },
+                {
+                    "label": "D",
+                    "text": "Maharlika"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang alipin na sagigilid ay naninirahan sa bahay ng kanyang panginoon at wala nang sariling tahanan, kaiba sa alipin na namamahay na may sariling tahanan."
+        },
+        {
+            "id": "pre_2_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang tinatawag na \"babaylan\" sa sinaunang lipunan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang pinuno ng seremonyang panrelihiyon"
+                },
+                {
+                    "label": "B",
+                    "text": "Ang mandirigma ng barangay"
+                },
+                {
+                    "label": "C",
+                    "text": "Ang mangangalakal"
+                },
+                {
+                    "label": "D",
+                    "text": "Ang mananayaw"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang babaylan ay ang pinuno ng mga ritwal at seremonyang panrelihiyon, madalas ay babae."
+        }
+    ],
+    "3": [
+        {
+            "id": "pre_3_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing paraan ng ikinabubuhay ng mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagsasaka at pangingisda"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagmimina ng ginto lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagmamanupaktura"
+                },
+                {
+                    "label": "D",
+                    "text": "Turismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Karamihan sa mga sinaunang Pilipino ay umaasa sa pagsasaka, pangingisda, at pangangaso bilang pangunahing hanapbuhay."
+        },
+        {
+            "id": "pre_3_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong sistema ng pangangalakal ang ginamit ng mga sinaunang Pilipino kung saan pinagpapalitan ang mga produkto?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Barter/Palitan"
+                },
+                {
+                    "label": "B",
+                    "text": "Online shopping"
+                },
+                {
+                    "label": "C",
+                    "text": "Credit system"
+                },
+                {
+                    "label": "D",
+                    "text": "Auction"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bago dumating ang salapi, ginamit ng mga sinaunang Pilipino ang sistemang barter kung saan pinagpapalitan ang mga produkto."
+        },
+        {
+            "id": "pre_3_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod na bansa ang nakipagkalakalan sa mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Tsina"
+                },
+                {
+                    "label": "B",
+                    "text": "Estados Unidos"
+                },
+                {
+                    "label": "C",
+                    "text": "Inglatera"
+                },
+                {
+                    "label": "D",
+                    "text": "Pransya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nakipagkalakalan ang mga sinaunang Pilipino sa Tsina, India, Borneo, at Siam bago pa man dumating ang mga Kastila."
+        },
+        {
+            "id": "pre_3_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isa sa mga produktong ipinagpapalit ng mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ginto at perlas"
+                },
+                {
+                    "label": "B",
+                    "text": "Plastik"
+                },
+                {
+                    "label": "C",
+                    "text": "Bakal na inimport"
+                },
+                {
+                    "label": "D",
+                    "text": "Kotse"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang ginto, perlas, at abaka ay ilan sa mga produktong ipinagpapalit ng mga sinaunang Pilipino sa mga dayuhang mangangalakal."
+        },
+        {
+            "id": "pre_3_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa maliliit na piraso ng ginto na ginamit bilang isang uri ng salapi ng sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Piloncitos"
+                },
+                {
+                    "label": "B",
+                    "text": "Barya"
+                },
+                {
+                    "label": "C",
+                    "text": "Peso"
+                },
+                {
+                    "label": "D",
+                    "text": "Sentimo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang piloncitos ay maliliit na piraso ng ginto na ginamit bilang maagang anyo ng salapi sa sinaunang Pilipinas."
+        }
+    ],
+    "4": [
+        {
+            "id": "pre_4_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sinaunang sistema ng pagsulat ng mga Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Baybayin"
+                },
+                {
+                    "label": "B",
+                    "text": "Alpabeto"
+                },
+                {
+                    "label": "C",
+                    "text": "Hiragana"
+                },
+                {
+                    "label": "D",
+                    "text": "Kanji"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang baybayin ay isang katutubong sistema ng pagsulat na ginamit ng mga sinaunang Pilipino bago dumating ang mga Kastila."
+        },
+        {
+            "id": "pre_4_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa mahabang tulang bayan na naglalarawan sa kabayanihan, tulad ng \"Biag ni Lam-ang\"?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Epiko"
+                },
+                {
+                    "label": "B",
+                    "text": "Tanaga"
+                },
+                {
+                    "label": "C",
+                    "text": "Sanaysay"
+                },
+                {
+                    "label": "D",
+                    "text": "Talumpati"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang epiko ay mahabang tulang bayan na naglalarawan ng kabayanihan at kaugalian ng isang pangkat etniko, tulad ng \"Biag ni Lam-ang\" ng mga Ilokano."
+        },
+        {
+            "id": "pre_4_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang katutubong instrumentong pangmusika ng sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kudyapi"
+                },
+                {
+                    "label": "B",
+                    "text": "Piano"
+                },
+                {
+                    "label": "C",
+                    "text": "Gitara elektrika"
+                },
+                {
+                    "label": "D",
+                    "text": "Byolin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang kudyapi ay isang katutubong instrumentong may kwerdas na ginamit ng mga sinaunang Pilipino."
+        },
+        {
+            "id": "pre_4_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kaugaliang pagtatattoo ng katawan na malawakang ginawa noong sinaunang panahon, lalo na sa mga Visaya?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pintados"
+                },
+                {
+                    "label": "B",
+                    "text": "Tapis"
+                },
+                {
+                    "label": "C",
+                    "text": "Bahag"
+                },
+                {
+                    "label": "D",
+                    "text": "Baro"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang \"pintados\" ay ang katawagan ng mga Kastila sa mga taga-Visayas dahil sa kanilang kaugaliang pagpinta o pagtatattoo sa katawan."
+        },
+        {
+            "id": "pre_4_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade4",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong kasuotan ang karaniwang isinusuot ng mga lalaki sa sinaunang Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bahag"
+                },
+                {
+                    "label": "B",
+                    "text": "Barong tagalog"
+                },
+                {
+                    "label": "C",
+                    "text": "Amerikana"
+                },
+                {
+                    "label": "D",
+                    "text": "Tsinelas"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang bahag ay ang tradisyunal na kasuotan ng mga lalaking sinaunang Pilipino, na nakabalot sa baywang."
+        }
+    ],
+    "5": [
+        {
+            "id": "pre_5_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa paniniwala ng mga sinaunang Pilipino na may diyos o espiritu ang kalikasan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Animismo"
+                },
+                {
+                    "label": "B",
+                    "text": "Katolisismo"
+                },
+                {
+                    "label": "C",
+                    "text": "Islam"
+                },
+                {
+                    "label": "D",
+                    "text": "Budismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang animismo ay ang paniniwalang may kaluluwa o espiritu ang mga bagay sa kalikasan gaya ng puno, bato, at ilog."
+        },
+        {
+            "id": "pre_5_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang itinuturing na pinakamataas na diyos ng mga sinaunang Tagalog?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bathala"
+                },
+                {
+                    "label": "B",
+                    "text": "Sidapa"
+                },
+                {
+                    "label": "C",
+                    "text": "Amanikable"
+                },
+                {
+                    "label": "D",
+                    "text": "Diyan Masalanta"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Bathala ang itinuturing na pinakamataas na diyos ng mga sinaunang Tagalog, na lumikha ng mundo at tao."
+        },
+        {
+            "id": "pre_5_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing tungkulin ng babaylan sa mga ritwal ng sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pamamagitan sa mga diyos at espiritu"
+                },
+                {
+                    "label": "B",
+                    "text": "Paglikom ng buwis"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamumuno sa digmaan"
+                },
+                {
+                    "label": "D",
+                    "text": "Pangangalakal"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang babaylan ang tagapamagitan sa pagitan ng mga tao at ng mundo ng mga diyos at espiritu sa pamamagitan ng mga ritwal."
+        },
+        {
+            "id": "pre_5_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang paniniwala ng mga sinaunang Pilipino tungkol sa buhay pagkatapos mamatay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "May buhay pagkatapos ng kamatayan, kaya sinasamahan ng gamit ang bangkay"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang paniniwala tungkol dito"
+                },
+                {
+                    "label": "C",
+                    "text": "Ang kamatayan ay katapusan ng lahat"
+                },
+                {
+                    "label": "D",
+                    "text": "Ang kaluluwa ay nawawala kaagad"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naniniwala ang mga sinaunang Pilipino sa buhay pagkatapos mamatay, kaya isinasama sa libingan ang mga gamit ng namatay."
+        },
+        {
+            "id": "pre_5_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang kalikasan sa paniniwalang panrelihiyon ng mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pinaniniwalaang tirahan ito ng mga diwata at espiritu"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang kinalaman sa relihiyon"
+                },
+                {
+                    "label": "C",
+                    "text": "Ginagamit lamang para sa kalakalan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi ito pinahahalagahan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinaniniwalaang may naninirahang diwata at espiritu sa mga puno, ilog, at bundok kaya ginagalang ang kalikasan."
+        }
+    ],
+    "6": [
+        {
+            "id": "pre_6_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pangunahing tagapagpatupad ng batas sa isang sinaunang barangay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang Datu"
+                },
+                {
+                    "label": "B",
+                    "text": "Ang mga Alipin"
+                },
+                {
+                    "label": "C",
+                    "text": "Ang mga dayuhan"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang tagapagpatupad"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Datu ang nagsisilbing pinuno, tagapaghatol, at tagapagpatupad ng batas sa loob ng barangay."
+        },
+        {
+            "id": "pre_6_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kaugaliang pagsusubok kung saan ipinapasa ang isang tao sa isang mapanganib na gawain upang malaman kung siya ay nagkasala?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Subok o Trial by Ordeal"
+                },
+                {
+                    "label": "B",
+                    "text": "Sanduguan"
+                },
+                {
+                    "label": "C",
+                    "text": "Barter"
+                },
+                {
+                    "label": "D",
+                    "text": "Kasal"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang \"subok\" o trial by ordeal ay isang paraan ng paglutas ng usapin kung saan sinusuri ang pagkakasala sa pamamagitan ng mapanganib na pagsubok."
+        },
+        {
+            "id": "pre_6_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kaugaliang pakikipagkaibigan sa pagitan ng dalawang pinuno kung saan sila ay uumin ng dugo bilang tanda ng katapatan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sanduguan"
+                },
+                {
+                    "label": "B",
+                    "text": "Subok"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamanhikan"
+                },
+                {
+                    "label": "D",
+                    "text": "Bayanihan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang sanduguan o blood compact ay ritwal ng pakikipagkaibigan kung saan ang dalawang panig ay uminom ng kaunting dugo ng isa't isa bilang tanda ng tiwala."
+        },
+        {
+            "id": "pre_6_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang maaaring maging parusa sa isang taong nagkasala ng malaking pagkakamali sa sinaunang barangay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Multa o pagiging alipin"
+                },
+                {
+                    "label": "B",
+                    "text": "Libreng biyahe"
+                },
+                {
+                    "label": "C",
+                    "text": "Karangalan"
+                },
+                {
+                    "label": "D",
+                    "text": "Regalo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang karaniwang parusa sa sinaunang lipunan ay maaaring multa, at sa malalang kaso, pagiging alipin ng nagkasala."
+        },
+        {
+            "id": "pre_6_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang pagkakaroon ng alyansa sa pagitan ng mga barangay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Para sa magkakasamang pagtatanggol laban sa banta"
+                },
+                {
+                    "label": "B",
+                    "text": "Para lang sa libangan"
+                },
+                {
+                    "label": "C",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "D",
+                    "text": "Para pahirapan ang ibang barangay"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga alyansa sa pagitan ng barangay ay nagbibigay ng lakas para sa sama-samang pagtatanggol at kalakalan."
+        }
+    ],
+    "7": [
+        {
+            "id": "pre_7_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang explorer na pinamunuan ang unang ekspedisyong Espanyol na nakarating sa Pilipinas noong 1521?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ferdinand Magellan"
+                },
+                {
+                    "label": "B",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "C",
+                    "text": "Christopher Columbus"
+                },
+                {
+                    "label": "D",
+                    "text": "Juan Sebastian Elcano"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Ferdinand Magellan, sa ilalim ng bandila ng Espanya, ang unang Europeong nakarating sa Pilipinas noong 1521."
+        },
+        {
+            "id": "pre_7_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan unang lumapag ang ekspedisyon ni Magellan bago siya napatay sa Mactan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Limasawa"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "C",
+                    "text": "Cebu lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Palawan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ayon sa maraming kasaysayan, unang dumaong ang ekspedisyon ni Magellan sa Limasawa bago sila nagtuloy sa Cebu."
+        },
+        {
+            "id": "pre_7_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang Italyanong kasama ni Magellan na nagtala ng kanilang paglalakbay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Antonio Pigafetta"
+                },
+                {
+                    "label": "B",
+                    "text": "Juan Sebastian Elcano"
+                },
+                {
+                    "label": "C",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "D",
+                    "text": "Rajah Humabon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Antonio Pigafetta ang naging kasama ni Magellan at siyang nagtala ng detalyadong salaysay ng ekspedisyon."
+        },
+        {
+            "id": "pre_7_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangyayaring naganap sa Limasawa na itinuturing na simula ng Kristiyanismo sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Unang Misa"
+                },
+                {
+                    "label": "B",
+                    "text": "Labanan sa Mactan"
+                },
+                {
+                    "label": "C",
+                    "text": "Sanduguan kay Rajah Humabon"
+                },
+                {
+                    "label": "D",
+                    "text": "Pagpapaalipin sa mga katutubo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinagawa ang Unang Misa sa Limasawa noong 1521, na itinuturing na simula ng Kristiyanismo sa bansa."
+        },
+        {
+            "id": "pre_7_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinuno ng Cebu na nakipag-alyansa kay Magellan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Rajah Humabon"
+                },
+                {
+                    "label": "B",
+                    "text": "Lapu-Lapu"
+                },
+                {
+                    "label": "C",
+                    "text": "Rajah Sulayman"
+                },
+                {
+                    "label": "D",
+                    "text": "Datu Sikatuna"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Rajah Humabon, pinuno ng Cebu, ang nakipag-alyansa kay Magellan at tumanggap ng binyag na Kristiyano."
+        }
+    ],
+    "8": [
+        {
+            "id": "pre_8_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan naganap ang Labanan sa Mactan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Abril 27, 1521"
+                },
+                {
+                    "label": "B",
+                    "text": "Marso 16, 1521"
+                },
+                {
+                    "label": "C",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "D",
+                    "text": "Disyembre 8, 1941"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Labanan sa Mactan ay naganap noong Abril 27, 1521, kung saan napatay si Ferdinand Magellan."
+        },
+        {
+            "id": "pre_8_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit tumanggi si Lapu-Lapu na sumuko sa mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ayaw niyang mawalan ng kapangyarihan at kalayaan ang kanyang barangay"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala siyang alam sa mga Kastila"
+                },
+                {
+                    "label": "C",
+                    "text": "Kaibigan niya si Magellan"
+                },
+                {
+                    "label": "D",
+                    "text": "Gusto niyang sumama sa Espanya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagtanggol ni Lapu-Lapu ang kalayaan ng Mactan at ayaw niyang pasukin ang kapangyarihan ng mga dayuhan."
+        },
+        {
+            "id": "pre_8_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging kinalabasan ng Labanan sa Mactan para kay Ferdinand Magellan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Napatay siya sa labanan"
+                },
+                {
+                    "label": "B",
+                    "text": "Nanalo siya at nasakop ang Mactan"
+                },
+                {
+                    "label": "C",
+                    "text": "Bumalik siya sa Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Nakipagkaibigan siya kay Lapu-Lapu"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Napatay si Ferdinand Magellan sa Labanan sa Mactan noong Abril 27, 1521, kasama ang ilan sa kanyang mga tauhan."
+        },
+        {
+            "id": "pre_8_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang Labanan sa Mactan sa kasaysayan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ito ang unang matagumpay na paglaban ng mga Pilipino sa mananakop na dayuhan"
+                },
+                {
+                    "label": "B",
+                    "text": "Ito ang huling labanan sa Pilipinas"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagsimula rito ang kalakalang barter"
+                },
+                {
+                    "label": "D",
+                    "text": "Doon nagsimula ang Baybayin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Labanan sa Mactan ay simbolo ng unang matagumpay na paglaban ng mga katutubong Pilipino laban sa dayuhang mananakop."
+        },
+        {
+            "id": "pre_8_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging simbolo ni Lapu-Lapu sa kasalukuyang Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Unang bayani ng Pilipinas na lumaban sa dayuhan"
+                },
+                {
+                    "label": "B",
+                    "text": "Unang pari sa Pilipinas"
+                },
+                {
+                    "label": "C",
+                    "text": "Tagapagtatag ng Maynila"
+                },
+                {
+                    "label": "D",
+                    "text": "Unang Pangulo ng Pilipinas"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kinikilala si Lapu-Lapu bilang isa sa mga unang bayani ng Pilipinas dahil sa kanyang paglaban sa dayuhang mananakop."
+        }
+    ],
+    "9": [
+        {
+            "id": "pre_9_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pinakamahalagang katangian ng sistemang barangay bago dumating ang mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bawat barangay ay may sariling pamumuno at kasarinlan"
+                },
+                {
+                    "label": "B",
+                    "text": "Iisa lang ang pinuno ng buong kapuluan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang batas na sinusunod"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang kalakalan sa ibang bansa"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bawat barangay noong sinaunang panahon ay malaya at may sariling pamumuno, hindi ito bahagi ng isang sentralisadong bansa."
+        },
+        {
+            "id": "pre_9_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang pagkakaisa ng mga barangay para sa kanilang kaligtasan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Nagbibigay ito ng lakas laban sa banta ng ibang pangkat o dayuhan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong epekto sa kaligtasan"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagpapahina lamang ito sa bawat barangay"
+                },
+                {
+                    "label": "D",
+                    "text": "Ginagamit lamang ito sa kalakalan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pagkakaisa at alyansa ng mga barangay, gaya ng sanduguan, ay nagpapatibay sa kanilang kakayahang magtanggol laban sa panganib."
+        },
+        {
+            "id": "pre_9_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod na yaman ng kulturang Pilipino ang nagmula pa sa sinaunang panahon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Baybayin at mga epikong bayan"
+                },
+                {
+                    "label": "B",
+                    "text": "Barong tagalog na gawa ng Kastila"
+                },
+                {
+                    "label": "C",
+                    "text": "Wikang Espanyol"
+                },
+                {
+                    "label": "D",
+                    "text": "Simbahang Katoliko"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang baybayin at mga epikong bayan gaya ng \"Biag ni Lam-ang\" ay bahagi ng katutubong kulturang Pilipino bago pa dumating ang mga Kastila."
+        },
+        {
+            "id": "pre_9_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano naiimpluwensyahan ng kalakalan sa Tsina at India ang buhay ng mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Nagdulot ito ng bagong produkto, ideya, at yaman sa kanilang lipunan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong idinulot na pagbabago"
+                },
+                {
+                    "label": "C",
+                    "text": "Ito ang nagpasimula ng Kristiyanismo"
+                },
+                {
+                    "label": "D",
+                    "text": "Ito ang nagbigay ng baybayin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang kalakalan sa mga karatig-bansa ay nagdulot ng bagong produkto, kulturang impluwensya, at karagdagang yaman sa lipunan ng mga sinaunang Pilipino."
+        },
+        {
+            "id": "pre_9_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging simula ng pagbabago sa buhay ng mga Pilipino matapos ang 1521?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagdating ng mga Kastila at pananakop sa Pilipinas"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagkatapos ng Ikalawang Digmaang Pandaigdig"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagdating ng mga Amerikano"
+                },
+                {
+                    "label": "D",
+                    "text": "People Power Revolution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang taong 1521 ang naging pasimula ng malawakang pakikipag-ugnayan ng mga Pilipino sa mga Kastila, na sa bandang huli ay hahantong sa pananakop."
+        }
+    ],
+    "10": [
+        {
+            "id": "pre_10_1",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang teoryang nagsasabing ang mga sinaunang Pilipino ay nagmula sa Timog-Silangang Asya?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Teoryang Austronesian"
+                },
+                {
+                    "label": "B",
+                    "text": "Teoryang Continental Drift"
+                },
+                {
+                    "label": "C",
+                    "text": "Big Bang Theory"
+                },
+                {
+                    "label": "D",
+                    "text": "Teoryang Evolution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang teoryang Austronesian ang kasalukuyang tinatanggap na paliwanag sa pinagmulan ng mga sinaunang Pilipino."
+        },
+        {
+            "id": "pre_10_2",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinuno ng isang sinaunang barangay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Datu"
+                },
+                {
+                    "label": "B",
+                    "text": "Alipin"
+                },
+                {
+                    "label": "C",
+                    "text": "Timawa"
+                },
+                {
+                    "label": "D",
+                    "text": "Babaylan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Datu ang pinuno ng barangay, tagapagtanggol, at tagapaghatol ng batas."
+        },
+        {
+            "id": "pre_10_3",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong sistema ng pangangalakal ang ginamit bago dumating ang salapi?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Barter"
+                },
+                {
+                    "label": "B",
+                    "text": "E-wallet"
+                },
+                {
+                    "label": "C",
+                    "text": "Kredito"
+                },
+                {
+                    "label": "D",
+                    "text": "Installment"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang barter ay ang pagpapalitan ng produkto na ginamit bago pa may salapi."
+        },
+        {
+            "id": "pre_10_4",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang katutubong sistema ng pagsulat ng mga sinaunang Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Baybayin"
+                },
+                {
+                    "label": "B",
+                    "text": "Hiragana"
+                },
+                {
+                    "label": "C",
+                    "text": "Cyrillic"
+                },
+                {
+                    "label": "D",
+                    "text": "Latin"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang baybayin ang katutubong sistema ng pagsulat ng mga sinaunang Pilipino."
+        },
+        {
+            "id": "pre_10_5",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang itinuturing na pinakamataas na diyos ng mga sinaunang Tagalog?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bathala"
+                },
+                {
+                    "label": "B",
+                    "text": "Sidapa"
+                },
+                {
+                    "label": "C",
+                    "text": "Amanikable"
+                },
+                {
+                    "label": "D",
+                    "text": "Bakunawa"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Bathala ang pinakamataas na diyos ng mga sinaunang Tagalog ayon sa kanilang paniniwala."
+        },
+        {
+            "id": "pre_10_6",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa ritwal ng pakikipagkaibigan kung saan uminom ng dugo ang dalawang panig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sanduguan"
+                },
+                {
+                    "label": "B",
+                    "text": "Subok"
+                },
+                {
+                    "label": "C",
+                    "text": "Bayanihan"
+                },
+                {
+                    "label": "D",
+                    "text": "Pamamanhikan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang sanduguan ay ritwal ng katapatan sa pagitan ng dalawang panig."
+        },
+        {
+            "id": "pre_10_7",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang explorer na pinamunuan ang unang ekspedisyong Espanyol na nakarating sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ferdinand Magellan"
+                },
+                {
+                    "label": "B",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "C",
+                    "text": "Christopher Columbus"
+                },
+                {
+                    "label": "D",
+                    "text": "Marco Polo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Ferdinand Magellan ang pinuno ng unang ekspedisyong Espanyol na nakarating sa Pilipinas noong 1521."
+        },
+        {
+            "id": "pre_10_8",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan isinagawa ang Unang Misa noong 1521?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Limasawa"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "C",
+                    "text": "Mactan"
+                },
+                {
+                    "label": "D",
+                    "text": "Palawan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinagawa ang Unang Misa sa Limasawa bago nagtungo ang ekspedisyon sa Cebu."
+        },
+        {
+            "id": "pre_10_9",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinuno ng Cebu na nakipag-alyansa kay Magellan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Rajah Humabon"
+                },
+                {
+                    "label": "B",
+                    "text": "Lapu-Lapu"
+                },
+                {
+                    "label": "C",
+                    "text": "Rajah Sulayman"
+                },
+                {
+                    "label": "D",
+                    "text": "Datu Sikatuna"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Rajah Humabon ng Cebu ang nakipag-alyansa kay Magellan at tumanggap ng binyag."
+        },
+        {
+            "id": "pre_10_10",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang katutubong instrumentong pangmusika?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kudyapi"
+                },
+                {
+                    "label": "B",
+                    "text": "Piano"
+                },
+                {
+                    "label": "C",
+                    "text": "Byolin"
+                },
+                {
+                    "label": "D",
+                    "text": "Trumpeta"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang kudyapi ay isang katutubong instrumentong may kwerdas."
+        },
+        {
+            "id": "pre_10_11",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan naganap ang Labanan sa Mactan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Abril 27, 1521"
+                },
+                {
+                    "label": "B",
+                    "text": "Marso 16, 1521"
+                },
+                {
+                    "label": "C",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "D",
+                    "text": "Mayo 1, 1521"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Labanan sa Mactan ay naganap noong Abril 27, 1521."
+        },
+        {
+            "id": "pre_10_12",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit tumanggi si Lapu-Lapu na sumuko sa mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ayaw niyang mawalan ng kalayaan ang kanyang barangay"
+                },
+                {
+                    "label": "B",
+                    "text": "Kaibigan niya si Magellan"
+                },
+                {
+                    "label": "C",
+                    "text": "Wala siyang alam sa mga Kastila"
+                },
+                {
+                    "label": "D",
+                    "text": "Gusto niyang sumama sa Espanya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagtanggol ni Lapu-Lapu ang kalayaan ng kanyang barangay laban sa dayuhang kapangyarihan."
+        },
+        {
+            "id": "pre_10_13",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging kinalabasan ng Labanan sa Mactan para kay Magellan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Napatay siya sa labanan"
+                },
+                {
+                    "label": "B",
+                    "text": "Nanalo siya"
+                },
+                {
+                    "label": "C",
+                    "text": "Bumalik siya sa Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Naging kaibigan ni Lapu-Lapu"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Napatay si Ferdinand Magellan sa Labanan sa Mactan."
+        },
+        {
+            "id": "pre_10_14",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang Labanan sa Mactan sa kasaysayan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ito ang unang matagumpay na paglaban sa mananakop na dayuhan"
+                },
+                {
+                    "label": "B",
+                    "text": "Ito ang huling labanan sa Pilipinas"
+                },
+                {
+                    "label": "C",
+                    "text": "Doon nagsimula ang baybayin"
+                },
+                {
+                    "label": "D",
+                    "text": "Doon nagsimula ang kalakalang barter"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Labanan sa Mactan ay simbolo ng unang matagumpay na paglaban ng mga Pilipino laban sa dayuhang mananakop."
+        },
+        {
+            "id": "pre_10_15",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong uri ng mamamayan ang mga \"maharlika\"?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga mandirigma at maimpluwensyang pamilya"
+                },
+                {
+                    "label": "B",
+                    "text": "Mga alipin"
+                },
+                {
+                    "label": "C",
+                    "text": "Mga dayuhang mangangalakal"
+                },
+                {
+                    "label": "D",
+                    "text": "Mga bata"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga maharlika ay malayang mamamayan na may mataas na katayuan sa lipunan."
+        },
+        {
+            "id": "pre_10_16",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa malayang mamamayan na hindi kabilang sa maharlika o alipin?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Timawa"
+                },
+                {
+                    "label": "B",
+                    "text": "Babaylan"
+                },
+                {
+                    "label": "C",
+                    "text": "Panday"
+                },
+                {
+                    "label": "D",
+                    "text": "Datu"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga timawa ay malayang mamamayan na maaaring magmay-ari ng lupa."
+        },
+        {
+            "id": "pre_10_17",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang produktong ipinagpalit ng mga sinaunang Pilipino sa mga dayuhan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ginto at perlas"
+                },
+                {
+                    "label": "B",
+                    "text": "Plastik"
+                },
+                {
+                    "label": "C",
+                    "text": "Bakal na inimport"
+                },
+                {
+                    "label": "D",
+                    "text": "Kotse"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang ginto, perlas, at abaka ay ilan sa mga produktong ipinagpalit sa mga dayuhang mangangalakal."
+        },
+        {
+            "id": "pre_10_18",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang Italyanong kasama ni Magellan na nagtala ng kanilang paglalakbay?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Antonio Pigafetta"
+                },
+                {
+                    "label": "B",
+                    "text": "Juan Sebastian Elcano"
+                },
+                {
+                    "label": "C",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "D",
+                    "text": "Rajah Humabon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Antonio Pigafetta ang nagtala ng detalyadong salaysay ng ekspedisyon ni Magellan."
+        },
+        {
+            "id": "pre_10_19",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kaugaliang pagtatattoo ng katawan na malawakang ginawa lalo na sa mga Visaya?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pintados"
+                },
+                {
+                    "label": "B",
+                    "text": "Bahag"
+                },
+                {
+                    "label": "C",
+                    "text": "Tapis"
+                },
+                {
+                    "label": "D",
+                    "text": "Baro"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang \"pintados\" ay ang katawagan ng mga Kastila sa mga taga-Visayas dahil sa kanilang pagtatattoo."
+        },
+        {
+            "id": "pre_10_20",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging simbolo ni Lapu-Lapu sa kasalukuyang Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Unang bayani ng Pilipinas na lumaban sa dayuhan"
+                },
+                {
+                    "label": "B",
+                    "text": "Unang pari sa Pilipinas"
+                },
+                {
+                    "label": "C",
+                    "text": "Tagapagtatag ng Maynila"
+                },
+                {
+                    "label": "D",
+                    "text": "Unang Pangulo ng Pilipinas"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kinikilala si Lapu-Lapu bilang isa sa mga unang bayani ng Pilipinas."
+        },
+        {
+            "id": "pre_10_21",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pinakamahalagang katangian ng sistemang barangay bago dumating ang mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bawat barangay ay may sariling pamumuno at kasarinlan"
+                },
+                {
+                    "label": "B",
+                    "text": "Iisa lang ang pinuno ng buong kapuluan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang batas na sinusunod"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang kalakalan sa ibang bansa"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bawat barangay ay malaya at may sariling pamumuno bago pa man ang pananakop ng Espanya."
+        },
+        {
+            "id": "pre_10_22",
+            "era": "pre-colonial",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging simula ng pagbabago sa buhay ng mga Pilipino matapos ang 1521?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagdating ng mga Kastila at pananakop sa Pilipinas"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagkatapos ng Ikalawang Digmaang Pandaigdig"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagdating ng mga Amerikano"
+                },
+                {
+                    "label": "D",
+                    "text": "People Power Revolution"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang taong 1521 ang naging simula ng malawakang pakikipag-ugnayan ng mga Pilipino sa mga Kastila."
+        }
+    ]
+}

@@ -1,0 +1,2032 @@
+{
+    "1": [
+        {
+            "id": "ww2_1_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pangyayari sa Pearl Harbor noong Disyembre 1941 ang nagbunsod sa Estados Unidos na sumali sa Ikalawang Digmaang Pandaigdig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sinalakay ng Hapon ang Pearl Harbor"
+                },
+                {
+                    "label": "B",
+                    "text": "Sinalakay ng Alemanya ang Pearl Harbor"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagdeklara ng digmaan ang Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Sumuko ang Estados Unidos"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang biglaang pananalakay ng Hapon sa Pearl Harbor noong Disyembre 7, 1941 ang nagtulak sa Estados Unidos na sumali sa digmaan, kasabay ng pagsalakay sa Pilipinas."
+        },
+        {
+            "id": "ww2_1_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan unang lumapag ang malaking hukbong Hapon sa Luzon noong 1941?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Lingayen Gulf"
+                },
+                {
+                    "label": "B",
+                    "text": "Manila Bay"
+                },
+                {
+                    "label": "C",
+                    "text": "Leyte Gulf"
+                },
+                {
+                    "label": "D",
+                    "text": "Subic Bay"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Lumapag ang malaking bahagi ng hukbong Hapon sa Lingayen Gulf noong Disyembre 1941 bago sumulong patungong Maynila."
+        },
+        {
+            "id": "ww2_1_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang ginawa ni Heneral Douglas MacArthur sa Maynila upang maiwasan ang labis na pagkasira nito?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Idineklara ang Maynila bilang \"Open City\""
+                },
+                {
+                    "label": "B",
+                    "text": "Sinunog ang buong lungsod"
+                },
+                {
+                    "label": "C",
+                    "text": "Ipinagtanggol ang Maynila hanggang sa huli"
+                },
+                {
+                    "label": "D",
+                    "text": "Umatras patungong Australia agad"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Idineklara ni MacArthur ang Maynila bilang \"Open City\" upang maiwasan ang pagkasira nito, bagamat sinakop pa rin ito ng Hapon."
+        },
+        {
+            "id": "ww2_1_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan bumagsak ang Bataan sa mga puwersang Hapon, na kilala bilang Araw ng Kagitingan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Abril 9, 1942"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 7, 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "D",
+                    "text": "Oktubre 20, 1944"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumagsak ang Bataan noong Abril 9, 1942, taunang ginugunita bilang Araw ng Kagitingan sa Pilipinas."
+        },
+        {
+            "id": "ww2_1_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa mahabang at mapanganib na paglalakad ng mga bihag na sundalong Pilipino at Amerikano matapos bumagsak ang Bataan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bataan Death March"
+                },
+                {
+                    "label": "B",
+                    "text": "Long Walk to Freedom"
+                },
+                {
+                    "label": "C",
+                    "text": "March to Corregidor"
+                },
+                {
+                    "label": "D",
+                    "text": "Trail of Tears"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Bataan Death March ay ang mahirap at mapanganib na paglalakad ng libu-libong bihag mula Bataan patungo sa mga kampo ng Hapon."
+        }
+    ],
+    "2": [
+        {
+            "id": "ww2_2_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong isla-tanggulan ang huling bumagsak sa Hapon noong Mayo 1942?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Corregidor"
+                },
+                {
+                    "label": "B",
+                    "text": "Leyte"
+                },
+                {
+                    "label": "C",
+                    "text": "Mindanao"
+                },
+                {
+                    "label": "D",
+                    "text": "Palawan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumagsak ang Corregidor sa Hapon noong Mayo 1942, kasunod ng pagbagsak ng Bataan."
+        },
+        {
+            "id": "ww2_2_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pangakong sinabi ni Heneral MacArthur nang umatras siya papuntang Australia noong 1942?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "\"I shall return\""
+                },
+                {
+                    "label": "B",
+                    "text": "\"Give me liberty or give me death\""
+                },
+                {
+                    "label": "C",
+                    "text": "\"We shall never surrender\""
+                },
+                {
+                    "label": "D",
+                    "text": "\"Remember Pearl Harbor\""
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kilalang sinabi ni Heneral MacArthur ang \"I shall return\" bilang pangako na babalik siya upang palayain ang Pilipinas."
+        },
+        {
+            "id": "ww2_2_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang naging Pangulo ng pamahalaang itinatag ng Hapon (Second Republic) sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Jose P. Laurel"
+                },
+                {
+                    "label": "B",
+                    "text": "Manuel Quezon"
+                },
+                {
+                    "label": "C",
+                    "text": "Sergio Osmena"
+                },
+                {
+                    "label": "D",
+                    "text": "Manuel Roxas"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Jose P. Laurel ang naging Pangulo ng Second Republic, ang pamahalaang itinatag ng Hapon sa Pilipinas noong panahon ng Okupasyon."
+        },
+        {
+            "id": "ww2_2_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa organisasyong itinatag ng Hapon upang isulong ang kanilang layunin sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "B",
+                    "text": "Katipunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Hukbalahap"
+                },
+                {
+                    "label": "D",
+                    "text": "Nacionalista Party"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kalibapi (Kapisanan sa Paglilingkod sa Bagong Pilipinas) ang naging opisyal na organisasyong pampulitika sa ilalim ng pamahalaang Hapon."
+        },
+        {
+            "id": "ww2_2_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang katangian ng pamahalaang itinatag ng Hapon sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Puppet government o pamahalaang kontrolado ng Hapon"
+                },
+                {
+                    "label": "B",
+                    "text": "Ganap na malayang pamahalaan"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamahalaang kolonyal ng Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang pamahalaan noong panahong iyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pamahalaan sa ilalim ni Laurel ay kilala bilang \"puppet government\" dahil kontrolado at ginagabayan ito ng Hapon."
+        }
+    ],
+    "3": [
+        {
+            "id": "ww2_3_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong hirap ang karaniwang naranasan ng mga Pilipino sa larangan ng pagkain noong Okupasyong Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Matinding kakulangan sa bigas at pagkain"
+                },
+                {
+                    "label": "B",
+                    "text": "Sobrang dami ng pagkain"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang naranasang paghihirap"
+                },
+                {
+                    "label": "D",
+                    "text": "Libreng pagkain sa lahat"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nakaranas ng matinding kakulangan sa pagkain, lalo na bigas, ang mga Pilipino sa panahon ng Okupasyong Hapon."
+        },
+        {
+            "id": "ww2_3_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tinawag na palayaw sa salaping inilabas ng gobyernong Hapon dahil sa mababang halaga nito?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mickey Mouse money"
+                },
+                {
+                    "label": "B",
+                    "text": "Piloncitos"
+                },
+                {
+                    "label": "C",
+                    "text": "Peso Fuerte"
+                },
+                {
+                    "label": "D",
+                    "text": "Real de a ocho"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Tinawag na \"Mickey Mouse money\" ang salaping inilabas ng gobyernong Hapon dahil bumagsak ang halaga nito noong panahon ng digmaan."
+        },
+        {
+            "id": "ww2_3_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang ipinatupad na oras kung kailan bawal lumabas ng bahay sa panahon ng Okupasyong Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Curfew"
+                },
+                {
+                    "label": "B",
+                    "text": "Fiesta"
+                },
+                {
+                    "label": "C",
+                    "text": "Siesta"
+                },
+                {
+                    "label": "D",
+                    "text": "Recess"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinatupad ang curfew, isang takdang oras kung saan bawal lumabas ang mga tao, bilang bahagi ng kontrol ng Hapon."
+        },
+        {
+            "id": "ww2_3_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa hukbong pangkapulisan ng Hapon na kilala sa kanilang mahigpit na pagpapatupad ng batas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kempeitai"
+                },
+                {
+                    "label": "B",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "C",
+                    "text": "Hukbalahap"
+                },
+                {
+                    "label": "D",
+                    "text": "USAFFE"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kempeitai ang hukbong pangkapulisan ng militar ng Hapon na kilala sa kanilang mahigpit na disiplina at pagpapatupad ng batas."
+        },
+        {
+            "id": "ww2_3_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalagang malaman ang mga karanasan ng mga Pilipino noong Okupasyong Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang maunawaan ang kahalagahan ng kapayapaan at karapatang pantao"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan sa kasalukuyan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang malaman ang mga pangalan ng heneral"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang dapat matutunan dito"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pag-aaral ng mga karanasan noong digmaan ay nagpapaalala sa kahalagahan ng kapayapaan, karapatang pantao, at pagkakaisa."
+        }
+    ],
+    "4": [
+        {
+            "id": "ww2_4_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa hukbong gerilyang itinatag upang lumaban sa mga Hapon, lalo na sa Gitnang Luzon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Hukbalahap"
+                },
+                {
+                    "label": "B",
+                    "text": "Katipunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "D",
+                    "text": "Kempeitai"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Hukbalahap (Hukbong Bayan Laban sa Hapon) ay isang kilalang kilusang gerilya na lumaban sa mga Hapon, lalo na sa Gitnang Luzon."
+        },
+        {
+            "id": "ww2_4_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa opisyal na hukbo ng Estados Unidos at Pilipinas noong panahon ng digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "USAFFE"
+                },
+                {
+                    "label": "B",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "C",
+                    "text": "Kempeitai"
+                },
+                {
+                    "label": "D",
+                    "text": "Hukbalahap"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang USAFFE (United States Army Forces in the Far East) ang naging pinagsamang hukbo ng Estados Unidos at Pilipinas."
+        },
+        {
+            "id": "ww2_4_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging mahalagang tungkulin ng mga gerilya sa buong digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagbibigay ng impormasyon (intelligence) sa mga Allied Forces"
+                },
+                {
+                    "label": "B",
+                    "text": "Pakikipagtulungan sa Hapon"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang tungkuling ginampanan"
+                },
+                {
+                    "label": "D",
+                    "text": "Pagbebenta ng armas sa Hapon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagbigay ang mga gerilya ng mahalagang impormasyon sa mga Allied Forces tungkol sa mga galaw ng hukbong Hapon."
+        },
+        {
+            "id": "ww2_4_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saang bahagi ng Pilipinas nagkaroon din ng malalakas na kilusang gerilya bukod sa Luzon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Visayas at Mindanao"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala sa ibang lugar"
+                },
+                {
+                    "label": "C",
+                    "text": "Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Estados Unidos"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagkaroon din ng malalakas na kilusang gerilya sa Visayas at Mindanao, hindi lamang sa Luzon."
+        },
+        {
+            "id": "ww2_4_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang isa sa mga kilalang lider ng kilusang Hukbalahap?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Luis Taruc"
+                },
+                {
+                    "label": "B",
+                    "text": "Jose P. Laurel"
+                },
+                {
+                    "label": "C",
+                    "text": "Manuel Roxas"
+                },
+                {
+                    "label": "D",
+                    "text": "Douglas MacArthur"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Luis Taruc ay isa sa mga kilalang lider ng Hukbalahap sa panahon ng digmaan."
+        }
+    ],
+    "5": [
+        {
+            "id": "ww2_5_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong labanang pandagat noong Oktubre 1944 ang itinuturing na pinakamalaking labanang pandagat sa kasaysayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Battle of Leyte Gulf"
+                },
+                {
+                    "label": "B",
+                    "text": "Battle of Manila Bay"
+                },
+                {
+                    "label": "C",
+                    "text": "Battle of Mactan"
+                },
+                {
+                    "label": "D",
+                    "text": "Battle of Corregidor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Battle of Leyte Gulf ay itinuturing na isa sa pinakamalaking labanang pandagat sa kasaysayan, na naganap noong Oktubre 1944."
+        },
+        {
+            "id": "ww2_5_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan bumalik si Heneral MacArthur upang simulan ang paglaya ng Pilipinas noong 1944?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Leyte"
+                },
+                {
+                    "label": "B",
+                    "text": "Bataan"
+                },
+                {
+                    "label": "C",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "D",
+                    "text": "Corregidor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumalik si Heneral MacArthur sa Leyte noong Oktubre 1944 upang simulan ang paglaya ng Pilipinas mula sa Hapon."
+        },
+        {
+            "id": "ww2_5_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan sinimulang palayain ang Maynila mula sa kontrol ng Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pebrero 1945"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Oktubre 1944"
+                },
+                {
+                    "label": "D",
+                    "text": "Setyembre 1945"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naganap ang Labanan sa Maynila noong Pebrero 1945, kung saan nagsimulang mapalaya ang lungsod mula sa Hapon."
+        },
+        {
+            "id": "ww2_5_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod na taon saklaw ang panahon ng paglaya ng Pilipinas mula sa Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1944-1945"
+                },
+                {
+                    "label": "B",
+                    "text": "1898-1902"
+                },
+                {
+                    "label": "C",
+                    "text": "1521-1565"
+                },
+                {
+                    "label": "D",
+                    "text": "1935-1941"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang panahon ng paglaya ng Pilipinas mula sa Hapon ay saklaw ng 1944-1945."
+        },
+        {
+            "id": "ww2_5_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino-sino ang nagtulungan upang palayain ang Pilipinas mula sa Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga puwersang Pilipino, Amerikano, at gerilya"
+                },
+                {
+                    "label": "B",
+                    "text": "Mga puwersang Kastila lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang tumulong sa Pilipinas"
+                },
+                {
+                    "label": "D",
+                    "text": "Mga puwersang Hapon lamang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtulungan ang mga puwersang Pilipino, Amerikano, at gerilya sa pagpapalaya sa Pilipinas mula sa Hapon."
+        }
+    ],
+    "6": [
+        {
+            "id": "ww2_6_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong lungsod ang isa sa pinakamalubhang nasira sa Labanan sa Maynila noong 1945?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "B",
+                    "text": "Cebu"
+                },
+                {
+                    "label": "C",
+                    "text": "Davao"
+                },
+                {
+                    "label": "D",
+                    "text": "Baguio"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Labis na nasira ang Maynila sa Labanan sa Maynila noong 1945, isa sa pinakamalubhang labanan sa digmaan."
+        },
+        {
+            "id": "ww2_6_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang epekto ng digmaan sa ekonomiya ng Pilipinas noong 1945?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Labis na pagkasira ng imprastraktura at kabuhayan"
+                },
+                {
+                    "label": "B",
+                    "text": "Lumago ang ekonomiya"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang naapektuhan"
+                },
+                {
+                    "label": "D",
+                    "text": "Bumuti kaagad"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Labis na naapektuhan ang ekonomiya ng Pilipinas dahil sa pagkasira ng mga imprastraktura at kabuhayan noong digmaan."
+        },
+        {
+            "id": "ww2_6_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang naging epekto ng digmaan sa mga imprastraktura tulad ng tulay at gusali?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Maraming nasira na kailangang muling itayo"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang nasira"
+                },
+                {
+                    "label": "C",
+                    "text": "Naging mas malakas ang lahat"
+                },
+                {
+                    "label": "D",
+                    "text": "Wala itong naging epekto"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Maraming imprastraktura tulad ng tulay, gusali, at kalsada ang nasira noong digmaan at kailangang muling itayo."
+        },
+        {
+            "id": "ww2_6_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagsisimula ng muling pagtatayo ng bansa matapos ang digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Rehabilitasyon"
+                },
+                {
+                    "label": "B",
+                    "text": "Reduccion"
+                },
+                {
+                    "label": "C",
+                    "text": "Kolonisasyon"
+                },
+                {
+                    "label": "D",
+                    "text": "Digmaan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang rehabilitasyon ay ang proseso ng muling pagtatayo ng bansa matapos ang pagkasira dulot ng digmaan."
+        },
+        {
+            "id": "ww2_6_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalagang tandaan ang kabuuang epekto ng digmaan sa buhay ng mga Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Para maunawaan ang halaga ng kapayapaan at ang gastos ng digmaan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong halaga sa kasalukuyan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang sa pagsusulit"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang dapat pag-aralan dito"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pag-unawa sa epekto ng digmaan ay tumutulong sa mga mag-aaral na pahalagahan ang kapayapaan at ang gastos ng armadong labanan."
+        }
+    ],
+    "7": [
+        {
+            "id": "ww2_7_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan opisyal na sumuko ang Hapon upang tapusin ang Ikalawang Digmaang Pandaigdig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 7, 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Abril 9, 1942"
+                },
+                {
+                    "label": "D",
+                    "text": "Oktubre 1944"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Opisyal na sumuko ang Hapon noong Setyembre 2, 1945, na tumapos sa Ikalawang Digmaang Pandaigdig."
+        },
+        {
+            "id": "ww2_7_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod na pangyayari ang nagtulak sa Hapon na sumuko noong 1945?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pagbagsak ng Hapon matapos ang malubhang pinsala sa kanilang bansa"
+                },
+                {
+                    "label": "B",
+                    "text": "Kusang-loob na pagsuko dahil sa pagod na lamang"
+                },
+                {
+                    "label": "C",
+                    "text": "Pananalakay ng Pilipinas sa Hapon"
+                },
+                {
+                    "label": "D",
+                    "text": "Kasunduan sa Espanya"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sumuko ang Hapon noong 1945 matapos dumanas ng malubhang pinsala at pagkatalo sa iba't ibang larangan ng digmaan."
+        },
+        {
+            "id": "ww2_7_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang isinagawa matapos ang digmaan upang panagutin ang mga responsable sa mga krimen sa digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "War Crimes Trials"
+                },
+                {
+                    "label": "B",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Sedition"
+                },
+                {
+                    "label": "D",
+                    "text": "Reduccion"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinagawa ang mga War Crimes Trials matapos ang digmaan upang panagutin ang mga heneral at opisyal na responsable sa mga krimen sa digmaan."
+        },
+        {
+            "id": "ww2_7_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pamahalaan ang ibinalik matapos ang digmaan noong 1945?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Commonwealth Government"
+                },
+                {
+                    "label": "B",
+                    "text": "Pamahalaang Espanyol"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamahalaang Hapon"
+                },
+                {
+                    "label": "D",
+                    "text": "Unang Republika"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ibinalik ang Commonwealth Government matapos ang digmaan bilang paghahanda muli tungo sa ganap na kalayaan."
+        },
+        {
+            "id": "ww2_7_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging susunod na hakbang matapos ang digmaan patungo sa kalayaan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Muling paghahanda para sa deklarasyon ng kalayaan noong 1946"
+                },
+                {
+                    "label": "B",
+                    "text": "Pagbabalik sa pamahalaang kolonyal ng Espanya"
+                },
+                {
+                    "label": "C",
+                    "text": "Pananatiling kolonya ng Hapon"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang susunod na hakbang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Matapos ang digmaan, muling naghanda ang Pilipinas para sa ipinangakong kalayaan noong 1946."
+        }
+    ],
+    "8": [
+        {
+            "id": "ww2_8_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano ipinakita ng mga gerilyang Pilipino ang kanilang kabayanihan noong digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng patuloy na paglaban at pagtulong sa mga Allied Forces"
+                },
+                {
+                    "label": "B",
+                    "text": "Sa pagsuko sa Hapon"
+                },
+                {
+                    "label": "C",
+                    "text": "Sa pananahimik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Wala silang ginawang tulong"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinakita ng mga gerilyang Pilipino ang kanilang kabayanihan sa pamamagitan ng patuloy na paglaban laban sa Hapon at pagtulong sa mga Allied Forces."
+        },
+        {
+            "id": "ww2_8_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong tungkulin ang ginampanan ng maraming babaeng Pilipino noong digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Nagsilbing nars at nagbigay ng tulong medikal sa mga sugatan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala silang ginampanang tungkulin"
+                },
+                {
+                    "label": "C",
+                    "text": "Nanatili lamang sa bahay"
+                },
+                {
+                    "label": "D",
+                    "text": "Sumali sa hukbong Hapon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Maraming babaeng Pilipino ang nagsilbing nars at tumulong sa pag-aalaga ng mga sugatang sundalo noong digmaan."
+        },
+        {
+            "id": "ww2_8_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong katangian ang ipinakita ng mga nakaligtas sa Bataan Death March?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Lakas ng loob at determinasyon na mabuhay"
+                },
+                {
+                    "label": "B",
+                    "text": "Kawalan ng pag-asa"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagsuko sa lahat"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang ipinakitang katangian"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinakita ng mga nakaligtas sa Bataan Death March ang matinding lakas ng loob at pagnanais na mabuhay sa kabila ng matinding hirap."
+        },
+        {
+            "id": "ww2_8_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang taunang pagdiriwang bilang pag-alala sa kabayanihan ng mga sundalong Pilipino at Amerikano sa Bataan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Araw ng Kagitingan"
+                },
+                {
+                    "label": "B",
+                    "text": "Araw ng Kalayaan"
+                },
+                {
+                    "label": "C",
+                    "text": "Bonifacio Day"
+                },
+                {
+                    "label": "D",
+                    "text": "Rizal Day"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagdiriwang taun-taon ang Araw ng Kagitingan tuwing Abril 9 bilang pag-alala sa mga bayaning lumaban sa Bataan."
+        },
+        {
+            "id": "ww2_8_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalagang gunitain ang kabayanihan ng mga Pilipino noong digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Upang alalahanin ang kanilang sakripisyo at pahalagahan ang kapayapaan"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Para lang sa piyesta"
+                },
+                {
+                    "label": "D",
+                    "text": "Para ipagmalaki lamang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pag-alala sa kabayanihan ng mga Pilipino ay nagpapaalala sa kahalagahan ng kanilang sakripisyo para sa kalayaan at kapayapaan."
+        }
+    ],
+    "9": [
+        {
+            "id": "ww2_9_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano naipakita ang pagkakaisa ng mga Pilipino at Amerikano sa panahon ng digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng magkasamang paglaban laban sa karaniwang kaaway na Hapon"
+                },
+                {
+                    "label": "B",
+                    "text": "Hindi sila nagtulungan"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagkalaban sila sa isa't isa"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang naganap na pagtutulungan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtulungan ang mga Pilipino at Amerikano sa pagtatanggol laban sa Hapon, na nagpakita ng matibay na pagkakaisa sa panahon ng digmaan."
+        },
+        {
+            "id": "ww2_9_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging tugon ng pamahalaan matapos ang digmaan para sa muling pagtatayo ng bansa?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Programa ng rehabilitasyon at rekonstruksyon"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang ginawang hakbang"
+                },
+                {
+                    "label": "C",
+                    "text": "Ipinagpatuloy ang digmaan"
+                },
+                {
+                    "label": "D",
+                    "text": "Bumalik sa pamumuno ng Hapon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagsagawa ng mga programa ng rehabilitasyon at rekonstruksyon ang pamahalaan upang muling itayo ang bansa matapos ang digmaan."
+        },
+        {
+            "id": "ww2_9_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano naiimpluwensyahan ng digmaan ang pambansang pagkakakilanlan ng mga Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Napatibay ang diwa ng pagkakaisa, tapang, at pagmamahal sa bayan"
+                },
+                {
+                    "label": "B",
+                    "text": "Nawala ang pagmamahal sa bayan"
+                },
+                {
+                    "label": "C",
+                    "text": "Walang naging epekto"
+                },
+                {
+                    "label": "D",
+                    "text": "Nawalan ng interes sa kasaysayan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Napatibay ang diwa ng nasyonalismo, tapang, at pagkakaisa ng mga Pilipino bunga ng kanilang karanasan noong digmaan."
+        },
+        {
+            "id": "ww2_9_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong aral ang maaaring matutunan mula sa karanasan ng mga Pilipino noong Ikalawang Digmaang Pandaigdig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang halaga ng kapayapaan, pagkakaisa, at karapatang pantao"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang aral na matutunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Mainam ang digmaan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi kailangan ang kalayaan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang karanasan ng mga Pilipino noong digmaan ay nagtuturo ng halaga ng kapayapaan, pagkakaisa, at paggalang sa karapatang pantao."
+        },
+        {
+            "id": "ww2_9_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging susunod na malaking pangyayari sa kasaysayan ng Pilipinas matapos ang digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang pagkamit ng ganap na kalayaan noong 1946"
+                },
+                {
+                    "label": "B",
+                    "text": "Bagong pananakop ng Hapon"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagbabalik ng mga Kastila"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang naganap pang pagbabago"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Matapos ang digmaan, ang susunod na malaking pangyayari ay ang pagkamit ng Pilipinas ng ganap na kalayaan noong 1946."
+        }
+    ],
+    "10": [
+        {
+            "id": "ww2_10_1",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pangyayari sa Pearl Harbor noong Disyembre 1941 ang nagbunsod sa Estados Unidos na sumali sa digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sinalakay ng Hapon ang Pearl Harbor"
+                },
+                {
+                    "label": "B",
+                    "text": "Sinalakay ng Alemanya ang Pearl Harbor"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagdeklara ng digmaan ang Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Sumuko ang Estados Unidos"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang pananalakay ng Hapon sa Pearl Harbor ang nagtulak sa Estados Unidos na sumali sa digmaan."
+        },
+        {
+            "id": "ww2_10_2",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan bumagsak ang Bataan sa mga puwersang Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Abril 9, 1942"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 7, 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "D",
+                    "text": "Oktubre 20, 1944"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumagsak ang Bataan noong Abril 9, 1942."
+        },
+        {
+            "id": "ww2_10_3",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa mahabang at mapanganib na paglalakad ng mga bihag matapos bumagsak ang Bataan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bataan Death March"
+                },
+                {
+                    "label": "B",
+                    "text": "Long Walk to Freedom"
+                },
+                {
+                    "label": "C",
+                    "text": "March to Corregidor"
+                },
+                {
+                    "label": "D",
+                    "text": "Trail of Tears"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Bataan Death March ang mahirap na paglalakad ng mga bihag matapos bumagsak ang Bataan."
+        },
+        {
+            "id": "ww2_10_4",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang naging Pangulo ng pamahalaang itinatag ng Hapon sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Jose P. Laurel"
+                },
+                {
+                    "label": "B",
+                    "text": "Manuel Quezon"
+                },
+                {
+                    "label": "C",
+                    "text": "Sergio Osmena"
+                },
+                {
+                    "label": "D",
+                    "text": "Manuel Roxas"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Jose P. Laurel ang naging Pangulo ng Second Republic sa ilalim ng Hapon."
+        },
+        {
+            "id": "ww2_10_5",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa hukbong gerilyang itinatag laban sa mga Hapon sa Gitnang Luzon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Hukbalahap"
+                },
+                {
+                    "label": "B",
+                    "text": "Katipunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "D",
+                    "text": "Kempeitai"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Hukbalahap ang kilalang hukbong gerilya laban sa Hapon sa Gitnang Luzon."
+        },
+        {
+            "id": "ww2_10_6",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong labanang pandagat noong Oktubre 1944 ang itinuturing na pinakamalaki sa kasaysayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Battle of Leyte Gulf"
+                },
+                {
+                    "label": "B",
+                    "text": "Battle of Manila Bay"
+                },
+                {
+                    "label": "C",
+                    "text": "Battle of Mactan"
+                },
+                {
+                    "label": "D",
+                    "text": "Battle of Corregidor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Battle of Leyte Gulf ay itinuturing na pinakamalaking labanang pandagat sa kasaysayan."
+        },
+        {
+            "id": "ww2_10_7",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan bumalik si Heneral MacArthur upang simulan ang paglaya ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Leyte"
+                },
+                {
+                    "label": "B",
+                    "text": "Bataan"
+                },
+                {
+                    "label": "C",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "D",
+                    "text": "Corregidor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumalik si MacArthur sa Leyte noong 1944 upang simulan ang paglaya ng Pilipinas."
+        },
+        {
+            "id": "ww2_10_8",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan opisyal na sumuko ang Hapon upang tapusin ang Ikalawang Digmaang Pandaigdig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Setyembre 2, 1945"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 7, 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Abril 9, 1942"
+                },
+                {
+                    "label": "D",
+                    "text": "Oktubre 1944"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Opisyal na sumuko ang Hapon noong Setyembre 2, 1945."
+        },
+        {
+            "id": "ww2_10_9",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang taunang pagdiriwang bilang pag-alala sa kabayanihan sa Bataan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Araw ng Kagitingan"
+                },
+                {
+                    "label": "B",
+                    "text": "Araw ng Kalayaan"
+                },
+                {
+                    "label": "C",
+                    "text": "Bonifacio Day"
+                },
+                {
+                    "label": "D",
+                    "text": "Rizal Day"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinagdiriwang ang Araw ng Kagitingan tuwing Abril 9."
+        },
+        {
+            "id": "ww2_10_10",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pangakong sinabi ni Heneral MacArthur nang umatras siya papuntang Australia?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "\"I shall return\""
+                },
+                {
+                    "label": "B",
+                    "text": "\"Give me liberty or give me death\""
+                },
+                {
+                    "label": "C",
+                    "text": "\"We shall never surrender\""
+                },
+                {
+                    "label": "D",
+                    "text": "\"Remember Pearl Harbor\""
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kilalang sinabi ni MacArthur ang \"I shall return\"."
+        },
+        {
+            "id": "ww2_10_11",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan unang lumapag ang malaking hukbong Hapon sa Luzon noong 1941?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Lingayen Gulf"
+                },
+                {
+                    "label": "B",
+                    "text": "Manila Bay"
+                },
+                {
+                    "label": "C",
+                    "text": "Leyte Gulf"
+                },
+                {
+                    "label": "D",
+                    "text": "Subic Bay"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Lumapag ang malaking bahagi ng hukbong Hapon sa Lingayen Gulf noong 1941."
+        },
+        {
+            "id": "ww2_10_12",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong isla-tanggulan ang huling bumagsak sa Hapon noong Mayo 1942?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Corregidor"
+                },
+                {
+                    "label": "B",
+                    "text": "Leyte"
+                },
+                {
+                    "label": "C",
+                    "text": "Mindanao"
+                },
+                {
+                    "label": "D",
+                    "text": "Palawan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bumagsak ang Corregidor sa Hapon noong Mayo 1942."
+        },
+        {
+            "id": "ww2_10_13",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tinawag na palayaw sa salaping inilabas ng gobyernong Hapon dahil sa mababang halaga nito?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mickey Mouse money"
+                },
+                {
+                    "label": "B",
+                    "text": "Piloncitos"
+                },
+                {
+                    "label": "C",
+                    "text": "Peso Fuerte"
+                },
+                {
+                    "label": "D",
+                    "text": "Real de a ocho"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Tinawag na \"Mickey Mouse money\" ang salaping inilabas ng gobyernong Hapon."
+        },
+        {
+            "id": "ww2_10_14",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa hukbong pangkapulisan ng Hapon na kilala sa kanilang mahigpit na pagpapatupad ng batas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kempeitai"
+                },
+                {
+                    "label": "B",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "C",
+                    "text": "Hukbalahap"
+                },
+                {
+                    "label": "D",
+                    "text": "USAFFE"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kempeitai ang hukbong pangkapulisan ng militar ng Hapon."
+        },
+        {
+            "id": "ww2_10_15",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa opisyal na hukbo ng Estados Unidos at Pilipinas noong panahon ng digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "USAFFE"
+                },
+                {
+                    "label": "B",
+                    "text": "Kalibapi"
+                },
+                {
+                    "label": "C",
+                    "text": "Kempeitai"
+                },
+                {
+                    "label": "D",
+                    "text": "Hukbalahap"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang USAFFE ang naging pinagsamang hukbo ng Estados Unidos at Pilipinas."
+        },
+        {
+            "id": "ww2_10_16",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang isa sa mga kilalang lider ng kilusang Hukbalahap?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Luis Taruc"
+                },
+                {
+                    "label": "B",
+                    "text": "Jose P. Laurel"
+                },
+                {
+                    "label": "C",
+                    "text": "Manuel Roxas"
+                },
+                {
+                    "label": "D",
+                    "text": "Douglas MacArthur"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Luis Taruc ay isa sa mga kilalang lider ng Hukbalahap."
+        },
+        {
+            "id": "ww2_10_17",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan sinimulang palayain ang Maynila mula sa kontrol ng Hapon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Pebrero 1945"
+                },
+                {
+                    "label": "B",
+                    "text": "Disyembre 1941"
+                },
+                {
+                    "label": "C",
+                    "text": "Oktubre 1944"
+                },
+                {
+                    "label": "D",
+                    "text": "Setyembre 1945"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naganap ang Labanan sa Maynila noong Pebrero 1945."
+        },
+        {
+            "id": "ww2_10_18",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang isinagawa matapos ang digmaan upang panagutin ang mga responsable sa mga krimen sa digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "War Crimes Trials"
+                },
+                {
+                    "label": "B",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Sedition"
+                },
+                {
+                    "label": "D",
+                    "text": "Reduccion"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinagawa ang War Crimes Trials matapos ang digmaan."
+        },
+        {
+            "id": "ww2_10_19",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pamahalaan ang ibinalik matapos ang digmaan noong 1945?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Commonwealth Government"
+                },
+                {
+                    "label": "B",
+                    "text": "Pamahalaang Espanyol"
+                },
+                {
+                    "label": "C",
+                    "text": "Pamahalaang Hapon"
+                },
+                {
+                    "label": "D",
+                    "text": "Unang Republika"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ibinalik ang Commonwealth Government matapos ang digmaan."
+        },
+        {
+            "id": "ww2_10_20",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano naipakita ang pagkakaisa ng mga Pilipino at Amerikano sa panahon ng digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng magkasamang paglaban laban sa karaniwang kaaway na Hapon"
+                },
+                {
+                    "label": "B",
+                    "text": "Hindi sila nagtulungan"
+                },
+                {
+                    "label": "C",
+                    "text": "Nagkalaban sila sa isa't isa"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang naganap na pagtutulungan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtulungan ang mga Pilipino at Amerikano laban sa Hapon."
+        },
+        {
+            "id": "ww2_10_21",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong aral ang maaaring matutunan mula sa karanasan ng mga Pilipino noong Ikalawang Digmaang Pandaigdig?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang halaga ng kapayapaan, pagkakaisa, at karapatang pantao"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang aral na matutunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Mainam ang digmaan"
+                },
+                {
+                    "label": "D",
+                    "text": "Hindi kailangan ang kalayaan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtuturo ang karanasan sa digmaan ng halaga ng kapayapaan at karapatang pantao."
+        },
+        {
+            "id": "ww2_10_22",
+            "era": "ww2",
+            "subTopic": "",
+            "gradeLevel": "grade6",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang naging susunod na malaking pangyayari sa kasaysayan ng Pilipinas matapos ang digmaan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ang pagkamit ng ganap na kalayaan noong 1946"
+                },
+                {
+                    "label": "B",
+                    "text": "Bagong pananakop ng Hapon"
+                },
+                {
+                    "label": "C",
+                    "text": "Pagbabalik ng mga Kastila"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang naganap pang pagbabago"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang susunod na malaking pangyayari ay ang pagkamit ng kalayaan noong 1946."
+        }
+    ]
+}

@@ -35,7 +35,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     super.initState();
     widget.game.currentQuestion?.elapsedSeconds = 0;
     timer = async.Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) {
+      if (mounted && !answered) {
         setState(() {
           secondsElapsed++;
           widget.game.currentQuestion?.elapsedSeconds = secondsElapsed;
@@ -75,13 +75,22 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
         answer == widget.game.currentQuestion!.correctAnswer;
     if (isCorrect) {
       widget.game.audioService.playCorrect();
+      // Correct answers keep the game moving at a brisk pace.
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) widget.onAnswer(answer);
+      });
     } else {
       widget.game.audioService.playWrong();
+      // Wrong answers show the explanation inline (see build()) and wait
+      // for the player to tap "Susunod" — don't force-pace text they
+      // can't control by auto-advancing.
     }
+  }
 
-    Future.delayed(const Duration(milliseconds: 800), () {
-      widget.onAnswer(answer);
-    });
+  void _continueAfterWrongAnswer() {
+    final answer = selectedAnswer;
+    if (answer == null) return;
+    widget.onAnswer(answer);
   }
 
   void _useFiftyFifty() {
@@ -275,12 +284,65 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                     ),
                     const SizedBox(height: 14),
 
-                    // Powerup row (not shown during boss fight or pre-test)
-                    // Note: "Freeze" is intentionally omitted here — the
-                    // timeFreeze power-up has no working use during
-                    // questions anywhere in the game, so showing it as a
-                    // permanently greyed-out button only confused players.
-                    if (!widget.game.bossPhase)
+                    // Explanation — shown inline after a wrong answer so the
+                    // player sees *why* before the game moves on. They tap
+                    // Continue when ready, rather than it auto-advancing.
+                    if (answered && selectedAnswer != question.correctAnswer)
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(14),
+                        margin: const EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.danger.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.danger.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.lightbulb_outline,
+                                    size: 18, color: AppColors.accent),
+                                const SizedBox(width: 6),
+                                const Text(
+                                  'Paliwanag',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              question.explanation.isNotEmpty
+                                  ? question.explanation
+                                  : 'Ang tamang sagot ay ${question.correctAnswer}.',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                                height: 1.4,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              height: 48,
+                              child: ElevatedButton(
+                                onPressed: _continueAfterWrongAnswer,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                ),
+                                child: const Text('SUSUNOD'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    else if (!widget.game.bossPhase)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -345,7 +407,9 @@ class _PowerupButton extends StatelessWidget {
       child: Opacity(
         opacity: isUsable ? 1.0 : 0.4,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: AppColors.surfaceAlt,
             borderRadius: BorderRadius.circular(8),

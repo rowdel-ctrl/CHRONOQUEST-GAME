@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../chrono_game.dart';
 
@@ -103,9 +104,14 @@ class PauseOverlayWidget extends StatelessWidget {
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              game.overlays.remove('PauseOverlay');
-              game.resumeEngine();
-              Navigator.of(game.buildContext!).pop();
+              // Stop the game engine cleanly before navigating away.
+              // Using the overlay's own BuildContext (from the pause menu)
+              // instead of game.buildContext which can be null after
+              // resumeEngine(), and using GoRouter's context.go() instead
+              // of Navigator.pop() to stay consistent with the rest of
+              // the app's declarative routing.
+              game.pauseEngine();
+              context.go('/level-select/${game.currentEra}');
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.danger),
             child: const Text('Umalis'),

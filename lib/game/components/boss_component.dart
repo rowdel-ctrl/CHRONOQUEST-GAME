@@ -32,7 +32,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
     sprite = idleSprite;
     size = Vector2(120, 140);
-    position = Vector2(game.size.x + 20, ChronoGame.groundY - size.y);
+    position = Vector2(game.size.x + 20, game.groundY - size.y);
     game.audioService.playBossAppear();
   }
 

@@ -115,12 +115,16 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: List.generate(
                                         3,
-                                        (s) => Icon(
-                                          s < stars
-                                              ? Icons.star
-                                              : Icons.star_border,
-                                          size: 14,
-                                          color: AppColors.accent,
+                                        (s) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 1),
+                                          child: Image.asset(
+                                            s < stars
+                                                ? 'assets/ui/star_full.png'
+                                                : 'assets/ui/star_empty.png',
+                                            width: 14,
+                                            height: 14,
+                                          ),
                                         ),
                                       ),
                                     )
@@ -168,9 +172,12 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                                           ? const Icon(Icons.check,
                                               color: Colors.white, size: 22)
                                           : !isUnlocked
-                                              ? const Icon(Icons.lock,
+                                              ? Image.asset(
+                                                  'assets/ui/lock_icon.png',
                                                   color: Colors.white38,
-                                                  size: 18)
+                                                  width: 18,
+                                                  height: 18,
+                                                )
                                               : Text(
                                                   isBoss ? 'BOSS' : '$level',
                                                   style: TextStyle(

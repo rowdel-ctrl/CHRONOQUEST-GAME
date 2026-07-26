@@ -41,13 +41,19 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backgrounds/bookshelf_bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        foregroundDecoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF3E2723),
-              Color(0xFF4E342E),
-              Color(0xFF5D4037),
+              Colors.black.withValues(alpha: 0.35),
+              Colors.black.withValues(alpha: 0.15),
+              Colors.black.withValues(alpha: 0.55),
             ],
           ),
         ),
@@ -168,7 +174,8 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                           color: Colors.white, fontSize: 14),
                     ),
                     const Spacer(),
-                    const Icon(Icons.star, color: AppColors.accent, size: 18),
+                    Image.asset('assets/ui/star_full.png',
+                        width: 18, height: 18),
                     const SizedBox(width: 4),
                     Text(
                       '${student?.score ?? 0} pts',
@@ -223,19 +230,12 @@ class _EraBook extends StatelessWidget {
               width: double.infinity,
               height: 140,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: isCompleted
-                      ? [const Color(0xFFD4AF37), const Color(0xFFB8860B)]
-                      : isUnlocked
-                          ? [
-                              _getEraBookColor(era.id),
-                              _getEraBookColor(era.id)
-                                  .withValues(alpha: 0.8),
-                            ]
-                          : [Colors.grey.shade600, Colors.grey.shade700],
-                ),
+                color: (isCompleted
+                        ? const Color(0xFFD4AF37)
+                        : isUnlocked
+                            ? _getEraBookColor(era.id)
+                            : Colors.grey.shade700)
+                    .withValues(alpha: 0.55),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isUnlocked
@@ -263,11 +263,11 @@ class _EraBook extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (isCompleted)
-                          const Icon(Icons.check_circle,
-                              color: Colors.white, size: 28)
+                          Image.asset('assets/ui/star_full.png',
+                              width: 28, height: 28)
                         else if (!isUnlocked)
-                          const Icon(Icons.lock,
-                              color: Colors.white54, size: 28)
+                          Image.asset('assets/ui/lock_icon.png',
+                              width: 26, height: 26)
                         else
                           Icon(Icons.auto_stories,
                               color: Colors.white.withValues(alpha: 0.8),

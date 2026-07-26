@@ -30,6 +30,18 @@ class GroundSection extends PositionComponent
   }
 
   @override
+  void onMount() {
+    super.onMount();
+    game.groundSections.add(this);
+  }
+
+  @override
+  void onRemove() {
+    game.groundSections.remove(this);
+    super.onRemove();
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
     _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
@@ -71,7 +83,7 @@ class GroundSpawner {
     final section = GroundSection(
       sectionWidth: game.size.x + 200,
       color: _groundColor,
-      sectionPosition: Vector2(-100, ChronoGame.groundY),
+      sectionPosition: Vector2(-100, game.groundY),
     );
     game.add(section);
   }
@@ -101,7 +113,7 @@ class GroundSpawner {
         color: _groundColor,
         sectionPosition: Vector2(
           game.size.x + gapWidth,
-          ChronoGame.groundY,
+          game.groundY,
         ),
       );
       game.add(section);
@@ -110,7 +122,7 @@ class GroundSpawner {
       final section = GroundSection(
         sectionWidth: sectionWidth,
         color: _groundColor,
-        sectionPosition: Vector2(game.size.x, ChronoGame.groundY),
+        sectionPosition: Vector2(game.size.x, game.groundY),
       );
       game.add(section);
     }

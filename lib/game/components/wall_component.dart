@@ -9,12 +9,19 @@ class WallComponent extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
-    // Remove the hyphen from the era name to match 'precolonial_wall.png'
-    final eraName = game.currentEra.replaceAll('-', '');
-    sprite = await game.loadSprite('obstacles/${eraName}_wall.png');
+    sprite = await game.loadSprite(
+        'obstacles/${_obstacleAssetKeyForEra(game.currentEra)}_wall.png');
     size = Vector2(40, 50);
-    position = Vector2(game.size.x + 20, ChronoGame.groundY - size.y);
+    position = Vector2(game.size.x + 20, game.groundY - size.y);
     add(RectangleHitbox());
+  }
+
+  /// Obstacle PNGs are named without the hyphen used in era ids
+  /// (e.g. 'precolonial_wall.png' for the 'pre-colonial' era) — same
+  /// mismatch as the background art, fixed the same way here.
+  String _obstacleAssetKeyForEra(String era) {
+    if (era == 'pre-colonial') return 'precolonial';
+    return era;
   }
 
   @override

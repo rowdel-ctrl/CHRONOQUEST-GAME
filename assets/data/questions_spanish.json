@@ -1,0 +1,2032 @@
+{
+    "1": [
+        {
+            "id": "spa_1_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang manlalakbay na Espanyol na nakarating sa Homonhon, Pilipinas noong Marso 1521?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ferdinand Magellan"
+                },
+                {
+                    "label": "B",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "C",
+                    "text": "Ruy Lopez de Villalobos"
+                },
+                {
+                    "label": "D",
+                    "text": "Juan de Salcedo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Magellan ang namuno sa ekspedisyong Espanyol na unang nakarating sa Kapuluan."
+        },
+        {
+            "id": "spa_1_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang Kastilang nakipagsanduguan kay Datu Sikatuna sa Bohol noong 1565?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Miguel Lopez de Legazpi"
+                },
+                {
+                    "label": "B",
+                    "text": "Ferdinand Magellan"
+                },
+                {
+                    "label": "C",
+                    "text": "Juan de Salcedo"
+                },
+                {
+                    "label": "D",
+                    "text": "Simon de Anda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nakipagsanduguan si Legazpi kay Datu Sikatuna bilang tanda ng pakikipagkaibigan noong 1565."
+        },
+        {
+            "id": "spa_1_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saang lugar itinatag ni Legazpi ang unang pamayanang Kastila noong 1565?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Cebu"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "C",
+                    "text": "Bohol"
+                },
+                {
+                    "label": "D",
+                    "text": "Iloilo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtatag si Legazpi ng unang permanenteng pamayanang Kastila sa Cebu noong 1565."
+        },
+        {
+            "id": "spa_1_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong taon nasakop ng mga Kastila ang Maynila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1571"
+                },
+                {
+                    "label": "B",
+                    "text": "1521"
+                },
+                {
+                    "label": "C",
+                    "text": "1898"
+                },
+                {
+                    "label": "D",
+                    "text": "1896"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nasakop ng mga Kastila ang Maynila noong 1571, at ito ay naging kabisera ng kolonya."
+        },
+        {
+            "id": "spa_1_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 1,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang huling pinuno ng Maynila bago ito sakupin ng mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Rajah Sulayman"
+                },
+                {
+                    "label": "B",
+                    "text": "Rajah Humabon"
+                },
+                {
+                    "label": "C",
+                    "text": "Lapu-Lapu"
+                },
+                {
+                    "label": "D",
+                    "text": "Datu Sikatuna"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Rajah Sulayman ang pinuno ng Maynila na lumaban ngunit natalo sa mga puwersang Kastila noong 1571."
+        }
+    ],
+    "2": [
+        {
+            "id": "spa_2_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinakamataas na opisyal ng pamahalaang Espanyol sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Gobernador Heneral"
+                },
+                {
+                    "label": "B",
+                    "text": "Datu"
+                },
+                {
+                    "label": "C",
+                    "text": "Cabeza de Barangay"
+                },
+                {
+                    "label": "D",
+                    "text": "Alkalde"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Gobernador Heneral ang kinatawan ng Hari ng Espanya at pinakamataas na opisyal sa kolonya."
+        },
+        {
+            "id": "spa_2_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sistemang nagbigay sa mga Kastila ng karapatang mangolekta ng buwis mula sa mga katutubo sa isang lugar?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "B",
+                    "text": "Polo y servicio"
+                },
+                {
+                    "label": "C",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "D",
+                    "text": "Galleon Trade"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang encomienda system ay nagbigay-kapangyarihan sa mga encomendero na mangolekta ng buwis sa ngalan ng Espanya."
+        },
+        {
+            "id": "spa_2_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang katutubong opisyal na namuno sa isang barangay sa ilalim ng pamahalaang Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Cabeza de Barangay"
+                },
+                {
+                    "label": "B",
+                    "text": "Gobernador Heneral"
+                },
+                {
+                    "label": "C",
+                    "text": "Alkalde Mayor"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomendero"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Cabeza de Barangay ang katutubong pinuno na responsable sa pagkolekta ng buwis sa antas ng barangay."
+        },
+        {
+            "id": "spa_2_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sapilitang paggawa na iniatas ng mga Kastila sa mga katutubong Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Polo y servicio"
+                },
+                {
+                    "label": "B",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Tributo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang polo y servicio ay sapilitang paggawa (forced labor) na iniatas sa mga lalaking Pilipino, karaniwan sa konstruksyon."
+        },
+        {
+            "id": "spa_2_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 2,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sapilitang pagbebenta ng ani ng mga magsasaka sa gobyernong Kastila sa mababang presyo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "B",
+                    "text": "Polo y servicio"
+                },
+                {
+                    "label": "C",
+                    "text": "Tributo"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomienda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang bandala ay sapilitang pagbebenta ng ani sa gobyerno sa halagang mas mababa sa nararapat."
+        }
+    ],
+    "3": [
+        {
+            "id": "spa_3_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong relihiyon ang ipinakilala at pinalaganap ng mga Kastila sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katolisismo"
+                },
+                {
+                    "label": "B",
+                    "text": "Islam"
+                },
+                {
+                    "label": "C",
+                    "text": "Budismo"
+                },
+                {
+                    "label": "D",
+                    "text": "Hinduismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinalaganap ng mga misyonerong Kastila ang relihiyong Katoliko sa buong kapuluan."
+        },
+        {
+            "id": "spa_3_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang tawag sa mga paring Kastila na naging isa sa pinakamakapangyarihang grupo sa lipunang kolonyal?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga Prayle (Friars)"
+                },
+                {
+                    "label": "B",
+                    "text": "Mga Encomendero"
+                },
+                {
+                    "label": "C",
+                    "text": "Mga Ilustrado"
+                },
+                {
+                    "label": "D",
+                    "text": "Mga Katipunero"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga prayle ay nagkaroon ng malaking kapangyarihang panlipunan, pampulitika, at pang-ekonomiya sa buong kolonyal na panahon."
+        },
+        {
+            "id": "spa_3_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagtitipon ng mga katutubo mula sa nakakalat na barangay papunta sa isang bayang malapit sa simbahan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Reduccion"
+                },
+                {
+                    "label": "B",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Tributo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa ilalim ng patakarang reduccion, pinagsama-sama ang mga katutubo sa \"bajo la campana\" o malapit sa simbahan para mas madaling paganahin at kontrolin."
+        },
+        {
+            "id": "spa_3_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong gusali ang naging sentro ng bawat bayan noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Simbahan"
+                },
+                {
+                    "label": "B",
+                    "text": "Palasyo"
+                },
+                {
+                    "label": "C",
+                    "text": "Kwartel"
+                },
+                {
+                    "label": "D",
+                    "text": "Palengke"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang simbahan ang naging sentro ng buhay panlipunan, pampulitika, at pang-relihiyon ng bawat bayan."
+        },
+        {
+            "id": "spa_3_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 3,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano ginamit ang relihiyon bilang paraan ng pagkontrol sa mga katutubo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sa pamamagitan ng edukasyon, pagsamba, at kapangyarihan ng mga prayle sa pang-araw-araw na buhay"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong ginamit na kapangyarihan"
+                },
+                {
+                    "label": "C",
+                    "text": "Sa pamamagitan ng puwersahang digmaan lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Sa pamamagitan ng kalakalan lamang"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang simbahan, sa pamamagitan ng mga prayle, ay may malaking impluwensya sa edukasyon, batas, at pang-araw-araw na buhay ng mga Pilipino."
+        }
+    ],
+    "4": [
+        {
+            "id": "spa_4_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kalakalan sa pagitan ng Maynila at Acapulco, Mexico gamit ang malalaking barko?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Galleon Trade"
+                },
+                {
+                    "label": "B",
+                    "text": "Barter System"
+                },
+                {
+                    "label": "C",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomienda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Galleon Trade (Manila-Acapulco) ay naging pangunahing pinagmumulan ng kita ng kolonyal na pamahalaan sa loob ng mahigit 200 taon."
+        },
+        {
+            "id": "spa_4_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino lamang ang pinahihintulutang makilahok sa Galleon Trade?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Mga piniling mangangalakal na Kastila"
+                },
+                {
+                    "label": "B",
+                    "text": "Lahat ng Pilipino"
+                },
+                {
+                    "label": "C",
+                    "text": "Mga Intsik lamang"
+                },
+                {
+                    "label": "D",
+                    "text": "Sinuman"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Galleon Trade ay monopolisado, kaya iilang piniling mangangalakal na Kastila lamang ang nakikinabang dito."
+        },
+        {
+            "id": "spa_4_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pananim ang naging monopolyo ng gobyernong Kastila sa huling bahagi ng kolonisasyon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Tabako"
+                },
+                {
+                    "label": "B",
+                    "text": "Palay"
+                },
+                {
+                    "label": "C",
+                    "text": "Mais"
+                },
+                {
+                    "label": "D",
+                    "text": "Kamote"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinatupad ang Tobacco Monopoly kung saan sapilitang nagtanim ang mga magsasaka ng tabako para sa gobyerno."
+        },
+        {
+            "id": "spa_4_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Paano nagdulot ng paghihirap ang encomienda system sa mga katutubo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Napipilitan silang magbayad ng buwis at magtrabaho para sa encomendero"
+                },
+                {
+                    "label": "B",
+                    "text": "Libre silang lahat"
+                },
+                {
+                    "label": "C",
+                    "text": "Sila ang namamahala sa lupa"
+                },
+                {
+                    "label": "D",
+                    "text": "Wala itong epekto sa kanila"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang mga katutubo sa ilalim ng encomienda ay obligadong magbayad ng buwis at kadalasa'y inaabuso ng mga encomendero."
+        },
+        {
+            "id": "spa_4_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 4,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa malalaking lupaing pag-aari ng mga prayle o mayayamang pamilya noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Hacienda"
+                },
+                {
+                    "label": "B",
+                    "text": "Barangay"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Bandala"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang hacienda ay malawak na lupaing sakahan na pag-aari ng mga prayle o mayayamang pamilya, kung saan nagtatrabaho ang mga kasama o magsasaka."
+        }
+    ],
+    "5": [
+        {
+            "id": "spa_5_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinuno ng pinakamatagal na rebelyon laban sa mga Kastila sa Bohol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Francisco Dagohoy"
+                },
+                {
+                    "label": "B",
+                    "text": "Diego Silang"
+                },
+                {
+                    "label": "C",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "D",
+                    "text": "Sumoroy"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinamunuan ni Francisco Dagohoy ang isang rebelyon sa Bohol na tumagal nang mahigit walumpung taon."
+        },
+        {
+            "id": "spa_5_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sinong mag-asawa ang namuno sa rebelyon sa Ilocos laban sa mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Diego at Gabriela Silang"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres at Gregoria Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio at Hilaria Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Francisco at Maria Dagohoy"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sina Diego at Gabriela Silang ang namuno sa rebelyon sa Ilocos, at ipinagpatuloy ni Gabriela ang laban matapos mapatay si Diego."
+        },
+        {
+            "id": "spa_5_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang dahilan ng maraming rebelyon laban sa mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Polo y servicio at bandala na nagpapahirap sa mga katutubo"
+                },
+                {
+                    "label": "B",
+                    "text": "Sobrang kaginhawahan ng buhay"
+                },
+                {
+                    "label": "C",
+                    "text": "Kakulangan ng pagkain sa Espanya"
+                },
+                {
+                    "label": "D",
+                    "text": "Pagkakaroon ng masaganang trabaho"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang sapilitang paggawa (polo y servicio) at sapilitang pagbebenta ng ani (bandala) ay ilan sa mga pangunahing dahilan ng mga rebelyon."
+        },
+        {
+            "id": "spa_5_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang namuno sa isang rebelyon sa Samar noong ika-17 siglo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sumoroy"
+                },
+                {
+                    "label": "B",
+                    "text": "Dagohoy"
+                },
+                {
+                    "label": "C",
+                    "text": "Diego Silang"
+                },
+                {
+                    "label": "D",
+                    "text": "Rajah Sulayman"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinamunuan ni Sumoroy ang isang rebelyon sa Samar bilang pagtutol sa polo y servicio."
+        },
+        {
+            "id": "spa_5_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 5,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit mahalaga ang mga unang rebelyong ito sa kasaysayan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Ipinakita nila ang unang mga hakbang ng paglaban laban sa mapang-aping sistema"
+                },
+                {
+                    "label": "B",
+                    "text": "Wala itong kabuluhan"
+                },
+                {
+                    "label": "C",
+                    "text": "Sila ang nagtatag ng Katipunan"
+                },
+                {
+                    "label": "D",
+                    "text": "Nagtapos ang kolonisasyon dahil dito"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Bagamat hindi nagtagumpay ang mga unang rebelyon, ipinakita nito ang diwa ng paglaban na naging inspirasyon sa mga susunod na kilusan."
+        }
+    ],
+    "6": [
+        {
+            "id": "spa_6_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong wika ang ipinakilala at ginamit sa opisyal na pamahalaan noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Espanyol"
+                },
+                {
+                    "label": "B",
+                    "text": "Ingles"
+                },
+                {
+                    "label": "C",
+                    "text": "Hapon"
+                },
+                {
+                    "label": "D",
+                    "text": "Intsik"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang wikang Espanyol ang naging opisyal na wika ng pamahalaan sa buong panahon ng kolonisasyon."
+        },
+        {
+            "id": "spa_6_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang unti-unting nangyari sa paggamit ng baybayin noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Unti-unti itong napalitan ng alpabetong Romano"
+                },
+                {
+                    "label": "B",
+                    "text": "Lalo itong kumalat"
+                },
+                {
+                    "label": "C",
+                    "text": "Naging opisyal na wika ito"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang nagbago rito"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Unti-unting napalitan ang baybayin ng alpabetong Romano na ginamit ng mga Kastila sa pagsulat."
+        },
+        {
+            "id": "spa_6_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong uri ng paaralan ang itinatag ng mga prayle noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Paaralang pang-parokya (parochial schools)"
+                },
+                {
+                    "label": "B",
+                    "text": "Pampublikong paaralan ng estado"
+                },
+                {
+                    "label": "C",
+                    "text": "Online na klase"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang itinatag na paaralan"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Itinatag ng mga prayle ang mga paaralang pang-parokya na nagturo ng relihiyon at batayang kaalaman."
+        },
+        {
+            "id": "spa_6_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang isang kasuotang naimpluwensyahan ng panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Baro't saya"
+                },
+                {
+                    "label": "B",
+                    "text": "Bahag"
+                },
+                {
+                    "label": "C",
+                    "text": "T-shirt"
+                },
+                {
+                    "label": "D",
+                    "text": "Kimono"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang baro't saya ay isang tradisyunal na kasuotang babae na umusbong sa panahon ng Espanyol."
+        },
+        {
+            "id": "spa_6_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 6,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagsanib ng katutubong paniniwala at Katolisismo na umusbong noong panahong iyon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Folk Catholicism"
+                },
+                {
+                    "label": "B",
+                    "text": "Animismo"
+                },
+                {
+                    "label": "C",
+                    "text": "Islam"
+                },
+                {
+                    "label": "D",
+                    "text": "Budismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang folk Catholicism ay ang pagsasanib ng mga katutubong paniniwala (tulad ng paggamit ng anting-anting) sa mga gawaing Katoliko."
+        }
+    ],
+    "7": [
+        {
+            "id": "spa_7_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kilusan ng mga ilustradong Pilipino na naglalayong isulong ang reporma sa gobyernong Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "B",
+                    "text": "Katipunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "D",
+                    "text": "Reduccion"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kilusang Propaganda ay isang kampanyang pampanitikan at pampulitika na naglalayong isulong ang reporma, hindi rebolusyon."
+        },
+        {
+            "id": "spa_7_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang sumulat ng mga nobelang Noli Me Tangere at El Filibusterismo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Jose Rizal"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Marcelo H. del Pilar"
+                },
+                {
+                    "label": "D",
+                    "text": "Emilio Aguinaldo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinulat ni Jose Rizal ang Noli Me Tangere at El Filibusterismo upang ilantad ang mga kalupitan sa ilalim ng kolonyal na sistema."
+        },
+        {
+            "id": "spa_7_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang tagapagtatag ng pahayagang La Solidaridad na sumusulong ng reporma?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Marcelo H. del Pilar"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Apolinario Mabini"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Marcelo H. del Pilar ang naging patnugot ng La Solidaridad, ang opisyal na pahayagan ng Kilusang Propaganda."
+        },
+        {
+            "id": "spa_7_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang manunulat na Pilipino na kilala sa sanaysay na \"Fray Botod\" na kumukondena sa pang-aabuso ng mga prayle?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Graciano Lopez Jaena"
+                },
+                {
+                    "label": "B",
+                    "text": "Jose Rizal"
+                },
+                {
+                    "label": "C",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "D",
+                    "text": "Emilio Jacinto"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Graciano Lopez Jaena ay kilalang manunulat at tagapagtatag ng La Solidaridad na kumondena sa pang-aabuso ng mga prayle."
+        },
+        {
+            "id": "spa_7_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 7,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang pangunahing layunin ng Kilusang Propaganda?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Reporma sa loob ng sistemang kolonyal, hindi kalayaan sa pamamagitan ng armas"
+                },
+                {
+                    "label": "B",
+                    "text": "Agarang paghihimagsik gamit ang armas"
+                },
+                {
+                    "label": "C",
+                    "text": "Pakikipagkalakalan sa Amerika"
+                },
+                {
+                    "label": "D",
+                    "text": "Pagtatatag ng bagong relihiyon"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Naniniwala ang mga ilustrado sa Kilusang Propaganda na maaaring baguhin ang sistema sa pamamagitan ng mapayapang reporma, hindi armadong himagsikan."
+        }
+    ],
+    "8": [
+        {
+            "id": "spa_8_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang nagtatag ng Katipunan noong 1892?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "B",
+                    "text": "Jose Rizal"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Marcelo H. del Pilar"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Itinatag ni Andres Bonifacio ang Katipunan noong 1892 bilang lihim na samahang naglalayong makamit ang kalayaan sa pamamagitan ng armadong pakikibaka."
+        },
+        {
+            "id": "spa_8_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagpunit ng mga sedula bilang simbolo ng simula ng Rebolusyong Pilipino noong 1896?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sigaw ng Pugad Lawin"
+                },
+                {
+                    "label": "B",
+                    "text": "Kasunduan sa Biak-na-Bato"
+                },
+                {
+                    "label": "C",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "D",
+                    "text": "Kasunduan sa Paris"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Sigaw ng Pugad Lawin, pinunit ng mga Katipunero ang kanilang mga sedula bilang simbolo ng paghihimagsik laban sa Espanya."
+        },
+        {
+            "id": "spa_8_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan binaril si Jose Rizal sa Bagumbayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Disyembre 30, 1896"
+                },
+                {
+                    "label": "B",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "C",
+                    "text": "Agosto 23, 1896"
+                },
+                {
+                    "label": "D",
+                    "text": "Mayo 1, 1935"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Binaril si Jose Rizal sa Bagumbayan (ngayon ay Rizal Park) noong Disyembre 30, 1896."
+        },
+        {
+            "id": "spa_8_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong titulo ang ginamit ni Andres Bonifacio bilang pinuno ng Katipunan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Supremo"
+                },
+                {
+                    "label": "B",
+                    "text": "Pangulo"
+                },
+                {
+                    "label": "C",
+                    "text": "Datu"
+                },
+                {
+                    "label": "D",
+                    "text": "Gobernador Heneral"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kilala si Andres Bonifacio bilang \"Supremo\" o pinakamataas na pinuno ng Katipunan."
+        },
+        {
+            "id": "spa_8_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 8,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sinong pinuno ng pangkat Magdalo sa Cavite ang naging kalaban sa pamumuno ni Bonifacio?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Emilio Aguinaldo"
+                },
+                {
+                    "label": "B",
+                    "text": "Apolinario Mabini"
+                },
+                {
+                    "label": "C",
+                    "text": "Marcelo H. del Pilar"
+                },
+                {
+                    "label": "D",
+                    "text": "Antonio Luna"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Emilio Aguinaldo ang pinuno ng pangkat Magdalo sa Cavite na kalaunan ay naging pangulo ng unang republika."
+        }
+    ],
+    "9": [
+        {
+            "id": "spa_9_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan at kailan ipinahayag ni Emilio Aguinaldo ang kalayaan ng Pilipinas mula sa Espanya?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kawit, Cavite noong Hunyo 12, 1898"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila noong 1896"
+                },
+                {
+                    "label": "C",
+                    "text": "Bohol noong 1565"
+                },
+                {
+                    "label": "D",
+                    "text": "Bagumbayan noong 1896"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Kawit, Cavite, ipinahayag ni Emilio Aguinaldo ang kalayaan ng Pilipinas mula sa Espanya noong Hunyo 12, 1898."
+        },
+        {
+            "id": "spa_9_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang kasunduang nagpapahinto pansamantala sa labanan sa pagitan ng Katipunan at gobyernong Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kasunduan sa Biak-na-Bato"
+                },
+                {
+                    "label": "B",
+                    "text": "Kasunduan sa Paris"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Tydings-McDuffie"
+                },
+                {
+                    "label": "D",
+                    "text": "Kasunduang Bates"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kasunduan sa Biak-na-Bato (1897) ay pansamantalang katigilan sa labanan sa pagitan ng mga Pilipino at Kastila."
+        },
+        {
+            "id": "spa_9_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong labanang pandagat ang nagpapahina sa kapangyarihan ng Espanya sa Pilipinas at nagpapasok sa Amerika?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Labanan sa Manila Bay"
+                },
+                {
+                    "label": "B",
+                    "text": "Labanan sa Mactan"
+                },
+                {
+                    "label": "C",
+                    "text": "Labanan sa Tirad Pass"
+                },
+                {
+                    "label": "D",
+                    "text": "Labanan sa Pearl Harbor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Labanan sa Manila Bay noong 1898, tinalo ng Estados Unidos ang armada ng Espanya, na nagpapahina sa kontrol nito sa Pilipinas."
+        },
+        {
+            "id": "spa_9_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang legacy na iniwan ng mga Kastila sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katolisismo, maraming salitang Espanyol, at mga pangalang Kastila"
+                },
+                {
+                    "label": "B",
+                    "text": "Wikang Ingles bilang opisyal na wika"
+                },
+                {
+                    "label": "C",
+                    "text": "Sistemang demokrasya"
+                },
+                {
+                    "label": "D",
+                    "text": "Pederalismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Katolisismo, maraming salitang Espanyol sa Filipino, at mga apelyidong Kastila ay ilan sa mga pinakamalaking naiwang impluwensya ng 333 taong kolonisasyon."
+        },
+        {
+            "id": "spa_9_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 9,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Bakit itinuturing na mahalagang yugto ang panahon ng Espanyol sa kasaysayan ng pambansang pagkakakilanlan ng mga Pilipino?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Dito unang nabuo ang diwa ng pagkakaisa at pambansang pagkakakilanlan laban sa mananakop"
+                },
+                {
+                    "label": "B",
+                    "text": "Walang pagbabagong naganap"
+                },
+                {
+                    "label": "C",
+                    "text": "Nawala ang lahat ng kultura ng Pilipino"
+                },
+                {
+                    "label": "D",
+                    "text": "Naging bahagi agad ang Pilipinas ng Amerika"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa panahon ng Espanyol nabuo ang diwa ng nasyonalismo at pambansang pagkakaisa na naging saligan ng Rebolusyong Pilipino."
+        }
+    ],
+    "10": [
+        {
+            "id": "spa_10_1",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saang lugar itinatag ni Legazpi ang unang pamayanang Kastila noong 1565?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Cebu"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila"
+                },
+                {
+                    "label": "C",
+                    "text": "Bohol"
+                },
+                {
+                    "label": "D",
+                    "text": "Iloilo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nagtatag si Legazpi ng unang permanenteng pamayanang Kastila sa Cebu noong 1565."
+        },
+        {
+            "id": "spa_10_2",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinakamataas na opisyal ng pamahalaang Espanyol sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Gobernador Heneral"
+                },
+                {
+                    "label": "B",
+                    "text": "Datu"
+                },
+                {
+                    "label": "C",
+                    "text": "Cabeza de Barangay"
+                },
+                {
+                    "label": "D",
+                    "text": "Alkalde"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Gobernador Heneral ang kinatawan ng Hari ng Espanya sa kolonya."
+        },
+        {
+            "id": "spa_10_3",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sapilitang paggawa na iniatas ng mga Kastila sa mga katutubo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Polo y servicio"
+                },
+                {
+                    "label": "B",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Tributo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang polo y servicio ay sapilitang paggawa na iniatas sa mga lalaking Pilipino."
+        },
+        {
+            "id": "spa_10_4",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong relihiyon ang ipinakilala at pinalaganap ng mga Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katolisismo"
+                },
+                {
+                    "label": "B",
+                    "text": "Islam"
+                },
+                {
+                    "label": "C",
+                    "text": "Budismo"
+                },
+                {
+                    "label": "D",
+                    "text": "Hinduismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinalaganap ng mga misyonerong Kastila ang relihiyong Katoliko."
+        },
+        {
+            "id": "spa_10_5",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kalakalan sa pagitan ng Maynila at Acapulco?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Galleon Trade"
+                },
+                {
+                    "label": "B",
+                    "text": "Barter System"
+                },
+                {
+                    "label": "C",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomienda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Galleon Trade ay ang kalakalan sa pagitan ng Maynila at Acapulco, Mexico."
+        },
+        {
+            "id": "spa_10_6",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang pinuno ng pinakamatagal na rebelyon laban sa mga Kastila sa Bohol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Francisco Dagohoy"
+                },
+                {
+                    "label": "B",
+                    "text": "Diego Silang"
+                },
+                {
+                    "label": "C",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "D",
+                    "text": "Sumoroy"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Pinamunuan ni Francisco Dagohoy ang isang matagal na rebelyon sa Bohol."
+        },
+        {
+            "id": "spa_10_7",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa kilusan ng mga ilustradong naglalayong isulong ang reporma?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "B",
+                    "text": "Katipunan"
+                },
+                {
+                    "label": "C",
+                    "text": "Batas Militar"
+                },
+                {
+                    "label": "D",
+                    "text": "Reduccion"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Kilusang Propaganda ay naglalayong isulong ang reporma sa pamamagitan ng panitikan at pahayagan."
+        },
+        {
+            "id": "spa_10_8",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang sumulat ng Noli Me Tangere at El Filibusterismo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Jose Rizal"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Marcelo H. del Pilar"
+                },
+                {
+                    "label": "D",
+                    "text": "Emilio Aguinaldo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Isinulat ni Jose Rizal ang dalawang nobelang naglantad ng kalupitan ng sistemang kolonyal."
+        },
+        {
+            "id": "spa_10_9",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang nagtatag ng Katipunan noong 1892?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "B",
+                    "text": "Jose Rizal"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Marcelo H. del Pilar"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Itinatag ni Andres Bonifacio ang Katipunan noong 1892."
+        },
+        {
+            "id": "spa_10_10",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Kailan binaril si Jose Rizal sa Bagumbayan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Disyembre 30, 1896"
+                },
+                {
+                    "label": "B",
+                    "text": "Hunyo 12, 1898"
+                },
+                {
+                    "label": "C",
+                    "text": "Agosto 23, 1896"
+                },
+                {
+                    "label": "D",
+                    "text": "Mayo 1, 1935"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Binaril si Jose Rizal noong Disyembre 30, 1896."
+        },
+        {
+            "id": "spa_10_11",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong taon nasakop ng mga Kastila ang Maynila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "1571"
+                },
+                {
+                    "label": "B",
+                    "text": "1521"
+                },
+                {
+                    "label": "C",
+                    "text": "1898"
+                },
+                {
+                    "label": "D",
+                    "text": "1896"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Nasakop ng mga Kastila ang Maynila noong 1571."
+        },
+        {
+            "id": "spa_10_12",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa sapilitang pagbebenta ng ani sa gobyerno sa mababang presyo?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "B",
+                    "text": "Polo y servicio"
+                },
+                {
+                    "label": "C",
+                    "text": "Tributo"
+                },
+                {
+                    "label": "D",
+                    "text": "Encomienda"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang bandala ay sapilitang pagbebenta ng ani sa gobyerno sa halagang mas mababa sa nararapat."
+        },
+        {
+            "id": "spa_10_13",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagtitipon ng mga katutubo malapit sa simbahan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Reduccion"
+                },
+                {
+                    "label": "B",
+                    "text": "Bandala"
+                },
+                {
+                    "label": "C",
+                    "text": "Encomienda"
+                },
+                {
+                    "label": "D",
+                    "text": "Tributo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa reduccion, pinagsama-sama ang mga katutubo malapit sa simbahan para mas madaling kontrolin."
+        },
+        {
+            "id": "spa_10_14",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong pananim ang naging monopolyo ng gobyernong Kastila?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Tabako"
+                },
+                {
+                    "label": "B",
+                    "text": "Palay"
+                },
+                {
+                    "label": "C",
+                    "text": "Mais"
+                },
+                {
+                    "label": "D",
+                    "text": "Kamote"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ipinatupad ang Tobacco Monopoly sa mga magsasaka."
+        },
+        {
+            "id": "spa_10_15",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sinong mag-asawa ang namuno sa rebelyon sa Ilocos?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Diego at Gabriela Silang"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres at Gregoria Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio at Hilaria Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Francisco at Maria Dagohoy"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sina Diego at Gabriela Silang ang namuno sa rebelyon sa Ilocos."
+        },
+        {
+            "id": "spa_10_16",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang unti-unting nangyari sa paggamit ng baybayin noong panahon ng Espanyol?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Unti-unti itong napalitan ng alpabetong Romano"
+                },
+                {
+                    "label": "B",
+                    "text": "Lalo itong kumalat"
+                },
+                {
+                    "label": "C",
+                    "text": "Naging opisyal na wika ito"
+                },
+                {
+                    "label": "D",
+                    "text": "Walang nagbago rito"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Unti-unting napalitan ang baybayin ng alpabetong Romano."
+        },
+        {
+            "id": "spa_10_17",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Sino ang tagapagtatag ng La Solidaridad?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Marcelo H. del Pilar"
+                },
+                {
+                    "label": "B",
+                    "text": "Andres Bonifacio"
+                },
+                {
+                    "label": "C",
+                    "text": "Emilio Aguinaldo"
+                },
+                {
+                    "label": "D",
+                    "text": "Apolinario Mabini"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Si Marcelo H. del Pilar ang naging patnugot ng La Solidaridad."
+        },
+        {
+            "id": "spa_10_18",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Ano ang tawag sa pagpunit ng mga sedula na simbolo ng simula ng Rebolusyon?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Sigaw ng Pugad Lawin"
+                },
+                {
+                    "label": "B",
+                    "text": "Kasunduan sa Biak-na-Bato"
+                },
+                {
+                    "label": "C",
+                    "text": "Kilusang Propaganda"
+                },
+                {
+                    "label": "D",
+                    "text": "Kasunduan sa Paris"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Sigaw ng Pugad Lawin, pinunit ng mga Katipunero ang kanilang mga sedula."
+        },
+        {
+            "id": "spa_10_19",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Saan at kailan ipinahayag ni Aguinaldo ang kalayaan ng Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Kawit, Cavite noong Hunyo 12, 1898"
+                },
+                {
+                    "label": "B",
+                    "text": "Maynila noong 1896"
+                },
+                {
+                    "label": "C",
+                    "text": "Bohol noong 1565"
+                },
+                {
+                    "label": "D",
+                    "text": "Bagumbayan noong 1896"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Kawit, Cavite, ipinahayag ang kalayaan noong Hunyo 12, 1898."
+        },
+        {
+            "id": "spa_10_20",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong labanang pandagat ang nagpapahina sa kapangyarihan ng Espanya sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Labanan sa Manila Bay"
+                },
+                {
+                    "label": "B",
+                    "text": "Labanan sa Mactan"
+                },
+                {
+                    "label": "C",
+                    "text": "Labanan sa Tirad Pass"
+                },
+                {
+                    "label": "D",
+                    "text": "Labanan sa Pearl Harbor"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Sa Labanan sa Manila Bay, tinalo ng Estados Unidos ang armada ng Espanya."
+        },
+        {
+            "id": "spa_10_21",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Anong titulo ang ginamit ni Andres Bonifacio bilang pinuno ng Katipunan?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Supremo"
+                },
+                {
+                    "label": "B",
+                    "text": "Pangulo"
+                },
+                {
+                    "label": "C",
+                    "text": "Datu"
+                },
+                {
+                    "label": "D",
+                    "text": "Gobernador Heneral"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Kilala si Bonifacio bilang \"Supremo\" ng Katipunan."
+        },
+        {
+            "id": "spa_10_22",
+            "era": "spanish",
+            "subTopic": "",
+            "gradeLevel": "grade5",
+            "level": 10,
+            "difficulty": "medium",
+            "questionType": "multiple_choice",
+            "questionText": "Alin sa mga sumusunod ang legacy na iniwan ng mga Kastila sa Pilipinas?",
+            "options": [
+                {
+                    "label": "A",
+                    "text": "Katolisismo, maraming salitang Espanyol, at mga pangalang Kastila"
+                },
+                {
+                    "label": "B",
+                    "text": "Wikang Ingles bilang opisyal na wika"
+                },
+                {
+                    "label": "C",
+                    "text": "Sistemang demokrasya"
+                },
+                {
+                    "label": "D",
+                    "text": "Pederalismo"
+                }
+            ],
+            "correctAnswer": "A",
+            "explanation": "Ang Katolisismo, maraming salitang Espanyol, at mga apelyidong Kastila ay ilan sa naiwang impluwensya."
+        }
+    ]
+}

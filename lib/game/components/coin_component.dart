@@ -25,7 +25,7 @@ class CoinComponent extends SpriteComponent
     if (position.isZero()) {
       position = Vector2(
         game.size.x + 20,
-        ChronoGame.groundY - 32 - (Random().nextDouble() * 80),
+        game.groundY - 32 - (Random().nextDouble() * 80),
       );
     }
     _baseY = position.y;
