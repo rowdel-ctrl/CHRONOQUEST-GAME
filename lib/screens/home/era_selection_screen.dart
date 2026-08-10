@@ -73,11 +73,12 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                     ),
                     Expanded(
                       child: Text(
-                        'Piliin ang Panahon',
+                        'PILIIN ANG PANAHON',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                        maxLines: 1,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 13,
+                          height: 1.4,
                           color: AppColors.accent,
                         ),
                       ),
@@ -278,9 +279,9 @@ class _EraBook extends StatelessWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 8,
+                            height: 1.4,
                             color: Colors.white,
                           ),
                         ),

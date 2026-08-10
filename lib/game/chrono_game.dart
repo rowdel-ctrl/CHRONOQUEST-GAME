@@ -284,6 +284,18 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
+  /// Player failed to jump over a wall obstacle in time. Same damage as
+  /// falling in a gap, but no respawn — the player didn't fall anywhere,
+  /// they just took a hit, and the wall keeps scrolling past.
+  void playerHitObstacle() {
+    lives--;
+    player.triggerHurt();
+    notifyListeners(); // lives changed
+    if (lives <= 0) {
+      showLevelFailed();
+    }
+  }
+
   void collectCoin() {
     playerCoins++;
     score += 5;
@@ -355,25 +367,5 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     } catch (_) {
       // Silently fail — result can be retransmitted later
     }
-  }
-
-  // ─── SAMPLE QUESTIONS (fallback when API unavailable) ─────────────────────
-
-  List<Question> _createSampleQuestions() {
-    return List.generate(
-      10,
-      (i) => Question(
-        id: 'sample_$i',
-        era: currentEra,
-        questionText: 'Tanong ${i + 1}: Sino ang bayani ng Mactan?',
-        options: const [
-          QuestionOption(label: 'A', text: 'Lapu-Lapu'),
-          QuestionOption(label: 'B', text: 'Magellan'),
-          QuestionOption(label: 'C', text: 'Rizal'),
-          QuestionOption(label: 'D', text: 'Bonifacio'),
-        ],
-        correctAnswer: 'A',
-      ),
-    );
   }
 }

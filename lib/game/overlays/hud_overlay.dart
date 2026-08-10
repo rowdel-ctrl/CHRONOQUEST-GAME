@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../widgets/pixel_ui.dart';
 import '../chrono_game.dart';
 
 /// HUD overlay — shows hearts, level, score over Flame canvas.
@@ -13,121 +15,116 @@ class HudOverlayWidget extends StatelessWidget {
       child: ListenableBuilder(
         listenable: game,
         builder: (context, _) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          children: [
-            // Hearts
-            Row(
-              children: List.generate(
-                GameConstants.livesPerLevel,
-                (i) => Padding(
-                  padding: const EdgeInsets.only(right: 4),
-                  child: Image.asset(
-                    i < game.lives
-                        ? 'assets/ui/heart_full.png'
-                        : 'assets/ui/heart_empty.png',
-                    width: 28,
-                    height: 28,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              // Hearts
+              Row(
+                children: List.generate(
+                  GameConstants.livesPerLevel,
+                  (i) => Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Image.asset(
+                      i < game.lives
+                          ? 'assets/ui/heart_full.png'
+                          : 'assets/ui/heart_empty.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const Spacer(),
-            // Level indicator
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                game.currentLevel == 10
+              const Spacer(),
+              // Level indicator
+              PixelBadge(
+                text: game.currentLevel == 10
                     ? 'BOSS'
-                    : 'Level ${game.currentLevel}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+                    : 'LVL ${game.currentLevel}',
+                color: AppColors.primary,
+                textColor: Colors.white,
+                fontSize: 10,
+              ),
+              const Spacer(),
+              // Score
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryDark,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: AppColors.accent, width: 2),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset('assets/ui/star_full.png',
+                        width: 16, height: 16),
+                    const SizedBox(width: 5),
+                    Text(
+                      '${game.score}',
+                      style: GoogleFonts.pressStart2p(
+                        color: Colors.white,
+                        fontSize: 10,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const Spacer(),
-            // Score
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Image.asset('assets/ui/star_full.png', width: 18, height: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${game.score}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+              const SizedBox(width: 8),
+              // Coins
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryDark,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: AppColors.accent, width: 2),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset('assets/collectibles/coin.png',
+                        width: 16, height: 16),
+                    const SizedBox(width: 5),
+                    Text(
+                      '${game.playerCoins}',
+                      style: GoogleFonts.pressStart2p(
+                        color: Colors.white,
+                        fontSize: 10,
+                        height: 1.4,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            // Coins
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Image.asset('assets/collectibles/coin.png',
-                      width: 18, height: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${game.playerCoins}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
+              const SizedBox(width: 8),
+              // Pause button
+              Semantics(
+                button: true,
+                label: 'I-pause ang laro',
+                child: GestureDetector(
+                  onTap: () {
+                    game.pauseEngine();
+                    game.overlays.add('PauseOverlay');
+                  },
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryDark,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.accent, width: 2),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Pause button
-            Semantics(
-              button: true,
-              label: 'I-pause ang laro',
-              child: GestureDetector(
-                onTap: () {
-                  game.pauseEngine();
-                  game.overlays.add('PauseOverlay');
-                },
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Colors.black54,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.pause,
-                    color: Colors.white,
-                    size: 22,
+                    child: const Icon(
+                      Icons.pause,
+                      color: Colors.white,
+                      size: 22,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );
@@ -148,51 +145,42 @@ class BossHealthOverlayWidget extends StatelessWidget {
         if (boss == null) return const SizedBox.shrink();
 
         return Positioned(
-      bottom: 80,
-      left: 40,
-      right: 40,
-      child: Column(
-        children: [
-          Text(
-            _getBossDialogue(game.currentEra),
-            style: const TextStyle(
-              color: Colors.yellowAccent,
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              shadows: [Shadow(blurRadius: 4, color: Colors.black)],
-            ),
-          ),
-          const SizedBox(height: 8),
-          // Health bar
-          Container(
-            height: 16,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.white, width: 2),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: LinearProgressIndicator(
-                value: boss.health / boss.maxHealth,
-                backgroundColor: Colors.grey.shade800,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  boss.health > 2 ? AppColors.danger : Colors.orange,
+          bottom: 80,
+          left: 40,
+          right: 40,
+          child: Column(
+            children: [
+              Text(
+                _getBossDialogue(game.currentEra),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.pixelifySans(
+                  color: Colors.yellowAccent,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
                 ),
-                minHeight: 16,
               ),
-            ),
+              const SizedBox(height: 8),
+              // Health bar
+              PixelProgressBar(
+                value: boss.health / boss.maxHealth,
+                fillColor:
+                    boss.health > 2 ? AppColors.danger : Colors.orange,
+                backgroundColor: Colors.grey.shade800,
+                height: 18,
+                segments: boss.maxHealth,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${boss.health}/${boss.maxHealth}',
+                style: GoogleFonts.pressStart2p(
+                  color: Colors.white,
+                  fontSize: 10,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            '${boss.health}/${boss.maxHealth}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
         );
       },
     );

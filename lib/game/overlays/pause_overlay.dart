@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../widgets/pixel_ui.dart';
 import '../chrono_game.dart';
 
 /// Pause menu overlay — resume or quit.
@@ -15,72 +16,63 @@ class PauseOverlayWidget extends StatelessWidget {
       child: Container(
         color: Colors.black.withValues(alpha: 0.7),
         child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(32),
-            margin: const EdgeInsets.symmetric(horizontal: 48),
-            decoration: BoxDecoration(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: PixelPanel(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.pause_circle_filled,
-                  size: 48,
-                  color: AppColors.primary,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'PAUSE',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                    letterSpacing: 2,
+              margin: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.all(28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.pause,
+                      size: 32,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 16),
+                  Text(
+                    'PAUSE',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 20,
+                      height: 1.4,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
 
-                // Resume button
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton.icon(
+                  // Resume button
+                  PixelButton(
+                    label: 'ITULOY',
+                    icon: Icons.play_arrow,
+                    color: AppColors.success,
+                    textColor: Colors.white,
+                    width: 220,
                     onPressed: () {
                       game.overlays.remove('PauseOverlay');
                       game.resumeEngine();
                     },
-                    icon: const Icon(Icons.play_arrow),
-                    label: const Text('ITULOY'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.success,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
-                // Quit button
-                SizedBox(
-                  width: 200,
-                  child: OutlinedButton.icon(
+                  // Quit button
+                  PixelButton(
+                    label: 'UMALIS',
+                    icon: Icons.exit_to_app,
+                    color: AppColors.surfaceAlt,
+                    textColor: AppColors.danger,
+                    width: 220,
                     onPressed: () => _confirmQuit(context),
-                    icon: const Icon(Icons.exit_to_app),
-                    label: const Text('UMALIS'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.danger,
-                      side: const BorderSide(color: AppColors.danger),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -92,29 +84,49 @@ class PauseOverlayWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Umalis sa Level?'),
-        content: const Text(
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          side: BorderSide(color: AppColors.primaryDark, width: 3),
+        ),
+        title: Text(
+          'Umalis sa Level?',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 13,
+            height: 1.4,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Text(
           'Mawawala ang iyong progress sa level na ito kung aalis ka ngayon.',
+          style: GoogleFonts.pixelifySans(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('Kanselahin'),
+            child: Text(
+              'Kanselahin',
+              style: GoogleFonts.pixelifySans(
+                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondary,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              // Stop the game engine cleanly before navigating away.
-              // Using the overlay's own BuildContext (from the pause menu)
-              // instead of game.buildContext which can be null after
-              // resumeEngine(), and using GoRouter's context.go() instead
-              // of Navigator.pop() to stay consistent with the rest of
-              // the app's declarative routing.
-              game.pauseEngine();
-              context.go('/level-select/${game.currentEra}');
+              game.overlays.remove('PauseOverlay');
+              game.resumeEngine();
+              Navigator.of(game.buildContext!).pop();
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.danger),
-            child: const Text('Umalis'),
+            child: Text(
+              'Umalis',
+              style: GoogleFonts.pixelifySans(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

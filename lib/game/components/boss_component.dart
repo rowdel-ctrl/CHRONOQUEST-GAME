@@ -1,7 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import '../chrono_game.dart';
-import 'enemy_component.dart';
 import '../../core/constants.dart';
 
 /// Boss component — displays actual images for idle, attack, and defeated states.

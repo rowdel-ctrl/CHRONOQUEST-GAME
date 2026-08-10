@@ -1,6 +1,8 @@
 import 'dart:async' as async;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../widgets/pixel_ui.dart';
 import '../chrono_game.dart';
 
 /// Question overlay — pure Flutter widget displayed over Flame canvas.
@@ -127,19 +129,18 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               constraints: const BoxConstraints(maxWidth: 500),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.4),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
+                    color: AppColors.primaryDark,
+                    offset: Offset(6, 6),
+                    blurRadius: 0,
                   ),
                 ],
-                border: Border.all(
-                  color: AppColors.accent.withValues(alpha: 0.4),
-                  width: 2,
+                border: Border.fromBorderSide(
+                  BorderSide(color: AppColors.primaryDark, width: 3),
                 ),
               ),
               child: SingleChildScrollView(
@@ -153,29 +154,36 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                              horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
                             color: AppColors.primaryDark,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(4),
+                            border:
+                                Border.all(color: AppColors.accent, width: 2),
                           ),
-                          child: const Text(
-                            'HAMON NG KAAWAY',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                          child: Text(
+                            'HAMON',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 9,
+                              height: 1.4,
                               color: Colors.white,
-                              letterSpacing: 1.2,
                             ),
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                              horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
                             color: secondsElapsed > 15
                                 ? AppColors.danger.withValues(alpha: 0.2)
                                 : AppColors.surfaceAlt,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                              color: secondsElapsed > 15
+                                  ? AppColors.danger
+                                  : AppColors.primaryDark,
+                              width: 2,
+                            ),
                           ),
                           child: Row(
                             children: [
@@ -189,9 +197,9 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               const SizedBox(width: 4),
                               Text(
                                 '${secondsElapsed}s',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 10,
+                                  height: 1.4,
                                   color: secondsElapsed > 15
                                       ? AppColors.danger
                                       : AppColors.textSecondary,
@@ -256,8 +264,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                             decoration: BoxDecoration(
                               color: buttonColor,
                               border:
-                                  Border.all(color: borderColor, width: 1.5),
-                              borderRadius: BorderRadius.circular(10),
+                                  Border.all(color: borderColor, width: 2.5),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                             alignment: Alignment.center,
                             padding:
@@ -265,8 +273,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                             child: Text(
                               '${option.label}) ${option.text}',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 13,
+                              style: GoogleFonts.pixelifySans(
+                                fontSize: 14,
                                 color: AppColors.textPrimary,
                                 fontWeight: answered &&
                                         option.label ==
@@ -329,15 +337,11 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               ),
                             ),
                             const SizedBox(height: 12),
-                            SizedBox(
-                              height: 48,
-                              child: ElevatedButton(
-                                onPressed: _continueAfterWrongAnswer,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                ),
-                                child: const Text('SUSUNOD'),
-                              ),
+                            PixelButton(
+                              label: 'SUSUNOD',
+                              fontSize: 11,
+                              width: double.infinity,
+                              onPressed: _continueAfterWrongAnswer,
                             ),
                           ],
                         ),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/api_service.dart';
+import '../../widgets/pixel_ui.dart';
 
 class EraCompleteScreen extends StatefulWidget {
   final String eraId;
@@ -138,70 +139,59 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                       // Title
                       Text(
                         'ERA TAPOS NA!',
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 20,
+                          height: 1.4,
                           color: AppColors.accent,
-                          letterSpacing: 2,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         era.name,
-                        style: const TextStyle(
+                        style: GoogleFonts.pixelifySans(
                           color: Colors.white60,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                       const SizedBox(height: 20),
 
                       if (!hasCompleteData) ...[
                         // Honest empty/error state instead of fake numbers
-                        Container(
-                          width: double.infinity,
-                          constraints: const BoxConstraints(maxWidth: 440),
+                        PixelPanel(
+                          color: AppColors.surface,
+                          margin: const EdgeInsets.symmetric(horizontal: 0),
                           padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              const Icon(Icons.info_outline,
-                                  color: AppColors.textMuted, size: 32),
-                              const SizedBox(height: 12),
-                              Text(
-                                hasError
-                                    ? 'Hindi ma-load ang iyong mga score ngayon. Subukang buksan muli ang page na ito.'
-                                    : 'Kulang pa ang datos para makita ang iyong Learning Gain.',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 13,
-                                  height: 1.4,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 440),
+                            child: Column(
+                              children: [
+                                const Icon(Icons.info_outline,
+                                    color: AppColors.textMuted, size: 32),
+                                const SizedBox(height: 12),
+                                Text(
+                                  hasError
+                                      ? 'Hindi ma-load ang iyong mga score ngayon. Subukang buksan muli ang page na ito.'
+                                      : 'Kulang pa ang datos para makita ang iyong Learning Gain.',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.pixelifySans(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 14,
+                                    height: 1.4,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 24),
                       ] else ...[
                         // Score comparison card
-                        Container(
-                          width: double.infinity,
-                          constraints: const BoxConstraints(maxWidth: 440),
+                        PixelPanel(
+                          color: AppColors.surface,
                           padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 16,
-                              ),
-                            ],
-                          ),
-                          child: Column(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 440),
+                            child: Column(
                             children: [
                               // Levels 1-9 average (the real pre-test baseline)
                               _ScoreRow(
@@ -260,10 +250,9 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                                       children: [
                                         Text(
                                           '${learningGain >= 0 ? '+' : ''}$learningGain% Natuto Ka!',
-                                          style: GoogleFonts
-                                              .playfairDisplay(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
+                                          style: GoogleFonts.pressStart2p(
+                                            fontSize: 13,
+                                            height: 1.4,
                                             color: AppColors.accent,
                                           ),
                                         ),
@@ -286,35 +275,19 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                               ),
                             ],
                           ),
+                          ),
                         ),
                         const SizedBox(height: 24),
                       ],
 
                       // Next era button
-                      SizedBox(
+                      PixelButton(
+                        label: 'SUSUNOD NA PANAHON',
+                        fontSize: 11,
                         width: 280,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context.go('/era-selection');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.accent,
-                            foregroundColor: AppColors.primaryDark,
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            'SUSUNOD NA PANAHON →',
-                            style: GoogleFonts.sourceSans3(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
+                        onPressed: () {
+                          context.go('/era-selection');
+                        },
                       ),
                     ],
                   ),
@@ -361,8 +334,8 @@ class _ScoreRow extends StatelessWidget {
           flex: 3,
           child: Text(
             label,
-            style: const TextStyle(
-              fontSize: 13,
+            style: GoogleFonts.pixelifySans(
+              fontSize: 14,
               color: AppColors.textSecondary,
             ),
           ),
@@ -370,17 +343,12 @@ class _ScoreRow extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           flex: 4,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: LinearProgressIndicator(
-              value: percentage / 100,
-              backgroundColor: Colors.grey.shade200,
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-              minHeight: 14,
-            ),
+          child: PixelProgressBar(
+            value: percentage / 100,
+            fillColor: color,
+            height: 14,
           ),
         ),
-        const SizedBox(width: 8),
         SizedBox(
           width: 40,
           child: Text(

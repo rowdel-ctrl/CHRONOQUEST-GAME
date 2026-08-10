@@ -14,109 +14,114 @@ class AppTheme {
         error: AppColors.danger,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      textTheme: GoogleFonts.sourceSans3TextTheme().copyWith(
-        displayLarge: GoogleFonts.playfairDisplay(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
+      textTheme: GoogleFonts.pixelifySansTextTheme().copyWith(
+        displayLarge: GoogleFonts.pressStart2p(
+          fontSize: 26,
+          height: 1.4,
           color: AppColors.textPrimary,
         ),
-        displayMedium: GoogleFonts.playfairDisplay(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-        ),
-        headlineMedium: GoogleFonts.playfairDisplay(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
-        titleLarge: GoogleFonts.sourceSans3(
+        displayMedium: GoogleFonts.pressStart2p(
           fontSize: 18,
-          fontWeight: FontWeight.w600,
+          height: 1.4,
           color: AppColors.textPrimary,
         ),
-        bodyLarge: GoogleFonts.sourceSans3(
-          fontSize: 16,
-          color: AppColors.textPrimary,
-        ),
-        bodyMedium: GoogleFonts.sourceSans3(
+        headlineMedium: GoogleFonts.pressStart2p(
           fontSize: 14,
+          height: 1.4,
+          color: AppColors.textPrimary,
+        ),
+        titleLarge: GoogleFonts.pixelifySans(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
+        ),
+        bodyLarge: GoogleFonts.pixelifySans(
+          fontSize: 17,
+          color: AppColors.textPrimary,
+        ),
+        bodyMedium: GoogleFonts.pixelifySans(
+          fontSize: 15,
           color: AppColors.textSecondary,
         ),
-        labelLarge: GoogleFonts.sourceSans3(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
+        labelLarge: GoogleFonts.pressStart2p(
+          fontSize: 11,
+          height: 1.4,
           color: Colors.white,
         ),
       ),
+      // Pixel-game buttons: square-ish corners, thick dark outline, flat
+      // fill instead of a soft Material elevation shadow — elevation is
+      // handled by hard-edged BoxShadow in the bespoke Pixel widgets, but
+      // this keeps any screen still using a plain ElevatedButton on-theme.
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
+            side: const BorderSide(color: AppColors.primaryDark, width: 3),
           ),
-          textStyle: GoogleFonts.sourceSans3(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: GoogleFonts.pressStart2p(fontSize: 12, height: 1.4),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
-          side: const BorderSide(color: AppColors.border),
+          side: const BorderSide(color: AppColors.primaryDark, width: 3),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
           ),
+          textStyle: GoogleFonts.pressStart2p(fontSize: 11, height: 1.4),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.surfaceAlt,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: AppColors.primaryDark, width: 2),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: AppColors.primaryDark, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: AppColors.accent, width: 3),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.danger),
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: AppColors.danger, width: 2),
         ),
-        hintStyle: GoogleFonts.sourceSans3(color: AppColors.textMuted),
+        hintStyle: GoogleFonts.pixelifySans(color: AppColors.textMuted),
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
-        elevation: 2,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
+          side: const BorderSide(color: AppColors.primaryDark, width: 2),
         ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,
-        titleTextStyle: GoogleFonts.playfairDisplay(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+        titleTextStyle: GoogleFonts.pressStart2p(
+          fontSize: 14,
+          height: 1.4,
           color: Colors.white,
         ),
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(4),
         ),
       ),
     );

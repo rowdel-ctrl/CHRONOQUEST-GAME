@@ -1,35 +1,44 @@
 import 'package:flutter/material.dart';
 
 // ─── COLORS ─────────────────────────────────────────────────────────────────
+// Retro pixel-adventure palette. Field names are unchanged from the old
+// Material palette on purpose — every existing AppColors.xxx reference
+// across the app picks up the new look automatically, no call sites needed
+// touching just for color.
 class AppColors {
-  static const Color primary = Color(0xFF8B4513);
-  static const Color primaryDark = Color(0xFF5C2D0A);
-  static const Color primaryLight = Color(0xFFC4773B);
-  static const Color accent = Color(0xFFD4AF37);
-  static const Color background = Color(0xFFFAF7F2);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceAlt = Color(0xFFF3EDE3);
-  static const Color border = Color(0xFFE8D9C4);
-  static const Color textPrimary = Color(0xFF2C1810);
-  static const Color textSecondary = Color(0xFF7A5C42);
-  static const Color textMuted = Color(0xFFB09880);
-  static const Color success = Color(0xFF3A7D44);
-  static const Color danger = Color(0xFFC0392B);
-  static const Color warning = Color(0xFFD97706);
-  static const Color info = Color(0xFF2E6DA4);
+  static const Color primary = Color(0xFF6B3A1F); // wood-brown UI chrome
+  static const Color primaryDark = Color(0xFF2E1608); // thick pixel borders
+  static const Color primaryLight = Color(0xFFB8763E);
+  static const Color accent = Color(0xFFFFC531); // quest gold
+  static const Color background = Color(0xFF140E1F); // night-map backdrop
+  static const Color surface = Color(0xFFF5E3BE); // parchment panels
+  static const Color surfaceAlt = Color(0xFFE8CE9C); // deeper parchment
+  static const Color border = Color(0xFF2E1608); // pixel outline color
+  static const Color textPrimary = Color(0xFF2A1707); // ink on parchment
+  static const Color textSecondary = Color(0xFF6B4423);
+  static const Color textMuted = Color(0xFFA9855C);
+  static const Color success = Color(0xFF43A83E);
+  static const Color danger = Color(0xFFE8433A);
+  static const Color warning = Color(0xFFF5A623);
+  static const Color info = Color(0xFF3D8FD1);
 }
 
 // ─── FONTS ──────────────────────────────────────────────────────────────────
+// Press Start 2P: chunky pixel-game display face — titles, buttons, HUD
+// numbers, short labels only (wide letterforms, hard to read in long
+// lines). Pixelify Sans: a pixel-styled but far more readable face for
+// anything a grade 4-5 student needs to actually read — quiz questions,
+// explanations, paragraphs.
 class AppFonts {
-  static const String display = 'Playfair Display';
-  static const String body = 'Source Sans 3';
+  static const String display = 'Press Start 2P';
+  static const String body = 'Pixelify Sans';
 }
 
 // ─── API ────────────────────────────────────────────────────────────────────
 class ApiConstants {
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.1.15:5000/api/v1',
+    defaultValue: 'http://192.168.1.43:5000/api/v1',
   );
 }
 

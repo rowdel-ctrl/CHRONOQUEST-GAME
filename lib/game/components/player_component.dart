@@ -83,6 +83,12 @@ class PlayerComponent extends SpriteAnimationComponent
         break;
       }
     }
+    // Landed after a jump — swap back from the jump pose to the running
+    // animation. Without this, the player stayed frozen in the jump frame
+    // for the rest of the level after the first jump.
+    if (onGround && !isOnGround && !isHurt) {
+      animation = walkAnimation;
+    }
     isOnGround = onGround;
 
     // Fall in gap handling
@@ -94,6 +100,7 @@ class PlayerComponent extends SpriteAnimationComponent
     if (position.y >= game.groundY - size.y && !isOnGround) {
       position.y = game.groundY - size.y;
       velocityY = 0;
+      if (!isHurt) animation = walkAnimation;
       isOnGround = true;
     }
   }
@@ -138,13 +145,14 @@ class PlayerComponent extends SpriteAnimationComponent
       other.collect();
       game.collectCoin();
     }
-    if (other is WallComponent) {
-      if (position.y + size.y > other.position.y && velocityY >= 0) {
-        position.y = other.position.y - size.y;
-        velocityY = 0;
-        isOnGround = true;
-        animation = walkAnimation;
-      }
+    if (other is WallComponent && !isHurt) {
+      // Player failed to jump over the wall in time — this used to snap
+      // the player's position up onto the wall (looked like an automatic,
+      // unintended jump) with no actual consequence. Now it deals damage,
+      // consistent with falling in a gap, and the wall is removed so it
+      // can't linger and double-hit on subsequent frames.
+      other.removeFromParent();
+      game.playerHitObstacle();
     }
   }
 }

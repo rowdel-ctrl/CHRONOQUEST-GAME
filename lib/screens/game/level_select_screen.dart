@@ -60,11 +60,13 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                     ),
                     Expanded(
                       child: Text(
-                        era.name,
+                        era.name.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 12,
+                          height: 1.4,
                           color: AppColors.accent,
                         ),
                       ),

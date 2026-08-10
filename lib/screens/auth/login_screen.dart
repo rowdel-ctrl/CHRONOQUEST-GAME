@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/pixel_ui.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -74,20 +75,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF1A0E0A),
-              Color(0xFF3E2723),
-              Color(0xFF5D4037),
-            ],
-          ),
-        ),
+      body: PixelBackdrop(
+        baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -104,36 +93,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(18),
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
                                 color: AppColors.accent.withValues(alpha: 0.15),
                                 border: Border.all(
-                                  color: AppColors.accent.withValues(alpha: 0.4),
-                                  width: 2,
+                                  color: AppColors.accent,
+                                  width: 3,
                                 ),
                               ),
                               child: const Icon(
                                 Icons.auto_stories,
-                                size: 48,
+                                size: 44,
                                 color: AppColors.accent,
                               ),
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              'ChronoQuest',
-                              style: GoogleFonts.playfairDisplay(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
+                              'CHRONOQUEST',
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 22,
+                                height: 1.4,
                                 color: AppColors.accent,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 12),
                             Text(
                               'Tuklasin ang Kasaysayan\nng Pilipinas',
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.sourceSans3(
-                                fontSize: 16,
+                              style: GoogleFonts.pixelifySans(
+                                fontSize: 17,
                                 color: Colors.white70,
                                 height: 1.4,
                               ),
@@ -146,15 +134,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
                     Container(
                       width: screenSize.width > 700 ? 380 : 340,
-                      padding: const EdgeInsets.all(28),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(24),
+                      decoration: const BoxDecoration(
                         color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(20),
+                        border: Border.fromBorderSide(
+                          BorderSide(color: AppColors.primaryDark, width: 3),
+                        ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            blurRadius: 24,
-                            offset: const Offset(0, 8),
+                            color: AppColors.primaryDark,
+                            offset: Offset(5, 5),
+                            blurRadius: 0,
                           ),
                         ],
                       ),
@@ -167,7 +157,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             Container(
                               decoration: BoxDecoration(
                                 color: AppColors.surfaceAlt,
-                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: AppColors.primaryDark, width: 2),
                               ),
                               padding: const EdgeInsets.all(4),
                               child: Row(
@@ -177,17 +168,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                       onTap: () => setState(() => _isNewStudent = true),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: _isNewStudent ? AppColors.primary : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
+                                        color: _isNewStudent ? AppColors.primary : Colors.transparent,
                                         alignment: Alignment.center,
                                         child: Text(
                                           'Bago',
-                                          style: TextStyle(
+                                          style: GoogleFonts.pixelifySans(
                                             color: _isNewStudent ? Colors.white : AppColors.textSecondary,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 13,
+                                            fontSize: 15,
                                           ),
                                         ),
                                       ),
@@ -198,17 +186,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                       onTap: () => setState(() => _isNewStudent = false),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: !_isNewStudent ? AppColors.primary : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
+                                        color: !_isNewStudent ? AppColors.primary : Colors.transparent,
                                         alignment: Alignment.center,
                                         child: Text(
                                           'Babalik',
-                                          style: TextStyle(
+                                          style: GoogleFonts.pixelifySans(
                                             color: !_isNewStudent ? Colors.white : AppColors.textSecondary,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 13,
+                                            fontSize: 15,
                                           ),
                                         ),
                                       ),
@@ -305,29 +290,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
                             const SizedBox(height: 16),
 
-                            SizedBox(
-                              height: 48,
-                              child: ElevatedButton(
-                                onPressed: authState.isLoading ? null : _login,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                ),
-                                child: authState.isLoading
-                                    ? const SizedBox(
-                                        height: 20, width: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                                      )
-                                    : Text(
-                                        _isNewStudent ? 'SUMALI SA KLASE' : 'MAG-LOGIN',
-                                        style: GoogleFonts.sourceSans3(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 1,
-                                        ),
+                            authState.isLoading
+                                ? const SizedBox(
+                                    height: 52,
+                                    child: Center(
+                                      child: SizedBox(
+                                        height: 22,
+                                        width: 22,
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: AppColors.primary),
                                       ),
-                              ),
-                            ),
+                                    ),
+                                  )
+                                : PixelButton(
+                                    label: _isNewStudent
+                                        ? 'SUMALI SA KLASE'
+                                        : 'MAG-LOGIN',
+                                    fontSize: 11,
+                                    width: double.infinity,
+                                    onPressed: _login,
+                                  ),
                           ],
                         ),
                       ),
@@ -347,10 +330,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         text,
-        style: GoogleFonts.sourceSans3(
-          fontWeight: FontWeight.w600,
+        style: GoogleFonts.pixelifySans(
+          fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
-          fontSize: 13,
+          fontSize: 15,
         ),
       ),
     );
@@ -359,13 +342,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   InputDecoration _inputDeco(IconData icon, String hint) {
     return InputDecoration(
       hintText: hint,
+      hintStyle: GoogleFonts.pixelifySans(color: AppColors.textMuted),
       prefixIcon: Icon(icon, color: AppColors.textMuted, size: 20),
       filled: true,
       fillColor: AppColors.surfaceAlt,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(4),
+        borderSide: const BorderSide(color: AppColors.primaryDark, width: 2),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        borderSide: const BorderSide(color: AppColors.primaryDark, width: 2),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        borderSide: const BorderSide(color: AppColors.accent, width: 3),
       ),
       errorStyle: const TextStyle(height: 0.8),
     );

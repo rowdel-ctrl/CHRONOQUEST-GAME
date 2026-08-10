@@ -3,9 +3,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../models/question.dart';
 import '../core/constants.dart';
 
-/// Loads MELC-aligned quiz questions from JSON assets (assets/data/questions_<era>.json)
-/// instead of hardcoding them as Dart literals. Content edits now only require
-/// updating the JSON files, not touching or recompiling Dart code.
+/// Loads MELC-aligned quiz questions from JSON assets
+/// (`assets/data/questions_<era>.json`) instead of hardcoding them as Dart
+/// literals. Content edits now only require updating the JSON files, not
+/// touching or recompiling Dart code.
 ///
 /// Call [QuestionBank.loadAll] once during app startup (e.g. in main() before
 /// runApp, or in a loading screen) before any call to [getQuestions].
@@ -13,7 +14,7 @@ class QuestionBank {
   static final Map<String, Map<int, List<Question>>> _bank = {};
   static bool _loaded = false;
 
-  /// The eras with a corresponding assets/data/questions_<era>.json file.
+  /// The eras with a corresponding `assets/data/questions_<era>.json` file.
   static const List<String> _eraIds = [
     'pre-colonial',
     'spanish',

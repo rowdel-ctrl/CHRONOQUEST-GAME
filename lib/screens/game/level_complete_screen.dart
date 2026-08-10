@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../widgets/pixel_ui.dart';
 
 class LevelCompleteScreen extends StatefulWidget {
   final String eraId;
@@ -60,197 +61,139 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
     final era = getEraById(widget.eraId);
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFFD4AF37).withValues(alpha: 0.3),
-              _getEraColor(widget.eraId).withValues(alpha: 0.6),
-              Colors.black87,
-            ],
-          ),
-        ),
+      body: PixelBackdrop(
+        baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 420),
-                margin: const EdgeInsets.all(20),
-                padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(
+            // SingleChildScrollView fixes the overflow bug — this card's
+            // content (badge + stars + score + points + era + optional
+            // powerup badge + button) could exceed a short landscape
+            // phone's height and push the SUSUNOD button off-screen.
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                child: PixelPanel(
                   color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.3),
-                      blurRadius: 24,
-                      spreadRadius: 4,
-                    ),
-                  ],
-                  border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.4),
-                    width: 2,
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // "Level Complete" header
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'LEVEL ${widget.level} TAPOS!',
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(24),
+                  borderColor: AppColors.accent,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 380),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // "Level Complete" header
+                        PixelBadge(
+                          text: 'LEVEL ${widget.level} TAPOS!',
                           color: AppColors.accent,
-                          letterSpacing: 1.5,
+                          fontSize: 11,
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                        const SizedBox(height: 18),
 
-                    // Stars animation
-                    AnimatedBuilder(
-                      animation: _starController,
-                      builder: (context, _) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(3, (i) {
-                            final delay = i * 0.3;
-                            final progress =
-                                ((_starController.value - delay) / 0.4)
-                                    .clamp(0.0, 1.0);
-                            final show = i < _stars && progress > 0;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 4),
-                              child: Transform.scale(
-                                scale: show ? progress : 0.5,
-                                child: Icon(
-                                  show ? Icons.star : Icons.star_border,
-                                  color: show
-                                      ? AppColors.accent
-                                      : Colors.grey.shade300,
-                                  size: 44,
-                                ),
-                              ),
+                        // Stars animation
+                        AnimatedBuilder(
+                          animation: _starController,
+                          builder: (context, _) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(3, (i) {
+                                final delay = i * 0.3;
+                                final progress =
+                                    ((_starController.value - delay) / 0.4)
+                                        .clamp(0.0, 1.0);
+                                final show = i < _stars && progress > 0;
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4),
+                                  child: Transform.scale(
+                                    scale: show ? progress : 0.5,
+                                    child: Icon(
+                                      show ? Icons.star : Icons.star_border,
+                                      color: show
+                                          ? AppColors.accent
+                                          : AppColors.textMuted,
+                                      size: 40,
+                                    ),
+                                  ),
+                                );
+                              }),
                             );
-                          }),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
+                          },
+                        ),
+                        const SizedBox(height: 16),
 
-                    // Score
-                    Text(
-                      '$_correct/$_total Tama',
-                      style: GoogleFonts.sourceSans3(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
+                        // Score
+                        Text(
+                          '$_correct/$_total TAMA',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 15,
+                            height: 1.4,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
 
-                    // Points earned
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppColors.success.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '+$_points puntos',
-                        style: GoogleFonts.sourceSans3(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                        // Points earned
+                        PixelBadge(
+                          text: '+$_points PUNTOS',
                           color: AppColors.success,
+                          textColor: Colors.white,
+                          fontSize: 10,
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                        const SizedBox(height: 10),
 
-                    // Era info
-                    Text(
-                      era.name,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-
-                    // Powerup earned indicator
-                    if (widget.level == 3 ||
-                        widget.level == 7)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: AppColors.accent.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                color: AppColors.accent.withValues(alpha: 0.3)),
+                        // Era info
+                        Text(
+                          era.name,
+                          style: GoogleFonts.pixelifySans(
+                            fontSize: 13,
+                            color: AppColors.textMuted,
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.card_giftcard,
-                                  color: AppColors.accent, size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                _getPowerupName(widget.level),
-                                style: const TextStyle(
-                                  color: AppColors.accent,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                        ),
+
+                        // Powerup earned indicator
+                        if (widget.level == 3 || widget.level == 7)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: PixelPanel(
+                              color: AppColors.accent.withValues(alpha: 0.15),
+                              borderWidth: 2,
+                              shadowOffset: 0,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.card_giftcard,
+                                      color: AppColors.accent, size: 18),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getPowerupName(widget.level),
+                                    style: GoogleFonts.pixelifySans(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
 
-                    const SizedBox(height: 24),
+                        const SizedBox(height: 22),
 
-                    // Next button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.go('/level-select/${widget.eraId}');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
+                        // Next button
+                        PixelButton(
+                          label: 'SUSUNOD',
+                          width: double.infinity,
+                          onPressed: () {
+                            context.go('/level-select/${widget.eraId}');
+                          },
                         ),
-                        child: Text(
-                          'SUSUNOD',
-                          style: GoogleFonts.sourceSans3(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -268,23 +211,6 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
         return 'Nakakuha ng Shield!';
       default:
         return '';
-    }
-  }
-
-  Color _getEraColor(String id) {
-    switch (id) {
-      case 'pre-colonial':
-        return const Color(0xFF1B5E20);
-      case 'spanish':
-        return const Color(0xFF4E342E);
-      case 'american':
-        return const Color(0xFF0D47A1);
-      case 'ww2':
-        return const Color(0xFF37474F);
-      case 'modern':
-        return const Color(0xFF1A237E);
-      default:
-        return const Color(0xFF4E342E);
     }
   }
 }

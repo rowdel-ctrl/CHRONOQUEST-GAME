@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
+import '../../widgets/pixel_ui.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
   const CharacterSelectionScreen({super.key});
@@ -35,7 +36,8 @@ class _CharacterSelectionScreenState
       context: context,
       backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
+        side: BorderSide(color: AppColors.primaryDark, width: 3),
       ),
       builder: (context) => Padding(
         padding: const EdgeInsets.all(24),
@@ -45,9 +47,9 @@ class _CharacterSelectionScreenState
           children: [
             Text(
               'Paano Maglaro',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 15,
+                height: 1.4,
                 color: AppColors.textPrimary,
               ),
             ),
@@ -74,7 +76,7 @@ class _CharacterSelectionScreenState
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: GoogleFonts.pixelifySans(
                 fontSize: 14,
                 color: AppColors.textPrimary,
               ),
@@ -88,64 +90,55 @@ class _CharacterSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF2C1810),
-              Color(0xFF3E2723),
-              Color(0xFF4E342E),
-            ],
-          ),
-        ),
+      body: PixelBackdrop(
+        baseColor: AppColors.background,
         child: SafeArea(
-          child: Stack(
+          // Column instead of a Stack of fixed top/bottom-offset
+          // Positioned widgets — the old layout assumed a fixed screen
+          // height and the character cards could overflow their
+          // allotted band on shorter landscape phones. A Column with
+          // Expanded lets the carousel take exactly whatever space is
+          // actually left after the header and footer, on any screen.
+          child: Column(
             children: [
-              // Title
-              Positioned(
-                top: 12,
-                left: 0,
-                right: 0,
-                child: Text(
-                  'Piliin ang Iyong Bayani',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.playfairDisplay(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.accent,
-                  ),
-                ),
-              ),
-
-              // Left side cards
-              Positioned(
-                left: 12,
-                top: 60,
-                child: Column(
+              // Header row: side buttons + title
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
+                child: Row(
                   children: [
-                    _SideCard(
+                    _SideIconButton(
                       icon: Icons.menu_book,
-                      label: 'Mechanics',
+                      tooltip: 'Mechanics',
                       onTap: _showMechanics,
                     ),
-                    const SizedBox(height: 8),
-                    _SideCard(
+                    const SizedBox(width: 6),
+                    _SideIconButton(
                       icon: Icons.emoji_events,
-                      label: 'Leaderboard',
+                      tooltip: 'Leaderboard',
                       onTap: () => context.push('/leaderboard'),
                     ),
+                    Expanded(
+                      child: Text(
+                        'PILIIN ANG IYONG BAYANI',
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 11,
+                          height: 1.4,
+                          color: AppColors.accent,
+                        ),
+                      ),
+                    ),
+                    // Spacer matching the two side buttons' width so the
+                    // title stays visually centered.
+                    const SizedBox(width: 84),
                   ],
                 ),
               ),
 
-              // Character carousel
-              Positioned(
-                top: 50,
-                bottom: 60,
-                left: 80,
-                right: 80,
+              // Character carousel — takes whatever vertical space is
+              // left, on any screen size.
+              Expanded(
                 child: PageView.builder(
                   controller: _pageController,
                   onPageChanged: (i) => setState(() => _selectedIndex = i),
@@ -157,43 +150,43 @@ class _CharacterSelectionScreenState
                       duration: const Duration(milliseconds: 300),
                       margin: EdgeInsets.symmetric(
                         horizontal: 8,
-                        vertical: isSelected ? 8 : 24,
+                        vertical: isSelected ? 6 : 18,
                       ),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.surface
-                            : AppColors.surface.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(16),
+                            : AppColors.surface.withValues(alpha: 0.75),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(
                           color: isSelected
                               ? AppColors.accent
-                              : Colors.transparent,
-                          width: 3,
+                              : AppColors.primaryDark,
+                          width: isSelected ? 3 : 2,
                         ),
                         boxShadow: isSelected
-                            ? [
+                            ? const [
                                 BoxShadow(
-                                  color: AppColors.accent.withValues(alpha: 0.3),
-                                  blurRadius: 16,
-                                  spreadRadius: 2,
+                                  color: AppColors.primaryDark,
+                                  offset: Offset(4, 4),
+                                  blurRadius: 0,
                                 ),
                               ]
-                            : [],
+                            : null,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Character avatar — real sprite, falls back to
-                            // an initial if the asset is ever missing.
+                            // Character avatar — real sprite, falls back
+                            // to an initial if the asset is ever missing.
                             Container(
-                              width: 72,
-                              height: 72,
+                              width: 64,
+                              height: 64,
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 color: _getCharColor(char.id),
-                                shape: BoxShape.circle,
                                 border: Border.all(
                                   color: AppColors.accent,
                                   width: 2,
@@ -206,22 +199,21 @@ class _CharacterSelectionScreenState
                                     Center(
                                   child: Text(
                                     char.name[0],
-                                    style: const TextStyle(
+                                    style: GoogleFonts.pressStart2p(
                                       color: Colors.white,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 8),
                             Text(
                               char.name,
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.playfairDisplay(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 10,
+                                height: 1.4,
                                 color: AppColors.textPrimary,
                               ),
                               maxLines: 1,
@@ -230,26 +222,33 @@ class _CharacterSelectionScreenState
                             const SizedBox(height: 4),
                             Text(
                               char.era,
-                              style: const TextStyle(
+                              style: GoogleFonts.pixelifySans(
                                 fontSize: 11,
                                 color: AppColors.textMuted,
                               ),
                               maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: AppColors.accent.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                char.description,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: AppColors.accent.withValues(alpha: 0.9),
-                                  fontWeight: FontWeight.w600,
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.accent.withValues(alpha: 0.18),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  char.description,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.pixelifySans(
+                                    fontSize: 10,
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
@@ -261,57 +260,38 @@ class _CharacterSelectionScreenState
                 ),
               ),
 
-              // Bottom: dots + start button
-              Positioned(
-                bottom: 8,
-                left: 0,
-                right: 0,
+              // Footer: dots + start button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Page dots
                     Row(
                       children: List.generate(
                         allCharacters.length,
                         (i) => Container(
                           margin: const EdgeInsets.symmetric(horizontal: 3),
-                          width: i == _selectedIndex ? 20 : 8,
+                          width: i == _selectedIndex ? 18 : 8,
                           height: 8,
                           decoration: BoxDecoration(
                             color: i == _selectedIndex
                                 ? AppColors.accent
-                                : Colors.white30,
-                            borderRadius: BorderRadius.circular(4),
+                                : AppColors.textMuted,
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 32),
-                    // Start button
-                    ElevatedButton(
+                    const SizedBox(width: 20),
+                    PixelButton(
+                      label: 'SIMULA!',
+                      fontSize: 12,
                       onPressed: () {
                         ref
                             .read(gameProvider.notifier)
                             .selectCharacter(allCharacters[_selectedIndex].id);
                         context.go('/era-selection');
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.accent,
-                        foregroundColor: AppColors.primaryDark,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      child: Text(
-                        'SIMULA!',
-                        style: GoogleFonts.sourceSans3(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -326,7 +306,7 @@ class _CharacterSelectionScreenState
   Color _getCharColor(String id) {
     switch (id) {
       case 'lapu':
-        return const Color(0xFF8B4513);
+        return const Color(0xFF6B3A1F);
       case 'rizal':
         return const Color(0xFF2C3E50);
       case 'mabini':
@@ -341,45 +321,34 @@ class _CharacterSelectionScreenState
   }
 }
 
-class _SideCard extends StatelessWidget {
+class _SideIconButton extends StatelessWidget {
   final IconData icon;
-  final String label;
+  final String tooltip;
   final VoidCallback onTap;
 
-  const _SideCard({
+  const _SideIconButton({
     required this.icon,
-    required this.label,
+    required this.tooltip,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: label,
+      message: tooltip,
       child: GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 64,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.85),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.accent.withValues(alpha: 0.4)),
+        onTap: onTap,
+        child: Container(
+          width: 40,
+          height: 40,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: AppColors.primaryDark, width: 2),
+          ),
+          child: Icon(icon, color: AppColors.accent, size: 20),
         ),
-        child: Column(
-          children: [
-            Icon(icon, color: AppColors.accent, size: 22),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 9,
-              ),
-            ),
-          ],
-        ),
-      ),
       ),
     );
   }
