@@ -53,6 +53,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   int score = 0;
   int playerCoins = 0;
   bool questionShowing = false;
+  bool hasJumped = false;
   bool bossPhase = false;
   bool shieldActive = false;
   Question? currentQuestion;
@@ -118,7 +119,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     if (currentLevel == 10) {
       // Split into warm-up (regular enemies) and boss-phase (asked while fighting).
       final warmup = questions.take(GameConstants.bossWarmupQuestions).toList();
-      bossQuestions = questions.skip(GameConstants.bossWarmupQuestions).toList();
+      bossQuestions =
+          questions.skip(GameConstants.bossWarmupQuestions).toList();
       spawner = EnemySpawner(game: this, questions: warmup);
     } else {
       spawner = EnemySpawner(game: this, questions: questions);
@@ -270,6 +272,10 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   void onPlayerJump() {
     if (!questionShowing) {
       player.jump();
+      if (!hasJumped) {
+        hasJumped = true;
+        notifyListeners();
+      }
     }
   }
 
@@ -357,8 +363,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
         era: currentEra,
         level: currentLevel,
         type: currentLevel == 10 ? 'post_test' : 'pre_test',
-        correctAnswersCount:
-            answers.where((a) => a.isCorrect).length,
+        correctAnswersCount: answers.where((a) => a.isCorrect).length,
         totalQuestions: answers.length,
         percentage: percentage,
         timeTakenTotal: _stopwatch.elapsed.inSeconds,

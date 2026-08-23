@@ -13,6 +13,17 @@ class ApiService {
   Dio get _dio => DioClient.instance;
 
   // ─── AUTH ─────────────────────────────────────────────────────────────────
+
+  Future<void> changePassword(String newPassword) async {
+    try {
+      await _dio.post('/student/change-password',
+        data: {'newPassword': newPassword});
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  
   Future<Map<String, dynamic>> login({
     required String classCode,
     required String username,

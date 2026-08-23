@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/storage_service.dart';
 import '../screens/auth/login_screen.dart';
+import '../screens/auth/change_password_screen.dart';
 import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
 import '../screens/game/background_history_screen.dart';
@@ -23,15 +24,24 @@ final GoRouter appRouter = GoRouter(
   redirect: (context, state) async {
     final hasToken = await StorageService.hasToken();
     final isLoginRoute = state.matchedLocation == '/login';
+    final isChangePwRoute = state.matchedLocation == '/change-password';
 
     if (!hasToken && !isLoginRoute) return '/login';
     if (hasToken && isLoginRoute) return '/character-selection';
+    if (hasToken && !isChangePwRoute) {
+      final student = StorageService.getStudent();
+      if (student?.mustChangePassword == true) return '/change-password';
+    }
     return null;
   },
   routes: [
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/change-password',
+      builder: (context, state) => const ChangePasswordScreen(),
     ),
     GoRoute(
       path: '/character-selection',

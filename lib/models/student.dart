@@ -35,10 +35,12 @@ class Student {
   String levelReached;
   int coins;
   PowerUps powerUps;
+  bool mustChangePassword;
   final bool isActive;
   final String? lastActive;
 
   Student({
+    this.mustChangePassword = false,
     required this.id,
     required this.username,
     required this.name,
@@ -57,6 +59,7 @@ class Student {
     return Student(
       id: json['_id'] as String? ?? json['id'] as String? ?? '',
       username: json['username'] as String? ?? '',
+      mustChangePassword: json['mustChangePassword'] as bool? ?? false,
       name: json['name'] as String? ?? '',
       classCode: json['classCode'] as String? ?? '',
       schoolName: json['schoolName'] as String? ?? '',
