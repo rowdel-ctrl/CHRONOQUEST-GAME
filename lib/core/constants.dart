@@ -71,11 +71,11 @@ class PointValues {
 
 // ─── ERA-GRADE MAP ──────────────────────────────────────────────────────────
 const Map<String, List<String>> eraGradeMap = {
-  'pre-colonial': ['grade4', 'grade5'],
-  'spanish': ['grade5'],
-  'american': ['grade5', 'grade6'],
-  'ww2': ['grade6'],
-  'modern': ['grade6'],
+  'pre-colonial': ['grade5'],
+  'spanish':      ['grade5'],
+  'american':     ['grade6'],
+  'ww2':          ['grade6'],
+  'modern':       ['grade6'],
 };
 
 // ─── ERA DATA ───────────────────────────────────────────────────────────────
