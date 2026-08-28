@@ -141,8 +141,9 @@ class _PixelButtonState extends State<PixelButton> {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.pressStart2p(
-                  fontSize: widget.fontSize,
+                style: GoogleFonts.poppins(
+                  fontSize: widget.fontSize + 4,
+                  fontWeight: FontWeight.w600,
                   height: 1.4,
                   color: disabled ? Colors.grey.shade700 : widget.textColor,
                 ),
@@ -181,8 +182,9 @@ class PixelBadge extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: GoogleFonts.pressStart2p(
-          fontSize: fontSize,
+        style: GoogleFonts.poppins(
+          fontSize: fontSize + 2,
+          fontWeight: FontWeight.w600,
           height: 1.4,
           color: textColor,
         ),

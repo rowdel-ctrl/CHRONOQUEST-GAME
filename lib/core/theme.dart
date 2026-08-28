@@ -14,37 +14,41 @@ class AppTheme {
         error: AppColors.danger,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      textTheme: GoogleFonts.pixelifySansTextTheme().copyWith(
-        displayLarge: GoogleFonts.pressStart2p(
-          fontSize: 26,
+      textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+        displayLarge: GoogleFonts.poppins(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
           height: 1.4,
           color: AppColors.textPrimary,
         ),
-        displayMedium: GoogleFonts.pressStart2p(
-          fontSize: 18,
+        displayMedium: GoogleFonts.poppins(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
           height: 1.4,
           color: AppColors.textPrimary,
         ),
-        headlineMedium: GoogleFonts.pressStart2p(
-          fontSize: 14,
-          height: 1.4,
-          color: AppColors.textPrimary,
-        ),
-        titleLarge: GoogleFonts.pixelifySans(
+        headlineMedium: GoogleFonts.poppins(
           fontSize: 20,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
+          height: 1.4,
           color: AppColors.textPrimary,
         ),
-        bodyLarge: GoogleFonts.pixelifySans(
-          fontSize: 17,
+        titleLarge: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        bodyMedium: GoogleFonts.pixelifySans(
-          fontSize: 15,
+        bodyLarge: GoogleFonts.poppins(
+          fontSize: 16,
+          color: AppColors.textPrimary,
+        ),
+        bodyMedium: GoogleFonts.poppins(
+          fontSize: 14,
           color: AppColors.textSecondary,
         ),
-        labelLarge: GoogleFonts.pressStart2p(
-          fontSize: 11,
+        labelLarge: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
           height: 1.4,
           color: Colors.white,
         ),
@@ -63,7 +67,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(4),
             side: const BorderSide(color: AppColors.primaryDark, width: 3),
           ),
-          textStyle: GoogleFonts.pressStart2p(fontSize: 12, height: 1.4),
+          textStyle: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600, height: 1.4),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -74,7 +78,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
-          textStyle: GoogleFonts.pressStart2p(fontSize: 11, height: 1.4),
+          textStyle: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600, height: 1.4),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -98,7 +102,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(4),
           borderSide: const BorderSide(color: AppColors.danger, width: 2),
         ),
-        hintStyle: GoogleFonts.pixelifySans(color: AppColors.textMuted),
+        hintStyle: GoogleFonts.poppins(color: AppColors.textMuted),
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
@@ -112,8 +116,9 @@ class AppTheme {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,
-        titleTextStyle: GoogleFonts.pressStart2p(
-          fontSize: 14,
+        titleTextStyle: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
           height: 1.4,
           color: Colors.white,
         ),

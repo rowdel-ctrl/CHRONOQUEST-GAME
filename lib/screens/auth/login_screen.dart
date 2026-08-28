@@ -115,8 +115,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             const SizedBox(height: 20),
                             Text(
                               'CHRONOQUEST',
-                              style: GoogleFonts.pressStart2p(
-                                fontSize: 22,
+                              style: GoogleFonts.poppins(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
                                 height: 1.4,
                                 color: AppColors.accent,
                               ),
@@ -125,8 +126,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             Text(
                               'Tuklasin ang Kasaysayan\nng Pilipinas',
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 17,
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
                                 color: Colors.white70,
                                 height: 1.4,
                               ),
@@ -180,12 +181,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                         alignment: Alignment.center,
                                         child: Text(
                                           'Bago',
-                                          style: GoogleFonts.pixelifySans(
+                                          style: GoogleFonts.poppins(
                                             color: _isNewStudent
                                                 ? Colors.white
                                                 : AppColors.textSecondary,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 15,
+                                            fontSize: 16,
                                           ),
                                         ),
                                       ),
@@ -204,12 +205,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                         alignment: Alignment.center,
                                         child: Text(
                                           'Babalik',
-                                          style: GoogleFonts.pixelifySans(
+                                          style: GoogleFonts.poppins(
                                             color: !_isNewStudent
                                                 ? Colors.white
                                                 : AppColors.textSecondary,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 15,
+                                            fontSize: 16,
                                           ),
                                         ),
                                       ),
@@ -224,7 +225,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                               controller: _classCodeController,
                               textCapitalization: TextCapitalization.characters,
                               decoration:
-                                  _inputDeco(Icons.class_, 'e.g. CQ-G5A1'),
+                                  _inputDeco(Icons.class_, 'e.g. EDG5A1'),
                               validator: (v) => v == null || v.trim().isEmpty
                                   ? 'Kailangan ang class code'
                                   : null,
@@ -363,10 +364,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         text,
-        style: GoogleFonts.pixelifySans(
-          fontWeight: FontWeight.w700,
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
-          fontSize: 15,
+          fontSize: 16,
         ),
       ),
     );
@@ -375,7 +376,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   InputDecoration _inputDeco(IconData icon, String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: GoogleFonts.pixelifySans(color: AppColors.textMuted),
+      hintStyle: GoogleFonts.poppins(color: AppColors.textMuted),
       prefixIcon: Icon(icon, color: AppColors.textMuted, size: 20),
       filled: true,
       fillColor: AppColors.surfaceAlt,

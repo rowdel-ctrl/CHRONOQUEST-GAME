@@ -16,14 +16,13 @@ class ApiService {
 
   Future<void> changePassword(String newPassword) async {
     try {
-      await _dio.post('/student/change-password',
-        data: {'newPassword': newPassword});
+      await _dio
+          .post('/student/change-password', data: {'newPassword': newPassword});
     } on DioException catch (e) {
       throw _handleError(e);
     }
   }
 
-  
   Future<Map<String, dynamic>> login({
     required String classCode,
     required String username,
@@ -41,7 +40,8 @@ class ApiService {
       }
 
       final response = await _dio.post('/student/login', data: body);
-      final data = (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>;
+      final data = (response.data as Map<String, dynamic>)['data']
+          as Map<String, dynamic>;
       final token = data['token'] as String;
       await StorageService.saveToken(token);
 
@@ -59,7 +59,8 @@ class ApiService {
     try {
       final response = await _dio.get('/student/profile');
       final envelope = response.data as Map<String, dynamic>;
-      final student = Student.fromJson(envelope['data'] as Map<String, dynamic>);
+      final student =
+          Student.fromJson(envelope['data'] as Map<String, dynamic>);
       await StorageService.saveStudent(student);
       return student;
     } on DioException catch (e) {
@@ -69,8 +70,6 @@ class ApiService {
       throw _handleError(e);
     }
   }
-
-
 
   // ─── RESULTS ──────────────────────────────────────────────────────────────
   Future<void> submitResult(QuizResult result) async {
@@ -112,7 +111,9 @@ class ApiService {
       final response = await _dio.get('/student/results');
       final data = (response.data as Map<String, dynamic>)['data'];
       final List<dynamic> list = data is List ? data : [];
-      return list.map((r) => QuizResult.fromJson(r as Map<String, dynamic>)).toList();
+      return list
+          .map((r) => QuizResult.fromJson(r as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -149,7 +150,13 @@ class ApiService {
     } on DioException catch (e) {
       // Fallback to cached progress
       final Map<String, EraProgress> cached = {};
-      for (final eraId in ['pre-colonial', 'spanish', 'american', 'ww2', 'modern']) {
+      for (final eraId in [
+        'pre-colonial',
+        'spanish',
+        'american',
+        'ww2',
+        'modern'
+      ]) {
         final data = StorageService.getCachedEraProgress(eraId);
         if (data != null) {
           cached[eraId] = EraProgress.fromJson(data);
@@ -190,6 +197,9 @@ class ApiService {
     if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.receiveTimeout) {
       return 'Walang internet connection. Subukan muli.';
+    }
+    if (e.type == DioExceptionType.connectionError) {
+      return 'Hindi maabot ang server. I-check kung tumatakbo ang backend at tama ang API URL.';
     }
     if (e.response != null) {
       final data = e.response?.data;

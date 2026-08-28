@@ -36,10 +36,14 @@ class AppFonts {
 
 // ─── API ────────────────────────────────────────────────────────────────────
 class ApiConstants {
-  static const String baseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://192.168.1.43:5000/api/v1',
-  );
+  static const String _baseUrlOverride =
+      String.fromEnvironment('API_BASE_URL', defaultValue: '');
+
+  static String get baseUrl {
+    if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
+
+    return 'https://chronoquest-backend.vercel.app/api/v1';
+  }
 }
 
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────
@@ -52,10 +56,10 @@ class GameConstants {
   static const double enemySpeed = 90.0;
   static const double spawnInterval = 500.0;
   static const int livesPerLevel = 3;
-  static const int questionsPerLevel = 5;       // levels 1-9
-  static const int bossWarmupQuestions = 10;    // level 10, phase 1
-  static const int bossFightQuestions = 12;     // level 10, phase 2
-  static const int bossHealth = 12;             // one hit per boss-phase question
+  static const int questionsPerLevel = 5; // levels 1-9
+  static const int bossWarmupQuestions = 10; // level 10, phase 1
+  static const int bossFightQuestions = 12; // level 10, phase 2
+  static const int bossHealth = 12; // one hit per boss-phase question
 }
 
 // ─── POINTS ─────────────────────────────────────────────────────────────────
@@ -72,10 +76,10 @@ class PointValues {
 // ─── ERA-GRADE MAP ──────────────────────────────────────────────────────────
 const Map<String, List<String>> eraGradeMap = {
   'pre-colonial': ['grade5'],
-  'spanish':      ['grade5'],
-  'american':     ['grade6'],
-  'ww2':          ['grade6'],
-  'modern':       ['grade6'],
+  'spanish': ['grade5'],
+  'american': ['grade6'],
+  'ww2': ['grade6'],
+  'modern': ['grade6'],
 };
 
 // ─── ERA DATA ───────────────────────────────────────────────────────────────
@@ -255,5 +259,13 @@ EraData getEraById(String eraId) {
   return allEras.firstWhere(
     (e) => e.id == eraId,
     orElse: () => allEras[1], // default to spanish
+  );
+}
+
+// Helper to look up character data by ID
+CharacterData getCharacterById(String characterId) {
+  return allCharacters.firstWhere(
+    (c) => c.id == characterId,
+    orElse: () => allCharacters[1], // default to rizal
   );
 }

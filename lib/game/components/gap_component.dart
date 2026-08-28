@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,15 @@ class GroundSection extends PositionComponent
 
   // Cached for zero-allocation update loop (Flame performance skill)
   final Vector2 _velocity = Vector2.zero();
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
+    position.addScaled(_velocity, dt);
+    if (position.x < -sectionWidth) {
+      removeFromParent();
+    }
+  }
 
   GroundSection({
     required this.sectionWidth,
@@ -42,16 +50,6 @@ class GroundSection extends PositionComponent
   }
 
   @override
-  void update(double dt) {
-    super.update(dt);
-    _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
-    position.addScaled(_velocity, dt);
-    if (position.x < -sectionWidth) {
-      removeFromParent();
-    }
-  }
-
-  @override
   void render(Canvas canvas) {
     final paint = Paint()..color = color;
     canvas.drawRect(size.toRect(), paint);
@@ -61,9 +59,6 @@ class GroundSection extends PositionComponent
 /// Spawns ground sections with gaps between them.
 class GroundSpawner {
   final ChronoGame game;
-  double _timeSinceLastSpawn = 0;
-  double _spawnInterval = 2.0; // seconds between new sections
-  final Random _random = Random();
 
   GroundSpawner({required this.game});
 
@@ -79,52 +74,13 @@ class GroundSpawner {
   }
 
   void spawnInitialGround() {
-    // Fill screen with ground initially
     final section = GroundSection(
-      sectionWidth: game.size.x + 200,
+      sectionWidth: 1000000,
       color: _groundColor,
-      sectionPosition: Vector2(-100, game.groundY),
+      sectionPosition: Vector2.zero()..y = game.groundY,
     );
     game.add(section);
   }
 
-  void update(double dt) {
-    _timeSinceLastSpawn += dt;
-    if (_timeSinceLastSpawn >= _spawnInterval) {
-      _timeSinceLastSpawn = 0;
-      _spawnSection();
-      // Randomize next interval (gap or no gap)
-      _spawnInterval = 1.5 + _random.nextDouble() * 2.0;
-    }
-  }
-
-  void _spawnSection() {
-    // 25% chance of a gap
-    final hasGap = _random.nextDouble() < 0.25;
-
-    if (hasGap) {
-      // Gap width between 80-120px
-      final gapWidth = 80.0 + _random.nextDouble() * 40.0;
-
-      // Section after the gap
-      final sectionWidth = 200.0 + _random.nextDouble() * 300.0;
-      final section = GroundSection(
-        sectionWidth: sectionWidth,
-        color: _groundColor,
-        sectionPosition: Vector2(
-          game.size.x + gapWidth,
-          game.groundY,
-        ),
-      );
-      game.add(section);
-    } else {
-      final sectionWidth = 300.0 + _random.nextDouble() * 400.0;
-      final section = GroundSection(
-        sectionWidth: sectionWidth,
-        color: _groundColor,
-        sectionPosition: Vector2(game.size.x, game.groundY),
-      );
-      game.add(section);
-    }
-  }
+  void update(double dt) {}
 }

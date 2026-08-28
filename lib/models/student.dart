@@ -68,7 +68,7 @@ class Student {
       levelReached: json['levelReached'] as String? ?? 'pre-colonial',
       coins: json['coins'] as int? ?? 0,
       powerUps: json['powerUps'] != null
-          ? PowerUps.fromJson(json['powerUps'] as Map<String, dynamic>)
+          ? PowerUps.fromJson(Map<String, dynamic>.from(json['powerUps'] as Map))
           : PowerUps(),
       isActive: json['isActive'] as bool? ?? true,
       lastActive: json['lastActive'] as String?,

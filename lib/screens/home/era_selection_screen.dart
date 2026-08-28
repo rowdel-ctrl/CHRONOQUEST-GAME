@@ -11,16 +11,14 @@ class EraSelectionScreen extends ConsumerStatefulWidget {
   const EraSelectionScreen({super.key});
 
   @override
-  ConsumerState<EraSelectionScreen> createState() =>
-      _EraSelectionScreenState();
+  ConsumerState<EraSelectionScreen> createState() => _EraSelectionScreenState();
 }
 
 class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => ref.read(progressProvider.notifier).loadProgress());
+    Future.microtask(() => ref.read(progressProvider.notifier).loadProgress());
   }
 
   @override
@@ -32,8 +30,7 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
 
     // Filter eras by grade level
     final visibleEras = allEras
-        .where((era) =>
-            eraGradeMap[era.id]?.contains(gradeLevel) ?? false)
+        .where((era) => eraGradeMap[era.id]?.contains(gradeLevel) ?? false)
         .toList();
 
     final visibleEraIds = visibleEras.map((e) => e.id).toList();
@@ -68,17 +65,16 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                   children: [
                     IconButton(
                       onPressed: () => context.go('/character-selection'),
-                      icon: const Icon(Icons.arrow_back,
-                          color: Colors.white70),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white70),
                     ),
                     Expanded(
                       child: Text(
                         'PILIIN ANG PANAHON',
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 13,
-                          height: 1.4,
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                           color: AppColors.accent,
                         ),
                       ),
@@ -95,26 +91,29 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
               Expanded(
                 child: progressState.isLoading
                     ? const Center(
-                        child: CircularProgressIndicator(
-                            color: AppColors.accent))
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: visibleEras.asMap().entries.map((entry) {
-                            final index = entry.key;
-                            final era = entry.value;
-                            final progress = ref
-                                .read(progressProvider.notifier)
-                                .getEraProgress(era.id);
-                            final isUnlocked = ref
-                                .read(progressProvider.notifier)
-                                .isEraUnlocked(era.id, visibleEraIds);
+                        child:
+                            CircularProgressIndicator(color: AppColors.accent))
+                    : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 12,
+                            runSpacing: 12,
+                            children: visibleEras.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final era = entry.value;
+                              final progress = ref
+                                  .read(progressProvider.notifier)
+                                  .getEraProgress(era.id);
+                              final isUnlocked = ref
+                                  .read(progressProvider.notifier)
+                                  .isEraUnlocked(era.id, visibleEraIds);
 
-                            return Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 6),
+                              return ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 220),
                                 child: _EraBook(
                                   era: era,
                                   progress: progress,
@@ -122,24 +121,18 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                                   index: index,
                                   onTap: isUnlocked
                                       ? () {
-                                          // No more separate cold pre-test —
-                                          // first visit goes straight to the
-                                          // background reading, then into
-                                          // Level 1 (which doubles as the
-                                          // real pre-test baseline).
                                           if (progress.levelsCompleted > 0) {
-                                            context.go(
-                                                '/level-select/${era.id}');
+                                            context
+                                                .go('/level-select/${era.id}');
                                           } else {
-                                            context.go(
-                                                '/background/${era.id}');
+                                            context.go('/background/${era.id}');
                                           }
                                         }
                                       : null,
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
               ),
@@ -164,15 +157,14 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                         (student?.name.isNotEmpty ?? false)
                             ? student!.name[0]
                             : '?',
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 14),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Text(
                       student?.name ?? 'Student',
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 14),
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     const Spacer(),
                     Image.asset('assets/ui/star_full.png',
@@ -217,116 +209,144 @@ class _EraBook extends StatelessWidget {
     final isCompleted = progress.isCompleted;
     final isInProgress = progress.isInProgress;
     final levelsCompleted = progress.levelsCompleted as int;
+    final bookColor = isCompleted
+        ? const Color(0xFFD4AF37)
+        : isUnlocked
+            ? _getEraBookColor(era.id)
+            : Colors.grey.shade600;
 
     return GestureDetector(
       onTap: onTap,
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 300),
-        opacity: isUnlocked ? 1.0 : 0.4,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Book spine
-            Container(
-              width: double.infinity,
-              height: 140,
-              decoration: BoxDecoration(
-                color: (isCompleted
-                        ? const Color(0xFFD4AF37)
-                        : isUnlocked
-                            ? _getEraBookColor(era.id)
-                            : Colors.grey.shade700)
-                    .withValues(alpha: 0.55),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isUnlocked
-                      ? AppColors.accent.withValues(alpha: 0.5)
-                      : Colors.grey,
-                  width: 1.5,
-                ),
-                boxShadow: isUnlocked
-                    ? [
-                        BoxShadow(
-                          color: _getEraBookColor(era.id)
-                              .withValues(alpha: 0.3),
-                          blurRadius: 8,
-                          offset: const Offset(2, 4),
-                        ),
-                      ]
-                    : [],
-              ),
-              child: Stack(
-                children: [
-                  // Book content
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (isCompleted)
-                          Image.asset('assets/ui/star_full.png',
-                              width: 28, height: 28)
-                        else if (!isUnlocked)
-                          Image.asset('assets/ui/lock_icon.png',
-                              width: 26, height: 26)
-                        else
-                          Icon(Icons.auto_stories,
-                              color: Colors.white.withValues(alpha: 0.8),
-                              size: 28),
-                        const SizedBox(height: 6),
-                        Text(
-                          era.name,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 8,
-                            height: 1.4,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+        opacity: isUnlocked ? 1.0 : 0.75,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          // Fixed card height — prevents it from stretching to fill the Row
+          height: 200,
+          decoration: BoxDecoration(
+            color: bookColor.withValues(alpha: isUnlocked ? 0.82 : 0.60),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isUnlocked
+                  ? bookColor.withValues(alpha: 0.7)
+                  : Colors.grey.shade600,
+              width: isUnlocked ? 2 : 1.5,
+            ),
+            boxShadow: isUnlocked
+                ? [
+                    BoxShadow(
+                      color: bookColor.withValues(alpha: 0.25),
+                      blurRadius: 14,
+                      offset: const Offset(0, 6),
                     ),
+                  ]
+                : [],
+          ),
+          child: Stack(
+            children: [
+              // Subtle top color band
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: bookColor.withValues(alpha: 0.8),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(13)),
                   ),
+                ),
+              ),
 
-                  // Progress indicator
-                  if (isInProgress)
-                    Positioned(
-                      bottom: 6,
-                      left: 6,
-                      right: 6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.black38,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          '$levelsCompleted/10',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              // Card body
+              Positioned.fill(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 14, 10, 10),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    // Icon / status
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: bookColor.withValues(alpha: 0.22),
+                        shape: BoxShape.circle,
+                      ),
+                      child: isCompleted
+                          ? Image.asset('assets/ui/star_full.png',
+                              width: 26, height: 26)
+                          : !isUnlocked
+                              ? Image.asset('assets/ui/lock_icon.png',
+                                  width: 22, height: 22)
+                              : Icon(Icons.auto_stories,
+                                  color: bookColor, size: 26),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Era name
+                    Text(
+                      era.name,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.25,
                       ),
                     ),
-                ],
+                    const SizedBox(height: 4),
+
+                    // Subtitle
+                    Text(
+                      era.subtitle,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 10,
+                        color: Colors.white54,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              era.subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white60,
-                fontSize: 9,
               ),
-              maxLines: 1,
-            ),
-          ],
+
+              // Progress pill pinned to bottom
+              if (isInProgress)
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  right: 8,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: bookColor.withValues(alpha: 0.35),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          color: bookColor.withValues(alpha: 0.5), width: 1),
+                    ),
+                    child: Text(
+                      '$levelsCompleted/10 levels',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

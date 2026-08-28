@@ -5,6 +5,7 @@ import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
+
 /// Player character — runs at fixed X position, student taps to jump.
 /// Displays real walk, jump, and hurt sprite animations.
 class PlayerComponent extends SpriteAnimationComponent
@@ -32,7 +33,8 @@ class PlayerComponent extends SpriteAnimationComponent
     final walkSprites = <Sprite>[];
     for (int i = 1; i <= 4; i++) {
       try {
-        walkSprites.add(await game.loadSprite('characters/${characterId}_walk_$i.png'));
+        walkSprites.add(
+            await game.loadSprite('characters/${characterId}_walk_$i.png'));
       } catch (e) {
         // Safe fallback placeholder if asset fails to load
         debugPrint('Failed to load character walk frame $i: $e');
@@ -94,14 +96,6 @@ class PlayerComponent extends SpriteAnimationComponent
     // Fall in gap handling
     if (position.y > game.size.y + 50) {
       game.playerFellInGap();
-    }
-
-    // Ground clamp fallback
-    if (position.y >= game.groundY - size.y && !isOnGround) {
-      position.y = game.groundY - size.y;
-      velocityY = 0;
-      if (!isHurt) animation = walkAnimation;
-      isOnGround = true;
     }
   }
 

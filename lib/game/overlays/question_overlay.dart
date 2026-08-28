@@ -32,9 +32,18 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   // Track which options are hidden by 50/50
   List<String> hiddenOptions = [];
 
+  // Retry handling: game.handleAnswer() no longer closes+reopens this
+  // overlay for a first wrong answer — it keeps this same widget mounted
+  // and bumps game.retryTick instead. We watch for that change and reset
+  // our own state, showing a short "try again" badge so it reads as a
+  // second chance rather than an unexplained reset.
+  late int _lastRetryTick;
+  bool _showRetryBadge = false;
+
   @override
   void initState() {
     super.initState();
+    _lastRetryTick = widget.game.retryTick;
     widget.game.currentQuestion?.elapsedSeconds = 0;
     timer = async.Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted && !answered) {
@@ -57,12 +66,33 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       curve: Curves.easeOutCubic,
     ));
     _slideController.forward();
+
+    widget.game.addListener(_onGameChanged);
+  }
+
+  void _onGameChanged() {
+    if (!mounted) return;
+    if (widget.game.retryTick != _lastRetryTick) {
+      _lastRetryTick = widget.game.retryTick;
+      setState(() {
+        answered = false;
+        selectedAnswer = null;
+        hiddenOptions = [];
+        secondsElapsed = 0;
+        widget.game.currentQuestion?.elapsedSeconds = 0;
+        _showRetryBadge = true;
+      });
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) setState(() => _showRetryBadge = false);
+      });
+    }
   }
 
   @override
   void dispose() {
     timer.cancel();
     _slideController.dispose();
+    widget.game.removeListener(_onGameChanged);
     super.dispose();
   }
 
@@ -73,8 +103,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       selectedAnswer = answer;
     });
 
-    final isCorrect =
-        answer == widget.game.currentQuestion!.correctAnswer;
+    final isCorrect = answer == widget.game.currentQuestion!.correctAnswer;
     if (isCorrect) {
       widget.game.audioService.playCorrect();
       // Correct answers keep the game moving at a brisk pace.
@@ -212,6 +241,45 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                     ),
                     const SizedBox(height: 14),
 
+                    // Retry badge — shown briefly when the overlay resets
+                    // itself for a second attempt (see _onGameChanged).
+                    // Styling deliberately mirrors the HAMON chip and the
+                    // timer's overtime state above (same padding/radius/
+                    // border-width/font-size formula) instead of inventing
+                    // a new pill style for this one banner.
+                    if (_showRetryBadge)
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppColors.warning.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(4),
+                          border:
+                              Border.all(color: AppColors.warning, width: 2),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.refresh_rounded,
+                                size: 14, color: AppColors.warning),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                'SUBUKAN MULI! HULING PAGKAKATAON',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 9,
+                                  height: 1.4,
+                                  color: AppColors.warning,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
                     // Question text
                     Text(
                       question.questionText,
@@ -258,34 +326,33 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                           label: 'Sagot ${option.label}: ${option.text}',
                           selected: answered && option.label == selectedAnswer,
                           child: GestureDetector(
-                          onTap: () => handleTap(option.label),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            decoration: BoxDecoration(
-                              color: buttonColor,
-                              border:
-                                  Border.all(color: borderColor, width: 2.5),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            alignment: Alignment.center,
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              '${option.label}) ${option.text}',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
-                                fontWeight: answered &&
-                                        option.label ==
-                                            question.correctAnswer
-                                    ? FontWeight.bold
-                                    : FontWeight.w500,
+                            onTap: () => handleTap(option.label),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              decoration: BoxDecoration(
+                                color: buttonColor,
+                                border:
+                                    Border.all(color: borderColor, width: 2.5),
+                                borderRadius: BorderRadius.circular(4),
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                              alignment: Alignment.center,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                '${option.label}) ${option.text}',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.pixelifySans(
+                                  fontSize: 14,
+                                  color: AppColors.textPrimary,
+                                  fontWeight: answered &&
+                                          option.label == question.correctAnswer
+                                      ? FontWeight.bold
+                                      : FontWeight.w500,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
                           ),
                         );
                       }).toList(),
@@ -310,12 +377,12 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Row(
+                            const Row(
                               children: [
-                                const Icon(Icons.lightbulb_outline,
+                                Icon(Icons.lightbulb_outline,
                                     size: 18, color: AppColors.accent),
-                                const SizedBox(width: 6),
-                                const Text(
+                                SizedBox(width: 6),
+                                Text(
                                   'Paliwanag',
                                   style: TextStyle(
                                     fontSize: 13,
@@ -355,8 +422,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                             label: '50/50',
                             count: widget.game.playerPowerUps.fiftyFifty,
                             onTap: _useFiftyFifty,
-                            enabled: !answered &&
-                                hiddenOptions.isEmpty,
+                            enabled: !answered && hiddenOptions.isEmpty,
                           ),
                           const SizedBox(width: 16),
                           _PowerupButton(

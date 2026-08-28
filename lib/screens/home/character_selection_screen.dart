@@ -22,7 +22,7 @@ class _CharacterSelectionScreenState
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.55, initialPage: 0);
+    _pageController = PageController(viewportFraction: 0.62, initialPage: 0);
   }
 
   @override
@@ -31,55 +31,156 @@ class _CharacterSelectionScreenState
     super.dispose();
   }
 
-  void _showMechanics() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
-        side: BorderSide(color: AppColors.primaryDark, width: 3),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Paano Maglaro',
-              style: GoogleFonts.pressStart2p(
-                fontSize: 15,
-                height: 1.4,
-                color: AppColors.textPrimary,
+  @override
+  Widget build(BuildContext context) {
+    final char = allCharacters[_selectedIndex];
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          // ── Bookshelf background ───────────────────────────────────────
+          Positioned.fill(
+            child: Image.asset(
+              'assets/backgrounds/bookshelf_bg.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Dark overlay — neutral navy so it works for any character color
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFF0D0B1E).withValues(alpha: 0.88),
+                    const Color(0xFF0D0B1E).withValues(alpha: 0.78),
+                    Colors.black.withValues(alpha: 0.95),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 16),
-            _mechanicRow(Icons.touch_app, 'I-tap ang screen para tumalon sa mga hadlang'),
-            _mechanicRow(Icons.quiz, 'Talunin ang kaaway sa pamamagitan ng tamang sagot'),
-            _mechanicRow(Icons.favorite, 'Maling sagot = mawawalan ng puso'),
-            _mechanicRow(Icons.bolt, 'Gumamit ng powerups para sa mahirap na tanong'),
-            _mechanicRow(Icons.flag, 'Tapusin lahat ng 10 level para makumpleto ang era'),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
+          ),
 
-  Widget _mechanicRow(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.primary, size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: GoogleFonts.pixelifySans(
-                fontSize: 14,
-                color: AppColors.textPrimary,
-              ),
+          // ── Main content ───────────────────────────────────────────────
+          SafeArea(
+            child: Column(
+              children: [
+                // ── Header ─────────────────────────────────────────────
+                _CharHeader(),
+
+                // ── Carousel + arrows ───────────────────────────────────
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Character page carousel
+                      PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (i) =>
+                            setState(() => _selectedIndex = i),
+                        itemCount: allCharacters.length,
+                        itemBuilder: (context, index) {
+                          final c = allCharacters[index];
+                          final isSelected = index == _selectedIndex;
+                          return _CharCard(
+                            char: c,
+                            isSelected: isSelected,
+                            charColor: _getCharColor(c.id),
+                          );
+                        },
+                      ),
+
+                      // Left arrow
+                      if (_selectedIndex > 0)
+                        Positioned(
+                          left: 8,
+                          child: _NavArrow(
+                            icon: Icons.chevron_left_rounded,
+                            onTap: () => _pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                        ),
+
+                      // Right arrow
+                      if (_selectedIndex < allCharacters.length - 1)
+                        Positioned(
+                          right: 8,
+                          child: _NavArrow(
+                            icon: Icons.chevron_right_rounded,
+                            onTap: () => _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                // ── Footer: dots + CTA ──────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                  child: Column(
+                    children: [
+                      // Indicator dots
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          allCharacters.length,
+                          (i) => AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 3),
+                            width: i == _selectedIndex ? 22 : 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: i == _selectedIndex
+                                  ? _getCharColor(
+                                      allCharacters[i].id)
+                                  : Colors.white24,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // CTA — PixelButton style (user's favourite!)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PixelButton(
+                            label: 'PILIIN SI ${char.name.toUpperCase()}!',
+                            fontSize: 11,
+                            icon: Icons.arrow_forward_rounded,
+                            onPressed: () {
+                              ref
+                                  .read(gameProvider.notifier)
+                                  .selectCharacter(
+                                      allCharacters[_selectedIndex].id);
+                              context.go('/era-selection');
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Leaderboard top-left button
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8,
+            left: 12,
+            child: _SideIconButton(
+              icon: Icons.emoji_events,
+              tooltip: 'Leaderboard',
+              onTap: () => context.push('/leaderboard'),
             ),
           ),
         ],
@@ -87,240 +188,221 @@ class _CharacterSelectionScreenState
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: PixelBackdrop(
-        baseColor: AppColors.background,
-        child: SafeArea(
-          // Column instead of a Stack of fixed top/bottom-offset
-          // Positioned widgets — the old layout assumed a fixed screen
-          // height and the character cards could overflow their
-          // allotted band on shorter landscape phones. A Column with
-          // Expanded lets the carousel take exactly whatever space is
-          // actually left after the header and footer, on any screen.
-          child: Column(
-            children: [
-              // Header row: side buttons + title
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
-                child: Row(
-                  children: [
-                    _SideIconButton(
-                      icon: Icons.menu_book,
-                      tooltip: 'Mechanics',
-                      onTap: _showMechanics,
-                    ),
-                    const SizedBox(width: 6),
-                    _SideIconButton(
-                      icon: Icons.emoji_events,
-                      tooltip: 'Leaderboard',
-                      onTap: () => context.push('/leaderboard'),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'PILIIN ANG IYONG BAYANI',
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 11,
-                          height: 1.4,
-                          color: AppColors.accent,
-                        ),
-                      ),
-                    ),
-                    // Spacer matching the two side buttons' width so the
-                    // title stays visually centered.
-                    const SizedBox(width: 84),
-                  ],
-                ),
-              ),
-
-              // Character carousel — takes whatever vertical space is
-              // left, on any screen size.
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (i) => setState(() => _selectedIndex = i),
-                  itemCount: allCharacters.length,
-                  itemBuilder: (context, index) {
-                    final char = allCharacters[index];
-                    final isSelected = index == _selectedIndex;
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: isSelected ? 6 : 18,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.surface
-                            : AppColors.surface.withValues(alpha: 0.75),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: isSelected
-                              ? AppColors.accent
-                              : AppColors.primaryDark,
-                          width: isSelected ? 3 : 2,
-                        ),
-                        boxShadow: isSelected
-                            ? const [
-                                BoxShadow(
-                                  color: AppColors.primaryDark,
-                                  offset: Offset(4, 4),
-                                  blurRadius: 0,
-                                ),
-                              ]
-                            : null,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Character avatar — real sprite, falls back
-                            // to an initial if the asset is ever missing.
-                            Container(
-                              width: 64,
-                              height: 64,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                color: _getCharColor(char.id),
-                                border: Border.all(
-                                  color: AppColors.accent,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'assets/characters/${char.id}_walk_1.png',
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stack) =>
-                                    Center(
-                                  child: Text(
-                                    char.name[0],
-                                    style: GoogleFonts.pressStart2p(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              char.name,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.pressStart2p(
-                                fontSize: 10,
-                                height: 1.4,
-                                color: AppColors.textPrimary,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              char.era,
-                              style: GoogleFonts.pixelifySans(
-                                fontSize: 11,
-                                color: AppColors.textMuted,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Flexible(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color:
-                                      AppColors.accent.withValues(alpha: 0.18),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  char.description,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.pixelifySans(
-                                    fontSize: 10,
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-              // Footer: dots + start button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: List.generate(
-                        allCharacters.length,
-                        (i) => Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          width: i == _selectedIndex ? 18 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: i == _selectedIndex
-                                ? AppColors.accent
-                                : AppColors.textMuted,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    PixelButton(
-                      label: 'SIMULA!',
-                      fontSize: 12,
-                      onPressed: () {
-                        ref
-                            .read(gameProvider.notifier)
-                            .selectCharacter(allCharacters[_selectedIndex].id);
-                        context.go('/era-selection');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Color _getCharColor(String id) {
     switch (id) {
       case 'lapu':
-        return const Color(0xFF6B3A1F);
+        return const Color(0xFFD4A853);
       case 'rizal':
-        return const Color(0xFF2C3E50);
+        return const Color(0xFF5B9BD5);
       case 'mabini':
-        return const Color(0xFF1A5276);
+        return const Color(0xFF5BA88A);
       case 'escoda':
-        return const Color(0xFFC0392B);
+        return const Color(0xFFD45B5B);
       case 'aquino':
-        return const Color(0xFFD4AC0D);
+        return const Color(0xFFD4C44A);
       default:
-        return const Color(0xFF2C3E50);
+        return AppColors.accent;
     }
   }
 }
 
+// ── Header ─────────────────────────────────────────────────────────────────────
+class _CharHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'PILIIN ANG IYONG',
+            style: GoogleFonts.poppins(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AppColors.accent.withValues(alpha: 0.75),
+              letterSpacing: 3,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'BAYANI',
+            style: GoogleFonts.poppins(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: AppColors.accent,
+              height: 1.0,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 2,
+                width: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.accent,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Icon(Icons.shield_rounded,
+                    color: AppColors.accent.withValues(alpha: 0.7), size: 16),
+              ),
+              Container(
+                height: 2,
+                width: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.accent,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Character Card ─────────────────────────────────────────────────────────────
+class _CharCard extends StatelessWidget {
+  final CharacterData char;
+  final bool isSelected;
+  final Color charColor;
+
+  const _CharCard({
+    required this.char,
+    required this.isSelected,
+    required this.charColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: isSelected ? 8 : 24,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isSelected
+              ? charColor.withValues(alpha: 0.85)
+              : Colors.white.withValues(alpha: 0.12),
+          width: isSelected ? 2.5 : 1.5,
+        ),
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: charColor.withValues(alpha: 0.35),
+                  blurRadius: 24,
+                  spreadRadius: 4,
+                ),
+              ]
+            : [],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Sprite with colored glow
+            _IdleAvatar(charId: char.id, color: charColor),
+            const SizedBox(height: 16),
+
+            // Name
+            Text(
+              char.name,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 6),
+
+            // Era pill badge
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: charColor.withValues(alpha: 0.22),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                    color: charColor.withValues(alpha: 0.5), width: 1),
+              ),
+              child: Text(
+                char.era,
+                style: GoogleFonts.poppins(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: charColor,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Description
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                char.description,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: Colors.white.withValues(alpha: 0.75),
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Nav Arrow ──────────────────────────────────────────────────────────────────
+class _NavArrow extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  const _NavArrow({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.5),
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2), width: 1.5),
+        ),
+        child: Icon(icon, color: Colors.white70, size: 26),
+      ),
+    );
+  }
+}
+
+// ── Side Icon Button ───────────────────────────────────────────────────────────
 class _SideIconButton extends StatelessWidget {
   final IconData icon;
   final String tooltip;
@@ -343,11 +425,81 @@ class _SideIconButton extends StatelessWidget {
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: AppColors.primaryDark, width: 2),
+            color: Colors.black.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(10),
+            border:
+                Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5),
           ),
           child: Icon(icon, color: AppColors.accent, size: 20),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Idle Avatar (bob animation) ────────────────────────────────────────────────
+class _IdleAvatar extends StatefulWidget {
+  final String charId;
+  final Color color;
+  const _IdleAvatar({required this.charId, required this.color});
+
+  @override
+  State<_IdleAvatar> createState() => _IdleAvatarState();
+}
+
+class _IdleAvatarState extends State<_IdleAvatar>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, child) => Transform.translate(
+        offset: Offset(0, -5 * _ctrl.value),
+        child: child,
+      ),
+      child: Container(
+        width: 120,
+        height: 140,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: widget.color.withValues(alpha: 0.6),
+              blurRadius: 32,
+              spreadRadius: 8,
+            ),
+          ],
+        ),
+        child: Image.asset(
+          'assets/characters/${widget.charId}_walk_1.png',
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stack) => Center(
+            child: Text(
+              widget.charId[0].toUpperCase(),
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
       ),
     );

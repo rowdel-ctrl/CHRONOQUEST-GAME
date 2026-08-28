@@ -62,6 +62,11 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   List<QuestionSnapshot> answers = [];
   List<Question> bossQuestions = [];
   int wrongAttemptsOnCurrentQuestion = 0;
+  // Bumped (and notifyListeners() called) whenever the current question is
+  // being retried after a first wrong answer. QuestionOverlayWidget watches
+  // this to reset itself IN PLACE — see handleAnswer() below for why this
+  // replaced closing + reopening the overlay.
+  int retryTick = 0;
 
   // Powerups
   PowerUps playerPowerUps = PowerUps();
@@ -205,7 +210,6 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   }
 
   void handleAnswer(String answer) {
-    overlays.remove('QuestionOverlay');
     final isCorrect = answer == currentQuestion!.correctAnswer;
 
     answers.add(QuestionSnapshot(
@@ -217,6 +221,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     ));
 
     if (isCorrect) {
+      overlays.remove('QuestionOverlay');
       score += 10;
       // Speed bonus
       if (currentQuestion!.elapsedSeconds < 10) {
@@ -234,6 +239,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     } else {
       // Shield absorbs wrong answer
       if (shieldActive) {
+        overlays.remove('QuestionOverlay');
         shieldActive = false;
         questionShowing = false;
         if (bossPhase && boss != null) {
@@ -251,18 +257,24 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
       notifyListeners(); // lives changed
 
       if (lives <= 0) {
+        overlays.remove('QuestionOverlay');
         questionShowing = false;
         showLevelFailed();
       } else if (wrongAttemptsOnCurrentQuestion >= 2) {
         // 2 wrong on same enemy: enemy passes, already lost hearts
+        overlays.remove('QuestionOverlay');
         questionShowing = false;
         currentEnemy?.defeat();
         resumeEngine();
       } else {
-        // Show question one more time
-        Future.delayed(const Duration(milliseconds: 800), () {
-          overlays.add('QuestionOverlay');
-        });
+        // First wrong attempt, one retry left. Previously this removed the
+        // overlay then re-added it 800ms later — which tore down and
+        // rebuilt the widget, so it looked like the quiz randomly closed
+        // and reopened. Now we leave the SAME overlay instance on screen
+        // and just bump retryTick; the overlay listens for this and resets
+        // its own state with a visible "try again" badge instead.
+        retryTick++;
+        notifyListeners();
       }
     }
   }

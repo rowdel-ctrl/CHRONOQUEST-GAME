@@ -29,33 +29,20 @@ class EnemySpawner {
 
   void update(double dt) {
     distanceTraveled += ChronoGame.worldScrollSpeed * dt;
-
-    // Spawn enemy at interval
     if (distanceTraveled >= spawnInterval && nextIndex < questions.length) {
       _spawnEnemy();
       distanceTraveled = 0;
     }
-
-    if (nextIndex >= questions.length) {
-      allEnemiesSpawned = true;
-    }
-
-    // Spawn walls periodically
+    if (nextIndex >= questions.length) allEnemiesSpawned = true;
     _wallTimer += dt;
     if (_wallTimer > 3.0 + _random.nextDouble() * 4.0) {
       _wallTimer = 0;
-      if (!game.questionShowing) {
-        _spawnWall();
-      }
+      if (!game.questionShowing) _spawnWall();
     }
-
-    // Spawn coins periodically
     _coinTimer += dt;
     if (_coinTimer > 1.5 + _random.nextDouble() * 2.0) {
       _coinTimer = 0;
-      if (!game.questionShowing) {
-        _spawnCoin();
-      }
+      if (!game.questionShowing) _spawnCoin();
     }
   }
 

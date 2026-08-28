@@ -75,16 +75,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             'HudOverlay': (context, game) =>
                 HudOverlayWidget(game: game as ChronoGame),
             'QuestionOverlay': (context, chronoGame) {
-                final g = chronoGame as ChronoGame;
-                return QuestionOverlayWidget(
-                  game: g,
-                  onAnswer: g.handleAnswer,
-                );
-              },
+              final g = chronoGame as ChronoGame;
+              return QuestionOverlayWidget(
+                game: g,
+                onAnswer: g.handleAnswer,
+              );
+            },
             'BossHealthOverlay': (context, game) =>
                 BossHealthOverlayWidget(game: game as ChronoGame),
-            'PauseOverlay': (context, game) =>
-                PauseOverlayWidget(game: game as ChronoGame),
+            'PauseOverlay': (context, game) => PauseOverlayWidget(
+                  game: game as ChronoGame,
+                  onQuit: () {
+                    if (context.mounted) {
+                      context.go('/level-select/${widget.eraId}');
+                    }
+                  },
+                ),
           },
           initialActiveOverlays: const ['HudOverlay'],
           loadingBuilder: (context) => Container(

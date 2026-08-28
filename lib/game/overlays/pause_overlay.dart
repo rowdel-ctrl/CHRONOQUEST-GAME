@@ -7,7 +7,9 @@ import '../chrono_game.dart';
 /// Pause menu overlay — resume or quit.
 class PauseOverlayWidget extends StatelessWidget {
   final ChronoGame game;
-  const PauseOverlayWidget({super.key, required this.game});
+  final VoidCallback onQuit;
+  const PauseOverlayWidget(
+      {super.key, required this.game, required this.onQuit});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +122,7 @@ class PauseOverlayWidget extends StatelessWidget {
               Navigator.of(dialogContext).pop();
               game.overlays.remove('PauseOverlay');
               game.resumeEngine();
-              Navigator.of(game.buildContext!).pop();
+              onQuit();
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.danger),
             child: Text(
