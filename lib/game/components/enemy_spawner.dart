@@ -4,6 +4,7 @@ import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'wall_component.dart';
 import 'coin_component.dart';
+import '../../core/constants.dart';
 
 /// Spawns enemies, walls, and coins at intervals as the world scrolls.
 /// Each enemy carries one quiz question from the pre-fetched list.
@@ -11,7 +12,7 @@ class EnemySpawner {
   final ChronoGame game;
   final List<Question> questions;
   double distanceTraveled = 0.0;
-  double spawnInterval = 300.0; // spawn every ~2 seconds at 150px/s
+  double spawnInterval = GameConstants.spawnInterval;
   int nextIndex = 0;
   bool allEnemiesSpawned = false;
 

@@ -54,9 +54,9 @@ class GameConstants {
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
   static const double enemySpeed = 90.0;
-  static const double spawnInterval = 500.0;
-  static const int livesPerLevel = 3;
-  static const int questionsPerLevel = 5; // levels 1-9
+  static const double spawnInterval = 800.0;
+  static const int livesPerLevel = 10;
+  static const int questionsPerLevel = 10; // levels 1-9
   static const int bossWarmupQuestions = 10; // level 10, phase 1
   static const int bossFightQuestions = 12; // level 10, phase 2
   static const int bossHealth = 12; // one hit per boss-phase question

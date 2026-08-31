@@ -1,5 +1,6 @@
 class QuestionSnapshot {
   final String questionId;
+  final String questionText;
   final String studentAnswer;
   final String correctAnswer;
   final bool isCorrect;
@@ -7,6 +8,7 @@ class QuestionSnapshot {
 
   const QuestionSnapshot({
     required this.questionId,
+    required this.questionText,
     required this.studentAnswer,
     required this.correctAnswer,
     required this.isCorrect,
@@ -16,6 +18,7 @@ class QuestionSnapshot {
   factory QuestionSnapshot.fromJson(Map<String, dynamic> json) {
     return QuestionSnapshot(
       questionId: json['questionId'] as String? ?? '',
+      questionText: json['questionText'] as String? ?? '',
       studentAnswer: json['studentAnswer'] as String? ?? '',
       correctAnswer: json['correctAnswer'] as String? ?? '',
       isCorrect: json['isCorrect'] as bool? ?? false,
@@ -25,6 +28,7 @@ class QuestionSnapshot {
 
   Map<String, dynamic> toJson() => {
         'questionId': questionId,
+        'questionText': questionText,
         'studentAnswer': studentAnswer,
         'correctAnswer': correctAnswer,
         'isCorrect': isCorrect,
