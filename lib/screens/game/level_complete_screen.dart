@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class LevelCompleteScreen extends StatefulWidget {
   final String eraId;
@@ -61,7 +61,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
     final era = getEraById(widget.eraId);
 
     return Scaffold(
-      body: PixelBackdrop(
+      body: GameBackdrop(
         baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
@@ -73,7 +73,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: ScaleTransition(
                 scale: _scaleAnimation,
-                child: PixelPanel(
+                child: GamePanel(
                   color: AppColors.surface,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.all(24),
@@ -84,7 +84,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // "Level Complete" header
-                        PixelBadge(
+                        GameBadge(
                           text: 'LEVEL ${widget.level} TAPOS!',
                           color: AppColors.accent,
                           fontSize: 11,
@@ -126,7 +126,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                         // Score
                         Text(
                           '$_correct/$_total TAMA',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.poppins(
                             fontSize: 15,
                             height: 1.4,
                             color: AppColors.textPrimary,
@@ -135,7 +135,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                         const SizedBox(height: 10),
 
                         // Points earned
-                        PixelBadge(
+                        GameBadge(
                           text: '+$_points PUNTOS',
                           color: AppColors.success,
                           textColor: Colors.white,
@@ -146,7 +146,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                         // Era info
                         Text(
                           era.name,
-                          style: GoogleFonts.pixelifySans(
+                          style: GoogleFonts.poppins(
                             fontSize: 13,
                             color: AppColors.textMuted,
                           ),
@@ -156,7 +156,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                         if (widget.level == 3 || widget.level == 7)
                           Padding(
                             padding: const EdgeInsets.only(top: 12),
-                            child: PixelPanel(
+                            child: GamePanel(
                               color: AppColors.accent.withValues(alpha: 0.15),
                               borderWidth: 2,
                               shadowOffset: 0,
@@ -170,7 +170,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                                   const SizedBox(width: 8),
                                   Text(
                                     _getPowerupName(widget.level),
-                                    style: GoogleFonts.pixelifySans(
+                                    style: GoogleFonts.poppins(
                                       color: AppColors.textPrimary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
@@ -184,7 +184,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
                         const SizedBox(height: 22),
 
                         // Next button
-                        PixelButton(
+                        GameButton(
                           label: 'SUSUNOD',
                           width: double.infinity,
                           onPressed: () {

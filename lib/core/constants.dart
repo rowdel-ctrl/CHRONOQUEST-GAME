@@ -30,8 +30,8 @@ class AppColors {
 // anything a grade 4-5 student needs to actually read — quiz questions,
 // explanations, paragraphs.
 class AppFonts {
-  static const String display = 'Press Start 2P';
-  static const String body = 'Pixelify Sans';
+  static const String display = 'Poppins';
+  static const String body = 'Poppins';
 }
 
 // ─── API ────────────────────────────────────────────────────────────────────

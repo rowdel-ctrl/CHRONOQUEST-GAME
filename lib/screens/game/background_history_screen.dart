@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/storage_service.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
@@ -713,7 +713,7 @@ class _BottomCta extends StatelessWidget {
                 key: const ValueKey('ready'),
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PixelButton(
+                  GameButton(
                     label: 'HANDA NA AKO!',
                     fontSize: 12,
                     icon: Icons.play_arrow_rounded,

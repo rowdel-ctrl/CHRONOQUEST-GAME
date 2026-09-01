@@ -2,7 +2,7 @@ import 'dart:async' as async;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
 
 /// Question overlay — pure Flutter widget displayed over Flame canvas.
@@ -162,7 +162,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                           ),
                           child: Text(
                             'HAMON',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.poppins(
                               fontSize: 9,
                               height: 1.4,
                               color: Colors.white,
@@ -196,7 +196,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               const SizedBox(width: 4),
                               Text(
                                 '${secondsElapsed}s',
-                                style: GoogleFonts.pressStart2p(
+                                style: GoogleFonts.poppins(
                                   fontSize: 10,
                                   height: 1.4,
                                   color: secondsElapsed > 15
@@ -272,7 +272,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               child: Text(
                                 '${option.label}) ${option.text}',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.pixelifySans(
+                                style: GoogleFonts.poppins(
                                   fontSize: 14,
                                   color: AppColors.textPrimary,
                                   fontWeight: answered &&
@@ -335,7 +335,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
                               ),
                             ),
                             const SizedBox(height: 12),
-                            PixelButton(
+                            GameButton(
                               label: 'SUSUNOD',
                               fontSize: 11,
                               width: double.infinity,

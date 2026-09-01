@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
 
 /// Pause menu overlay — resume or quit.
@@ -20,7 +20,7 @@ class PauseOverlayWidget extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child: PixelPanel(
+            child: GamePanel(
               color: AppColors.surface,
               margin: const EdgeInsets.symmetric(horizontal: 40),
               padding: const EdgeInsets.all(28),
@@ -42,7 +42,7 @@ class PauseOverlayWidget extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     'PAUSE',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.poppins(
                       fontSize: 20,
                       height: 1.4,
                       color: AppColors.textPrimary,
@@ -51,7 +51,7 @@ class PauseOverlayWidget extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   // Resume button
-                  PixelButton(
+                  GameButton(
                     label: 'ITULOY',
                     icon: Icons.play_arrow,
                     color: AppColors.success,
@@ -65,7 +65,7 @@ class PauseOverlayWidget extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   // Quit button
-                  PixelButton(
+                  GameButton(
                     label: 'UMALIS',
                     icon: Icons.exit_to_app,
                     color: AppColors.surfaceAlt,
@@ -93,7 +93,7 @@ class PauseOverlayWidget extends StatelessWidget {
         ),
         title: Text(
           'Umalis sa Level?',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.poppins(
             fontSize: 13,
             height: 1.4,
             color: AppColors.textPrimary,
@@ -101,7 +101,7 @@ class PauseOverlayWidget extends StatelessWidget {
         ),
         content: Text(
           'Mawawala ang iyong progress sa level na ito kung aalis ka ngayon.',
-          style: GoogleFonts.pixelifySans(
+          style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,
           ),
@@ -111,7 +111,7 @@ class PauseOverlayWidget extends StatelessWidget {
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Text(
               'Kanselahin',
-              style: GoogleFonts.pixelifySans(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
                 color: AppColors.textSecondary,
               ),
@@ -127,7 +127,7 @@ class PauseOverlayWidget extends StatelessWidget {
             style: TextButton.styleFrom(foregroundColor: AppColors.danger),
             child: Text(
               'Umalis',
-              style: GoogleFonts.pixelifySans(fontWeight: FontWeight.bold),
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
             ),
           ),
         ],

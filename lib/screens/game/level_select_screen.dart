@@ -64,7 +64,7 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.poppins(
                           fontSize: 12,
                           height: 1.4,
                           color: AppColors.accent,

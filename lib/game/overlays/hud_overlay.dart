@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
 
 /// HUD overlay — shows hearts, level, score over Flame canvas.
@@ -38,7 +38,7 @@ class HudOverlayWidget extends StatelessWidget {
                   ),
                   const Spacer(),
                   // Level indicator
-                  PixelBadge(
+                  GameBadge(
                     text: game.currentLevel == 10
                         ? 'BOSS'
                         : 'LVL ${game.currentLevel}',
@@ -63,7 +63,7 @@ class HudOverlayWidget extends StatelessWidget {
                         const SizedBox(width: 5),
                         Text(
                           '${game.score}',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 10,
                             height: 1.4,
@@ -89,7 +89,7 @@ class HudOverlayWidget extends StatelessWidget {
                         const SizedBox(width: 5),
                         Text(
                           '${game.playerCoins}',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 10,
                             height: 1.4,
@@ -141,7 +141,7 @@ class HudOverlayWidget extends StatelessWidget {
                   ),
                   child: Text(
                     'TAP SCREEN TO JUMP',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.poppins(
                       fontSize: 11,
                       color: Colors.white,
                     ),
@@ -177,7 +177,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
               Text(
                 _getBossDialogue(game.currentEra),
                 textAlign: TextAlign.center,
-                style: GoogleFonts.pixelifySans(
+                style: GoogleFonts.poppins(
                   color: Colors.yellowAccent,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -186,7 +186,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               // Health bar
-              PixelProgressBar(
+              GameProgressBar(
                 value: boss.health / boss.maxHealth,
                 fillColor: boss.health > 2 ? AppColors.danger : Colors.orange,
                 backgroundColor: Colors.grey.shade800,
@@ -196,7 +196,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 '${boss.health}/${boss.maxHealth}',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 10,
                   height: 1.4,

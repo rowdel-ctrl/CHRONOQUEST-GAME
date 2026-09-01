@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class LevelFailedScreen extends StatelessWidget {
   final String eraId;
@@ -16,7 +16,7 @@ class LevelFailedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PixelBackdrop(
+      body: GameBackdrop(
         baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
@@ -26,7 +26,7 @@ class LevelFailedScreen extends StatelessWidget {
             // LEVEL SELECT" off the bottom of the visible screen entirely.
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: PixelPanel(
+              child: GamePanel(
                 color: AppColors.surface,
                 margin: const EdgeInsets.symmetric(horizontal: 24),
                 padding: const EdgeInsets.all(22),
@@ -58,7 +58,7 @@ class LevelFailedScreen extends StatelessWidget {
                       Text(
                         'SUBUKAN MULI!',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.poppins(
                           fontSize: 16,
                           height: 1.4,
                           color: AppColors.textPrimary,
@@ -68,7 +68,7 @@ class LevelFailedScreen extends StatelessWidget {
 
                       Text(
                         'Level $level — Naubusan ng puso',
-                        style: GoogleFonts.pixelifySans(
+                        style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: AppColors.textMuted,
                         ),
@@ -93,7 +93,7 @@ class LevelFailedScreen extends StatelessWidget {
                       const SizedBox(height: 16),
 
                       // Hint / encouragement
-                      PixelPanel(
+                      GamePanel(
                         color: AppColors.surfaceAlt,
                         borderWidth: 2,
                         shadowOffset: 0,
@@ -108,7 +108,7 @@ class LevelFailedScreen extends StatelessWidget {
                                 'Tip: Basahin muli ang kasaysayan bago '
                                 'subukan ulit. Makakatulong ito sa '
                                 'pagsagot!',
-                                style: GoogleFonts.pixelifySans(
+                                style: GoogleFonts.poppins(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,
                                   height: 1.4,
@@ -121,7 +121,7 @@ class LevelFailedScreen extends StatelessWidget {
                       const SizedBox(height: 18),
 
                       // Retry button
-                      PixelButton(
+                      GameButton(
                         label: 'ULIT',
                         icon: Icons.refresh,
                         color: AppColors.accent,
@@ -133,7 +133,7 @@ class LevelFailedScreen extends StatelessWidget {
                       const SizedBox(height: 10),
 
                       // Back to level select
-                      PixelButton(
+                      GameButton(
                         label: 'BUMALIK',
                         icon: Icons.arrow_back,
                         color: AppColors.surfaceAlt,

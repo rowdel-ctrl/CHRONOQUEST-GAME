@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
   const CharacterSelectionScreen({super.key});
@@ -148,11 +148,11 @@ class _CharacterSelectionScreenState
                       ),
                       const SizedBox(height: 16),
 
-                      // CTA — PixelButton style (user's favourite!)
+                      // CTA — GameButton style (user's favourite!)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          PixelButton(
+                          GameButton(
                             label: 'PILIIN SI ${char.name.toUpperCase()}!',
                             fontSize: 11,
                             icon: Icons.arrow_forward_rounded,

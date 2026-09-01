@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/api_service.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class EraCompleteScreen extends StatefulWidget {
   final String eraId;
@@ -139,7 +139,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                       // Title
                       Text(
                         'ERA TAPOS NA!',
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.poppins(
                           fontSize: 20,
                           height: 1.4,
                           color: AppColors.accent,
@@ -148,7 +148,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                       const SizedBox(height: 6),
                       Text(
                         era.name,
-                        style: GoogleFonts.pixelifySans(
+                        style: GoogleFonts.poppins(
                           color: Colors.white60,
                           fontSize: 16,
                         ),
@@ -157,7 +157,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
 
                       if (!hasCompleteData) ...[
                         // Honest empty/error state instead of fake numbers
-                        PixelPanel(
+                        GamePanel(
                           color: AppColors.surface,
                           margin: const EdgeInsets.symmetric(horizontal: 0),
                           padding: const EdgeInsets.all(20),
@@ -173,7 +173,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                                       ? 'Hindi ma-load ang iyong mga score ngayon. Subukang buksan muli ang page na ito.'
                                       : 'Kulang pa ang datos para makita ang iyong Learning Gain.',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.pixelifySans(
+                                  style: GoogleFonts.poppins(
                                     color: AppColors.textSecondary,
                                     fontSize: 14,
                                     height: 1.4,
@@ -186,7 +186,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                         const SizedBox(height: 24),
                       ] else ...[
                         // Score comparison card
-                        PixelPanel(
+                        GamePanel(
                           color: AppColors.surface,
                           padding: const EdgeInsets.all(20),
                           child: ConstrainedBox(
@@ -250,7 +250,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                                       children: [
                                         Text(
                                           '${learningGain >= 0 ? '+' : ''}$learningGain% Natuto Ka!',
-                                          style: GoogleFonts.pressStart2p(
+                                          style: GoogleFonts.poppins(
                                             fontSize: 13,
                                             height: 1.4,
                                             color: AppColors.accent,
@@ -281,7 +281,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                       ],
 
                       // Next era button
-                      PixelButton(
+                      GameButton(
                         label: 'SUSUNOD NA PANAHON',
                         fontSize: 11,
                         width: 280,
@@ -334,7 +334,7 @@ class _ScoreRow extends StatelessWidget {
           flex: 3,
           child: Text(
             label,
-            style: GoogleFonts.pixelifySans(
+            style: GoogleFonts.poppins(
               fontSize: 14,
               color: AppColors.textSecondary,
             ),
@@ -343,7 +343,7 @@ class _ScoreRow extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           flex: 4,
-          child: PixelProgressBar(
+          child: GameProgressBar(
             value: percentage / 100,
             fillColor: color,
             height: 14,

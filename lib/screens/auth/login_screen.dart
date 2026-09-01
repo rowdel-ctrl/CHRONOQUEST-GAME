@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -80,7 +80,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: PixelBackdrop(
+      body: GameBackdrop(
         baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
@@ -337,7 +337,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                       ),
                                     ),
                                   )
-                                : PixelButton(
+                                : GameButton(
                                     label: _isNewStudent
                                         ? 'SUMALI SA KLASE'
                                         : 'MAG-LOGIN',

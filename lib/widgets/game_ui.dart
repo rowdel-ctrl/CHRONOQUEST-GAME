@@ -14,7 +14,7 @@ import '../core/constants.dart';
 /// A solid panel with a thick pixel border and hard offset shadow.
 /// Use this instead of Container+BoxDecoration for any card, dialog, or
 /// grouped content block.
-class PixelPanel extends StatelessWidget {
+class GamePanel extends StatelessWidget {
   final Widget child;
   final Color color;
   final Color borderColor;
@@ -24,7 +24,7 @@ class PixelPanel extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final double borderRadius;
 
-  const PixelPanel({
+  const GamePanel({
     super.key,
     required this.child,
     this.color = AppColors.surface,
@@ -63,7 +63,7 @@ class PixelPanel extends StatelessWidget {
 /// A chunky pixel-game button — flat fill, thick border, hard offset
 /// shadow that visibly "presses in" on tap. Meets the 48px minimum touch
 /// target by default.
-class PixelButton extends StatefulWidget {
+class GameButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final Color color;
@@ -73,7 +73,7 @@ class PixelButton extends StatefulWidget {
   final double minHeight;
   final double? width;
 
-  const PixelButton({
+  const GameButton({
     super.key,
     required this.label,
     required this.onPressed,
@@ -86,10 +86,10 @@ class PixelButton extends StatefulWidget {
   });
 
   @override
-  State<PixelButton> createState() => _PixelButtonState();
+  State<GameButton> createState() => _GameButtonState();
 }
 
-class _PixelButtonState extends State<PixelButton> {
+class _GameButtonState extends State<GameButton> {
   bool _pressed = false;
 
   @override
@@ -157,13 +157,13 @@ class _PixelButtonState extends State<PixelButton> {
 }
 
 /// Small pixel-styled label chip — level numbers, tags, counters.
-class PixelBadge extends StatelessWidget {
+class GameBadge extends StatelessWidget {
   final String text;
   final Color color;
   final Color textColor;
   final double fontSize;
 
-  const PixelBadge({
+  const GameBadge({
     super.key,
     required this.text,
     this.color = AppColors.accent,
@@ -195,14 +195,14 @@ class PixelBadge extends StatelessWidget {
 
 /// Chunky segmented progress bar — quiz scores, boss health, learning
 /// gain — pixel-blocky fill instead of a smooth Material gradient.
-class PixelProgressBar extends StatelessWidget {
+class GameProgressBar extends StatelessWidget {
   final double value; // 0.0–1.0
   final Color fillColor;
   final Color backgroundColor;
   final double height;
   final int segments;
 
-  const PixelProgressBar({
+  const GameProgressBar({
     super.key,
     required this.value,
     this.fillColor = AppColors.success,
@@ -239,13 +239,13 @@ class PixelProgressBar extends StatelessWidget {
 
 /// Full-bleed backdrop used by menu screens — a base color plus an
 /// optional scenic image with a scrim so text stays readable on top.
-class PixelBackdrop extends StatelessWidget {
+class GameBackdrop extends StatelessWidget {
   final Widget child;
   final String? imagePath;
   final Color baseColor;
   final double scrimOpacity;
 
-  const PixelBackdrop({
+  const GameBackdrop({
     super.key,
     required this.child,
     this.imagePath,

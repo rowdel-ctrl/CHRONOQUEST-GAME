@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../../services/api_service.dart';
 import '../../services/storage_service.dart';
-import '../../widgets/pixel_ui.dart';
+import '../../widgets/game_ui.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -47,7 +47,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PixelBackdrop(
+      body: GameBackdrop(
         baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
@@ -80,7 +80,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   const SizedBox(height: 20),
                   _loading
                       ? const CircularProgressIndicator()
-                      : PixelButton(
+                      : GameButton(
                           label: 'SAVE & CONTINUE',
                           onPressed: _submit,
                         ),
