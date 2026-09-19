@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 
 // ─── COLORS ─────────────────────────────────────────────────────────────────
@@ -44,6 +45,26 @@ class ApiConstants {
 
     return 'https://chronoquest-backend.vercel.app/api/v1';
   }
+}
+
+// ─── DEV FLAGS ──────────────────────────────────────────────────────────────
+class DevFlags {
+  /// Lets you run the game without logging in:
+  ///   flutter run --dart-define=DEV_SKIP_AUTH=true
+  /// The router skips its login redirect and opens on character selection, and
+  /// quiz results are neither sent nor queued (a queued result would later be
+  /// flushed to whichever real account logs in next). `!kReleaseMode` makes it
+  /// impossible for a release build to enable this.
+  static const bool skipAuth =
+      !kReleaseMode && bool.fromEnvironment('DEV_SKIP_AUTH');
+
+  /// Where the app opens when [skipAuth] is on, e.g.
+  /// `--dart-define=DEV_START_ROUTE=/game/pre-colonial/1` to land straight in
+  /// a level. Defaults to character selection, the normal post-login screen.
+  static const String startRoute = String.fromEnvironment(
+    'DEV_START_ROUTE',
+    defaultValue: '/character-selection',
+  );
 }
 
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/storage_service.dart';
+import 'constants.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/change_password_screen.dart';
 import '../screens/home/character_selection_screen.dart';
@@ -20,8 +21,10 @@ final GlobalKey<NavigatorState> rootNavigatorKey =
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
-  initialLocation: '/login',
+  initialLocation: DevFlags.skipAuth ? DevFlags.startRoute : '/login',
   redirect: (context, state) async {
+    if (DevFlags.skipAuth) return null;
+
     final hasToken = await StorageService.hasToken();
     final isLoginRoute = state.matchedLocation == '/login';
     final isChangePwRoute = state.matchedLocation == '/change-password';
