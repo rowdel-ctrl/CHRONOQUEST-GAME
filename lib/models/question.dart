@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class QuestionOption {
   final String label;
   final String text;
@@ -23,8 +25,8 @@ class Question {
   final String difficulty;
   final String questionType;
   final String questionText;
-  late final List<QuestionOption> options;
-  late final String correctAnswer;
+  final List<QuestionOption> options;
+  final String correctAnswer;
   final String explanation;
   int elapsedSeconds;
 
@@ -37,42 +39,51 @@ class Question {
     this.difficulty = 'medium',
     this.questionType = 'multiple_choice',
     required this.questionText,
-    required List<QuestionOption> options,
-    required String correctAnswer,
+    required this.options,
+    required this.correctAnswer,
     this.explanation = '',
     this.elapsedSeconds = 0,
-  }) {
-    if (options.isEmpty) {
-      this.options = [];
-      this.correctAnswer = correctAnswer;
-      return;
-    }
+  });
 
-    // Find the text of the correct answer before shuffling
-    final correctOpt = options.firstWhere(
-      (o) => o.label == correctAnswer,
-      orElse: () => options.first,
+  /// Returns a new [Question] with the options in random order, relabelled
+  /// A, B, C... in that order, and [correctAnswer] pointing at wherever the
+  /// original correct option landed. Leaves this instance untouched so the
+  /// cached copy in QuestionBank stays in source order, and the copy starts
+  /// with a fresh [elapsedSeconds].
+  ///
+  /// The correct option is tracked by position, not by text, so options with
+  /// identical text can't cause the wrong label to be marked correct.
+  Question withShuffledOptions([Random? random]) {
+    if (options.isEmpty) return _copyWith(options, correctAnswer);
+
+    final correctIndex = options.indexWhere((o) => o.label == correctAnswer);
+    final order = List<int>.generate(options.length, (i) => i)
+      ..shuffle(random);
+
+    final shuffled = <QuestionOption>[];
+    var newCorrect = correctAnswer;
+    for (var i = 0; i < order.length; i++) {
+      final label = String.fromCharCode(65 + i); // A, B, C...
+      shuffled.add(QuestionOption(label: label, text: options[order[i]].text));
+      if (order[i] == correctIndex) newCorrect = label;
+    }
+    return _copyWith(shuffled, newCorrect);
+  }
+
+  Question _copyWith(List<QuestionOption> options, String correctAnswer) {
+    return Question(
+      id: id,
+      era: era,
+      subTopic: subTopic,
+      gradeLevel: gradeLevel,
+      level: level,
+      difficulty: difficulty,
+      questionType: questionType,
+      questionText: questionText,
+      options: options,
+      correctAnswer: correctAnswer,
+      explanation: explanation,
     );
-    final correctText = correctOpt.text;
-
-    // Shuffle the options
-    final shuffled = List<QuestionOption>.from(options)..shuffle();
-    final labels = ['A', 'B', 'C', 'D', 'E', 'F'];
-    
-    final newOptions = <QuestionOption>[];
-    String newCorrect = correctAnswer;
-
-    // Reassign labels A, B, C, D...
-    for (int i = 0; i < shuffled.length; i++) {
-      final label = i < labels.length ? labels[i] : String.fromCharCode(65 + i);
-      newOptions.add(QuestionOption(label: label, text: shuffled[i].text));
-      if (shuffled[i].text == correctText) {
-        newCorrect = label;
-      }
-    }
-    
-    this.options = newOptions;
-    this.correctAnswer = newCorrect;
   }
 
   factory Question.fromJson(Map<String, dynamic> json) {
