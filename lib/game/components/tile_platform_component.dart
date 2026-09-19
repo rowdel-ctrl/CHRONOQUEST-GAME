@@ -46,11 +46,16 @@ class TilePlatformComponent extends PositionComponent
     ..isAntiAlias = false
     ..filterQuality = FilterQuality.none;
 
+  /// Drawn behind the player (whose priority is the default 0). Platforms are
+  /// one-way — the player passes through from below — so the player has to
+  /// render in front, or a platform spawned later would paint over them.
+  static const int renderPriority = -1;
+
   TilePlatformComponent({
     required this.widthInTiles,
     required this.surfaceY,
     Vector2? spawnPosition,
-  }) {
+  }) : super(priority: renderPriority) {
     size = Vector2(widthInTiles * tileSize, tileSize * 2);
     if (spawnPosition != null) {
       position = spawnPosition;
