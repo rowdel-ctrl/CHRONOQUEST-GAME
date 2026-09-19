@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart' show rootBundle;
 import '../models/question.dart';
 import '../core/constants.dart';
@@ -55,57 +57,95 @@ class QuestionBank {
     _loaded = true;
   }
 
+  /// How many questions a level asks: the boss level's warm-up plus boss
+  /// phase, or [GameConstants.questionsPerLevel] for every other level.
+  static int _targetCount(int level) => level == 10
+      ? GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions
+      : GameConstants.questionsPerLevel;
+
   /// Retrieves local MELC-aligned questions for a given Era and Level.
+  ///
+  /// Each call is a fresh attempt: when the level's pool holds more questions
+  /// than the level needs, a random subset is drawn, and every returned
+  /// question has its options reshuffled. Pass [random] to make this
+  /// deterministic (tests).
   ///
   /// Requires [loadAll] to have completed first; if it hasn't, this falls
   /// back to generated placeholder questions rather than throwing, since a
   /// quiz should never hard-crash the game.
-  static List<Question> getQuestions(String era, int level) {
-    final eraMap = _bank[era];
-    if (eraMap == null) return _fallbackQuestions(era, level);
+  static List<Question> getQuestions(String era, int level, {Random? random}) {
+    final rng = random ?? Random();
+    final targetCount = _targetCount(level);
 
-    final questions = eraMap[level];
-    if (questions == null || questions.isEmpty) {
-      return _fallbackQuestions(era, level);
-    }
-
-    final targetCount = level == 10
-        ? GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions // 22
-        : GameConstants.questionsPerLevel; // 5
-
-    if (questions.length < targetCount) {
-      final padded = List<Question>.from(questions);
-      final startIndex = padded.length;
-      final grade = questions.isNotEmpty ? questions.first.gradeLevel : 'grade5';
-
-      padded.addAll(List.generate(targetCount - startIndex, (i) {
-        final qNum = startIndex + i + 1;
-        return Question(
-          id: '${era}_${level}_$qNum',
-          era: era,
-          level: level,
-          gradeLevel: grade,
-          questionText: 'Dagdag na tanong $qNum para sa $era antas $level. (Kailangang palitan ng totoong tanong)',
-          options: const [
-            QuestionOption(label: 'A', text: 'Tamang Sagot'),
-            QuestionOption(label: 'B', text: 'Maling Sagot 1'),
-            QuestionOption(label: 'C', text: 'Maling Sagot 2'),
-            QuestionOption(label: 'D', text: 'Maling Sagot 3'),
-          ],
-          correctAnswer: 'A',
-          explanation: 'Paliwanag ng placeholder.',
+    final pool = _bank[era]?[level];
+    final List<Question> questions;
+    if (pool == null || pool.isEmpty) {
+      questions = _fallbackQuestions(era, level, targetCount);
+    } else {
+      questions = selectQuestions(pool, targetCount, rng);
+      // Short pool: placeholders go after the real questions, not among them.
+      if (questions.length < targetCount) {
+        questions.addAll(
+          _placeholderQuestions(
+            era,
+            level,
+            pool.first.gradeLevel,
+            from: questions.length,
+            to: targetCount,
+          ),
         );
-      }));
-      return padded;
+      }
     }
 
-    return questions;
+    // The cached pool stays in source order; shuffle per attempt so the
+    // correct answer moves around every time (source data is all "A").
+    return questions.map((q) => q.withShuffledOptions(rng)).toList();
   }
 
-  static List<Question> _fallbackQuestions(String era, int level) {
-    final targetCount = level == 10
-        ? GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions // 22
-        : GameConstants.questionsPerLevel; // 5
+  /// Draws up to [target] distinct questions from [pool] in random order.
+  /// Returns the whole pool (shuffled) if it has [target] or fewer.
+  @visibleForTesting
+  static List<Question> selectQuestions(
+    List<Question> pool,
+    int target,
+    Random random,
+  ) {
+    return (List<Question>.from(pool)..shuffle(random)).take(target).toList();
+  }
+
+  static List<Question> _placeholderQuestions(
+    String era,
+    int level,
+    String gradeLevel, {
+    required int from,
+    required int to,
+  }) {
+    final grade = gradeLevel.isNotEmpty ? gradeLevel : 'grade5';
+    return List.generate(to - from, (i) {
+      final qNum = from + i + 1;
+      return Question(
+        id: '${era}_${level}_$qNum',
+        era: era,
+        level: level,
+        gradeLevel: grade,
+        questionText: 'Dagdag na tanong $qNum para sa $era antas $level. (Kailangang palitan ng totoong tanong)',
+        options: const [
+          QuestionOption(label: 'A', text: 'Tamang Sagot'),
+          QuestionOption(label: 'B', text: 'Maling Sagot 1'),
+          QuestionOption(label: 'C', text: 'Maling Sagot 2'),
+          QuestionOption(label: 'D', text: 'Maling Sagot 3'),
+        ],
+        correctAnswer: 'A',
+        explanation: 'Paliwanag ng placeholder.',
+      );
+    });
+  }
+
+  static List<Question> _fallbackQuestions(
+    String era,
+    int level,
+    int targetCount,
+  ) {
     return List.generate(
       targetCount,
       (i) => Question(
