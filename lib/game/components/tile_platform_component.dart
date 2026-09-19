@@ -17,14 +17,13 @@ class TilePlatformComponent extends PositionComponent
   static const double tileSize = 16;
 
   // Grid coordinates (row, column) into ground_tileset.png, 0-indexed from
-  // the top-left. These are a best-effort reading of the reference art —
-  // open the actual PNG in an image viewer (16px grid, 7 cols x 8 rows,
-  // 0-indexed) and adjust these four if a tile looks wrong once it's
-  // rendering in the game.
-  static const int _topLeftRow = 0, _topLeftCol = 1;
-  static const int _topMidRow = 0, _topMidCol = 2;
-  static const int _topRightRow = 0, _topRightCol = 5;
-  static const int _fillRow = 1, _fillCol = 2;
+  // the top-left. Uses the grass-topped dirt set in the top-left of the
+  // sheet: (1,1)/(1,2) are the grass caps with left/right borders, (0,1) is
+  // plain grass top, (1,4) is the plain dark fill.
+  static const int _topLeftRow = 1, _topLeftCol = 1;
+  static const int _topMidRow = 0, _topMidCol = 1;
+  static const int _topRightRow = 1, _topRightCol = 2;
+  static const int _fillRow = 1, _fillCol = 4;
 
   /// How many tiles wide this platform is.
   final int widthInTiles;
