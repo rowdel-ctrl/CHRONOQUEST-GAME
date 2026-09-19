@@ -19,11 +19,15 @@ class TilePlatformComponent extends PositionComponent
   // Grid coordinates (row, column) into ground_tileset.png, 0-indexed from
   // the top-left. Uses the grass-topped dirt set in the top-left of the
   // sheet: (1,1)/(1,2) are the grass caps with left/right borders, (0,1) is
-  // plain grass top, (1,4) is the plain dark fill.
+  // plain grass top, (1,4) is the plain dark fill. The fill row's ends use
+  // the plain (no grass) wall tiles (1,3)/(1,5) so the orange side border
+  // keeps running down instead of stopping after the top row.
   static const int _topLeftRow = 1, _topLeftCol = 1;
   static const int _topMidRow = 0, _topMidCol = 1;
   static const int _topRightRow = 1, _topRightCol = 2;
+  static const int _fillLeftRow = 1, _fillLeftCol = 3;
   static const int _fillRow = 1, _fillCol = 4;
+  static const int _fillRightRow = 1, _fillRightCol = 5;
 
   /// How many tiles wide this platform is.
   final int widthInTiles;
@@ -33,6 +37,14 @@ class TilePlatformComponent extends PositionComponent
   final double surfaceY;
 
   late final SpriteSheet _sheet;
+
+  /// Tiles are drawn one by one at fractional world positions (the camera
+  /// follows the player smoothly). With anti-aliasing/filtering on, each
+  /// tile's edge is blended with the background, leaving faint seams between
+  /// tiles. Turning both off snaps neighbouring edges to the same pixel.
+  final Paint _tilePaint = Paint()
+    ..isAntiAlias = false
+    ..filterQuality = FilterQuality.none;
 
   TilePlatformComponent({
     required this.widthInTiles,
@@ -91,13 +103,22 @@ class TilePlatformComponent extends PositionComponent
         canvas,
         position: Vector2(i * tileSize, 0),
         size: Vector2.all(tileSize),
+        overridePaint: _tilePaint,
       );
 
-      final fillTile = _sheet.getSprite(_fillRow, _fillCol);
+      final Sprite fillTile;
+      if (i == 0) {
+        fillTile = _sheet.getSprite(_fillLeftRow, _fillLeftCol);
+      } else if (i == widthInTiles - 1) {
+        fillTile = _sheet.getSprite(_fillRightRow, _fillRightCol);
+      } else {
+        fillTile = _sheet.getSprite(_fillRow, _fillCol);
+      }
       fillTile.render(
         canvas,
         position: Vector2(i * tileSize, tileSize),
         size: Vector2.all(tileSize),
+        overridePaint: _tilePaint,
       );
     }
   }

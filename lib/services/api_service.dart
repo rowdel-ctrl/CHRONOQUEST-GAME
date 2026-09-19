@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../core/constants.dart';
 import '../core/dio_client.dart';
 import '../models/student.dart';
 import '../models/quiz_result.dart';
@@ -73,6 +74,9 @@ class ApiService {
 
   // ─── RESULTS ──────────────────────────────────────────────────────────────
   Future<void> submitResult(QuizResult result) async {
+    // Dev no-login mode: drop results instead of queueing them, otherwise
+    // they'd be flushed to the next real account that logs in.
+    if (DevFlags.skipAuth) return;
     try {
       await _dio.post('/student/results', data: result.toJson());
     } on DioException catch (e) {
