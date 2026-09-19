@@ -26,6 +26,13 @@ class EnemySpawner {
   /// Total number of enemies (questions) for this level.
   int get totalEnemies => questions.length;
 
+  /// Platform surfaces spawn between these heights above the ground, in world
+  /// units. The player's jump peaks at about 128 (jumpForce² / 2·gravity), so
+  /// the top of the range has to stay well under that or some platforms can't
+  /// be reached from the ground.
+  static const double platformMinHeight = 60;
+  static const double platformMaxHeight = 105;
+
   final Random _random = Random();
   double _wallTimer = 0;
   double _coinTimer = 0;
@@ -89,7 +96,9 @@ class EnemySpawner {
 
   void _spawnPlatform() {
     final widthInTiles = 3 + _random.nextInt(4); // 3-6 tiles wide
-    final surfaceY = game.groundY - 60 - _random.nextDouble() * 100;
+    final surfaceY = game.groundY -
+        platformMinHeight -
+        _random.nextDouble() * (platformMaxHeight - platformMinHeight);
     final platform = TilePlatformComponent(
       widthInTiles: widthInTiles,
       surfaceY: surfaceY,
