@@ -2,17 +2,17 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import '../chrono_game.dart';
 
-/// Visible low wall obstacle — rendered using real asset file.
+/// Visible low wall obstacle — rendered using real asset file. Spawns at a
+/// fixed world position ahead of the camera and stays there; the camera
+/// moving past it creates the on-screen leftward motion.
 class WallComponent extends SpriteComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
-  final Vector2 _velocity = Vector2.zero();
-
   @override
   Future<void> onLoad() async {
     sprite = await game.loadSprite(
         'obstacles/${_obstacleAssetKeyForEra(game.currentEra)}_wall.png');
     size = Vector2(40, 50);
-    position = Vector2(game.size.x + 20, game.groundY - size.y);
+    position = Vector2(game.cameraRightEdgeX + 20, game.groundY - size.y);
     add(RectangleHitbox());
   }
 
@@ -27,9 +27,7 @@ class WallComponent extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
-    _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
-    position.addScaled(_velocity, dt);
-    if (position.x < -size.x) {
+    if (position.x < game.cameraLeftEdgeX - size.x) {
       removeFromParent();
     }
   }

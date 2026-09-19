@@ -1,6 +1,5 @@
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
-import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
 import '../models/question.dart';
@@ -15,6 +14,8 @@ import 'components/boss_component.dart';
 import 'components/ground_component.dart';
 import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
+import 'components/parallax_background.dart';
+import 'components/tile_platform_component.dart';
 
 /// Main Flame game class for ChronoQuest.
 /// Manages the game loop, player, enemies, questions, and level state.
@@ -25,15 +26,21 @@ import 'components/enemy_spawner.dart';
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
 class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
-  // Game constants
-  static const double worldScrollSpeed = 150.0;
-
   /// Y position of the ground surface. Computed from the actual game
   /// canvas size (not hardcoded) so it always matches where
   /// GroundComponent visually draws the ground (game.size.y - 60) —
   /// this project has no fixed-resolution viewport, so real device
   /// screens vary and a fixed constant only lined up by coincidence.
   double get groundY => size.y - 60;
+
+  /// World x-coordinate of the camera's visible left edge — the player's
+  /// worldX offset by the fixed screen position they render at (see
+  /// `camera.viewfinder.position` assignment in `update()`).
+  double get cameraLeftEdgeX => player.worldX - GameConstants.playerX;
+
+  /// World x-coordinate just past the camera's visible right edge — where
+  /// enemies/obstacles/ground should spawn so they enter from off-screen.
+  double get cameraRightEdgeX => cameraLeftEdgeX + size.x;
 
   // Game state
   late PlayerComponent player;
@@ -46,6 +53,11 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   // game.children every frame — that scan runs 60x/sec across every enemy,
   // coin, and wall on screen too, which adds up.
   final List<GroundSection> groundSections = [];
+
+  // Maintained by TilePlatformComponent's onMount/onRemove, mirrors
+  // groundSections above — lets PlayerComponent check elevated-platform
+  // landings without scanning game.children every frame.
+  final List<TilePlatformComponent> platforms = [];
 
   String currentEra = 'spanish';
   int currentLevel = 1;
@@ -97,20 +109,28 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // which is why nothing was rendering.
     images.prefix = 'assets/';
 
-    // Real parallax background using the actual era artwork.
-    await _addParallaxBackground();
+    // Camera: the player's worldX is drawn at a fixed screen offset
+    // (GameConstants.playerX) rather than the player moving on screen —
+    // see the viewfinder.position assignment in update().
+    camera.viewfinder.anchor = Anchor.topLeft;
 
-    // Ground
+    // Real parallax background using the actual era artwork. Its own
+    // update() derives layer offsets from the camera's movement — see
+    // ParallaxBackground.
+    add(ParallaxBackground());
+
+    // Ground — static screen-space backdrop, not part of the scrolling
+    // world (stays put regardless of camera position, like a HUD element).
     ground = GroundComponent();
     add(ground);
 
-    // Ground spawner for gap system
+    // Ground spawner for gap system — sections live in world space.
     groundSpawner = GroundSpawner(game: this);
     groundSpawner.spawnInitialGround();
 
-    // Player
+    // Player — lives in world space so the camera transform applies to it.
     player = PlayerComponent(characterId: selectedCharacterId);
-    add(player);
+    world.add(player);
 
     // Questions are intentionally bundled with the app — no backend round-trip.
     final questions = QuestionBank.getQuestions(currentEra, currentLevel);
@@ -132,49 +152,16 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     audioService.playBgm(currentEra);
   }
 
-  Future<void> _addParallaxBackground() async {
-    final bgKey = _backgroundAssetKeyForEra(currentEra);
-    try {
-      final parallax = await loadParallaxComponent(
-        [
-          ParallaxImageData('backgrounds/${bgKey}_far.png'),
-          ParallaxImageData('backgrounds/${bgKey}_near.png'),
-        ],
-        baseVelocity: Vector2(20, 0),
-        velocityMultiplierDelta: Vector2(2.2, 1.0),
-        fill: LayerFill.height,
-        repeat: ImageRepeat.repeatX,
-        // Explicit size/position — don't rely on ParallaxComponent
-        // auto-sizing to the canvas. It rendered as a small tile in the
-        // corner instead of covering the screen without this.
-        size: size,
-        position: Vector2.zero(),
-        priority: -10,
-      );
-      add(parallax);
-    } catch (e) {
-      // Fallback so the game is still playable if a background asset is
-      // somehow missing, instead of leaving the whole load future unresolved.
-      debugPrint('Failed to load parallax background for $currentEra: $e');
-      add(RectangleComponent(
-        size: size,
-        paint: Paint()..color = const Color(0xFFD4C4A8),
-        priority: -10,
-      ));
-    }
-  }
-
-  /// Background PNGs are named without the hyphen used in era ids
-  /// (e.g. 'precolonial_far.png' for the 'pre-colonial' era).
-  String _backgroundAssetKeyForEra(String era) {
-    if (era == 'pre-colonial') return 'precolonial';
-    return era;
-  }
-
   @override
   void update(double dt) {
     super.update(dt);
     _gameTime += dt;
+
+    // Camera follows the player's worldX, offset so the player always
+    // renders at the fixed screen position GameConstants.playerX. Set
+    // after super.update(dt) so it reflects this frame's player movement,
+    // not last frame's (avoids a one-frame lag).
+    camera.viewfinder.position = Vector2(cameraLeftEdgeX, 0);
 
     if (!questionShowing && !bossPhase) {
       spawner.update(dt);
@@ -307,7 +294,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   void checkLevelEnd() {
     if (spawner.allEnemiesSpawned &&
-        children.whereType<EnemyComponent>().isEmpty) {
+        world.children.whereType<EnemyComponent>().isEmpty) {
       if (currentLevel == 10 && !bossPhase) {
         startBossFight();
       } else if (currentLevel < 10) {
@@ -319,7 +306,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   void startBossFight() {
     bossPhase = true;
     boss = BossComponent(eraId: currentEra);
-    add(boss!);
+    world.add(boss!);
     overlays.add('BossHealthOverlay');
   }
 

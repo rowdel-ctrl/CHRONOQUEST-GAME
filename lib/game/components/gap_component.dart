@@ -3,22 +3,20 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../chrono_game.dart';
 
-/// A section of ground that scrolls left. Gaps are created by NOT placing
-/// a GroundSection in a stretch — when the player falls through, they
-/// lose a heart and respawn.
+/// A section of ground at a fixed world position. Gaps are created by NOT
+/// placing a GroundSection in a stretch — when the player falls through,
+/// they lose a heart and respawn. The section itself doesn't move; the
+/// camera moving past it as the player advances creates the on-screen
+/// leftward motion.
 class GroundSection extends PositionComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   final double sectionWidth;
   final Color color;
 
-  // Cached for zero-allocation update loop (Flame performance skill)
-  final Vector2 _velocity = Vector2.zero();
   @override
   void update(double dt) {
     super.update(dt);
-    _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
-    position.addScaled(_velocity, dt);
-    if (position.x < -sectionWidth) {
+    if (position.x + sectionWidth < game.cameraLeftEdgeX) {
       removeFromParent();
     }
   }
@@ -79,7 +77,7 @@ class GroundSpawner {
       color: _groundColor,
       sectionPosition: Vector2.zero()..y = game.groundY,
     );
-    game.add(section);
+    game.world.add(section);
   }
 
   void update(double dt) {}

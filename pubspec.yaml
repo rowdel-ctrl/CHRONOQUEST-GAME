@@ -38,6 +38,7 @@ flutter:
     - assets/enemies/
     - assets/bosses/
     - assets/obstacles/
+    - assets/tiles/
     - assets/collectibles/
     - assets/powerups/
     - assets/ui/

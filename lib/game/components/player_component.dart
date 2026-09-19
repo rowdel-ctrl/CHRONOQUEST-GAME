@@ -5,13 +5,29 @@ import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
+import 'crate_component.dart';
 
-/// Player character — runs at fixed X position, student taps to jump.
-/// Displays real walk, jump, and hurt sprite animations.
+/// Player character — advances through the world at a constant forward
+/// speed (`position.x` is the player's real world x-position, `worldX`),
+/// student taps to jump. The camera follows `worldX` so the player always
+/// renders at a fixed screen offset; the player never moves itself in
+/// screen space. Displays real walk, jump, and hurt sprite animations.
 class PlayerComponent extends SpriteAnimationComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
+
+  /// Constant forward speed, in world units/second, the player advances at.
+  /// This is the single source of the game's forward motion — the camera,
+  /// spawn positions, and despawn checks all derive from `worldX`, which
+  /// increases at this rate.
+  static const double forwardSpeed = 150.0;
+
+  /// The player's real position in world space. Aliases `position.x` —
+  /// obstacles/camera never subtract a scroll speed from themselves;
+  /// instead this value increases every frame and everything else is
+  /// positioned relative to it.
+  double get worldX => position.x;
 
   double velocityY = 0.0;
   bool isOnGround = false;
@@ -27,7 +43,7 @@ class PlayerComponent extends SpriteAnimationComponent
   @override
   Future<void> onLoad() async {
     size = Vector2(64, 80);
-    position = Vector2(80, game.groundY - size.y);
+    position = Vector2(0, game.groundY - size.y);
 
     // Load walk frames as individual sprites and build the animation sequence
     final walkSprites = <Sprite>[];
@@ -66,6 +82,9 @@ class PlayerComponent extends SpriteAnimationComponent
   void update(double dt) {
     super.update(dt);
 
+    // Constant forward advance through the world.
+    position.x += forwardSpeed * dt;
+
     // Apply gravity
     if (!isOnGround) {
       velocityY += gravity * dt;
@@ -85,6 +104,23 @@ class PlayerComponent extends SpriteAnimationComponent
         break;
       }
     }
+    // Check if on any elevated tile platform — only while falling/resting
+    // (velocityY >= 0) so jumping up into a platform from below doesn't
+    // snap the player onto its surface.
+    if (!onGround && velocityY >= 0) {
+      for (final platform in game.platforms) {
+        if (position.x + size.x > platform.position.x &&
+            position.x < platform.position.x + platform.size.x &&
+            position.y + size.y >= platform.surfaceY &&
+            position.y + size.y <= platform.surfaceY + 20) {
+          position.y = platform.surfaceY - size.y;
+          velocityY = 0;
+          onGround = true;
+          break;
+        }
+      }
+    }
+
     // Landed after a jump — swap back from the jump pose to the running
     // animation. Without this, the player stayed frozen in the jump frame
     // for the rest of the level after the first jump.
@@ -121,7 +157,9 @@ class PlayerComponent extends SpriteAnimationComponent
   }
 
   void respawn() {
-    position = Vector2(80, game.groundY - size.y);
+    // Only vertical state resets — worldX keeps advancing; the player fell
+    // in a gap, they didn't warp backward in the world.
+    position.y = game.groundY - size.y;
     velocityY = 0;
     isOnGround = true;
     animation = walkAnimation;
@@ -145,6 +183,11 @@ class PlayerComponent extends SpriteAnimationComponent
       // unintended jump) with no actual consequence. Now it deals damage,
       // consistent with falling in a gap, and the wall is removed so it
       // can't linger and double-hit on subsequent frames.
+      other.removeFromParent();
+      game.playerHitObstacle();
+    }
+    if (other is CrateComponent && !isHurt) {
+      // Same obstacle behavior as WallComponent.
       other.removeFromParent();
       game.playerHitObstacle();
     }

@@ -50,16 +50,26 @@ class ApiConstants {
 class GameConstants {
   static const double groundY = 520.0;
   static const double playerX = 80.0;
-  static const double worldScrollSpeed = 150.0;
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
-  static const double enemySpeed = 90.0;
   static const double spawnInterval = 800.0;
   static const int livesPerLevel = 10;
   static const int questionsPerLevel = 10; // levels 1-9
   static const int bossWarmupQuestions = 10; // level 10, phase 1
   static const int bossFightQuestions = 12; // level 10, phase 2
   static const int bossHealth = 12; // one hit per boss-phase question
+
+  /// Widest width:height ratio the game canvas is allowed to render at
+  /// before GameScreen pillarboxes it. Backgrounds use Flame's
+  /// `LayerFill.height` + `repeatX` (see parallax_background.dart), which
+  /// scales each era's art to the canvas height and tiles it horizontally —
+  /// the active background art is 2048x768 (an 8:3 ≈ 2.667 tile), so a
+  /// second tile becomes visible within a single frame once the canvas
+  /// itself is wider than that ratio. 2.5 stays safely under 8:3 (covering
+  /// rounding at the boundary) while remaining well above every normal
+  /// phone/tablet/desktop landscape ratio, so pillarboxing only kicks in on
+  /// unusually wide windows.
+  static const double maxAspectRatio = 2.5;
 }
 
 // ─── POINTS ─────────────────────────────────────────────────────────────────

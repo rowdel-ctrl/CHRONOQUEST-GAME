@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/constants.dart';
 import '../../game/chrono_game.dart';
 import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
@@ -62,6 +63,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
@@ -69,36 +71,56 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             game.onPlayerJump();
           }
         },
-        child: GameWidget(
-          game: game,
-          overlayBuilderMap: {
-            'HudOverlay': (context, game) =>
-                HudOverlayWidget(game: game as ChronoGame),
-            'QuestionOverlay': (context, chronoGame) {
-              final g = chronoGame as ChronoGame;
-              return QuestionOverlayWidget(
-                game: g,
-                onAnswer: g.handleAnswer,
-              );
-            },
-            'BossHealthOverlay': (context, game) =>
-                BossHealthOverlayWidget(game: game as ChronoGame),
-            'PauseOverlay': (context, game) => PauseOverlayWidget(
-                  game: game as ChronoGame,
-                  onQuit: () {
-                    if (context.mounted) {
-                      context.go('/level-select/${widget.eraId}');
-                    }
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Pillarbox on windows wider than GameConstants.maxAspectRatio
+            // so the scrolling background (which tiles horizontally past
+            // its own art's aspect ratio) never shows a visible seam — see
+            // that constant's doc comment for the math.
+            final maxWidth =
+                constraints.maxHeight * GameConstants.maxAspectRatio;
+            final width = constraints.maxWidth < maxWidth
+                ? constraints.maxWidth
+                : maxWidth;
+            return Center(
+              child: SizedBox(
+                width: width,
+                height: constraints.maxHeight,
+                child: GameWidget(
+                  game: game,
+                  overlayBuilderMap: {
+                    'HudOverlay': (context, game) =>
+                        HudOverlayWidget(game: game as ChronoGame),
+                    'QuestionOverlay': (context, chronoGame) {
+                      final g = chronoGame as ChronoGame;
+                      return QuestionOverlayWidget(
+                        game: g,
+                        onAnswer: g.handleAnswer,
+                      );
+                    },
+                    'BossHealthOverlay': (context, game) =>
+                        BossHealthOverlayWidget(game: game as ChronoGame),
+                    'PauseOverlay': (context, game) => PauseOverlayWidget(
+                          game: game as ChronoGame,
+                          onQuit: () {
+                            if (context.mounted) {
+                              context.go('/level-select/${widget.eraId}');
+                            }
+                          },
+                        ),
                   },
+                  initialActiveOverlays: const ['HudOverlay'],
+                  loadingBuilder: (context) => Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child:
+                          CircularProgressIndicator(color: Color(0xFFD4AF37)),
+                    ),
+                  ),
                 ),
+              ),
+            );
           },
-          initialActiveOverlays: const ['HudOverlay'],
-          loadingBuilder: (context) => Container(
-            color: Colors.black,
-            child: const Center(
-              child: CircularProgressIndicator(color: Color(0xFFD4AF37)),
-            ),
-          ),
         ),
       ),
     );

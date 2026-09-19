@@ -30,7 +30,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
     sprite = idleSprite;
     size = Vector2(120, 140);
-    position = Vector2(game.size.x + 20, game.groundY - size.y);
+    position = Vector2(game.cameraRightEdgeX + 20, game.groundY - size.y);
     game.audioService.playBossAppear();
   }
 
@@ -39,15 +39,20 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     super.update(dt);
     if (isDefeated) return;
 
+    // Recomputed every frame since the camera keeps advancing with the
+    // player — this is the world x that currently sits at screen-center.
+    final centerX = game.cameraLeftEdgeX + game.size.x / 2 - size.x / 2;
     if (!reachedCenter) {
       _velocity.setValues(-walkSpeed, 0);
       position.addScaled(_velocity, dt);
-      final centerX = game.size.x / 2 - size.x / 2;
       if (position.x <= centerX) {
         position.x = centerX;
         reachedCenter = true;
         _showBossQuestion();
       }
+    } else {
+      // Stay locked at screen-center as the world advances underneath.
+      position.x = centerX;
     }
   }
 

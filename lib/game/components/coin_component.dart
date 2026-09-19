@@ -3,12 +3,14 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import '../chrono_game.dart';
 
-/// Collectible coin rendered using the collectible image.
+/// Collectible coin rendered using the collectible image. Spawns at a
+/// fixed world position ahead of the camera and stays there horizontally
+/// (the camera moving past it creates the on-screen leftward motion) while
+/// bobbing vertically in place.
 class CoinComponent extends SpriteComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   bool collected = false;
 
-  final Vector2 _velocity = Vector2.zero();
   double _bobTime = 0;
   late final double _baseY;
 
@@ -24,7 +26,7 @@ class CoinComponent extends SpriteComponent
     size = Vector2(28, 28);
     if (position.isZero()) {
       position = Vector2(
-        game.size.x + 20,
+        game.cameraRightEdgeX + 20,
         game.groundY - 32 - (Random().nextDouble() * 80),
       );
     }
@@ -37,13 +39,10 @@ class CoinComponent extends SpriteComponent
     super.update(dt);
     if (collected) return;
 
-    _velocity.setValues(-ChronoGame.worldScrollSpeed, 0);
-    position.addScaled(_velocity, dt);
-
     _bobTime += dt * 3;
     position.y = _baseY + (sin(_bobTime) * 4);
 
-    if (position.x < -size.x) {
+    if (position.x < game.cameraLeftEdgeX - size.x) {
       removeFromParent();
     }
   }

@@ -5,19 +5,18 @@ import 'package:flutter/material.dart';
 import '../../models/question.dart';
 import '../chrono_game.dart';
 
-/// Enemy that walks left toward the player.
+/// Enemy encountered as the player advances through the world.
+/// Spawns at a fixed world position ahead of the camera and stays there —
+/// the camera moving past it (as the player's worldX increases) is what
+/// creates the on-screen leftward motion, not any velocity of its own.
 /// Renders 2-frame walk cycle from image files.
 class EnemyComponent extends SpriteAnimationComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   final Question question;
   final String eraId;
-  static const double moveSpeed = 90.0;
   bool defeated = false;
 
   late final String _enemyType;
-
-  // Cached velocity for zero-allocation updates
-  final Vector2 _velocity = Vector2.zero();
 
   EnemyComponent({required this.question, required this.eraId});
 
@@ -36,7 +35,7 @@ class EnemyComponent extends SpriteAnimationComponent
 
     size = Vector2(60, 72);
     position = Vector2(
-      game.size.x + 60,
+      game.cameraRightEdgeX + 60,
       game.groundY - size.y,
     );
     add(
@@ -59,12 +58,8 @@ class EnemyComponent extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!defeated) {
-      _velocity.setValues(-moveSpeed, 0);
-      position.addScaled(_velocity, dt);
-      if (position.x < -size.x) {
-        removeFromParent();
-      }
+    if (!defeated && position.x < game.cameraLeftEdgeX - size.x) {
+      removeFromParent();
     }
   }
 
