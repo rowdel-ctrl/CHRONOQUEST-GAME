@@ -69,6 +69,19 @@ class DevFlags {
 
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────
 class GameConstants {
+  /// The virtual resolution the whole game is designed at. A
+  /// FixedResolutionViewport scales this to fit whatever the device actually
+  /// is, so every sprite stays the same fraction of the screen everywhere.
+  ///
+  /// Before this, the world used raw device pixels: the 80px player was ~11%
+  /// of a 1280x720 window but ~22% of a landscape phone (~360-412 logical px
+  /// tall), which is why the game looked roughly twice the size on a phone.
+  /// 1280x720 is used because every size in the game — sprite sizes, the
+  /// ~128px jump peak, platform spawn heights — was tuned by eye at that
+  /// resolution, so keeping it means none of them have to be retuned.
+  static const double virtualWidth = 1280.0;
+  static const double virtualHeight = 720.0;
+
   static const double groundY = 520.0;
   static const double playerX = 80.0;
   static const double gravity = 900.0;
