@@ -3,13 +3,12 @@ import '../../models/question.dart';
 import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'player_component.dart';
-import 'wall_component.dart';
 import 'coin_component.dart';
 import 'crate_component.dart';
 import 'tile_platform_component.dart';
 import '../../core/constants.dart';
 
-/// Spawns enemies, walls, and coins ahead of the camera as the player
+/// Spawns enemies, crates, and coins ahead of the camera as the player
 /// advances through the world. Each enemy carries one quiz question from
 /// the pre-fetched list.
 class EnemySpawner {
@@ -34,9 +33,14 @@ class EnemySpawner {
   static const double platformMaxHeight = 105;
 
   final Random _random = Random();
-  double _wallTimer = 0;
+
+  /// Two independent crate timers. Ground obstacles used to be a mix of
+  /// era-specific wall sprites (WallComponent, obstacles/*_wall.png) and
+  /// crates; crates replaced the wall art, and keeping both timers with
+  /// their original intervals preserves the combined obstacle cadence.
+  double _crateTimerA = 0;
+  double _crateTimerB = 0;
   double _coinTimer = 0;
-  double _crateTimer = 0;
   double _platformTimer = 0;
 
   EnemySpawner({required this.game, required this.questions});
@@ -48,19 +52,19 @@ class EnemySpawner {
       distanceTraveled = 0;
     }
     if (nextIndex >= questions.length) allEnemiesSpawned = true;
-    _wallTimer += dt;
-    if (_wallTimer > 3.0 + _random.nextDouble() * 4.0) {
-      _wallTimer = 0;
-      if (!game.questionShowing) _spawnWall();
+    _crateTimerA += dt;
+    if (_crateTimerA > 3.0 + _random.nextDouble() * 4.0) {
+      _crateTimerA = 0;
+      if (!game.questionShowing) _spawnCrate();
     }
     _coinTimer += dt;
     if (_coinTimer > 1.5 + _random.nextDouble() * 2.0) {
       _coinTimer = 0;
       if (!game.questionShowing) _spawnCoin();
     }
-    _crateTimer += dt;
-    if (_crateTimer > 4.0 + _random.nextDouble() * 4.0) {
-      _crateTimer = 0;
+    _crateTimerB += dt;
+    if (_crateTimerB > 4.0 + _random.nextDouble() * 4.0) {
+      _crateTimerB = 0;
       if (!game.questionShowing) _spawnCrate();
     }
     _platformTimer += dt;
@@ -77,11 +81,6 @@ class EnemySpawner {
     );
     game.world.add(enemy);
     nextIndex++;
-  }
-
-  void _spawnWall() {
-    final wall = WallComponent();
-    game.world.add(wall);
   }
 
   void _spawnCoin() {
