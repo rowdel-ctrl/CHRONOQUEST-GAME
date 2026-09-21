@@ -170,84 +170,6 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
-  // ─── QUESTION HANDLING ────────────────────────────────────────────────────
-
-  void showQuestion(Question q, EnemyComponent enemy) {
-    currentQuestion = q;
-    currentEnemy = enemy;
-    questionShowing = true;
-    pauseEngine();
-    overlays.add('QuestionOverlay');
-  }
-
-  void showBossQuestion(Question q, BossComponent bossRef) {
-    currentQuestion = q;
-    currentEnemy = null;
-    questionShowing = true;
-    pauseEngine();
-    overlays.add('QuestionOverlay');
-  }
-
-  void handleAnswer(String answer) {
-    final isCorrect = answer == currentQuestion!.correctAnswer;
-
-    answers.add(QuestionSnapshot(
-      questionId: currentQuestion!.id,
-      questionText: currentQuestion!.questionText,
-      studentAnswer: answer,
-      correctAnswer: currentQuestion!.correctAnswer,
-      isCorrect: isCorrect,
-      timeTaken: currentQuestion!.elapsedSeconds,
-    ));
-
-    if (isCorrect) {
-      overlays.remove('QuestionOverlay');
-      score += 10;
-      // Speed bonus
-      if (currentQuestion!.elapsedSeconds < 10) {
-        score += 5;
-      }
-
-      if (bossPhase && boss != null) {
-        boss!.takeDamage();
-      } else {
-        currentEnemy?.defeat();
-      }
-      questionShowing = false;
-      resumeEngine();
-      notifyListeners(); // score changed, and possibly boss health
-    } else {
-      // Shield absorbs wrong answer
-      if (shieldActive) {
-        overlays.remove('QuestionOverlay');
-        shieldActive = false;
-        questionShowing = false;
-        if (bossPhase && boss != null) {
-          // No damage to boss, but no life lost either
-        } else {
-          currentEnemy?.defeat();
-        }
-        resumeEngine();
-        return;
-      }
-
-      // Wrong answer: lose a life, close the question, enemy passes
-      lives--;
-      player.triggerHurt();
-      notifyListeners(); // lives changed
-
-      overlays.remove('QuestionOverlay');
-      questionShowing = false;
-
-      if (lives <= 0) {
-        showLevelFailed();
-      } else {
-        currentEnemy?.defeat();
-        resumeEngine();
-      }
-    }
-  }
-
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
@@ -260,28 +182,29 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
-  void playerFellInGap() {
+  /// Takes one life and plays the hurt reaction. Returns true when that was
+  /// the last life and the level has been failed.
+  bool loseLife() {
     lives--;
     player.triggerHurt();
     notifyListeners(); // lives changed
-    if (lives <= 0) {
-      showLevelFailed();
-    } else {
-      player.respawn();
-    }
+    if (lives > 0) return false;
+    showLevelFailed();
+    return true;
+  }
+
+  /// Lets [QuizHandler] (quiz_handler.dart) notify overlay listeners, since
+  /// [notifyListeners] is protected and can't be called from an extension.
+  void notifyState() => notifyListeners();
+
+  void playerFellInGap() {
+    if (!loseLife()) player.respawn();
   }
 
   /// Player failed to jump over a wall obstacle in time. Same damage as
   /// falling in a gap, but no respawn — the player didn't fall anywhere,
   /// they just took a hit, and the wall keeps scrolling past.
-  void playerHitObstacle() {
-    lives--;
-    player.triggerHurt();
-    notifyListeners(); // lives changed
-    if (lives <= 0) {
-      showLevelFailed();
-    }
-  }
+  void playerHitObstacle() => loseLife();
 
   void collectCoin() {
     playerCoins++;

@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import '../chrono_game.dart';
+import '../quiz_handler.dart';
 import '../../core/constants.dart';
 
 /// Boss component — displays actual images for idle, attack, and defeated states.
