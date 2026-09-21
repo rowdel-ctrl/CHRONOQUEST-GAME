@@ -30,6 +30,9 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    // game.size is the camera viewport's virtual size (the fixed virtual
+    // resolution), not the device canvas, so this matches the scaled world
+    // this is mounted behind as the camera's backdrop.
     size = game.size;
     position = Vector2.zero();
 

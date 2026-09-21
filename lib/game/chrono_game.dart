@@ -25,12 +25,25 @@ import 'components/tile_platform_component.dart';
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
 class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
-  /// Y position of the ground surface. Computed from the actual game
-  /// canvas size (not hardcoded) so it always matches where GroundSection
-  /// draws the ground band (GroundSection.bandHeight tall, flush with the
-  /// bottom of the screen) — this project has no fixed-resolution viewport,
-  /// so real device screens vary and a fixed constant only lined up by
-  /// coincidence.
+  /// The game renders into a fixed virtual resolution that Flame scales to
+  /// the real device, rather than drawing in raw device pixels. Without it
+  /// the same sprite was ~11% of a desktop window's height and ~22% of a
+  /// landscape phone's, which is why the game looked oversized on a phone.
+  ChronoGame()
+      : super(
+          camera: CameraComponent.withFixedResolution(
+            width: GameConstants.virtualWidth,
+            height: GameConstants.virtualHeight,
+          ),
+        );
+
+  /// Y position of the ground surface — where GroundSection draws the top of
+  /// the ground band, flush with the bottom of the viewport.
+  ///
+  /// `size` here is the camera viewport's virtual size, i.e. the fixed
+  /// virtual resolution above, NOT the device canvas (that's `canvasSize`).
+  /// So this is a constant 660 on every device, where it used to vary with
+  /// the phone's real pixel height.
   double get groundY => size.y - GroundSection.bandHeight;
 
   /// World x-coordinate of the camera's visible left edge — the player's
@@ -40,6 +53,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   /// World x-coordinate just past the camera's visible right edge — where
   /// enemies/obstacles/ground should spawn so they enter from off-screen.
+  /// One virtual screen-width ahead of the left edge — `size` is the
+  /// viewport's virtual size, same as in groundY above.
   double get cameraRightEdgeX => cameraLeftEdgeX + size.x;
 
   // Game state
@@ -116,7 +131,13 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // Real parallax background using the actual era artwork. Its own
     // update() derives layer offsets from the camera's movement — see
     // ParallaxBackground.
-    add(ParallaxBackground());
+    //
+    // Mounted as the camera's backdrop rather than a direct child of the
+    // game: the backdrop renders inside the viewport, so it is scaled to the
+    // virtual resolution along with the world, and it stays put as the
+    // camera moves — which is what a parallax layer wants. A direct child
+    // would be drawn in raw canvas pixels and no longer line up.
+    camera.backdrop = ParallaxBackground();
 
     // Ground — tiled GroundSections in world space, so the ground texture
     // scrolls with the level. There is deliberately no screen-space ground
