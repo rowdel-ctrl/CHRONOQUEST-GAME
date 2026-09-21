@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../chrono_game.dart';
+import '../quiz_handler.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';

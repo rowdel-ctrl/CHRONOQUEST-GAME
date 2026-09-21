@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../../game/chrono_game.dart';
+import '../../game/quiz_handler.dart';
 import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
