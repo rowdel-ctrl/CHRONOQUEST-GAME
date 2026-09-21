@@ -11,7 +11,6 @@ import '../data/question_bank.dart';
 import 'components/player_component.dart';
 import 'components/enemy_component.dart';
 import 'components/boss_component.dart';
-import 'components/ground_component.dart';
 import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
 import 'components/parallax_background.dart';
@@ -27,11 +26,12 @@ import 'components/tile_platform_component.dart';
 /// own each frame.
 class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// Y position of the ground surface. Computed from the actual game
-  /// canvas size (not hardcoded) so it always matches where
-  /// GroundComponent visually draws the ground (game.size.y - 60) —
-  /// this project has no fixed-resolution viewport, so real device
-  /// screens vary and a fixed constant only lined up by coincidence.
-  double get groundY => size.y - 60;
+  /// canvas size (not hardcoded) so it always matches where GroundSection
+  /// draws the ground band (GroundSection.bandHeight tall, flush with the
+  /// bottom of the screen) — this project has no fixed-resolution viewport,
+  /// so real device screens vary and a fixed constant only lined up by
+  /// coincidence.
+  double get groundY => size.y - GroundSection.bandHeight;
 
   /// World x-coordinate of the camera's visible left edge — the player's
   /// worldX offset by the fixed screen position they render at (see
@@ -44,7 +44,6 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   // Game state
   late PlayerComponent player;
-  late GroundComponent ground;
   late EnemySpawner spawner;
   late GroundSpawner groundSpawner;
 
@@ -119,12 +118,10 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // ParallaxBackground.
     add(ParallaxBackground());
 
-    // Ground — static screen-space backdrop, not part of the scrolling
-    // world (stays put regardless of camera position, like a HUD element).
-    ground = GroundComponent();
-    add(ground);
-
-    // Ground spawner for gap system — sections live in world space.
+    // Ground — tiled GroundSections in world space, so the ground texture
+    // scrolls with the level. There is deliberately no screen-space ground
+    // backdrop: one would be pinned while the world moved, and would paint
+    // over any gap the spawner leaves.
     groundSpawner = GroundSpawner(game: this);
     groundSpawner.spawnInitialGround();
 
