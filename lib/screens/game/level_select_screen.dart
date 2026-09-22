@@ -1,24 +1,49 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
+import 'level_node.dart';
 
-class LevelSelectScreen extends StatefulWidget {
+String _formatCountdown(Duration d) {
+  final minutes = d.inMinutes;
+  final seconds = d.inSeconds % 60;
+  return '$minutes:${seconds.toString().padLeft(2, '0')}';
+}
+
+class LevelSelectScreen extends ConsumerStatefulWidget {
   final String eraId;
   const LevelSelectScreen({super.key, required this.eraId});
 
   @override
-  State<LevelSelectScreen> createState() => _LevelSelectScreenState();
+  ConsumerState<LevelSelectScreen> createState() => _LevelSelectScreenState();
 }
 
-class _LevelSelectScreenState extends State<LevelSelectScreen> {
+class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   Map<int, int> completedLevels = {};
+  Timer? _heartsTimer;
 
   @override
   void initState() {
     super.initState();
     completedLevels = StorageService.getCompletedLevels(widget.eraId);
+    // Ticks the persistent-hearts countdown shown below, and applies any
+    // regen due since the provider was created — this screen is the main
+    // place players wait out that countdown.
+    _heartsTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => ref.read(gameProvider.notifier).refreshHearts(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _heartsTimer?.cancel();
+    super.dispose();
   }
 
   bool _isLevelUnlocked(int level) {
@@ -27,9 +52,56 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
     return completedLevels.containsKey(level - 1);
   }
 
+  void _showNoHeartsDialog(BuildContext context, Duration? timeUntilNext) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          side: BorderSide(color: AppColors.primaryDark, width: 3),
+        ),
+        title: Text(
+          'Wala nang Puso',
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            height: 1.4,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Text(
+          timeUntilNext != null
+              ? 'Maghintay ng ${_formatCountdown(timeUntilNext)} para sa '
+                  'susunod na puso, o bumalik mamaya.'
+              : 'Maghintay ng kaunti para sa susunod na puso, o bumalik '
+                  'mamaya.',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(
+              'Sige',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
+    final hearts = ref.watch(gameProvider).hearts;
+    final hasHearts = hearts.count > 0;
+    final timeUntilNext = hearts.timeUntilNext(DateTime.now());
 
     return Scaffold(
       body: Container(
@@ -103,107 +175,23 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
                                     : Colors.white24,
                               ),
                             // Level node
-                            GestureDetector(
+                            LevelNode(
+                              level: level,
+                              isUnlocked: isUnlocked,
+                              isCompleted: isCompleted,
+                              stars: stars,
+                              isBoss: isBoss,
                               onTap: isUnlocked
-                                  ? () => context.go(
-                                      '/game/${widget.eraId}/$level')
+                                  ? () {
+                                      if (hasHearts) {
+                                        context.go(
+                                            '/game/${widget.eraId}/$level');
+                                      } else {
+                                        _showNoHeartsDialog(
+                                            context, timeUntilNext);
+                                      }
+                                    }
                                   : null,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  // Stars
-                                  if (isCompleted)
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: List.generate(
-                                        3,
-                                        (s) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 1),
-                                          child: Image.asset(
-                                            s < stars
-                                                ? 'assets/ui/star_full.png'
-                                                : 'assets/ui/star_empty.png',
-                                            width: 14,
-                                            height: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  else
-                                    const SizedBox(height: 14),
-                                  const SizedBox(height: 4),
-                                  // Node circle
-                                  Container(
-                                    width: isBoss ? 60 : 48,
-                                    height: isBoss ? 60 : 48,
-                                    decoration: BoxDecoration(
-                                      shape: isBoss
-                                          ? BoxShape.rectangle
-                                          : BoxShape.circle,
-                                      borderRadius: isBoss
-                                          ? BorderRadius.circular(12)
-                                          : null,
-                                      color: isCompleted
-                                          ? AppColors.accent
-                                          : isUnlocked
-                                              ? AppColors.primary
-                                              : Colors.grey.shade700,
-                                      border: Border.all(
-                                        color: isCompleted
-                                            ? AppColors.accent
-                                            : isUnlocked
-                                                ? Colors.white54
-                                                : Colors.grey,
-                                        width: 2.5,
-                                      ),
-                                      boxShadow: isUnlocked
-                                          ? [
-                                              BoxShadow(
-                                                color: (isCompleted
-                                                        ? AppColors.accent
-                                                        : AppColors.primary)
-                                                    .withValues(alpha: 0.4),
-                                                blurRadius: 8,
-                                              ),
-                                            ]
-                                          : [],
-                                    ),
-                                    child: Center(
-                                      child: isCompleted
-                                          ? const Icon(Icons.check,
-                                              color: Colors.white, size: 22)
-                                          : !isUnlocked
-                                              ? Image.asset(
-                                                  'assets/ui/lock_icon.png',
-                                                  color: Colors.white38,
-                                                  width: 18,
-                                                  height: 18,
-                                                )
-                                              : Text(
-                                                  isBoss ? 'BOSS' : '$level',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                    fontSize:
-                                                        isBoss ? 12 : 16,
-                                                  ),
-                                                ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    isBoss ? 'Level 10' : 'Level $level',
-                                    style: TextStyle(
-                                      color: isUnlocked
-                                          ? Colors.white70
-                                          : Colors.white30,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
                           ],
                         );
@@ -216,12 +204,48 @@ class _LevelSelectScreenState extends State<LevelSelectScreen> {
               // Bottom info
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text(
-                  '${completedLevels.length}/10 Levels Tapos',
-                  style: const TextStyle(
-                    color: Colors.white60,
-                    fontSize: 13,
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${completedLevels.length}/10 Levels Tapos',
+                      style: const TextStyle(
+                        color: Colors.white60,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // Persistent hearts pool that gates starting/retrying a
+                    // level — separate from in-level HP shown in the HUD.
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...List.generate(
+                          GameConstants.maxHearts,
+                          (i) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Image.asset(
+                              i < hearts.count
+                                  ? 'assets/ui/heart_full.png'
+                                  : 'assets/ui/heart_empty.png',
+                              width: 18,
+                              height: 18,
+                            ),
+                          ),
+                        ),
+                        if (timeUntilNext != null) ...[
+                          const SizedBox(width: 8),
+                          Text(
+                            'Susunod: ${_formatCountdown(timeUntilNext)}',
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
