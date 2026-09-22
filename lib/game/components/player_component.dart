@@ -162,6 +162,23 @@ class PlayerComponent extends SpriteAnimationComponent
     });
   }
 
+  /// Brief celebratory pose on a correct quiz answer. There's no dedicated
+  /// "cheer" art yet, so this reuses the already-loaded jump pose as a
+  /// stand-in reaction — same idea as triggerHurt(), just a happy trigger
+  /// instead of a damage one. Uses its own delayed revert rather than
+  /// relying on update()'s on-ground-transition reset, since that only
+  /// fires when isOnGround flips false->true (i.e. landing a jump), which
+  /// never happens here if the player was already on the ground.
+  void triggerCheer() {
+    if (isHurt) return;
+    animation = jumpAnim;
+    Future.delayed(const Duration(milliseconds: 400), () {
+      if (isOnGround && !isHurt) {
+        animation = walkAnimation;
+      }
+    });
+  }
+
   void respawn() {
     // Only vertical state resets — worldX keeps advancing; the player fell
     // in a gap, they didn't warp backward in the world.

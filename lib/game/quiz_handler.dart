@@ -38,6 +38,7 @@ extension QuizHandler on ChronoGame {
 
     if (isCorrect) {
       overlays.remove('QuestionOverlay');
+      player.triggerCheer();
       score += 10;
       // Speed bonus
       if (currentQuestion!.elapsedSeconds < 10) {

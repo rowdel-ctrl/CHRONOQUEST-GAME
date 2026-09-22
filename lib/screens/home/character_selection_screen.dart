@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -468,6 +470,15 @@ class _IdleAvatarState extends State<_IdleAvatar>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
 
+  /// There's no dedicated idle art for any character (only walk/jump/hurt),
+  /// so this cycles the 4 walk frames slowly — much slower than the
+  /// in-level walk animation's 150ms step — to read as a gentle idle shift
+  /// rather than a run cycle. Combined with the existing bob below, this is
+  /// the difference between "a single frame floating up and down" and an
+  /// avatar that looks genuinely alive while a student picks their hero.
+  late final Timer _frameTimer;
+  int _frame = 0;
+
   @override
   void initState() {
     super.initState();
@@ -475,11 +486,15 @@ class _IdleAvatarState extends State<_IdleAvatar>
       vsync: this,
       duration: const Duration(milliseconds: 1400),
     )..repeat(reverse: true);
+    _frameTimer = Timer.periodic(const Duration(milliseconds: 450), (_) {
+      if (mounted) setState(() => _frame = (_frame + 1) % 4);
+    });
   }
 
   @override
   void dispose() {
     _ctrl.dispose();
+    _frameTimer.cancel();
     super.dispose();
   }
 
@@ -505,7 +520,7 @@ class _IdleAvatarState extends State<_IdleAvatar>
           ],
         ),
         child: Image.asset(
-          'assets/characters/${widget.charId}_walk_1.png',
+          'assets/characters/${widget.charId}_walk_${_frame + 1}.png',
           fit: BoxFit.contain,
           errorBuilder: (context, error, stack) => Center(
             child: Text(
