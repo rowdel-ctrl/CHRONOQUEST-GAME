@@ -1,13 +1,11 @@
 import 'dart:async' as async;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../core/constants.dart';
 import '../chrono_game.dart';
-import 'answer_feedback.dart';
-import 'question_widgets.dart';
+import 'question_card.dart';
 
 /// Question overlay — pure Flutter widget displayed over Flame canvas.
-/// Shows quiz question with 2×2 answer grid, timer, and powerup buttons.
+/// Owns the timer, tap handling and power-up state; the card itself (2×2
+/// answer grid, timer chip, powerup buttons) is QuestionCard.
 class QuestionOverlayWidget extends StatefulWidget {
   final ChronoGame game;
   final Function(String answer) onAnswer;
@@ -113,6 +111,15 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     });
   }
 
+  void _useShield() {
+    if (widget.game.playerPowerUps.shield > 0) {
+      widget.game.shieldActive = true;
+      widget.game.playerPowerUps.shield--;
+      widget.game.audioService.playPowerup();
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final question = widget.game.currentQuestion;
@@ -126,146 +133,20 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
         child: Center(
           child: SlideTransition(
             position: _slideAnimation,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              constraints: const BoxConstraints(maxWidth: 500),
-              decoration: const BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.all(Radius.circular(6)),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryDark,
-                    offset: Offset(6, 6),
-                    blurRadius: 0,
-                  ),
-                ],
-                border: Border.fromBorderSide(
-                  BorderSide(color: AppColors.primaryDark, width: 3),
-                ),
-              ),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Header row. The TAMA!/MALI! badge sits centred on top
-                    // of it so answering doesn't shift the card's layout.
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryDark,
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                    color: AppColors.accent, width: 2),
-                              ),
-                              child: Text(
-                                'HAMON',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 9,
-                                  height: 1.4,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            TimerChip(seconds: secondsElapsed),
-                          ],
-                        ),
-                        if (answered)
-                          AnswerFeedbackBadge(
-                            correct: selectedAnswer == question.correctAnswer,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-
-                    // Question text
-                    Text(
-                      question.questionText,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textPrimary,
-                        height: 1.4,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Answer buttons — 2×2 grid
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 2.8,
-                      children: question.options.map((option) {
-                        if (hiddenOptions.contains(option.label)) {
-                          return const SizedBox.shrink();
-                        }
-                        var state = AnswerState.neutral;
-                        if (answered) {
-                          if (option.label == question.correctAnswer) {
-                            state = AnswerState.correct;
-                          } else if (option.label == selectedAnswer) {
-                            state = AnswerState.wrong;
-                          }
-                        }
-                        return AnswerButton(
-                          option: option,
-                          state: state,
-                          selected: answered && option.label == selectedAnswer,
-                          onTap: () => handleTap(option.label),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 14),
-
-                    if (answered && selectedAnswer != question.correctAnswer)
-                      ExplanationPanel(
-                        question: question,
-                        onContinue: _continueAfterWrongAnswer,
-                      )
-                    else if (!widget.game.bossPhase)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          PowerupButton(
-                            icon: Icons.filter_2,
-                            label: '50/50',
-                            count: widget.game.playerPowerUps.fiftyFifty,
-                            onTap: _useFiftyFifty,
-                            enabled: !answered && hiddenOptions.isEmpty,
-                          ),
-                          const SizedBox(width: 16),
-                          PowerupButton(
-                            icon: Icons.shield,
-                            label: 'Shield',
-                            count: widget.game.playerPowerUps.shield,
-                            onTap: () {
-                              if (widget.game.playerPowerUps.shield > 0) {
-                                widget.game.shieldActive = true;
-                                widget.game.playerPowerUps.shield--;
-                                widget.game.audioService.playPowerup();
-                                setState(() {});
-                              }
-                            },
-                            enabled: !answered &&
-                                widget.game.playerPowerUps.shield > 0 &&
-                                !widget.game.shieldActive,
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
+            child: QuestionCard(
+              question: question,
+              secondsElapsed: secondsElapsed,
+              answered: answered,
+              selectedAnswer: selectedAnswer,
+              hiddenOptions: hiddenOptions,
+              showPowerups: !widget.game.bossPhase,
+              fiftyFiftyCount: widget.game.playerPowerUps.fiftyFifty,
+              shieldCount: widget.game.playerPowerUps.shield,
+              shieldActive: widget.game.shieldActive,
+              onAnswer: handleTap,
+              onContinue: _continueAfterWrongAnswer,
+              onFiftyFifty: _useFiftyFifty,
+              onShield: _useShield,
             ),
           ),
         ),
