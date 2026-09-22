@@ -43,7 +43,12 @@ class PlayerComponent extends SpriteAnimationComponent
 
   @override
   Future<void> onLoad() async {
-    size = Vector2(64, 80);
+    // 1.5x the native 52x68 art, same ratio as before (was 64x80 — barely
+    // bigger than a 60x72 enemy, so the hero didn't read as the hero). The
+    // boss already upscales its own native art by roughly this much (80x90
+    // -> 120x140), so this brings the player closer to that same treatment
+    // instead of sitting almost flush with regular enemies.
+    size = Vector2(96, 120);
     position = Vector2(0, game.groundY - size.y);
 
     // Load walk frames as individual sprites and build the animation sequence
