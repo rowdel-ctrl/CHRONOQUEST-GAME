@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../models/hearts_state.dart';
 import '../models/student.dart';
 
 class StorageService {
@@ -118,6 +119,28 @@ class StorageService {
 
   static Future<void> markTutorialSeen() async {
     await appBox.put(_tutorialSeenKey, true);
+  }
+
+  // ─── HEARTS (persistent, level-attempt gate) ─────────────────────────────
+  static const _heartsCountKey = 'hearts_count';
+  static const _heartsRegenStartKey = 'hearts_regen_start_ms';
+
+  static HeartsState getHeartsState() {
+    final count = appBox.get(_heartsCountKey) as int?;
+    if (count == null) return HeartsState.initial();
+    return HeartsState(
+      count: count,
+      regenStartMs: appBox.get(_heartsRegenStartKey) as int?,
+    );
+  }
+
+  static Future<void> saveHeartsState(HeartsState hearts) async {
+    await appBox.put(_heartsCountKey, hearts.count);
+    if (hearts.regenStartMs == null) {
+      await appBox.delete(_heartsRegenStartKey);
+    } else {
+      await appBox.put(_heartsRegenStartKey, hearts.regenStartMs);
+    }
   }
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────

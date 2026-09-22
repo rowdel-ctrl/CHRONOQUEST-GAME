@@ -88,6 +88,16 @@ class GameConstants {
   static const double jumpForce = -480.0;
   static const double spawnInterval = 800.0;
   static const int livesPerLevel = 10;
+
+  /// Cap on the persistent hearts pool that gates *starting or retrying* a
+  /// level (see HeartsState) — separate from [livesPerLevel], the in-level
+  /// HP spent on individual mistakes within an attempt that's already
+  /// underway. Losing a level spends one heart from this pool; it
+  /// regenerates over real time via [heartRegenInterval], even while the
+  /// app is closed.
+  static const int maxHearts = 5;
+  static const Duration heartRegenInterval = Duration(minutes: 10);
+
   static const int questionsPerLevel = 10; // levels 1-9
   static const int bossWarmupQuestions = 10; // level 10, phase 1
   static const int bossFightQuestions = 12; // level 10, phase 2

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/hearts_state.dart';
 import '../models/student.dart';
 import '../services/storage_service.dart';
 
@@ -8,6 +9,7 @@ class GameState {
   final int currentLevel;
   final PowerUps powerUps;
   final int coins;
+  final HeartsState hearts;
 
   GameState({
     this.selectedCharacterId = 'rizal',
@@ -15,7 +17,9 @@ class GameState {
     this.currentLevel = 1,
     PowerUps? powerUps,
     this.coins = 0,
-  }) : powerUps = powerUps ?? PowerUps();
+    HeartsState? hearts,
+  })  : powerUps = powerUps ?? PowerUps(),
+        hearts = hearts ?? HeartsState.initial();
 
   GameState copyWith({
     String? selectedCharacterId,
@@ -23,6 +27,7 @@ class GameState {
     int? currentLevel,
     PowerUps? powerUps,
     int? coins,
+    HeartsState? hearts,
   }) {
     return GameState(
       selectedCharacterId:
@@ -31,6 +36,7 @@ class GameState {
       currentLevel: currentLevel ?? this.currentLevel,
       powerUps: powerUps ?? this.powerUps,
       coins: coins ?? this.coins,
+      hearts: hearts ?? this.hearts,
     );
   }
 }
@@ -38,11 +44,42 @@ class GameState {
 class GameNotifier extends StateNotifier<GameState> {
   GameNotifier() : super(GameState()) {
     _loadCharacter();
+    _loadHearts();
   }
 
   void _loadCharacter() {
     final char = StorageService.getCharacter();
     state = state.copyWith(selectedCharacterId: char);
+  }
+
+  void _loadHearts() {
+    final hearts = StorageService.getHeartsState().regenerated(DateTime.now());
+    StorageService.saveHeartsState(hearts);
+    state = state.copyWith(hearts: hearts);
+  }
+
+  /// Re-applies pending regen so anything watching [GameState.hearts] (e.g.
+  /// a level-select countdown) reflects real elapsed time, not just the
+  /// value from when the provider was created.
+  void refreshHearts() {
+    final hearts = state.hearts.regenerated(DateTime.now());
+    if (hearts.count != state.hearts.count) {
+      StorageService.saveHeartsState(hearts);
+    }
+    state = state.copyWith(hearts: hearts);
+  }
+
+  bool get canStartLevel => state.hearts.count > 0;
+
+  /// A level attempt was fully failed (in-level HP hit zero) — spends one
+  /// heart from the persistent pool. In-level HP itself
+  /// (`GameConstants.livesPerLevel`) is untouched by this; it always resets
+  /// fresh on the next attempt, gated only by whether that attempt is
+  /// allowed to start at all.
+  void consumeHeartOnLevelFailed() {
+    final hearts = state.hearts.afterLevelFailed(DateTime.now());
+    StorageService.saveHeartsState(hearts);
+    state = state.copyWith(hearts: hearts);
   }
 
   void selectCharacter(String characterId) {

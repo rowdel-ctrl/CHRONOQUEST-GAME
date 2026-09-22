@@ -57,6 +57,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     };
 
     game.onLevelFailed = () {
+      ref.read(gameProvider.notifier).consumeHeartOnLevelFailed();
       context.go('/level-failed/${widget.eraId}/${widget.level}');
     };
   }

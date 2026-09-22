@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
 
-class LevelFailedScreen extends StatelessWidget {
+String _formatCountdown(Duration d) {
+  final minutes = d.inMinutes;
+  final seconds = d.inSeconds % 60;
+  return '$minutes:${seconds.toString().padLeft(2, '0')}';
+}
+
+class LevelFailedScreen extends ConsumerWidget {
   final String eraId;
   final int level;
   const LevelFailedScreen({
@@ -14,7 +22,11 @@ class LevelFailedScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hearts = ref.watch(gameProvider).hearts;
+    final hasHearts = hearts.count > 0;
+    final timeUntilNext = hearts.timeUntilNext(DateTime.now());
+
     return Scaffold(
       body: GameBackdrop(
         baseColor: AppColors.background,
@@ -75,24 +87,29 @@ class LevelFailedScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 14),
 
-                      // Hearts display (all empty)
+                      // Hearts display — the persistent, cross-level pool
+                      // (separate from in-level HP) that this failure just
+                      // spent one of.
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                          3,
-                          (i) => const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4),
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: AppColors.danger,
-                              size: 24,
+                          GameConstants.maxHearts,
+                          (i) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Image.asset(
+                              i < hearts.count
+                                  ? 'assets/ui/heart_full.png'
+                                  : 'assets/ui/heart_empty.png',
+                              width: 24,
+                              height: 24,
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
 
-                      // Hint / encouragement
+                      // Hint / encouragement, or a no-hearts notice once the
+                      // persistent pool is empty.
                       GamePanel(
                         color: AppColors.surfaceAlt,
                         borderWidth: 2,
@@ -100,14 +117,24 @@ class LevelFailedScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(12),
                         child: Row(
                           children: [
-                            const Icon(Icons.lightbulb_outline,
-                                color: AppColors.warning, size: 20),
+                            Icon(
+                              hasHearts
+                                  ? Icons.lightbulb_outline
+                                  : Icons.favorite_border,
+                              color: hasHearts
+                                  ? AppColors.warning
+                                  : AppColors.danger,
+                              size: 20,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                'Tip: Basahin muli ang kasaysayan bago '
-                                'subukan ulit. Makakatulong ito sa '
-                                'pagsagot!',
+                                hasHearts
+                                    ? 'Tip: Basahin muli ang kasaysayan bago '
+                                        'subukan ulit. Makakatulong ito sa '
+                                        'pagsagot!'
+                                    : 'Wala nang puso! Susunod na puso sa '
+                                        '${_formatCountdown(timeUntilNext!)}.',
                                 style: GoogleFonts.poppins(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,
@@ -120,15 +147,18 @@ class LevelFailedScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 18),
 
-                      // Retry button
+                      // Retry button — disabled once the persistent hearts
+                      // pool is empty, until one regenerates.
                       GameButton(
                         label: 'ULIT',
                         icon: Icons.refresh,
                         color: AppColors.accent,
                         width: double.infinity,
-                        onPressed: () {
-                          context.go('/game/$eraId/$level');
-                        },
+                        onPressed: hasHearts
+                            ? () {
+                                context.go('/game/$eraId/$level');
+                              }
+                            : null,
                       ),
                       const SizedBox(height: 10),
 
