@@ -4,6 +4,7 @@ import '../../core/constants.dart';
 import '../../models/question.dart';
 import '../../widgets/game_ui.dart';
 import 'answer_feedback.dart';
+import 'question_layout.dart';
 
 /// Seconds spent on the current question; turns red after 15 s.
 class TimerChip extends StatelessWidget {
@@ -53,6 +54,7 @@ class AnswerButton extends StatelessWidget {
   final AnswerState state;
   final bool selected;
   final VoidCallback onTap;
+  final QuestionLayout layout;
 
   const AnswerButton({
     super.key,
@@ -60,6 +62,7 @@ class AnswerButton extends StatelessWidget {
     required this.state,
     required this.selected,
     required this.onTap,
+    this.layout = QuestionLayout.regular,
   });
 
   @override
@@ -100,7 +103,7 @@ class AnswerButton extends StatelessWidget {
                   '${option.label}) ${option.text}',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 14,
+                    fontSize: layout.optionFontSize,
                     color: AppColors.textPrimary,
                     fontWeight: state == AnswerState.correct
                         ? FontWeight.bold
@@ -129,18 +132,20 @@ class AnswerButton extends StatelessWidget {
 class ExplanationPanel extends StatelessWidget {
   final Question question;
   final VoidCallback onContinue;
+  final QuestionLayout layout;
 
   const ExplanationPanel({
     super.key,
     required this.question,
     required this.onContinue,
+    this.layout = QuestionLayout.regular,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(layout.explanationPadding),
       margin: const EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
         color: AppColors.danger.withValues(alpha: 0.08),
@@ -169,16 +174,17 @@ class ExplanationPanel extends StatelessWidget {
             question.explanation.isNotEmpty
                 ? question.explanation
                 : 'Ang tamang sagot ay ${question.correctAnswer}.',
-            style: const TextStyle(
-              fontSize: 14,
+            style: TextStyle(
+              fontSize: layout.explanationFontSize,
               color: AppColors.textPrimary,
               height: 1.4,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: layout.explanationGap),
           GameButton(
             label: 'SUSUNOD',
             fontSize: 11,
+            minHeight: layout.buttonMinHeight,
             width: double.infinity,
             onPressed: onContinue,
           ),
@@ -194,6 +200,7 @@ class PowerupButton extends StatelessWidget {
   final int count;
   final VoidCallback onTap;
   final bool enabled;
+  final QuestionLayout layout;
 
   const PowerupButton({
     super.key,
@@ -202,6 +209,7 @@ class PowerupButton extends StatelessWidget {
     required this.count,
     required this.onTap,
     required this.enabled,
+    this.layout = QuestionLayout.regular,
   });
 
   @override
@@ -212,7 +220,8 @@ class PowerupButton extends StatelessWidget {
       child: Opacity(
         opacity: isUsable ? 1.0 : 0.4,
         child: Container(
-          constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+          constraints:
+              BoxConstraints(minHeight: layout.powerupMinHeight, minWidth: 48),
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
