@@ -5,7 +5,7 @@ import '../chrono_game.dart';
 import 'player_component.dart';
 
 /// Scrolling background shared by all eras, built from four depth layers
-/// (back trees, middle trees, light rays, front trees). Each layer's scroll
+/// (back trees, light rays, middle trees, front trees). Each layer's scroll
 /// offset is driven every frame from how far the camera actually moved
 /// (`game.cameraLeftEdgeX`), scaled down to the same background:world speed
 /// ratio the original hardcoded velocity used, then further scaled per layer
@@ -43,10 +43,15 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
         [
           // Farthest — opaque sky + faint trunks.
           ParallaxImageData('backgrounds/parallax-forest-back-trees.png'),
+          // Translucent light rays — extra depth layer. Placed right after
+          // the back layer (not after the mid trees) since array position
+          // drives both draw order and scroll speed in Flame's
+          // ParallaxComponent: a light-ray layer reads as distant/ambient
+          // only if it draws behind and scrolls slower than the mid trees,
+          // not faster and in front of them.
+          ParallaxImageData('backgrounds/parallax-forest-lights.png'),
           // Mid trees, transparent gaps.
           ParallaxImageData('backgrounds/parallax-forest-middle-trees.png'),
-          // Translucent light rays — extra depth layer.
-          ParallaxImageData('backgrounds/parallax-forest-lights.png'),
           // Closest — big dark trunks.
           ParallaxImageData('backgrounds/parallax-forest-front-trees.png'),
         ],
