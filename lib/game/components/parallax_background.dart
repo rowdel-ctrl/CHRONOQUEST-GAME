@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import '../chrono_game.dart';
 import 'player_component.dart';
 
-/// Scrolling era background built from two depth layers (`_far`, `_near`).
-/// Each layer's scroll offset is driven every frame from how far the
-/// camera actually moved (`game.cameraLeftEdgeX`), scaled down to the same
-/// background:world speed ratio the original hardcoded velocity used, then
-/// further scaled per layer by `velocityMultiplierDelta` — not a fixed
-/// guessed velocity. This keeps the background locked to the camera even if
-/// the player's forward speed ever changes (e.g. a future speed power-up),
-/// instead of drifting out of sync.
+/// Scrolling background shared by all eras, built from four depth layers
+/// (back trees, middle trees, light rays, front trees). Each layer's scroll
+/// offset is driven every frame from how far the camera actually moved
+/// (`game.cameraLeftEdgeX`), scaled down to the same background:world speed
+/// ratio the original hardcoded velocity used, then further scaled per layer
+/// by `velocityMultiplierDelta` — not a fixed guessed velocity. This keeps
+/// the background locked to the camera even if the player's forward speed
+/// ever changes (e.g. a future speed power-up), instead of drifting out of
+/// sync.
 class ParallaxBackground extends ParallaxComponent<ChronoGame> {
   double? _lastCameraX;
 
@@ -22,7 +23,8 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
   /// keeps it looking like it's further away than the foreground. Re-anchored
   /// to real camera movement, that same ratio has to be reapplied explicitly,
   /// or feeding the camera's full speed straight into `baseVelocity` makes
-  /// the (2.2x/4.84x multiplied) layers scroll faster than the world itself.
+  /// the (velocityMultiplierDelta-multiplied) layers scroll faster than the
+  /// world itself.
   static const double _referenceBaseVelocity = 20.0;
 
   ParallaxBackground() : super(priority: -10);
@@ -36,14 +38,19 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
     size = game.size;
     position = Vector2.zero();
 
-    final bgKey = _backgroundAssetKeyForEra(game.currentEra);
     try {
       parallax = await game.loadParallax(
         [
-          ParallaxImageData('backgrounds/${bgKey}_far.png'),
-          ParallaxImageData('backgrounds/${bgKey}_near.png'),
+          // Farthest — opaque sky + faint trunks.
+          ParallaxImageData('backgrounds/parallax-forest-back-trees.png'),
+          // Mid trees, transparent gaps.
+          ParallaxImageData('backgrounds/parallax-forest-middle-trees.png'),
+          // Translucent light rays — extra depth layer.
+          ParallaxImageData('backgrounds/parallax-forest-lights.png'),
+          // Closest — big dark trunks.
+          ParallaxImageData('backgrounds/parallax-forest-front-trees.png'),
         ],
-        velocityMultiplierDelta: Vector2(2.2, 1.0),
+        velocityMultiplierDelta: Vector2(1.4, 1.0),
         fill: LayerFill.height,
         repeat: ImageRepeat.repeatX,
         size: size,
@@ -51,8 +58,7 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
     } catch (e) {
       // Fallback so the game is still playable if a background asset is
       // somehow missing, instead of leaving the whole load future unresolved.
-      debugPrint(
-          'Failed to load parallax background for ${game.currentEra}: $e');
+      debugPrint('Failed to load parallax background: $e');
       add(RectangleComponent(
         size: size,
         paint: Paint()..color = const Color(0xFFD4C4A8),
@@ -74,12 +80,5 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
     _lastCameraX = game.cameraLeftEdgeX;
 
     super.update(dt);
-  }
-
-  /// Background PNGs are named without the hyphen used in era ids
-  /// (e.g. 'precolonial_far.png' for the 'pre-colonial' era).
-  String _backgroundAssetKeyForEra(String era) {
-    if (era == 'pre-colonial') return 'precolonial';
-    return era;
   }
 }
