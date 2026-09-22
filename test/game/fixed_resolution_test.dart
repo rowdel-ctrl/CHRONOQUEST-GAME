@@ -42,9 +42,11 @@ void main() {
 
     test('a sprite covers the same fraction of the screen on every device',
         () {
-      // This is the whole point: the 80px-tall player was ~11% of a 720px
-      // window but ~22% of a ~375px phone. Now it is 11% everywhere.
-      const playerHeight = 80.0;
+      // This is the whole point: a fixed-height sprite was a different
+      // fraction of the screen on every device before this viewport existed
+      // (e.g. ~11% of a 720px window but ~22% of a ~375px phone). Now it's
+      // the same fraction everywhere, whatever that height is tuned to.
+      const playerHeight = 120.0;
       final fractions = _canvasSizes.values.map((canvas) {
         final game = ChronoGame()..onGameResize(canvas);
         return playerHeight / game.size.y;
