@@ -109,6 +109,17 @@ class StorageService {
     await appBox.put(_pendingResultsKey, []);
   }
 
+  // ─── TUTORIAL ─────────────────────────────────────────────────────────────
+  static const _tutorialSeenKey = 'has_seen_tutorial';
+
+  static bool hasSeenTutorial() {
+    return appBox.get(_tutorialSeenKey, defaultValue: false) as bool;
+  }
+
+  static Future<void> markTutorialSeen() async {
+    await appBox.put(_tutorialSeenKey, true);
+  }
+
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   static Future<void> clearAll() async {
     await _storage.deleteAll();

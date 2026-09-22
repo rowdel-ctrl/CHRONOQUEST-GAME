@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
+import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,11 @@ class _CharacterSelectionScreenState
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 0.62, initialPage: 0);
+    if (!StorageService.hasSeenTutorial()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) context.push('/tutorial');
+      });
+    }
   }
 
   @override
@@ -181,6 +187,17 @@ class _CharacterSelectionScreenState
               icon: Icons.emoji_events,
               tooltip: 'Leaderboard',
               onTap: () => context.push('/leaderboard'),
+            ),
+          ),
+
+          // How to play top-right button
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8,
+            right: 12,
+            child: _SideIconButton(
+              icon: Icons.menu_book_rounded,
+              tooltip: 'Paano Laruin',
+              onTap: () => context.push('/tutorial'),
             ),
           ),
         ],
