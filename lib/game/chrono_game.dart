@@ -58,7 +58,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   double get cameraRightEdgeX => cameraLeftEdgeX + size.x;
 
   /// Whether [currentLevel] is the last level of [currentEra] — each era has
-  /// its own level count (Section 1: 10/5/6/8/8/5), so "the boss level" is
+  /// its own level count (Section 1: 10/5/7/8/8/5), so "the boss level" is
   /// never a fixed number.
   bool get isBossLevel => currentLevel == getEraById(currentEra).levels.length;
 

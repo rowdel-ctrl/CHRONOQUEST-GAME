@@ -155,10 +155,14 @@ class EraData {
   final int grade;
   final int term;
 
-  /// Number of playable levels, last one always the boss — uneven on
-  /// purpose (10/5/6/8/8/5 per Section 1), because the curriculum is
-  /// uneven. Do not normalise this to a uniform 10.
-  final int levelCount;
+  /// Each level's BOW week numbers, in order — one list per level, sourced
+  /// from GAMEPLAY-V2.md Section 1's "Curriculum weeks, sourced" table
+  /// (itself transcribed from the DepEd Budget of Work PDFs; real data, not
+  /// invented). The era's level count is simply this list's length, uneven
+  /// on purpose (10/5/7/8/8/5 per Section 1) because the curriculum is
+  /// uneven — do not normalise it, and do not add a separate `levelCount`
+  /// field that could drift out of sync with it.
+  final List<List<int>> levelWeeks;
 
   const EraData({
     required this.id,
@@ -172,18 +176,18 @@ class EraData {
     required this.historicalText,
     required this.grade,
     required this.term,
-    required this.levelCount,
+    required this.levelWeeks,
   });
 
-  /// This era's levels, 1-indexed, last one flagged `isBoss`. `weeks` is
-  /// left empty on every one — see [CurriculumTag].
+  /// This era's levels, 1-indexed, last one flagged `isBoss`, each carrying
+  /// its real BOW weeks from [levelWeeks].
   List<Level> get levels => List.generate(
-        levelCount,
+        levelWeeks.length,
         (i) => Level(
           eraId: id,
           index: i + 1,
-          curriculum: CurriculumTag(grade: grade, term: term),
-          isBoss: i + 1 == levelCount,
+          curriculum: CurriculumTag(grade: grade, term: term, weeks: levelWeeks[i]),
+          isBoss: i + 1 == levelWeeks.length,
         ),
       );
 }
@@ -220,7 +224,9 @@ const List<EraData> allEras = [
         'loob ng mga Pilipino nang ipagtanggol ni Datu Lapu-Lapu ang kanyang lupain.',
     grade: 5,
     term: 1,
-    levelCount: 10,
+    levelWeeks: [
+      [1], [2], [3], [4], [5], [6], [7], [8], [9], [10],
+    ],
   ),
   EraData(
     id: 'spanish',
@@ -241,7 +247,9 @@ const List<EraData> allEras = [
         'na pinamunuan ni Andres Bonifacio at ang Katipunan.',
     grade: 5,
     term: 2,
-    levelCount: 5,
+    levelWeeks: [
+      [1, 2], [3, 4, 5], [6, 7], [8], [9, 10],
+    ],
   ),
   EraData(
     id: 'nationalism',
@@ -268,7 +276,12 @@ const List<EraData> allEras = [
         'pangyayaring nagpaalab sa damdaming makabayan ng mga Pilipino.',
     grade: 5,
     term: 3,
-    levelCount: 6,
+    // 7 levels, not 6 — GAMEPLAY-V2.md's original count of this era's BOW
+    // competency groups miscounted; corrected in its revision 5 (2026-09-25)
+    // after recounting the source PDF gives [1]/[2-3]/[4-5]/[6]/[7]/[8-9]/[10].
+    levelWeeks: [
+      [1], [2, 3], [4, 5], [6], [7], [8, 9], [10],
+    ],
   ),
   EraData(
     id: 'american',
@@ -289,7 +302,9 @@ const List<EraData> allEras = [
         'ng Pilipinas ang kalayaan.',
     grade: 6,
     term: 1,
-    levelCount: 8,
+    levelWeeks: [
+      [1], [2], [3], [4], [5], [6], [7, 8], [9, 10],
+    ],
   ),
   EraData(
     id: 'ww2',
@@ -309,7 +324,9 @@ const List<EraData> allEras = [
         'isa sa pinaka-mapanirang labanan sa lungsod sa buong Ikalawang Digmaang Pandaigdig.',
     grade: 6,
     term: 2,
-    levelCount: 8,
+    levelWeeks: [
+      [1, 2], [3], [4], [5], [6], [7], [8, 9], [10],
+    ],
   ),
   EraData(
     id: 'modern',
@@ -330,7 +347,9 @@ const List<EraData> allEras = [
         'pagkakapantay-pantay para sa lahat ng Pilipino.',
     grade: 6,
     term: 3,
-    levelCount: 5,
+    levelWeeks: [
+      [1, 2, 3], [4], [5, 6], [7, 8], [9, 10],
+    ],
   ),
 ];
 

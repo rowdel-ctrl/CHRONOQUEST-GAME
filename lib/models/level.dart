@@ -1,8 +1,8 @@
 /// A level's curriculum alignment: which grade and term it belongs to, and
-/// (once transcribed from the DepEd Budget of Work — see GAMEPLAY-V2.md
-/// Section 1) which BOW weeks it covers. `weeks` is left empty rather than
-/// guessed, since CHRONO-DASHBOARD reports to teachers by this data — a
-/// fabricated week number would be worse than an honestly-missing one.
+/// which DepEd Budget of Work weeks it covers — sourced from GAMEPLAY-V2.md
+/// Section 1's "Curriculum weeks, sourced" table (transcribed from the real
+/// BOW PDFs), not invented, since CHRONO-DASHBOARD reports to teachers by
+/// this data.
 class CurriculumTag {
   final int grade;
   final int term;
@@ -16,7 +16,7 @@ class CurriculumTag {
 }
 
 /// One playable stage within an era. Eras carry variable-length level lists
-/// (Section 1: 10/5/6/8/8/5) rather than a uniform count, so a level is
+/// (Section 1: 10/5/7/8/8/5, 43 total) rather than a uniform count, so a level is
 /// identified by its era and its 1-based position within that era's list,
 /// not by a global number. There is no separate "question pool" field —
 /// `QuestionBank.getQuestions(eraId, index)` already looks a level's
