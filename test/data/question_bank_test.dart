@@ -62,8 +62,11 @@ void main() {
     });
 
     test('boss level returns warm-up plus boss questions', () {
+      // pre-colonial, not spanish: which level number is the boss level is
+      // now era-specific (Phase 0.5 registry), and spanish's is 5, not 10.
       expect(
-        QuestionBank.getQuestions('spanish', 10, random: Random(1)).length,
+        QuestionBank.getQuestions('pre-colonial', 10, random: Random(1))
+            .length,
         GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions,
       );
     });

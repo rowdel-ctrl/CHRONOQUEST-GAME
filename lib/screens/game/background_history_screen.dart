@@ -162,6 +162,8 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
         return const Color(0xFF1B5E20);
       case 'spanish':
         return const Color(0xFF4E342E);
+      case 'nationalism':
+        return const Color(0xFF4E342E);
       case 'american':
         return const Color(0xFF0D47A1);
       case 'ww2':
@@ -205,6 +207,24 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
             'term': 'Himagsikan',
             'icon': '🔥',
             'def': 'Rebolusyon ng mga Pilipino'
+          },
+        ];
+      case 'nationalism':
+        return [
+          {
+            'term': 'Propaganda Movement',
+            'icon': '📰',
+            'def': 'Kampanya ng mga ilustrado para sa reporma sa Espanya'
+          },
+          {
+            'term': 'La Liga Filipina',
+            'icon': '🤝',
+            'def': 'Samahang itinatag ni Rizal noong 1892'
+          },
+          {
+            'term': 'GOMBURZA',
+            'icon': '✝️',
+            'def': 'Tatlong paring pinatay noong 1872, sagisag ng paglaban'
           },
         ];
       case 'american':

@@ -57,6 +57,11 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// viewport's virtual size, same as in groundY above.
   double get cameraRightEdgeX => cameraLeftEdgeX + size.x;
 
+  /// Whether [currentLevel] is the last level of [currentEra] — each era has
+  /// its own level count (Section 1: 10/5/6/8/8/5), so "the boss level" is
+  /// never a fixed number.
+  bool get isBossLevel => currentLevel == getEraById(currentEra).levels.length;
+
   // Game state
   late PlayerComponent player;
   late EnemySpawner spawner;
@@ -153,7 +158,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // Questions are intentionally bundled with the app — no backend round-trip.
     final questions = QuestionBank.getQuestions(currentEra, currentLevel);
 
-    if (currentLevel == 10) {
+    if (isBossLevel) {
       // Split into warm-up (regular enemies) and boss-phase (asked while fighting).
       final warmup = questions.take(GameConstants.bossWarmupQuestions).toList();
       bossQuestions =
@@ -236,9 +241,9 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   void checkLevelEnd() {
     if (spawner.allEnemiesSpawned &&
         world.children.whereType<EnemyComponent>().isEmpty) {
-      if (currentLevel == 10 && !bossPhase) {
+      if (isBossLevel && !bossPhase) {
         startBossFight();
-      } else if (currentLevel < 10) {
+      } else if (!isBossLevel) {
         levelComplete();
       }
     }
@@ -284,7 +289,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
       await apiService.submitResult(QuizResult(
         era: currentEra,
         level: currentLevel,
-        type: currentLevel == 10 ? 'post_test' : 'pre_test',
+        type: isBossLevel ? 'post_test' : 'pre_test',
         correctAnswersCount: answers.where((a) => a.isCorrect).length,
         totalQuestions: answers.length,
         percentage: percentage,

@@ -1,4 +1,6 @@
 // Destination in your repo: lib/models/era_progress.dart
+import '../core/constants.dart';
+
 class EraProgress {
   final String eraId;
   final int levelsCompleted;
@@ -20,9 +22,10 @@ class EraProgress {
 
   bool isLevelUnlocked(int level) {
     if (level == 1) return true;
-    if (level == 10) {
-      // Boss level — all 9 levels must be done
-      return levelsCompleted >= 9;
+    final levelCount = getEraById(eraId).levels.length;
+    if (level == levelCount) {
+      // Boss level — every level before it must be done
+      return levelsCompleted >= levelCount - 1;
     }
     return levelsCompleted >= level - 1;
   }
@@ -37,8 +40,9 @@ class EraProgress {
 
   double get averageLevelScore {
     if (levelResults.isEmpty) return 0;
+    final levelCount = getEraById(eraId).levels.length;
     final scores = levelResults.values
-        .where((r) => r.level < 10)
+        .where((r) => r.level < levelCount)
         .map((r) => r.percentage.toDouble());
     if (scores.isEmpty) return 0;
     return scores.reduce((a, b) => a + b) / scores.length;

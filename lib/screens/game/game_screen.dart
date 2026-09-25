@@ -51,7 +51,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
       // Navigate, carrying the attempt's real result so the completion
       // screen reports what the player actually scored.
-      if (widget.level == 10) {
+      if (widget.level == getEraById(widget.eraId).levels.length) {
         context.go('/era-complete/${widget.eraId}');
       } else {
         context.go(

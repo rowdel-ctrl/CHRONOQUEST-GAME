@@ -42,6 +42,7 @@ class GroundSection extends PositionComponent
   static const Map<String, Color> _bodyColors = {
     'pre-colonial': Color(0xFF5D4E37),
     'spanish': Color(0xFF808080),
+    'nationalism': Color(0xFF808080),
     'american': Color(0xFF8B6914),
     'ww2': Color(0xFF4A4A3A),
     'modern': Color(0xFF555555),

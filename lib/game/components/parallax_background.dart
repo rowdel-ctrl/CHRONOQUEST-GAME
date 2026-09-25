@@ -39,10 +39,7 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
   ///
   /// Keyed by the era ids that exist today. Section 1's six-era structure
   /// maps onto them through its own art table (era 1 = pre-colonial,
-  /// 2 = spanish, 4 = american, 5 = ww2, 6 = modern); era 3
-  /// (Pag-usbong ng Nasyonalismo) has no era id to attach to until the
-  /// Phase 0.5 registry creates one, so [era3Nasyonalismo] is defined ready
-  /// for it but unreachable in game until then.
+  /// 2 = spanish, 3 = nationalism, 4 = american, 5 = ww2, 6 = modern).
   static const Color era1Sinaunang = Color(0x665E8C3A); // warm green
   static const Color era2Espanya = Color(0x66A87232); // sepia / amber
   static const Color era3Nasyonalismo = Color(0x66C9A227); // warm ochre
@@ -53,6 +50,7 @@ class ParallaxBackground extends ParallaxComponent<ChronoGame> {
   static const Map<String, Color> eraTints = {
     'pre-colonial': era1Sinaunang,
     'spanish': era2Espanya,
+    'nationalism': era3Nasyonalismo,
     'american': era4Himagsikan,
     'ww2': era5Kolonyal,
     'modern': era6BatasMilitar,

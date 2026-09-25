@@ -39,7 +39,7 @@ class HudOverlayWidget extends StatelessWidget {
                   const Spacer(),
                   // Level indicator
                   GameBadge(
-                    text: game.currentLevel == 10
+                    text: game.isBossLevel
                         ? 'BOSS'
                         : 'LVL ${game.currentLevel}',
                     color: AppColors.primary,

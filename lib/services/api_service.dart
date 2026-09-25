@@ -154,13 +154,7 @@ class ApiService {
     } on DioException catch (e) {
       // Fallback to cached progress
       final Map<String, EraProgress> cached = {};
-      for (final eraId in [
-        'pre-colonial',
-        'spanish',
-        'american',
-        'ww2',
-        'modern'
-      ]) {
+      for (final eraId in allEras.map((e) => e.id)) {
         final data = StorageService.getCachedEraProgress(eraId);
         if (data != null) {
           cached[eraId] = EraProgress.fromJson(data);

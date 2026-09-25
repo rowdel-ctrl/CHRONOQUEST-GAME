@@ -24,7 +24,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   @override
   Future<void> onLoad() async {
-    final bossName = _getBossNameForEra(eraId);
+    final bossName = getEraById(eraId).bossName;
     idleSprite     = await game.loadSprite('bosses/${bossName}_idle.png');
     attackSprite   = await game.loadSprite('bosses/${bossName}_attack.png');
     defeatedSprite = await game.loadSprite('bosses/${bossName}_defeated.png');
@@ -93,16 +93,5 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     final q = game.bossQuestions[_bossQuestionIndex];
     _bossQuestionIndex++;
     game.showBossQuestion(q, this);
-  }
-
-  String _getBossNameForEra(String era) {
-    const names = {
-      'pre-colonial': 'bakunawa',
-      'spanish':      'governor',
-      'american':     'general',
-      'ww2':          'commander',
-      'modern':       'corruption_boss',
-    };
-    return names[era] ?? 'governor';
   }
 }

@@ -18,9 +18,12 @@ class WallComponent extends SpriteComponent
 
   /// Obstacle PNGs are named without the hyphen used in era ids
   /// (e.g. 'precolonial_wall.png' for the 'pre-colonial' era) — same
-  /// mismatch as the background art, fixed the same way here.
+  /// mismatch as the background art, fixed the same way here. 'nationalism'
+  /// (Era 3) has no wall art of its own and reuses 'spanish_wall.png', which
+  /// GAMEPLAY-V2.md Section 1 calls period-correct.
   String _obstacleAssetKeyForEra(String era) {
     if (era == 'pre-colonial') return 'precolonial';
+    if (era == 'nationalism') return 'spanish';
     return era;
   }
 

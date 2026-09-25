@@ -90,9 +90,12 @@ class AudioService {
 
   /// Music files drop the hyphen used in era ids (`bgm_precolonial.mp3` for
   /// the `pre-colonial` era) — the same naming mismatch `WallComponent`
-  /// handles for obstacle art, fixed the same way here.
+  /// handles for obstacle art, fixed the same way here. There is no
+  /// `bgm_nationalism.mp3` yet (Era 3 has no BGM of its own), so it reuses
+  /// the Spanish era's track, matching the art/enemy/boss reuse elsewhere.
   String _bgmAssetKeyForEra(String eraId) {
     if (eraId == 'pre-colonial') return 'precolonial';
+    if (eraId == 'nationalism') return 'spanish';
     return eraId;
   }
 

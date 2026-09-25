@@ -105,7 +105,7 @@ class LevelNode extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            isBoss ? 'Level 10' : 'Level $level',
+            'Level $level',
             style: TextStyle(
               color: isUnlocked ? Colors.white70 : Colors.white30,
               fontSize: 10,

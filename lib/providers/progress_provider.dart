@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/constants.dart';
 import '../models/era_progress.dart';
 import '../services/api_service.dart';
 import '../services/storage_service.dart';
@@ -40,8 +41,7 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
     } catch (e) {
       // Try loading from cache
       final Map<String, EraProgress> cached = {};
-      for (final eraId
-          in ['pre-colonial', 'spanish', 'american', 'ww2', 'modern']) {
+      for (final eraId in allEras.map((e) => e.id)) {
         final data = StorageService.getCachedEraProgress(eraId);
         if (data != null) {
           cached[eraId] = EraProgress.fromJson(data);

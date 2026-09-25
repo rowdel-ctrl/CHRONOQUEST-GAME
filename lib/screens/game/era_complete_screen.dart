@@ -71,7 +71,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
 
   bool get hasCompleteData => levelsAverage != null && postTestScore != null;
 
-  // Learning Gain = Boss (Level 10) score - Average(Levels 1-9)
+  // Learning Gain = Boss level score - Average(every level before it)
   int get learningGain =>
       hasCompleteData ? (postTestScore! - levelsAverage!.round()) : 0;
 
@@ -193,9 +193,10 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                             constraints: const BoxConstraints(maxWidth: 440),
                             child: Column(
                             children: [
-                              // Levels 1-9 average (the real pre-test baseline)
+                              // Levels 1-(N-1) average (the real pre-test baseline)
                               _ScoreRow(
-                                label: 'Average sa mga Level (1–9):',
+                                label:
+                                    'Average sa mga Level (1–${era.levels.length - 1}):',
                                 percentage: levelsAverage!.round(),
                                 color: AppColors.warning,
                               ),
@@ -302,6 +303,8 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
       case 'pre-colonial':
         return const Color(0xFF1B5E20);
       case 'spanish':
+        return const Color(0xFF4E342E);
+      case 'nationalism':
         return const Color(0xFF4E342E);
       case 'american':
         return const Color(0xFF0D47A1);

@@ -16,14 +16,12 @@ class QuestionBank {
   static final Map<String, Map<int, List<Question>>> _bank = {};
   static bool _loaded = false;
 
-  /// The eras with a corresponding `assets/data/questions_<era>.json` file.
-  static const List<String> _eraIds = [
-    'pre-colonial',
-    'spanish',
-    'american',
-    'ww2',
-    'modern',
-  ];
+  /// The eras with a corresponding `assets/data/questions_<era>.json` file —
+  /// one per registry era. A missing/not-yet-written file (e.g. the new
+  /// 'nationalism' era added in Phase 0.5) is not an error: [loadAll]'s
+  /// try/catch below falls through to generated placeholder questions for
+  /// it, the same as any era whose pool runs short for a given level.
+  static List<String> get _eraIds => allEras.map((e) => e.id).toList();
 
   /// Loads and parses every era's question JSON into memory. Safe to call
   /// more than once — subsequent calls are a no-op.
@@ -58,10 +56,13 @@ class QuestionBank {
   }
 
   /// How many questions a level asks: the boss level's warm-up plus boss
-  /// phase, or [GameConstants.questionsPerLevel] for every other level.
-  static int _targetCount(int level) => level == 10
-      ? GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions
-      : GameConstants.questionsPerLevel;
+  /// phase, or [GameConstants.questionsPerLevel] for every other level. Which
+  /// level number is "the boss level" is era-specific (Section 1's level
+  /// counts are uneven), so this needs the era, not just the level index.
+  static int _targetCount(String era, int level) =>
+      level == getEraById(era).levels.length
+          ? GameConstants.bossWarmupQuestions + GameConstants.bossFightQuestions
+          : GameConstants.questionsPerLevel;
 
   /// Retrieves local MELC-aligned questions for a given Era and Level.
   ///
@@ -75,7 +76,7 @@ class QuestionBank {
   /// quiz should never hard-crash the game.
   static List<Question> getQuestions(String era, int level, {Random? random}) {
     final rng = random ?? Random();
-    final targetCount = _targetCount(level);
+    final targetCount = _targetCount(era, level);
 
     final pool = _bank[era]?[level];
     final List<Question> questions;

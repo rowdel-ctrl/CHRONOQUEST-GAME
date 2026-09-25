@@ -46,9 +46,9 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     super.dispose();
   }
 
-  bool _isLevelUnlocked(int level) {
+  bool _isLevelUnlocked(int level, int levelCount) {
     if (level == 1) return true;
-    if (level == 10) return completedLevels.length >= 9;
+    if (level == levelCount) return completedLevels.length >= levelCount - 1;
     return completedLevels.containsKey(level - 1);
   }
 
@@ -99,6 +99,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   @override
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
+    final levelCount = era.levels.length;
     final hearts = ref.watch(gameProvider).hearts;
     final hasHearts = hearts.count > 0;
     final timeUntilNext = hearts.timeUntilNext(DateTime.now());
@@ -155,13 +156,13 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
-                      children: List.generate(10, (i) {
+                      children: List.generate(levelCount, (i) {
                         final level = i + 1;
-                        final isUnlocked = _isLevelUnlocked(level);
+                        final isUnlocked = _isLevelUnlocked(level, levelCount);
                         final isCompleted =
                             completedLevels.containsKey(level);
                         final stars = completedLevels[level] ?? 0;
-                        final isBoss = level == 10;
+                        final isBoss = level == levelCount;
 
                         return Row(
                           children: [
@@ -208,7 +209,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '${completedLevels.length}/10 Levels Tapos',
+                      '${completedLevels.length}/$levelCount Levels Tapos',
                       style: const TextStyle(
                         color: Colors.white60,
                         fontSize: 13,
@@ -275,6 +276,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
       case 'pre-colonial':
         return const Color(0xFF1B5E20);
       case 'spanish':
+        return const Color(0xFF4E342E);
+      case 'nationalism':
         return const Color(0xFF4E342E);
       case 'american':
         return const Color(0xFF0D47A1);

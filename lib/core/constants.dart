@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import '../models/level.dart';
 
 // ─── COLORS ─────────────────────────────────────────────────────────────────
 // Retro pixel-adventure palette. Field names are unchanged from the old
@@ -132,16 +133,11 @@ class PointValues {
   static const int learningGainBonus = 75;
 }
 
-// ─── ERA-GRADE MAP ──────────────────────────────────────────────────────────
-const Map<String, List<String>> eraGradeMap = {
-  'pre-colonial': ['grade5'],
-  'spanish': ['grade5'],
-  'american': ['grade6'],
-  'ww2': ['grade6'],
-  'modern': ['grade6'],
-};
-
 // ─── ERA DATA ───────────────────────────────────────────────────────────────
+// One source of truth for the six eras and their level lists (GAMEPLAY-V2.md
+// Phase 0.5). Previously a level was just an `int` scoped to an era string,
+// with the boss position and question count baked in as the literal `10`
+// at ~18 call sites — this is what every one of them now reads from instead.
 class EraData {
   final String id;
   final String name;
@@ -153,6 +149,17 @@ class EraData {
   final Color groundColor;
   final String historicalText;
 
+  /// DepEd MATATAG grade (5 or 6) and three-term slot (1-3) this era
+  /// occupies — see GAMEPLAY-V2.md Section 1. Replaces the old standalone
+  /// `eraGradeMap`, which only ever mapped one grade per era anyway.
+  final int grade;
+  final int term;
+
+  /// Number of playable levels, last one always the boss — uneven on
+  /// purpose (10/5/6/8/8/5 per Section 1), because the curriculum is
+  /// uneven. Do not normalise this to a uniform 10.
+  final int levelCount;
+
   const EraData({
     required this.id,
     required this.name,
@@ -163,9 +170,36 @@ class EraData {
     required this.bossDialogue,
     required this.groundColor,
     required this.historicalText,
+    required this.grade,
+    required this.term,
+    required this.levelCount,
   });
+
+  /// This era's levels, 1-indexed, last one flagged `isBoss`. `weeks` is
+  /// left empty on every one — see [CurriculumTag].
+  List<Level> get levels => List.generate(
+        levelCount,
+        (i) => Level(
+          eraId: id,
+          index: i + 1,
+          curriculum: CurriculumTag(grade: grade, term: term),
+          isBoss: i + 1 == levelCount,
+        ),
+      );
 }
 
+// Era ids for pre-colonial/spanish/american/ww2/modern predate the six-era
+// curriculum and are kept as-is rather than renamed: they're the join key for
+// already-recorded progress (Hive locally, and QuizResult/EraProgress on the
+// backend), and nothing in Section 1 requires renaming them, only adding the
+// era the old five-era list was missing entirely — Era 3, Rise of Filipino
+// Nationalism, added below as 'nationalism'. `historicalText`/`subtitle` for
+// the five carried-over eras are otherwise unchanged from before this phase;
+// Section 1 notes that eras 4 and 5 each span more than one visual period
+// (era4 Spanish→American, era5 American→WW2→Modern) and that some of what
+// reads today as "American Period" content actually belongs on the Era 3/4
+// boundary — re-splitting that text needs the source BOW PDFs (Appendix D),
+// not a code change, so it's left as a known gap rather than guessed at.
 const List<EraData> allEras = [
   EraData(
     id: 'pre-colonial',
@@ -184,6 +218,9 @@ const List<EraData> allEras = [
         'iba pang bansa sa Asya. Gumamit sila ng baybayin, isang sistema ng pagsulat na '
         'orihinal na Filipino. Ang Labanan sa Mactan noong 1521 ay nagpakita ng lakas ng '
         'loob ng mga Pilipino nang ipagtanggol ni Datu Lapu-Lapu ang kanyang lupain.',
+    grade: 5,
+    term: 1,
+    levelCount: 10,
   ),
   EraData(
     id: 'spanish',
@@ -202,6 +239,36 @@ const List<EraData> allEras = [
         'ay nagbigay ng lupain sa mga Espanyol. Naglunsad ng mga rebolusyon ang mga Pilipino '
         'laban sa pananakop — mula sa Dagohoy Rebellion hanggang sa Himagsikan ng 1896 '
         'na pinamunuan ni Andres Bonifacio at ang Katipunan.',
+    grade: 5,
+    term: 2,
+    levelCount: 5,
+  ),
+  EraData(
+    id: 'nationalism',
+    name: 'Pag-usbong ng Nasyonalismo',
+    subtitle: 'Rise of Filipino Nationalism',
+    // Reuses the Spanish era's enemy set, wall art, ground colour and boss
+    // sprite throughout the codebase (GAMEPLAY-V2.md Section 1: "Era 3 has
+    // no boss sprite... reuse the Governor if time runs out"; "Era 3 reuses
+    // spanish_wall.png, which is period-correct").
+    guide: 'Marcelo H. del Pilar',
+    enemyTypes: ['spanish_soldier', 'tax_collector'],
+    bossName: 'governor',
+    bossDialogue: 'Ang pluma ba ay mas matalas sa espada?',
+    groundColor: Color(0xFF808080),
+    historicalText:
+        'Noong huling bahagi ng ika-19 na siglo, sumibol ang damdaming '
+        'nasyonalista sa mga Pilipino. Itinatag ang Propaganda Movement ng mga '
+        'ilustrado tulad nina Jose Rizal, Marcelo H. del Pilar, at Graciano '
+        'Lopez Jaena, na naglathala ng pahayagang La Solidaridad sa Espanya '
+        'upang hingin ang reporma. Isinulat ni Rizal ang Noli Me Tangere at El '
+        'Filibusterismo upang ilantad ang mga kaapihan sa ilalim ng Espanya. '
+        'Itinatag ni Rizal ang La Liga Filipina noong 1892. Ang GOMBURZA — '
+        'sina Padre Gomez, Burgos, at Zamora — ay pinatay noong 1872, isang '
+        'pangyayaring nagpaalab sa damdaming makabayan ng mga Pilipino.',
+    grade: 5,
+    term: 3,
+    levelCount: 6,
   ),
   EraData(
     id: 'american',
@@ -220,6 +287,9 @@ const List<EraData> allEras = [
         'maraming buhay ng Pilipino. Noong 1935, naitatag ang Commonwealth ng Pilipinas na '
         'may Manuel Quezon bilang unang Pangulo, at noong Hulyo 4, 1946, opisyal na nakamit '
         'ng Pilipinas ang kalayaan.',
+    grade: 6,
+    term: 1,
+    levelCount: 8,
   ),
   EraData(
     id: 'ww2',
@@ -237,6 +307,9 @@ const List<EraData> allEras = [
         'ang Hukbalahap. Noong Oktubre 1944, bumalik si General Douglas MacArthur at '
         'nagsimula ang Labanan para sa Pilipinas. Ang Labanan ng Maynila noong 1945 ay '
         'isa sa pinaka-mapanirang labanan sa lungsod sa buong Ikalawang Digmaang Pandaigdig.',
+    grade: 6,
+    term: 2,
+    levelCount: 8,
   ),
   EraData(
     id: 'modern',
@@ -255,6 +328,9 @@ const List<EraData> allEras = [
         'kapangyarihan ng mamamayan sa buong mundo. Patuloy na lumalago ang Pilipinas '
         'bilang isang demokratikong bansa na nagtataguyod ng kalayaan, katarungan, at '
         'pagkakapantay-pantay para sa lahat ng Pilipino.',
+    grade: 6,
+    term: 3,
+    levelCount: 5,
   ),
 ];
 

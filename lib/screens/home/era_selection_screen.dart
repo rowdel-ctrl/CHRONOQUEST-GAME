@@ -29,9 +29,8 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
     final gradeLevel = student?.gradeLevel ?? 'grade5';
 
     // Filter eras by grade level
-    final visibleEras = allEras
-        .where((era) => eraGradeMap[era.id]?.contains(gradeLevel) ?? false)
-        .toList();
+    final visibleEras =
+        allEras.where((era) => 'grade${era.grade}' == gradeLevel).toList();
 
     final visibleEraIds = visibleEras.map((e) => e.id).toList();
 
@@ -335,7 +334,7 @@ class _EraBook extends StatelessWidget {
                           color: bookColor.withValues(alpha: 0.5), width: 1),
                     ),
                     child: Text(
-                      '$levelsCompleted/10 levels',
+                      '$levelsCompleted/${era.levels.length} levels',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
@@ -357,6 +356,8 @@ class _EraBook extends StatelessWidget {
       case 'pre-colonial':
         return const Color(0xFF2E7D32);
       case 'spanish':
+        return const Color(0xFF8B4513);
+      case 'nationalism':
         return const Color(0xFF8B4513);
       case 'american':
         return const Color(0xFF1565C0);
