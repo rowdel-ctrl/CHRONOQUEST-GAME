@@ -7,7 +7,6 @@ import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
-import '../data/question_bank.dart';
 import 'components/player_component.dart';
 import 'components/enemy_component.dart';
 import 'components/boss_component.dart';
@@ -15,6 +14,9 @@ import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
 import 'components/parallax_background.dart';
 import 'components/tile_platform_component.dart';
+import 'game_camera.dart';
+import 'game_input.dart';
+import 'game_spawning.dart';
 
 /// Main Flame game class for ChronoQuest.
 /// Manages the game loop, player, enemies, questions, and level state.
@@ -48,7 +50,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   /// World x-coordinate of the camera's visible left edge — the player's
   /// worldX offset by the fixed screen position they render at (see
-  /// `camera.viewfinder.position` assignment in `update()`).
+  /// `updateCamera()` in game_camera.dart).
   double get cameraLeftEdgeX => player.worldX - GameConstants.playerX;
 
   /// World x-coordinate just past the camera's visible right edge — where
@@ -64,6 +66,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   // Game state
   late PlayerComponent player;
+  late GameInput gameInput;
   late EnemySpawner spawner;
   late GroundSpawner groundSpawner;
 
@@ -130,7 +133,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
     // Camera: the player's worldX is drawn at a fixed screen offset
     // (GameConstants.playerX) rather than the player moving on screen —
-    // see the viewfinder.position assignment in update().
+    // see updateCamera() in game_camera.dart, called from update() below.
     camera.viewfinder.anchor = Anchor.topLeft;
 
     // Real parallax background using the actual era artwork. Its own
@@ -144,29 +147,20 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // would be drawn in raw canvas pixels and no longer line up.
     camera.backdrop = ParallaxBackground();
 
-    // Ground — tiled GroundSections in world space, so the ground texture
-    // scrolls with the level. There is deliberately no screen-space ground
-    // backdrop: one would be pinned while the world moved, and would paint
-    // over any gap the spawner leaves.
-    groundSpawner = GroundSpawner(game: this);
-    groundSpawner.spawnInitialGround();
-
     // Player — lives in world space so the camera transform applies to it.
     player = PlayerComponent(characterId: selectedCharacterId);
     world.add(player);
 
-    // Questions are intentionally bundled with the app — no backend round-trip.
-    final questions = QuestionBank.getQuestions(currentEra, currentLevel);
+    // On-screen joystick + jump/attack buttons (game_input.dart) — added to
+    // the viewport, so they read player input regardless of where the
+    // camera is looking.
+    gameInput = GameInput(game: this);
+    gameInput.setup();
 
-    if (isBossLevel) {
-      // Split into warm-up (regular enemies) and boss-phase (asked while fighting).
-      final warmup = questions.take(GameConstants.bossWarmupQuestions).toList();
-      bossQuestions =
-          questions.skip(GameConstants.bossWarmupQuestions).toList();
-      spawner = EnemySpawner(game: this, questions: warmup);
-    } else {
-      spawner = EnemySpawner(game: this, questions: questions);
-    }
+    // Ground + enemy spawners (game_spawning.dart). After `player` exists —
+    // EnemySpawner seeds its distance tracking from the player's starting
+    // worldX.
+    setupSpawning();
 
     // Start timer
     _stopwatch.start();
@@ -180,15 +174,12 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     super.update(dt);
     _gameTime += dt;
 
-    // Camera follows the player's worldX, offset so the player always
-    // renders at the fixed screen position GameConstants.playerX. Set
-    // after super.update(dt) so it reflects this frame's player movement,
-    // not last frame's (avoids a one-frame lag).
-    camera.viewfinder.position = Vector2(cameraLeftEdgeX, 0);
+    // Set after super.update(dt) so it reflects this frame's player
+    // movement, not last frame's (avoids a one-frame lag).
+    updateCamera();
 
     if (!questionShowing && !bossPhase) {
-      spawner.update(dt);
-      groundSpawner.update(dt);
+      updateSpawning(dt);
       checkLevelEnd();
     }
   }

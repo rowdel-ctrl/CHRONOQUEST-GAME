@@ -2,15 +2,17 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../chrono_game.dart';
+import '../game_collision.dart';
 import '../quiz_handler.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
 import 'crate_component.dart';
 
-/// Player character — advances through the world at a constant forward
-/// speed (`position.x` is the player's real world x-position, `worldX`),
-/// student taps to jump. The camera follows `worldX` so the player always
+/// Player character — `position.x` is the player's real world x-position,
+/// `worldX`. Horizontal movement is driven by the on-screen joystick
+/// (`game.gameInput.joystick`, GAMEPLAY-V2.md Section 3), student taps the
+/// jump button to jump. The camera follows `worldX` so the player always
 /// renders at a fixed screen offset; the player never moves itself in
 /// screen space. Displays real walk, jump, and hurt sprite animations.
 class PlayerComponent extends SpriteAnimationComponent
@@ -18,10 +20,12 @@ class PlayerComponent extends SpriteAnimationComponent
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
 
-  /// Constant forward speed, in world units/second, the player advances at.
-  /// This is the single source of the game's forward motion — the camera,
-  /// spawn positions, and despawn checks all derive from `worldX`, which
-  /// increases at this rate.
+  /// Top horizontal speed, in world units/second, the joystick can command
+  /// in either direction. Previously an unconditional auto-advance rate
+  /// applied every frame regardless of input (GAMEPLAY-V2.md Section 3);
+  /// same value, now scaled by the joystick's `relativeDelta.x` instead —
+  /// the camera, spawn positions, and despawn checks still derive from
+  /// `worldX`, which is what actually moves.
   static const double forwardSpeed = 150.0;
 
   /// The player's real position in world space. Aliases `position.x` —
@@ -33,6 +37,18 @@ class PlayerComponent extends SpriteAnimationComponent
   double velocityY = 0.0;
   bool isOnGround = false;
   bool isHurt = false;
+
+  /// Which way the character is drawn facing, toggled whenever the
+  /// joystick's horizontal pull changes sign. Mirrored in `render()` via a
+  /// local canvas transform rather than `flipHorizontallyAroundCenter()`:
+  /// that method compensates a non-center anchor by nudging `position.x`
+  /// (confirmed against the installed Flame source — for `Anchor.topLeft`
+  /// it adds the full sprite width), and here `position.x` IS `worldX`, read
+  /// by the camera, collision, and the spawner's distance tracking. A
+  /// transform-based flip would silently displace all of them by ±size.x
+  /// every time the player changes direction.
+  bool facingRight = true;
+
   final String characterId;
 
   late SpriteAnimation walkAnimation;
@@ -88,8 +104,18 @@ class PlayerComponent extends SpriteAnimationComponent
   void update(double dt) {
     super.update(dt);
 
-    // Constant forward advance through the world.
-    position.x += forwardSpeed * dt;
+    // Joystick-driven horizontal movement (GAMEPLAY-V2.md Section 3):
+    // relativeDelta.x is already normalised to [-1, 1] by how far the knob
+    // is pulled from center, so this both sets speed and direction.
+    final horizontalInput = game.gameInput.joystick.relativeDelta.x;
+    if (horizontalInput != 0) {
+      position.x += forwardSpeed * horizontalInput * dt;
+      facingRight = horizontalInput > 0;
+    }
+    // Never walk back past the level's start — there's no ground or
+    // background authored to the left of it (Phase 4 gives levels real
+    // bounds via Tiled).
+    if (position.x < 0) position.x = 0;
 
     // Apply gravity
     if (!isOnGround) {
@@ -97,35 +123,7 @@ class PlayerComponent extends SpriteAnimationComponent
       position.y += velocityY * dt;
     }
 
-    // Check if on any ground section
-    bool onGround = false;
-    for (final section in game.groundSections) {
-      if (position.x + size.x > section.position.x &&
-          position.x < section.position.x + section.size.x &&
-          position.y + size.y >= section.position.y &&
-          position.y + size.y <= section.position.y + 20) {
-        position.y = section.position.y - size.y;
-        velocityY = 0;
-        onGround = true;
-        break;
-      }
-    }
-    // Check if on any elevated tile platform — only while falling/resting
-    // (velocityY >= 0) so jumping up into a platform from below doesn't
-    // snap the player onto its surface.
-    if (!onGround && velocityY >= 0) {
-      for (final platform in game.platforms) {
-        if (position.x + size.x > platform.position.x &&
-            position.x < platform.position.x + platform.size.x &&
-            position.y + size.y >= platform.surfaceY &&
-            position.y + size.y <= platform.surfaceY + 20) {
-          position.y = platform.surfaceY - size.y;
-          velocityY = 0;
-          onGround = true;
-          break;
-        }
-      }
-    }
+    final onGround = resolveGroundContact();
 
     // Landed after a jump — swap back from the jump pose to the running
     // animation. Without this, the player stayed frozen in the jump frame
@@ -139,6 +137,24 @@ class PlayerComponent extends SpriteAnimationComponent
     if (position.y > game.size.y + 50) {
       game.playerFellInGap();
     }
+  }
+
+  @override
+  void render(Canvas canvas) {
+    if (facingRight) {
+      super.render(canvas);
+      return;
+    }
+    // Mirror the drawn sprite within its own bounding box: translate to the
+    // right edge, then scale -1 so drawing runs back over [0, size.x]. Only
+    // affects this render call's canvas — position/transform (and therefore
+    // worldX and the hitbox) are untouched. Restored before children (the
+    // hitbox) render, so it can't leak into their transform either.
+    canvas.save();
+    canvas.translate(size.x, 0);
+    canvas.scale(-1, 1);
+    super.render(canvas);
+    canvas.restore();
   }
 
   void jump() {

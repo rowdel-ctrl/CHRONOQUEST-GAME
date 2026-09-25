@@ -2,7 +2,6 @@ import 'dart:math';
 import '../../models/question.dart';
 import '../chrono_game.dart';
 import 'enemy_component.dart';
-import 'player_component.dart';
 import 'coin_component.dart';
 import 'crate_component.dart';
 import 'tile_platform_component.dart';
@@ -18,6 +17,16 @@ class EnemySpawner {
   double spawnInterval = GameConstants.spawnInterval;
   int nextIndex = 0;
   bool allEnemiesSpawned = false;
+
+  /// The player's furthest-right `worldX` reached so far — the high-water
+  /// mark spawning distance is measured from (GAMEPLAY-V2.md Section 14,
+  /// Phase 1: distance used to accumulate from a compile-time constant
+  /// forward speed, which desyncs the moment speed becomes player-controlled
+  /// — standing still still "traveled", and backtracking re-triggered
+  /// spawns). Only forward progress past the previous best adds distance, so
+  /// standing still adds none and backtracking over already-spawned ground
+  /// never re-spawns it.
+  late double _furthestX;
 
   /// How many enemies have been spawned so far.
   int get spawnedCount => nextIndex;
@@ -43,10 +52,16 @@ class EnemySpawner {
   double _coinTimer = 0;
   double _platformTimer = 0;
 
-  EnemySpawner({required this.game, required this.questions});
+  EnemySpawner({required this.game, required this.questions}) {
+    _furthestX = game.player.worldX;
+  }
 
   void update(double dt) {
-    distanceTraveled += PlayerComponent.forwardSpeed * dt;
+    final progressX = game.player.worldX;
+    if (progressX > _furthestX) {
+      distanceTraveled += progressX - _furthestX;
+      _furthestX = progressX;
+    }
     if (distanceTraveled >= spawnInterval && nextIndex < questions.length) {
       _spawnEnemy();
       distanceTraveled = 0;

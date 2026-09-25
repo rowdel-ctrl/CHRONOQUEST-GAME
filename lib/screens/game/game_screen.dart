@@ -84,64 +84,61 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (!game.questionShowing) {
-            game.onPlayerJump();
-          }
-        },
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            // Pillarbox on windows wider than GameConstants.maxAspectRatio
-            // so the scrolling background (which tiles horizontally past
-            // its own art's aspect ratio) never shows a visible seam — see
-            // that constant's doc comment for the math.
-            final maxWidth =
-                constraints.maxHeight * GameConstants.maxAspectRatio;
-            final width = constraints.maxWidth < maxWidth
-                ? constraints.maxWidth
-                : maxWidth;
-            return Center(
-              child: SizedBox(
-                width: width,
-                height: constraints.maxHeight,
-                child: GameWidget(
-                  game: game,
-                  overlayBuilderMap: {
-                    'HudOverlay': (context, game) =>
-                        HudOverlayWidget(game: game as ChronoGame),
-                    'QuestionOverlay': (context, chronoGame) {
-                      final g = chronoGame as ChronoGame;
-                      return QuestionOverlayWidget(
-                        game: g,
-                        onAnswer: g.handleAnswer,
-                      );
-                    },
-                    'BossHealthOverlay': (context, game) =>
-                        BossHealthOverlayWidget(game: game as ChronoGame),
-                    'PauseOverlay': (context, game) => PauseOverlayWidget(
-                          game: game as ChronoGame,
-                          onQuit: () {
-                            if (context.mounted) {
-                              context.go('/level-select/${widget.eraId}');
-                            }
-                          },
-                        ),
+      // No wrapping GestureDetector — jump/attack are now the on-screen
+      // HudButtonComponents and movement is the joystick (game_input.dart),
+      // both driven through Flame's own gesture handling on GameWidget. A
+      // Flutter GestureDetector layered on top of it would compete with
+      // those components' TapCallbacks/DragCallbacks for the same touches.
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Pillarbox on windows wider than GameConstants.maxAspectRatio so
+          // the scrolling background (which tiles horizontally past its own
+          // art's aspect ratio) never shows a visible seam — see that
+          // constant's doc comment for the math.
+          final maxWidth =
+              constraints.maxHeight * GameConstants.maxAspectRatio;
+          final width = constraints.maxWidth < maxWidth
+              ? constraints.maxWidth
+              : maxWidth;
+          return Center(
+            child: SizedBox(
+              width: width,
+              height: constraints.maxHeight,
+              child: GameWidget(
+                game: game,
+                overlayBuilderMap: {
+                  'HudOverlay': (context, game) =>
+                      HudOverlayWidget(game: game as ChronoGame),
+                  'QuestionOverlay': (context, chronoGame) {
+                    final g = chronoGame as ChronoGame;
+                    return QuestionOverlayWidget(
+                      game: g,
+                      onAnswer: g.handleAnswer,
+                    );
                   },
-                  initialActiveOverlays: const ['HudOverlay'],
-                  loadingBuilder: (context) => Container(
-                    color: Colors.black,
-                    child: const Center(
-                      child:
-                          CircularProgressIndicator(color: Color(0xFFD4AF37)),
-                    ),
+                  'BossHealthOverlay': (context, game) =>
+                      BossHealthOverlayWidget(game: game as ChronoGame),
+                  'PauseOverlay': (context, game) => PauseOverlayWidget(
+                        game: game as ChronoGame,
+                        onQuit: () {
+                          if (context.mounted) {
+                            context.go('/level-select/${widget.eraId}');
+                          }
+                        },
+                      ),
+                },
+                initialActiveOverlays: const ['HudOverlay'],
+                loadingBuilder: (context) => Container(
+                  color: Colors.black,
+                  child: const Center(
+                    child:
+                        CircularProgressIndicator(color: Color(0xFFD4AF37)),
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

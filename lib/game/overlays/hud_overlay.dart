@@ -140,7 +140,7 @@ class HudOverlayWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'TAP SCREEN TO JUMP',
+                    'JOYSTICK TO MOVE • TAP JUMP',
                     style: GoogleFonts.poppins(
                       fontSize: 11,
                       color: Colors.white,
