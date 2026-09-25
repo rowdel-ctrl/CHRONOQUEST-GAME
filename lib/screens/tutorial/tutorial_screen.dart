@@ -83,8 +83,8 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
         ),
         _TutorialStep(
           title: 'ALAGAAN ANG BUHAY',
-          body: 'May 10 buhay ka bawat antas. Kapag naubos ang lahat, '
-              'magsisimula ka ulit sa antas na iyon.',
+          body: 'May ${GameConstants.livesPerLevel} buhay ka bawat antas. '
+              'Kapag naubos ang lahat, magsisimula ka ulit sa antas na iyon.',
           illustration: _SpriteIllustration(
             paths: [
               ...List.filled(3, 'assets/ui/heart_full.png'),

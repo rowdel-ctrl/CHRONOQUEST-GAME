@@ -4,13 +4,39 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
 
+/// What the player actually scored on the attempt that just ended.
+///
+/// [ChronoGame] already computes all of this and hands it to its
+/// `onLevelComplete` callback; this carries it the rest of the way to the
+/// screen (via GoRouter's `extra`) instead of the screen inventing numbers.
+class LevelCompleteResult {
+  /// Final in-game score, including the speed and perfect-level bonuses the
+  /// game has already applied.
+  final int score;
+  final int correct;
+  final int total;
+
+  const LevelCompleteResult({
+    required this.score,
+    required this.correct,
+    required this.total,
+  });
+
+  /// Used when this screen is reached without a result payload — a deep link
+  /// or a hot restart, never a finished level. Shows an honest zero rather
+  /// than a plausible-looking guess.
+  static const empty = LevelCompleteResult(score: 0, correct: 0, total: 0);
+}
+
 class LevelCompleteScreen extends StatefulWidget {
   final String eraId;
   final int level;
+  final LevelCompleteResult result;
   const LevelCompleteScreen({
     super.key,
     required this.eraId,
     required this.level,
+    required this.result,
   });
 
   @override
@@ -23,12 +49,14 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
   late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
 
-  // These would come from game state in a real scenario
-  int get _correct => 7 + (widget.level % 3);
-  int get _total => 10;
-  int get _percentage => (_correct / _total * 100).round();
+  int get _correct => widget.result.correct;
+  int get _total => widget.result.total;
+  int get _percentage => _total > 0 ? (_correct / _total * 100).round() : 0;
   int get _stars => _percentage >= 90 ? 3 : _percentage >= 70 ? 2 : 1;
-  int get _points => _correct * 10 + (_percentage >= 90 ? 50 : 0);
+
+  /// The score the game actually accumulated — not a re-derivation from the
+  /// question count, which would silently drop the speed bonus.
+  int get _points => widget.result.score;
 
   @override
   void initState() {

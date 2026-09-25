@@ -87,7 +87,12 @@ class GameConstants {
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
   static const double spawnInterval = 800.0;
-  static const int livesPerLevel = 10;
+
+  /// In-level HP: hits the player can take within a single attempt before the
+  /// level is failed. Ten was so much buffer that nothing in a level felt
+  /// dangerous (GAMEPLAY-V2.md section 8). Separate from [maxHearts], the
+  /// persistent Energy pool that gates *starting* an attempt at all.
+  static const int livesPerLevel = 5;
 
   /// Cap on the persistent hearts pool that gates *starting or retrying* a
   /// level (see HeartsState) — separate from [livesPerLevel], the in-level

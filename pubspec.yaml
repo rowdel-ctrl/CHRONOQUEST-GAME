@@ -20,6 +20,7 @@ dependencies:
   lottie: ^3.1.0
   google_fonts: ^6.1.0
   cached_network_image: ^3.3.1
+  flame_audio: ^2.12.2
 
 dev_dependencies:
   flutter_test:

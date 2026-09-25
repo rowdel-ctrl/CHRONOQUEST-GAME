@@ -83,6 +83,12 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => LevelCompleteScreen(
         eraId: state.pathParameters['eraId']!,
         level: int.parse(state.pathParameters['level']!),
+        // GameScreen passes the finished attempt's real result here. Anything
+        // else reaching this route (deep link, hot restart) has no result to
+        // show, so it falls back to zeroes rather than invented numbers.
+        result: state.extra is LevelCompleteResult
+            ? state.extra! as LevelCompleteResult
+            : LevelCompleteResult.empty,
       ),
     ),
     GoRoute(

@@ -10,6 +10,7 @@ import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
+import 'level_complete_screen.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   final String eraId;
@@ -48,11 +49,19 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // Award powerup at milestones
       ref.read(gameProvider.notifier).awardPowerUp(widget.level);
 
-      // Navigate
+      // Navigate, carrying the attempt's real result so the completion
+      // screen reports what the player actually scored.
       if (widget.level == 10) {
         context.go('/era-complete/${widget.eraId}');
       } else {
-        context.go('/level-complete/${widget.eraId}/${widget.level}');
+        context.go(
+          '/level-complete/${widget.eraId}/${widget.level}',
+          extra: LevelCompleteResult(
+            score: score,
+            correct: correct,
+            total: total,
+          ),
+        );
       }
     };
 
@@ -60,6 +69,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ref.read(gameProvider.notifier).consumeHeartOnLevelFailed();
       context.go('/level-failed/${widget.eraId}/${widget.level}');
     };
+  }
+
+  @override
+  void dispose() {
+    // The era BGM loops forever once started, and nothing else in the app
+    // stops it — without this it would keep playing over the menus after the
+    // level is completed, failed or quit.
+    game.audioService.stopBgm();
+    super.dispose();
   }
 
   @override

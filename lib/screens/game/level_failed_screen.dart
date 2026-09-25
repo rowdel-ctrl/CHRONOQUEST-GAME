@@ -79,7 +79,7 @@ class LevelFailedScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
 
                       Text(
-                        'Level $level — Naubusan ng puso',
+                        'Level $level — Naubusan ng buhay',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: AppColors.textMuted,
@@ -87,24 +87,39 @@ class LevelFailedScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 14),
 
-                      // Hearts display — the persistent, cross-level pool
-                      // (separate from in-level HP) that this failure just
-                      // spent one of.
+                      // Energy display — the persistent, cross-level pool
+                      // (separate from the in-level HP that just ran out)
+                      // which this failure spent one of. Bolts, not hearts,
+                      // so the two systems stop sharing an icon.
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          GameConstants.maxHearts,
-                          (i) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Image.asset(
-                              i < hearts.count
-                                  ? 'assets/ui/heart_full.png'
-                                  : 'assets/ui/heart_empty.png',
-                              width: 24,
-                              height: 24,
+                        children: [
+                          Text(
+                            'ENERHIYA',
+                            style: GoogleFonts.poppins(
+                              fontSize: 10,
+                              letterSpacing: 1.5,
+                              color: AppColors.textMuted,
                             ),
                           ),
-                        ),
+                          const SizedBox(width: 8),
+                          ...List.generate(
+                            GameConstants.maxHearts,
+                            (i) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Icon(
+                                i < hearts.count
+                                    ? Icons.bolt
+                                    : Icons.bolt_outlined,
+                                size: 24,
+                                color: i < hearts.count
+                                    ? AppColors.accent
+                                    : AppColors.textMuted,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
 
@@ -133,8 +148,8 @@ class LevelFailedScreen extends ConsumerWidget {
                                     ? 'Tip: Basahin muli ang kasaysayan bago '
                                         'subukan ulit. Makakatulong ito sa '
                                         'pagsagot!'
-                                    : 'Wala nang puso! Susunod na puso sa '
-                                        '${_formatCountdown(timeUntilNext!)}.',
+                                    : 'Wala nang enerhiya! Susunod na enerhiya '
+                                        'sa ${_formatCountdown(timeUntilNext!)}.',
                                 style: GoogleFonts.poppins(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,

@@ -62,7 +62,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
           side: BorderSide(color: AppColors.primaryDark, width: 3),
         ),
         title: Text(
-          'Wala nang Puso',
+          'Wala nang Enerhiya',
           style: GoogleFonts.poppins(
             fontSize: 13,
             height: 1.4,
@@ -72,8 +72,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
         content: Text(
           timeUntilNext != null
               ? 'Maghintay ng ${_formatCountdown(timeUntilNext)} para sa '
-                  'susunod na puso, o bumalik mamaya.'
-              : 'Maghintay ng kaunti para sa susunod na puso, o bumalik '
+                  'susunod na enerhiya, o bumalik mamaya.'
+              : 'Maghintay ng kaunti para sa susunod na enerhiya, o bumalik '
                   'mamaya.',
           style: GoogleFonts.poppins(
             fontSize: 14,
@@ -215,21 +215,36 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Persistent hearts pool that gates starting/retrying a
-                    // level — separate from in-level HP shown in the HUD.
+                    // Persistent Energy pool that gates starting/retrying a
+                    // level. Deliberately a bolt, not a heart: hearts mean
+                    // in-level HP in the HUD, and sharing one icon between two
+                    // unrelated systems is what made them easy to confuse.
+                    // Presentation only — the underlying state is still
+                    // HeartsState, stored under its original keys.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Text(
+                          'ENERHIYA',
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            letterSpacing: 1.5,
+                            color: Colors.white60,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
                         ...List.generate(
                           GameConstants.maxHearts,
                           (i) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: Image.asset(
+                            padding: const EdgeInsets.symmetric(horizontal: 1),
+                            child: Icon(
                               i < hearts.count
-                                  ? 'assets/ui/heart_full.png'
-                                  : 'assets/ui/heart_empty.png',
-                              width: 18,
-                              height: 18,
+                                  ? Icons.bolt
+                                  : Icons.bolt_outlined,
+                              size: 20,
+                              color: i < hearts.count
+                                  ? AppColors.accent
+                                  : Colors.white24,
                             ),
                           ),
                         ),
