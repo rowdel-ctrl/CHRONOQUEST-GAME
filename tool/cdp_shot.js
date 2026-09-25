@@ -11,7 +11,15 @@
 //   wait:<seconds>       sleep (fractions allowed)
 //   click:<x>,<y>        left click at viewport coordinates
 //   scroll:<x>,<y>,<dy>  mouse wheel at x,y by dy pixels (positive = down)
+//   nav:<url>            navigate the page (hash routes, e.g. .../#/game/spanish/1)
 //   shot:<file.png>      save a screenshot
+//
+// `nav` exists because some screens can't be reached by clicking: the era
+// background/history page only reveals its continue button after you scroll to
+// the bottom, and Flutter's web engine ignores the synthetic wheel events the
+// `scroll` step sends. Navigating straight to the route skips that gate. Hive
+// state (selected character, progress) persists across a nav within the same
+// browser profile, so click through character selection first.
 //
 // --viewport WxH overrides the viewport via Emulation.setDeviceMetricsOverride,
 // the only reliable way to get exact dimensions: Chrome's --window-size
@@ -20,6 +28,14 @@
 //
 // Requires Chrome already running with --remote-debugging-port=9222 and the
 // game served on :8123. Node 22+ (uses the global WebSocket).
+//
+// `flutter run -d web-server` (no Dart Debug Chrome extension installed)
+// periodically reloads the page on its own — roughly every 20-30s — while it
+// keeps retrying the debug-service handshake that extension would answer.
+// A `shot` step landing mid-reload comes back black with a bare HUD (canvas
+// cleared, Flame not yet re-mounted); a `wait` step spanning one looks like
+// the game froze. Neither is a real bug — just bad luck on timing. If a
+// screenshot looks wrong, retake it before trusting it.
 
 const fs = require('fs');
 
@@ -70,6 +86,17 @@ function rpc(ws) {
   await new Promise((r) => ws.addEventListener('open', r, { once: true }));
   const send = rpc(ws);
 
+  // Chrome's HTTP cache happily serves compiled DDC module JS left over from
+  // a *previous* `flutter run` process, keyed by URL only — restarting the
+  // dev server does not change those URLs or invalidate the cache. A `nav`
+  // step can then boot a Frankenstein bundle: some modules fresh, others
+  // stale, which produced nonsense game state (e.g. a `size`/`groundY`
+  // mismatch that looked like the player fell through the floor at t=0) when
+  // debugging a dev-server restart. Always disabled, since a stale module is
+  // strictly worse than the small extra load time from a real fetch.
+  await send('Network.enable');
+  await send('Network.setCacheDisabled', { cacheDisabled: true });
+
   if (viewport) {
     const [width, height] = viewport.split('x').map(Number);
     await send('Emulation.setDeviceMetricsOverride', {
@@ -98,6 +125,9 @@ function rpc(ws) {
         type: 'mouseWheel', x, y, deltaX: 0, deltaY,
       });
       console.log(`scroll ${deltaY} at ${x},${y}`);
+    } else if (name === 'nav') {
+      await send('Page.navigate', { url: arg });
+      console.log(`nav ${arg}`);
     } else if (name === 'shot') {
       const { data } = await send('Page.captureScreenshot', { format: 'png' });
       fs.writeFileSync(arg, Buffer.from(data, 'base64'));

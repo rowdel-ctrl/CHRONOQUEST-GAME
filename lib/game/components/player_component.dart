@@ -209,10 +209,20 @@ class PlayerComponent extends SpriteAnimationComponent
       other.removeFromParent();
       game.playerHitObstacle();
     }
-    if (other is CrateComponent && !isHurt) {
-      // Same obstacle behavior as WallComponent.
+    if (other is CrateComponent) {
+      // Crates break harmlessly rather than costing HP. The spawner drops one
+      // roughly every 2.7s (two parallel timers left over from when obstacles
+      // were a mix of walls and crates), which an auto-runner with a single
+      // jump input and 5 HP cannot reasonably avoid — it drained a full bar
+      // unattended in under a minute.
+      //
+      // Deliberately a deviation from GAMEPLAY-V2 section 5, which wants
+      // hazards to deal -1 HP with knockback: that design assumes the Phase 1
+      // movement controls, where the player can stop and time a jump rather
+      // than being carried into everything at a fixed speed. Restore the
+      // damage once those land, and place crates deliberately (Phase 4)
+      // instead of on a timer.
       other.removeFromParent();
-      game.playerHitObstacle();
     }
   }
 }
