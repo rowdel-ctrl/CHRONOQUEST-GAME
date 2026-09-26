@@ -20,14 +20,15 @@ class HudOverlayWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 children: [
-                  // Hearts
+                  // Hearts — the same shared pool shown on the menu screens
+                  // (GAMEPLAY-V2.md section 8), not a level-local counter.
                   Row(
                     children: List.generate(
-                      GameConstants.livesPerLevel,
+                      GameConstants.maxHearts,
                       (i) => Padding(
                         padding: const EdgeInsets.only(right: 4),
                         child: Image.asset(
-                          i < game.lives
+                          i < game.hearts
                               ? 'assets/ui/heart_full.png'
                               : 'assets/ui/heart_empty.png',
                           width: 26,

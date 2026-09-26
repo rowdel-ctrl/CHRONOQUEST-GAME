@@ -89,20 +89,16 @@ class GameConstants {
   static const double jumpForce = -480.0;
   static const double spawnInterval = 800.0;
 
-  /// In-level HP: hits the player can take within a single attempt before the
-  /// level is failed. Ten was so much buffer that nothing in a level felt
-  /// dangerous (GAMEPLAY-V2.md section 8). Separate from [maxHearts], the
-  /// persistent Energy pool that gates *starting* an attempt at all.
-  static const int livesPerLevel = 5;
-
-  /// Cap on the persistent hearts pool that gates *starting or retrying* a
-  /// level (see HeartsState) — separate from [livesPerLevel], the in-level
-  /// HP spent on individual mistakes within an attempt that's already
-  /// underway. Losing a level spends one heart from this pool; it
-  /// regenerates over real time via [heartRegenInterval], even while the
-  /// app is closed.
+  /// Cap on the single shared hearts pool (see HeartsState) — one pool for
+  /// everything, per GAMEPLAY-V2.md section 8 (revision 7 reverses the
+  /// earlier in-level-HP/persistent-Energy split). It gates *starting or
+  /// retrying* a level (`GameNotifier.canStartLevel`) and is also what every
+  /// in-level damage event (enemy contact, hazard hit, falling) spends from
+  /// directly — there is no separate level-local counter that resets on
+  /// retry. It regenerates over real time via [heartRegenInterval], even
+  /// while the app is closed.
   static const int maxHearts = 5;
-  static const Duration heartRegenInterval = Duration(minutes: 10);
+  static const Duration heartRegenInterval = Duration(minutes: 1);
 
   static const int questionsPerLevel = 10; // levels 1-9
   static const int bossWarmupQuestions = 10; // level 10, phase 1

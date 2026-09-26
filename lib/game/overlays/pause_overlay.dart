@@ -121,7 +121,11 @@ class PauseOverlayWidget extends StatelessWidget {
             onPressed: () {
               Navigator.of(dialogContext).pop();
               game.overlays.remove('PauseOverlay');
-              game.resumeEngine();
+              // Deliberately does NOT resume the engine: this level is being
+              // torn down, and resuming restarts the game loop immediately,
+              // so frames run between here and the route actually changing.
+              // Those frames can reach levelComplete()/showLevelFailed(),
+              // whose callbacks navigate somewhere else on top of this quit.
               onQuit();
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.danger),

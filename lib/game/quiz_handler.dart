@@ -68,10 +68,10 @@ extension QuizHandler on ChronoGame {
         return;
       }
 
-      // Wrong answer: lose a life, close the question, enemy passes
+      // Wrong answer: no HP lost (GAMEPLAY-V2.md Section 6/8) — just close
+      // the question and let the enemy encounter clear either way.
       overlays.remove('QuestionOverlay');
       questionShowing = false;
-      if (loseLife()) return;
       currentEnemy?.defeat();
       resumeEngine();
     }

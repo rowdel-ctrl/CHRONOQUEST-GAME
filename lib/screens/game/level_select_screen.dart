@@ -52,6 +52,19 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     return completedLevels.containsKey(level - 1);
   }
 
+  /// The first-play tutorial gates here — the point a student actually
+  /// starts a level — rather than on character selection (effectively "on
+  /// app open"), which is what the playtest flagged as the wrong trigger.
+  void _startLevel(int level) {
+    if (!StorageService.hasSeenTutorial()) {
+      context.push('/tutorial').then((_) {
+        if (mounted) context.go('/game/${widget.eraId}/$level');
+      });
+    } else {
+      context.go('/game/${widget.eraId}/$level');
+    }
+  }
+
   void _showNoHeartsDialog(BuildContext context, Duration? timeUntilNext) {
     showDialog(
       context: context,
@@ -62,7 +75,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
           side: BorderSide(color: AppColors.primaryDark, width: 3),
         ),
         title: Text(
-          'Wala nang Enerhiya',
+          'Wala nang Puso',
           style: GoogleFonts.poppins(
             fontSize: 13,
             height: 1.4,
@@ -72,8 +85,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
         content: Text(
           timeUntilNext != null
               ? 'Maghintay ng ${_formatCountdown(timeUntilNext)} para sa '
-                  'susunod na enerhiya, o bumalik mamaya.'
-              : 'Maghintay ng kaunti para sa susunod na enerhiya, o bumalik '
+                  'susunod na puso, o bumalik mamaya.'
+              : 'Maghintay ng kaunti para sa susunod na puso, o bumalik '
                   'mamaya.',
           style: GoogleFonts.poppins(
             fontSize: 14,
@@ -185,8 +198,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                               onTap: isUnlocked
                                   ? () {
                                       if (hasHearts) {
-                                        context.go(
-                                            '/game/${widget.eraId}/$level');
+                                        _startLevel(level);
                                       } else {
                                         _showNoHeartsDialog(
                                             context, timeUntilNext);
@@ -216,36 +228,22 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Persistent Energy pool that gates starting/retrying a
-                    // level. Deliberately a bolt, not a heart: hearts mean
-                    // in-level HP in the HUD, and sharing one icon between two
-                    // unrelated systems is what made them easy to confuse.
-                    // Presentation only — the underlying state is still
-                    // HeartsState, stored under its original keys.
+                    // Shared hearts pool (GAMEPLAY-V2.md section 8) — the
+                    // same pool the in-game HUD spends from, one icon
+                    // everywhere. Gates starting or retrying a level.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'ENERHIYA',
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            letterSpacing: 1.5,
-                            color: Colors.white60,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
                         ...List.generate(
                           GameConstants.maxHearts,
                           (i) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 1),
-                            child: Icon(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Image.asset(
                               i < hearts.count
-                                  ? Icons.bolt
-                                  : Icons.bolt_outlined,
-                              size: 20,
-                              color: i < hearts.count
-                                  ? AppColors.accent
-                                  : Colors.white24,
+                                  ? 'assets/ui/heart_full.png'
+                                  : 'assets/ui/heart_empty.png',
+                              width: 18,
+                              height: 18,
                             ),
                           ),
                         ),

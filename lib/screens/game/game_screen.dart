@@ -33,7 +33,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ..currentEra = widget.eraId
       ..currentLevel = widget.level
       ..selectedCharacterId = gameState.selectedCharacterId
-      ..playerPowerUps = gameState.powerUps;
+      ..playerPowerUps = gameState.powerUps
+      ..hearts = gameState.hearts.count;
+
+    // Every heart lost in-level spends from the same persistent pool shown
+    // on the menu screens (GAMEPLAY-V2.md section 8 — one shared pool, not
+    // a level-local counter).
+    game.onHeartLost = () => ref.read(gameProvider.notifier).loseHeart();
 
     // Set callbacks for navigation
     game.onLevelComplete = (score, correct, total, answers) {
@@ -66,9 +72,27 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     };
 
     game.onLevelFailed = () {
-      ref.read(gameProvider.notifier).consumeHeartOnLevelFailed();
+      // The pool is already at 0 by the time this fires — every hit that
+      // got here already went through onHeartLost above.
       context.go('/level-failed/${widget.eraId}/${widget.level}');
     };
+  }
+
+  /// Leaves the level from the pause menu.
+  ///
+  /// Navigates from the screen's own context rather than the one Flame
+  /// hands the overlay builder: that context belongs to GameWidget, and
+  /// guarding it with `context.mounted` meant any moment it wasn't mounted
+  /// turned quitting into a silent no-op that left the student in the level
+  /// with no way out. This element lives exactly as long as the route does.
+  void _quitToLevelSelect() {
+    // Cleared first — a frame landing between here and the route teardown
+    // could otherwise fire level-complete/failed and navigate over the top
+    // of this.
+    game.onLevelComplete = null;
+    game.onLevelFailed = null;
+    if (!mounted) return;
+    context.go('/level-select/${widget.eraId}');
   }
 
   @override
@@ -120,11 +144,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       BossHealthOverlayWidget(game: game as ChronoGame),
                   'PauseOverlay': (context, game) => PauseOverlayWidget(
                         game: game as ChronoGame,
-                        onQuit: () {
-                          if (context.mounted) {
-                            context.go('/level-select/${widget.eraId}');
-                          }
-                        },
+                        onQuit: _quitToLevelSelect,
                       ),
                 },
                 initialActiveOverlays: const ['HudOverlay'],

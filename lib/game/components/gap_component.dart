@@ -20,7 +20,10 @@ import '../chrono_game.dart';
 /// the on-screen leftward motion.
 class GroundSection extends PositionComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
-  /// Matches TilePlatformComponent.tileSize — both read the same sheet.
+  /// Matches TilePlatformComponent.sourceTileSize — both read the same
+  /// sheet. Platforms draw those 16px tiles upscaled; the ground band does
+  /// not, because its height is [bandHeight], which `ChronoGame.groundY` and
+  /// every jump and spawn position in the level are measured against.
   static const double tileSize = 16;
 
   /// Height of the ground band. Matches ChronoGame.groundY, which puts the

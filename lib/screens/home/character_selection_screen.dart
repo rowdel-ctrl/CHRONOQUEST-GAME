@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
-import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
@@ -26,11 +25,11 @@ class _CharacterSelectionScreenState
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 0.62, initialPage: 0);
-    if (!StorageService.hasSeenTutorial()) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.push('/tutorial');
-      });
-    }
+    // The first-play tutorial no longer auto-triggers here (it used to fire
+    // on every visit to this screen until seen — i.e. on app open, not on
+    // starting a level). It's now gated at the point a level is actually
+    // started, in LevelSelectScreen._startLevel. The book icon below still
+    // opens it manually at any time.
   }
 
   @override
@@ -327,69 +326,78 @@ class _CharCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Sprite with colored glow
-            _IdleAvatar(charId: char.id, color: charColor),
-            const SizedBox(height: 16),
+        // FittedBox(scaleDown) safety net — same pattern as the quiz card
+        // (question_card.dart): the avatar + name + badge + description
+        // column has a fixed intrinsic height, but the card itself is only
+        // as tall as whatever's left after the header/footer on a short
+        // landscape phone. Without this the column overflows its bounds and
+        // gets clipped instead of shrinking to fit.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Sprite with colored glow
+              _IdleAvatar(charId: char.id, color: charColor),
+              const SizedBox(height: 16),
 
-            // Name
-            Text(
-              char.name,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 6),
-
-            // Era pill badge
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: charColor.withValues(alpha: 0.22),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: charColor.withValues(alpha: 0.5), width: 1),
-              ),
-              child: Text(
-                char.era,
-                style: GoogleFonts.poppins(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: charColor,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Description
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.06),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                char.description,
+              // Name
+              Text(
+                char.name,
                 textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.75),
-                  height: 1.5,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 6),
+
+              // Era pill badge
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: charColor.withValues(alpha: 0.22),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                      color: charColor.withValues(alpha: 0.5), width: 1),
+                ),
+                child: Text(
+                  char.era,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: charColor,
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+
+              // Description
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  char.description,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.white.withValues(alpha: 0.75),
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

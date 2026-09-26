@@ -3,13 +3,12 @@ import '../../models/question.dart';
 import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
-import 'crate_component.dart';
 import 'tile_platform_component.dart';
 import '../../core/constants.dart';
 
-/// Spawns enemies, crates, and coins ahead of the camera as the player
-/// advances through the world. Each enemy carries one quiz question from
-/// the pre-fetched list.
+/// Spawns enemies and coins ahead of the camera as the player advances
+/// through the world. Each enemy carries one quiz question from the
+/// pre-fetched list.
 class EnemySpawner {
   final ChronoGame game;
   final List<Question> questions;
@@ -37,18 +36,19 @@ class EnemySpawner {
   /// Platform surfaces spawn between these heights above the ground, in world
   /// units. The player's jump peaks at about 128 (jumpForce² / 2·gravity), so
   /// the top of the range has to stay well under that or some platforms can't
-  /// be reached from the ground.
-  static const double platformMinHeight = 60;
-  static const double platformMaxHeight = 105;
+  /// be reached from the ground — platform_layering_test.dart holds the max
+  /// to `jumpPeak - 15` and proves a jump still lands on it at 60fps, at
+  /// 30fps, and through a frame hitch.
+  ///
+  /// The old 60 floor put the lowest platforms at knee height on a 120-tall
+  /// player: they read as steps to walk into rather than ledges to jump
+  /// onto. Raised so the whole range sits between the player's shoulders
+  /// and the top of their head, which is as high as the jump arc allows.
+  static const double platformMinHeight = 90;
+  static const double platformMaxHeight = 110;
 
   final Random _random = Random();
 
-  /// Two independent crate timers. Ground obstacles used to be a mix of
-  /// era-specific wall sprites (WallComponent, obstacles/*_wall.png) and
-  /// crates; crates replaced the wall art, and keeping both timers with
-  /// their original intervals preserves the combined obstacle cadence.
-  double _crateTimerA = 0;
-  double _crateTimerB = 0;
   double _coinTimer = 0;
   double _platformTimer = 0;
 
@@ -67,20 +67,10 @@ class EnemySpawner {
       distanceTraveled = 0;
     }
     if (nextIndex >= questions.length) allEnemiesSpawned = true;
-    _crateTimerA += dt;
-    if (_crateTimerA > 3.0 + _random.nextDouble() * 4.0) {
-      _crateTimerA = 0;
-      if (!game.questionShowing) _spawnCrate();
-    }
     _coinTimer += dt;
     if (_coinTimer > 1.5 + _random.nextDouble() * 2.0) {
       _coinTimer = 0;
       if (!game.questionShowing) _spawnCoin();
-    }
-    _crateTimerB += dt;
-    if (_crateTimerB > 4.0 + _random.nextDouble() * 4.0) {
-      _crateTimerB = 0;
-      if (!game.questionShowing) _spawnCrate();
     }
     _platformTimer += dt;
     if (_platformTimer > 5.0 + _random.nextDouble() * 5.0) {
@@ -101,11 +91,6 @@ class EnemySpawner {
   void _spawnCoin() {
     final coin = CoinComponent();
     game.world.add(coin);
-  }
-
-  void _spawnCrate() {
-    final crate = CrateComponent();
-    game.world.add(crate);
   }
 
   void _spawnPlatform() {

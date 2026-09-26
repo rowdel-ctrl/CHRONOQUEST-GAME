@@ -33,7 +33,13 @@ class EnemyComponent extends SpriteAnimationComponent
       stepTime: 0.3,
     );
 
-    size = Vector2(60, 72);
+    // 1.5x the native 60x72 art. Everything in the world except the player
+    // (96x120) and boss (120x140) used to render at native size, so the
+    // player towered over enemies that were supposed to threaten them. The
+    // hitbox below is added after this and derives from `size`, so the hit
+    // area grows with the sprite — deliberate, since the sprite is what the
+    // student aims at.
+    size = Vector2(90, 108);
     position = Vector2(
       game.cameraRightEdgeX + 60,
       game.groundY - size.y,

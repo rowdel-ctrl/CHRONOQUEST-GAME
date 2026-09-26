@@ -83,7 +83,18 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   String currentEra = 'spanish';
   int currentLevel = 1;
-  int lives = GameConstants.livesPerLevel;
+
+  /// The shared hearts pool (GAMEPLAY-V2.md section 8) — seeded from the
+  /// persistent `HeartsState` count by `GameScreen` at construction, and
+  /// spent by every damage event in this level. Not a level-local counter:
+  /// [onHeartLost] pushes each loss straight back to the persisted pool, so
+  /// running out mid-level really does lock out the next attempt too.
+  int hearts = GameConstants.maxHearts;
+
+  /// Fired once per heart lost, so the caller (GameScreen) can persist the
+  /// new count to the same `HeartsState` pool shown on the menu screens.
+  Function()? onHeartLost;
+
   int score = 0;
   int playerCoins = 0;
   bool questionShowing = false;
@@ -196,13 +207,15 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
-  /// Takes one life and plays the hurt reaction. Returns true when that was
-  /// the last life and the level has been failed.
+  /// Spends one heart from the shared pool and plays the hurt reaction.
+  /// Returns true when that was the last heart and the level has been
+  /// failed.
   bool loseLife() {
-    lives--;
+    hearts--;
     player.triggerHurt();
-    notifyListeners(); // lives changed
-    if (lives > 0) return false;
+    onHeartLost?.call();
+    notifyListeners(); // hearts changed
+    if (hearts > 0) return false;
     showLevelFailed();
     return true;
   }

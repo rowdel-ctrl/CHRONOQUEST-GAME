@@ -9,9 +9,10 @@ import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 
 /// "How to play" tutorial — shown once automatically the first time a
-/// student reaches character selection, and replayable any time from the
-/// book icon on that screen. Both entry points land on this same screen so
-/// there is only one place to keep the explanations in sync.
+/// student starts a level (gated in LevelSelectScreen._startLevel, not on
+/// app open), and replayable any time from the book icon on character
+/// selection. All entry points land on this same screen so there is only
+/// one place to keep the explanations in sync.
 ///
 /// Built entirely from sprites and icons that already exist elsewhere in the
 /// game (character walk frames, enemy/obstacle art, the quiz check/X icons
@@ -78,13 +79,14 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
           title: 'SAGUTIN NANG TAMA',
           body: 'Paminsan-minsan may lalabas na tanong tungkol sa '
               'kasaysayan. Tamang sagot ay tumatalo sa kaaway — maling '
-              'sagot ay nawawalan ka ng buhay.',
+              'sagot ay walang parusa, subukan lang ulit.',
           illustration: _AnswerIconsIllustration(),
         ),
         _TutorialStep(
-          title: 'ALAGAAN ANG BUHAY',
-          body: 'May ${GameConstants.livesPerLevel} buhay ka bawat antas. '
-              'Kapag naubos ang lahat, magsisimula ka ulit sa antas na iyon.',
+          title: 'ALAGAAN ANG PUSO',
+          body: 'May ${GameConstants.maxHearts} puso kang dala sa buong '
+              'laro, hindi lang sa isang antas. Kapag naubos, maghintay ng '
+              'isang minuto bago ka makapagsimula ulit.',
           illustration: _SpriteIllustration(
             paths: [
               ...List.filled(3, 'assets/ui/heart_full.png'),
@@ -152,7 +154,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white54,
+                          color: Colors.white70,
                         ),
                       ),
                     ),
@@ -236,8 +238,15 @@ class _TutorialPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      // Was a dark (55% black) panel on top of the backdrop's own dark scrim
+      // — two stacked dark layers with a near-black border gave the whole
+      // card almost no separation from its background (the "low contrast"
+      // playtest finding). Every other panel in the app uses the light
+      // parchment surface + dark ink text pairing (see level_failed_screen,
+      // level_complete_screen); matching that here instead of inventing a
+      // one-off dark-on-dark style for this screen fixes it outright.
       child: GamePanel(
-        color: Colors.black.withValues(alpha: 0.55),
+        color: AppColors.surface,
         borderColor: AppColors.primaryDark,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -250,7 +259,7 @@ class _TutorialPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.accent,
+                color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -260,7 +269,7 @@ class _TutorialPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 13,
                 height: 1.5,
-                color: Colors.white.withValues(alpha: 0.85),
+                color: AppColors.textSecondary,
               ),
             ),
           ],

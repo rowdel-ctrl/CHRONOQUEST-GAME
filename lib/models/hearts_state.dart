@@ -1,10 +1,10 @@
 import '../core/constants.dart';
 
-/// A persistent pool of hearts that gates starting or retrying a level —
-/// distinct from the in-level HP (`GameConstants.livesPerLevel`) spent on
-/// individual mistakes during an attempt already in progress. One heart is
-/// spent when a level attempt is fully failed, and hearts regenerate
-/// automatically over real time (`GameConstants.heartRegenInterval`),
+/// The single persistent pool of hearts shared by everything (GAMEPLAY-V2.md
+/// section 8): it gates starting or retrying a level, and every in-level
+/// damage event (enemy contact, hazard hit, falling) spends from it
+/// directly — there is no separate level-local HP counter. Hearts
+/// regenerate automatically over real time (`GameConstants.heartRegenInterval`),
 /// capped at `GameConstants.maxHearts`, continuing to accrue even while the
 /// app is closed since regen is computed lazily from a stored timestamp
 /// rather than a running timer.

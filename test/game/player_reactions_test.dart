@@ -1,9 +1,11 @@
-// The player reacts visibly to both quiz outcomes, not just the bad one.
+// The player reacts visibly to a correct answer; a wrong one is a non-event.
 //
-// A wrong answer has always routed through ChronoGame.loseLife(), which calls
-// player.triggerHurt(). A correct answer awarded score and defeated the enemy
-// but left the player running as if nothing had happened, which is what the
-// adviser's "hit animation on correct answer" note was about.
+// A correct answer awarded score and defeated the enemy but left the player
+// running as if nothing had happened, which is what the adviser's "hit
+// animation on correct answer" note was about. A wrong answer no longer
+// costs HP (GAMEPLAY-V2.md Section 6/8: "wrong answers no longer cost HP"),
+// so it no longer routes through ChronoGame.loseLife()/triggerHurt() either —
+// the player just keeps walking.
 //
 // There's no dedicated cheer art for any character (assets/characters/ has
 // only _walk_1-4, _jump and _hurt per character), so triggerCheer() reuses the
@@ -61,9 +63,9 @@ Future<ChronoGame> _bareGame() async {
     ..jumpAnim = await _blankAnim()
     ..hurtAnim = await _blankAnim();
   player.animation = player.walkAnimation;
-  // The wrong-answer case goes through loseLife() -> triggerHurt(), which
-  // reaches for game.audioService and so needs a resolvable game reference.
-  // (triggerCheer() deliberately touches no such thing.)
+  // PlayerComponent mixes in HasGameReference<ChronoGame>, so it needs a
+  // resolvable game even though neither path exercised below (cheer, or the
+  // now-harmless wrong answer) touches game.audioService.
   player.game = game;
 
   game.player = player;
@@ -93,12 +95,13 @@ void main() {
       expect(game.score, greaterThan(0));
     });
 
-    test('a wrong answer plays the hurt pose, not the cheer', () async {
+    test('a wrong answer leaves the player on the walk cycle', () async {
       final game = await _bareGame();
 
       game.handleAnswer('Bayan');
 
-      expect(game.player.animation, same(game.player.hurtAnim));
+      expect(game.player.animation, same(game.player.walkAnimation),
+          reason: 'wrong answers no longer cost HP, so no hurt reaction fires');
       expect(game.player.animation, isNot(same(game.player.jumpAnim)));
     });
 

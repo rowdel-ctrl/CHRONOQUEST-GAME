@@ -86,8 +86,9 @@ void main() {
   group('HeartsState.timeUntilNext', () {
     test('counts down toward the next heart', () {
       final state = HeartsState.initial().consumed(_t0);
-      final remaining = state.timeUntilNext(_t0.add(const Duration(minutes: 4)));
-      expect(remaining, _interval - const Duration(minutes: 4));
+      final elapsed = _interval ~/ 3;
+      final remaining = state.timeUntilNext(_t0.add(elapsed));
+      expect(remaining, _interval - elapsed);
     });
 
     test('floors at zero instead of going negative when overdue', () {

@@ -14,7 +14,36 @@ import '../chrono_game.dart';
 /// pattern as WallComponent/GroundSection.
 class TilePlatformComponent extends PositionComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
-  static const double tileSize = 16;
+  /// On-screen size of one tile. The source tiles are 16px (see
+  /// [_sheet]'s srcSize); drawing them 1.5x larger puts platforms in the
+  /// same visual register as the 96x120 player and 90x108 enemies instead
+  /// of leaving a 3-tile platform narrower than the player standing on it.
+  /// Both the component's `size` and its hitbox derive from this, and the
+  /// landing plane is [surfaceY] — so platforms get wider and thicker, but
+  /// none of them move, and no jump gets harder to make.
+  static const double tileSize = 24;
+
+  /// Size of one tile in the source sheet, which is unchanged — the sheet
+  /// is still a grid of 16px tiles, they are just drawn larger.
+  static const double sourceTileSize = 16;
+
+  /// How far the underside hangs below the grass cap.
+  ///
+  /// A platform is anchored by its TOP edge (`position.y` == [surfaceY],
+  /// which is where the player's feet land), so all of its thickness hangs
+  /// downward, into the gap between the platform and the ground. Drawing
+  /// the underside as a second full tile made that thickness 2 x [tileSize]
+  /// = 48: at the lowest spawn height (60 above the ground) it left only
+  /// 12 units of air underneath, so the platform read as a block resting on
+  /// the floor that you walk into sideways, rather than a ledge you jump
+  /// onto. This keeps total thickness at the 32 it was before the tiles
+  /// were scaled up, so scaling made platforms wider and chunkier without
+  /// ever reaching further down. The fill tile it crops is flat colour,
+  /// so cropping it is invisible.
+  static const double undersideHeight = 8;
+
+  /// Top of the grass cap to the bottom of the underside.
+  static const double thickness = tileSize + undersideHeight;
 
   // Grid coordinates (row, column) into ground_tileset.png, 0-indexed from
   // the top-left. Uses the grass-topped dirt set in the top-left of the
@@ -56,7 +85,7 @@ class TilePlatformComponent extends PositionComponent
     required this.surfaceY,
     Vector2? spawnPosition,
   }) : super(priority: renderPriority) {
-    size = Vector2(widthInTiles * tileSize, tileSize * 2);
+    size = Vector2(widthInTiles * tileSize, thickness);
     if (spawnPosition != null) {
       position = spawnPosition;
     }
@@ -65,7 +94,8 @@ class TilePlatformComponent extends PositionComponent
   @override
   Future<void> onLoad() async {
     final tileset = await game.loadSprite('tiles/ground_tileset.png');
-    _sheet = SpriteSheet(image: tileset.image, srcSize: Vector2.all(tileSize));
+    _sheet =
+        SpriteSheet(image: tileset.image, srcSize: Vector2.all(sourceTileSize));
 
     if (position.isZero()) {
       position = Vector2(game.cameraRightEdgeX + 20, surfaceY);
@@ -122,7 +152,7 @@ class TilePlatformComponent extends PositionComponent
       fillTile.render(
         canvas,
         position: Vector2(i * tileSize, tileSize),
-        size: Vector2.all(tileSize),
+        size: Vector2(tileSize, undersideHeight),
         overridePaint: _tilePaint,
       );
     }

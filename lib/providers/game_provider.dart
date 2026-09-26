@@ -71,12 +71,12 @@ class GameNotifier extends StateNotifier<GameState> {
 
   bool get canStartLevel => state.hearts.count > 0;
 
-  /// A level attempt was fully failed (in-level HP hit zero) — spends one
-  /// heart from the persistent pool. In-level HP itself
-  /// (`GameConstants.livesPerLevel`) is untouched by this; it always resets
-  /// fresh on the next attempt, gated only by whether that attempt is
-  /// allowed to start at all.
-  void consumeHeartOnLevelFailed() {
+  /// One heart lost to any in-level damage event (enemy contact, hazard
+  /// hit, falling) — the same shared pool shown on the menu screens
+  /// (GAMEPLAY-V2.md section 8). `ChronoGame.onHeartLost` calls this once
+  /// per hit, so the persisted count stays in lockstep with the in-game HUD
+  /// instead of only updating once per fully-failed level.
+  void loseHeart() {
     final hearts = state.hearts.afterLevelFailed(DateTime.now());
     StorageService.saveHeartsState(hearts);
     state = state.copyWith(hearts: hearts);
