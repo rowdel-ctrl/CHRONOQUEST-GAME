@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
@@ -17,6 +18,7 @@ import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
 import 'game_spawning.dart';
+import 'stretch_to_fill_viewport.dart';
 
 /// Main Flame game class for ChronoQuest.
 /// Manages the game loop, player, enemies, questions, and level state.
@@ -31,11 +33,27 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// the real device, rather than drawing in raw device pixels. Without it
   /// the same sprite was ~11% of a desktop window's height and ~22% of a
   /// landscape phone's, which is why the game looked oversized on a phone.
+  ///
+  /// Uses `StretchToFillViewport` rather than Flame's own
+  /// `CameraComponent.withFixedResolution` (which builds a
+  /// `FixedResolutionViewport`): that viewport preserves the virtual
+  /// resolution's exact 16:9 aspect ratio, uniformly scaled, which pillarboxes
+  /// (black bars on the sides) any device whose landscape aspect is wider
+  /// than 16:9 — effectively every modern phone. `StretchToFillViewport`
+  /// fills the real screen edge-to-edge instead, at the cost of a mild
+  /// non-uniform stretch on those devices. `virtualSize` (what `size` below
+  /// reads) is unaffected either way — still always exactly
+  /// GameConstants.virtualWidth/Height, regardless of device.
   ChronoGame()
       : super(
-          camera: CameraComponent.withFixedResolution(
-            width: GameConstants.virtualWidth,
-            height: GameConstants.virtualHeight,
+          camera: CameraComponent(
+            viewport: StretchToFillViewport(
+              resolution: Vector2(
+                GameConstants.virtualWidth,
+                GameConstants.virtualHeight,
+              ),
+            ),
+            viewfinder: Viewfinder(),
           ),
         );
 

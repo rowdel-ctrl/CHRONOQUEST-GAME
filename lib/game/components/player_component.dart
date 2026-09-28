@@ -25,7 +25,14 @@ class PlayerComponent extends SpriteAnimationComponent
   /// same value, now scaled by the joystick's `relativeDelta.x` instead —
   /// the camera, spawn positions, and despawn checks still derive from
   /// `worldX`, which is what actually moves.
-  static const double forwardSpeed = 150.0;
+  ///
+  /// Raised from the original 150 after playtesting found walking too slow.
+  /// Nothing needed retuning alongside it: `ParallaxBackground` derives its
+  /// scroll speed from this constant by ratio rather than a hardcoded
+  /// number (see its own doc comment), and the spawner measures distance
+  /// from the player's actual worldX rather than assuming a fixed speed, so
+  /// both already track this value automatically.
+  static const double forwardSpeed = 210.0;
 
   /// The player's real position in world space. Aliases `position.x` —
   /// obstacles/camera never subtract a scroll speed from themselves;

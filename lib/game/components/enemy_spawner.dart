@@ -45,7 +45,12 @@ class EnemySpawner {
   /// onto. Raised so the whole range sits between the player's shoulders
   /// and the top of their head, which is as high as the jump arc allows.
   static const double platformMinHeight = 90;
-  static const double platformMaxHeight = 110;
+
+  /// Bumped to exactly `jumpPeak - 15` (113) — the ceiling
+  /// `platform_layering_test.dart`'s "spawn no higher than the jump can
+  /// reach" test already enforces, so this can't be raised further without
+  /// that test failing loudly first.
+  static const double platformMaxHeight = 113;
 
   final Random _random = Random();
 

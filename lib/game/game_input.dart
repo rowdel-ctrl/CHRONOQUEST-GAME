@@ -28,22 +28,31 @@ class GameInput {
   GameInput({required this.game});
 
   void setup() {
+    // Player renders at a fixed virtual x=GameConstants.playerX (80) —
+    // very close to the left edge, by design (see chrono_game.dart's
+    // cameraLeftEdgeX doc comment). At the original 55-radius background and
+    // 50-unit left margin, the joystick's footprint (x in [50,160]) reached
+    // well past the player's own left edge, sitting directly under them.
+    // Shrunk and tucked closer to the true corner (left/bottom 15, radius
+    // 40) so its footprint is [15,95] — clear of the player's [80,176] span
+    // apart from a small sliver at their trailing foot during the walk
+    // animation, instead of overlapping their whole lower body.
     joystick = JoystickComponent(
       knob: CircleComponent(
-        radius: 26,
+        radius: 20,
         paint: Paint()..color = Colors.white.withValues(alpha: 0.75),
       ),
       background: CircleComponent(
-        radius: 55,
+        radius: 40,
         paint: Paint()..color = Colors.white.withValues(alpha: 0.3),
       ),
-      margin: const EdgeInsets.only(left: 50, bottom: 50),
+      margin: const EdgeInsets.only(left: 15, bottom: 15),
     );
 
     final jumpButton = HudButtonComponent(
       button: _buttonShape(label: 'JUMP', alpha: 0.35),
       buttonDown: _buttonShape(label: 'JUMP', alpha: 0.65),
-      margin: const EdgeInsets.only(right: 140, bottom: 60),
+      margin: const EdgeInsets.only(right: 145, bottom: 35),
       onPressed: game.onPlayerJump,
     );
 
@@ -58,7 +67,7 @@ class GameInput {
         alpha: 0.65,
         color: Colors.redAccent,
       ),
-      margin: const EdgeInsets.only(right: 30, bottom: 60),
+      margin: const EdgeInsets.only(right: 15, bottom: 35),
       // Phase 2 wires this to the attack hitbox — GAMEPLAY-V2.md Section 15,
       // Phase 1 prompt: "the attack button should do nothing yet".
       onPressed: () {},
@@ -72,7 +81,9 @@ class GameInput {
     required double alpha,
     Color color = Colors.white,
   }) {
-    const diameter = 90.0;
+    // 20% bigger than the original 90 — playtesting found Jump/Attack too
+    // small and too close to the joystick to reach comfortably by thumb.
+    const diameter = 108.0;
     return CircleComponent(
       radius: diameter / 2,
       paint: Paint()..color = color.withValues(alpha: alpha),
@@ -84,7 +95,7 @@ class GameInput {
           textRenderer: TextPaint(
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
