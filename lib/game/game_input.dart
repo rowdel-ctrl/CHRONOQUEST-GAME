@@ -12,10 +12,12 @@ import 'chrono_game.dart';
 /// `JoystickComponent` and `HudButtonComponent` mix in
 /// `ComponentViewportMargin`, whose margin positioning asserts its parent
 /// provides a size and resolves against that parent's `virtualSize`.
-/// `camera.viewport` is the `FixedResolutionViewport` this game's
-/// `CameraComponent` uses, so margins land against the fixed 1280x720
-/// virtual resolution (GameConstants.virtualWidth/Height) rather than the
-/// raw, per-device canvas size.
+/// `camera.viewport` is the `StretchToFillViewport` this game's
+/// `CameraComponent` uses, so margins land against its virtual size (fixed
+/// height, device-matched width — see that class) rather than the raw,
+/// per-device canvas size. That viewport's scale is always uniform, so
+/// these round controls render as true circles on every device with no
+/// extra counter-scaling needed.
 ///
 /// The knob/background/button shapes here are plain Flame primitives, not
 /// the Kenney CC0 on-screen-control art Section 3 calls for — swapping in
@@ -28,25 +30,23 @@ class GameInput {
   GameInput({required this.game});
 
   void setup() {
-    // Player renders at a fixed virtual x=GameConstants.playerX (80) —
-    // very close to the left edge, by design (see chrono_game.dart's
-    // cameraLeftEdgeX doc comment). At the original 55-radius background and
-    // 50-unit left margin, the joystick's footprint (x in [50,160]) reached
-    // well past the player's own left edge, sitting directly under them.
-    // Shrunk and tucked closer to the true corner (left/bottom 15, radius
-    // 40) so its footprint is [15,95] — clear of the player's [80,176] span
-    // apart from a small sliver at their trailing foot during the walk
-    // animation, instead of overlapping their whole lower body.
+    // Sized for a comfortable thumb drag (radius 60, margin 45/45) rather
+    // than shrunk to fit some gap next to the player — those two goals
+    // couldn't both be satisfied by sizing the joystick alone, since any
+    // comfortable radius/margin combination reached past where the player
+    // used to render. Fixed instead by moving the player further from the
+    // left edge (GameConstants.playerX, see its own doc comment), which is
+    // what actually clears this joystick's footprint (x in [45,165]) now.
     joystick = JoystickComponent(
       knob: CircleComponent(
-        radius: 20,
+        radius: 28,
         paint: Paint()..color = Colors.white.withValues(alpha: 0.75),
       ),
       background: CircleComponent(
-        radius: 40,
+        radius: 60,
         paint: Paint()..color = Colors.white.withValues(alpha: 0.3),
       ),
-      margin: const EdgeInsets.only(left: 15, bottom: 15),
+      margin: const EdgeInsets.only(left: 45, bottom: 45),
     );
 
     final jumpButton = HudButtonComponent(

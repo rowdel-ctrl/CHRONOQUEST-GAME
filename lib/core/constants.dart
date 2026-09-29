@@ -70,21 +70,38 @@ class DevFlags {
 
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────
 class GameConstants {
-  /// The virtual resolution the whole game is designed at. A
-  /// FixedResolutionViewport scales this to fit whatever the device actually
-  /// is, so every sprite stays the same fraction of the screen everywhere.
+  /// The virtual height the whole game is designed at. `StretchToFillViewport`
+  /// scales this to fit whatever the device actually is, so every sprite
+  /// stays the same fraction of the screen everywhere.
   ///
   /// Before this, the world used raw device pixels: the 80px player was ~11%
   /// of a 1280x720 window but ~22% of a landscape phone (~360-412 logical px
   /// tall), which is why the game looked roughly twice the size on a phone.
-  /// 1280x720 is used because every size in the game — sprite sizes, the
-  /// ~128px jump peak, platform spawn heights — was tuned by eye at that
-  /// resolution, so keeping it means none of them have to be retuned.
-  static const double virtualWidth = 1280.0;
+  /// 720 is used because every size in the game — sprite sizes, the ~128px
+  /// jump peak, platform spawn heights — was tuned by eye at a 1280x720
+  /// reference resolution, so keeping the height means none of them have to
+  /// be retuned. There is no matching `virtualWidth`: width is computed live
+  /// from each device's own aspect ratio (`StretchToFillViewport`) rather
+  /// than fixed, so the world-to-screen scale is always uniform — no
+  /// stretch on either axis, unlike a fixed 1280x720 forced onto a
+  /// non-16:9 screen.
   static const double virtualHeight = 720.0;
 
   static const double groundY = 520.0;
-  static const double playerX = 80.0;
+
+  /// Fixed virtual x the player renders at (see ChronoGame.cameraLeftEdgeX)
+  /// — how far into the screen from the left edge the character sits.
+  ///
+  /// Raised from 80: at that value the player's sprite (x 80-176) sat
+  /// almost entirely under the joystick's footprint no matter how the
+  /// joystick was sized or placed — a comfortable, thumb-reachable
+  /// joystick radius/margin combination always reaches past x=80. 220
+  /// gives ~55 units of clear space between the two instead. Forward view
+  /// shrinks by the same 140 units this adds (cameraLeftEdgeX moves right
+  /// by exactly this much) — about 12% less world visible ahead of the
+  /// player, still well clear of GameConstants.spawnInterval (800), so
+  /// nothing spawns already-visible.
+  static const double playerX = 220.0;
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
   static const double spawnInterval = 800.0;

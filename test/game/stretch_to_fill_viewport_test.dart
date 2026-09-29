@@ -5,18 +5,21 @@
 // (black bars on the sides) any device wider than 16:9, i.e. effectively
 // every modern phone in landscape.
 //
-// The one thing that must not change is `ChronoGame.size` (== the camera
-// viewport's `virtualSize`): every world-space constant (groundY, jump
-// physics, platform heights, HUD margins) is tuned against that being a
-// fixed 1280x720 on every device, regardless of the real canvas — that's
-// exactly what fixed_resolution_test.dart already locks in, unchanged here.
+// Virtual *height* must not change (`ChronoGame.size.y`): every world-space
+// constant tuned against height (groundY, jump physics, platform heights)
+// assumes it is a fixed 720 on every device, regardless of the real canvas —
+// that's exactly what fixed_resolution_test.dart already locks in, unchanged
+// here. Virtual *width* is expected to track each canvas's own aspect ratio
+// (rather than also being fixed) — that's what keeps the world-to-screen
+// scale uniform, so nothing stretches non-uniformly the way an earlier,
+// fixed-both-dimensions version of this viewport did.
 import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 
-/// Representative landscape canvases, all wider than the virtual 16:9 —
-/// the case that used to pillarbox.
+/// Representative landscape canvases, all wider than 16:9 — the case that
+/// used to pillarbox under the old fixed-resolution viewport.
 final _wideCanvases = <String, Vector2>{
   'common modern phone (19.5:9)': Vector2(2340, 1080),
   'tall modern phone (20:9)': Vector2(2400, 1080),
@@ -25,15 +28,19 @@ final _wideCanvases = <String, Vector2>{
 
 void main() {
   group('StretchToFillViewport', () {
-    test('virtual resolution (world space) is unaffected on every device',
+    test(
+        'virtual height is unaffected by the canvas; virtual width tracks its aspect ratio',
         () {
       _wideCanvases.forEach((label, canvas) {
         final game = ChronoGame()..onGameResize(canvas);
 
-        expect(game.size.x, GameConstants.virtualWidth,
-            reason: 'world width drifted with the canvas on $label');
         expect(game.size.y, GameConstants.virtualHeight,
             reason: 'world height drifted with the canvas on $label');
+        expect(
+          game.size.x,
+          closeTo(GameConstants.virtualHeight * (canvas.x / canvas.y), 0.01),
+          reason: 'world width did not track the canvas aspect ratio on $label',
+        );
       });
     });
 
@@ -47,6 +54,18 @@ void main() {
         expect(game.camera.viewport.position, Vector2.zero(),
             reason: 'viewport was offset instead of filling from the '
                 'top-left on $label');
+      });
+    });
+
+    test('the world-to-screen scale is uniform on every device (no stretch)',
+        () {
+      _wideCanvases.forEach((label, canvas) {
+        final game = ChronoGame()..onGameResize(canvas);
+        final scaleX = canvas.x / game.size.x;
+        final scaleY = canvas.y / game.size.y;
+
+        expect(scaleX, closeTo(scaleY, 0.0001),
+            reason: 'X/Y scale diverged (stretch) on $label');
       });
     });
 
@@ -86,15 +105,15 @@ void main() {
               reason: 'y round-trip drifted on $label at $screenPoint');
         }
 
-        // The canvas's exact center must map to the virtual resolution's
-        // exact center — confirms the non-uniform scale is centered
+        // The canvas's exact center must map to the (device-matched)
+        // virtual size's exact center — confirms the scale is centered
         // correctly on both axes, not skewed toward one corner.
         final center = viewport.globalToLocal(
           Vector2(canvas.x / 2, canvas.y / 2),
         );
-        expect(center.x, closeTo(GameConstants.virtualWidth / 2, 0.01),
+        expect(center.x, closeTo(game.size.x / 2, 0.01),
             reason: 'horizontal center drifted on $label');
-        expect(center.y, closeTo(GameConstants.virtualHeight / 2, 0.01),
+        expect(center.y, closeTo(game.size.y / 2, 0.01),
             reason: 'vertical center drifted on $label');
       });
     });

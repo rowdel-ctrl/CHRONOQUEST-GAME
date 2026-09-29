@@ -29,29 +29,30 @@ import 'stretch_to_fill_viewport.dart';
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
 class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
-  /// The game renders into a fixed virtual resolution that Flame scales to
-  /// the real device, rather than drawing in raw device pixels. Without it
-  /// the same sprite was ~11% of a desktop window's height and ~22% of a
+  /// The game renders into a fixed virtual height that Flame scales to the
+  /// real device, rather than drawing in raw device pixels. Without it the
+  /// same sprite was ~11% of a desktop window's height and ~22% of a
   /// landscape phone's, which is why the game looked oversized on a phone.
   ///
   /// Uses `StretchToFillViewport` rather than Flame's own
   /// `CameraComponent.withFixedResolution` (which builds a
-  /// `FixedResolutionViewport`): that viewport preserves the virtual
-  /// resolution's exact 16:9 aspect ratio, uniformly scaled, which pillarboxes
-  /// (black bars on the sides) any device whose landscape aspect is wider
-  /// than 16:9 — effectively every modern phone. `StretchToFillViewport`
-  /// fills the real screen edge-to-edge instead, at the cost of a mild
-  /// non-uniform stretch on those devices. `virtualSize` (what `size` below
-  /// reads) is unaffected either way — still always exactly
-  /// GameConstants.virtualWidth/Height, regardless of device.
+  /// `FixedResolutionViewport`): that viewport also fixes virtual *width*,
+  /// preserving one exact aspect ratio (16:9) uniformly scaled, which
+  /// pillarboxes (black bars on the sides) any device whose landscape aspect
+  /// is wider than 16:9 — effectively every modern phone. `StretchToFillViewport`
+  /// instead keeps virtual height fixed at GameConstants.virtualHeight but
+  /// lets virtual *width* track the device's own aspect ratio, so it fills
+  /// the real screen edge-to-edge with a uniform (non-distorting) scale on
+  /// every device — no black bars, no stretched sprites. `size.y` (what
+  /// `groundY` below reads) is unaffected either way — still always exactly
+  /// GameConstants.virtualHeight, regardless of device; `size.x` now varies
+  /// per device (a wider-than-16:9 phone sees a proportionally wider slice
+  /// of world), same as `cameraRightEdgeX` below already expects.
   ChronoGame()
       : super(
           camera: CameraComponent(
             viewport: StretchToFillViewport(
-              resolution: Vector2(
-                GameConstants.virtualWidth,
-                GameConstants.virtualHeight,
-              ),
+              height: GameConstants.virtualHeight,
             ),
             viewfinder: Viewfinder(),
           ),

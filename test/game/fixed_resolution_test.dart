@@ -1,5 +1,7 @@
-// The game renders into a fixed virtual resolution that Flame scales to the
-// real device, instead of drawing in raw device pixels.
+// The game renders into a fixed virtual height that Flame scales to the real
+// device, instead of drawing in raw device pixels. Virtual width tracks the
+// device's own aspect ratio (StretchToFillViewport) rather than being fixed
+// too, so the world-to-screen scale is always uniform on every device.
 //
 // The bug this fixes: every size in the game is hardcoded in logical pixels
 // (player 64x80, enemy 60x72, the ~128px jump peak, platform spawn heights),
@@ -29,14 +31,29 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Fixed-resolution viewport', () {
-    test('world size is the virtual resolution on every device', () {
+    test('virtual height is fixed and virtual width matches the canvas aspect ratio',
+        () {
       _canvasSizes.forEach((label, canvas) {
         final game = ChronoGame()..onGameResize(canvas);
 
-        expect(game.size.x, GameConstants.virtualWidth,
-            reason: 'width drifted with the canvas on $label');
         expect(game.size.y, GameConstants.virtualHeight,
             reason: 'height drifted with the canvas on $label');
+        expect(
+          game.size.x,
+          closeTo(GameConstants.virtualHeight * (canvas.x / canvas.y), 0.01),
+          reason: 'width did not track the canvas aspect ratio on $label',
+        );
+      });
+    });
+
+    test('world-to-screen scale is uniform on every device (no stretch)', () {
+      _canvasSizes.forEach((label, canvas) {
+        final game = ChronoGame()..onGameResize(canvas);
+        final scaleX = canvas.x / game.size.x;
+        final scaleY = canvas.y / game.size.y;
+
+        expect(scaleX, closeTo(scaleY, 0.0001),
+            reason: 'X/Y scale diverged (stretch) on $label');
       });
     });
 
