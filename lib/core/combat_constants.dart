@@ -38,7 +38,7 @@ class CombatConstants {
 
   // ─── Enemy patrol (Walker behaviour, Section 5) ─────────────────────────
   /// Not specified beyond "patrols back and forth within a set range" —
-  /// picked well under GameConstants.spawnInterval (800) so a patrolling
+  /// picked well under GameConstants.spawnInterval (1400) so a patrolling
   /// Walker can't wander into the next spawn's territory.
   static const double patrolRange = 150;
   static const double patrolSpeed = 40;
@@ -75,11 +75,20 @@ class CombatConstants {
   // ─── Level length / distance goal ────────────────────────────────────────
   /// Placeholder until Phase 4's Tiled levels replace this with a real exit
   /// object (GAMEPLAY-V2.md Section 14) — levels are still 100% procedural,
-  /// so there is no real per-level length to author yet. Roughly 5x
-  /// GameConstants.spawnInterval (800): long enough that several
-  /// enemies/coins/platforms spawn before the level ends, short enough that
-  /// continuous forward walking (210 units/s) clears it in under 20s.
-  static const double lengthUnitsDefault = 4000;
+  /// so there is no real per-level length to author yet.
+  ///
+  /// Derived from Section 1's "a level is roughly 2 minutes": at
+  /// PlayerComponent.forwardSpeed (210 units/s), 2 minutes of continuous
+  /// forward walking is ~25000 units. Real play is slower than that
+  /// (fighting, jumping, backtracking), so this is a floor on level length
+  /// rather than an exact runtime.
+  ///
+  /// The previous 4000 was set by a bad rule of thumb — "5x the spawn
+  /// interval, so several things spawn" — without checking it against that
+  /// 2-minute target. It produced ~19-second levels holding only ~5
+  /// enemies, so a player who killed three and kept walking hit the level
+  /// end almost immediately and got a win screen that read like a bug.
+  static const double lengthUnitsDefault = 25000;
 
   // ─── Debug ────────────────────────────────────────────────────────────────
   /// K for "Kaalaman". Desktop/connected-keyboard only by nature — not a

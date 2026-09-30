@@ -8,6 +8,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
@@ -33,6 +34,33 @@ ChronoGame _bareGameWithPlayer({
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  group('level pacing', () {
+    // A first pass set lengthUnits to 4000 by a rule of thumb ("5x the spawn
+    // interval") without checking it against Section 1's stated target. That
+    // produced ~19-second levels holding ~5 enemies, so killing three and
+    // walking on triggered the win screen almost immediately. These two
+    // assertions tie the constants back to the design intent so the same
+    // mistake fails loudly rather than shipping.
+    test('a level is roughly 2 minutes of forward walking (Section 1)', () {
+      const seconds =
+          CombatConstants.lengthUnitsDefault / PlayerComponent.forwardSpeed;
+
+      expect(seconds, greaterThan(90),
+          reason: 'levels shorter than ~1.5 min end before they establish '
+              'any rhythm — Section 1 asks for roughly 2 minutes');
+      expect(seconds, lessThan(180),
+          reason: 'levels longer than ~3 min overshoot the same target');
+    });
+
+    test('a level holds enough enemies to be an encounter sequence', () {
+      const enemies =
+          CombatConstants.lengthUnitsDefault ~/ GameConstants.spawnInterval;
+
+      expect(enemies, greaterThanOrEqualTo(10),
+          reason: 'too few enemies per level and combat never gets going');
+    });
+  });
 
   test('does not end the level before the distance goal is reached', () {
     final game = _bareGameWithPlayer();

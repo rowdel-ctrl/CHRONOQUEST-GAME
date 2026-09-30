@@ -100,12 +100,22 @@ class GameConstants {
   /// gives ~55 units of clear space between the two instead. Forward view
   /// shrinks by the same 140 units this adds (cameraLeftEdgeX moves right
   /// by exactly this much) — about 12% less world visible ahead of the
-  /// player, still well clear of GameConstants.spawnInterval (800), so
+  /// player, still well clear of GameConstants.spawnInterval (1400), so
   /// nothing spawns already-visible.
   static const double playerX = 220.0;
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
-  static const double spawnInterval = 800.0;
+  /// How far the player must travel before another enemy spawns ahead.
+  ///
+  /// Raised from 800 in Phase 2. That figure was set while every enemy
+  /// carried a quiz question and *was* the level's content, so meeting one
+  /// often was the point. Enemies are pure hazards now (contact costs a
+  /// heart, GAMEPLAY-V2.md Section 5), and at the old spacing they arrived
+  /// relentlessly enough to drain the shared pool in seconds. This is a
+  /// per-encounter pacing number, not a content-delivery one — a level now
+  /// holds *more* enemies overall (it is far longer, see
+  /// CombatConstants.lengthUnitsDefault) while meeting them less often.
+  static const double spawnInterval = 1400.0;
 
   /// Cap on the single shared hearts pool (see HeartsState) — one pool for
   /// everything, per GAMEPLAY-V2.md section 8 (revision 7 reverses the
