@@ -27,10 +27,19 @@ class Level {
   final CurriculumTag curriculum;
   final bool isBoss;
 
+  /// World-x distance the player must reach to finish this level
+  /// (GAMEPLAY-V2.md Section 14, Phase 2: the interim level-end rule now
+  /// that enemies no longer gate progress). Defaults to
+  /// `CombatConstants.lengthUnitsDefault` — levels are still 100%
+  /// procedural, so there's no real per-level length to author yet; this is
+  /// explicitly a placeholder Phase 4's Tiled `exit` object replaces.
+  final double lengthUnits;
+
   const Level({
     required this.eraId,
     required this.index,
     required this.curriculum,
     this.isBoss = false,
+    required this.lengthUnits,
   });
 }

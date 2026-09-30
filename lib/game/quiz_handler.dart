@@ -2,23 +2,19 @@ import '../models/question.dart';
 import '../models/quiz_result.dart';
 import 'chrono_game.dart';
 import 'components/boss_component.dart';
-import 'components/enemy_component.dart';
 
 /// Question flow for [ChronoGame]: showing a question and resolving the
 /// player's answer. Split out of chrono_game.dart to keep that file within
-/// the line budget; behavior is unchanged.
+/// the line budget.
+///
+/// Only boss fights reach this now (GAMEPLAY-V2.md Section 15, Phase 2:
+/// enemies no longer open the quiz on contact — that's contact damage now,
+/// see PlayerComponent). `showQuestion()`/the enemy-linked branches this
+/// used to have are gone with it, not just their `currentEnemy?.defeat()`
+/// calls — nothing else ever called `showQuestion()`.
 extension QuizHandler on ChronoGame {
-  void showQuestion(Question q, EnemyComponent enemy) {
-    currentQuestion = q;
-    currentEnemy = enemy;
-    questionShowing = true;
-    pauseEngine();
-    overlays.add('QuestionOverlay');
-  }
-
   void showBossQuestion(Question q, BossComponent bossRef) {
     currentQuestion = q;
-    currentEnemy = null;
     questionShowing = true;
     pauseEngine();
     overlays.add('QuestionOverlay');
@@ -45,34 +41,25 @@ extension QuizHandler on ChronoGame {
         score += 5;
       }
 
-      if (bossPhase && boss != null) {
-        boss!.takeDamage();
-      } else {
-        currentEnemy?.defeat();
-      }
+      boss?.takeDamage();
       questionShowing = false;
       resumeEngine();
       notifyState(); // score changed, and possibly boss health
     } else {
-      // Shield absorbs wrong answer
+      // Shield absorbs wrong answer — no damage to boss, but no life lost
+      // either.
       if (shieldActive) {
         overlays.remove('QuestionOverlay');
         shieldActive = false;
         questionShowing = false;
-        if (bossPhase && boss != null) {
-          // No damage to boss, but no life lost either
-        } else {
-          currentEnemy?.defeat();
-        }
         resumeEngine();
         return;
       }
 
       // Wrong answer: no HP lost (GAMEPLAY-V2.md Section 6/8) — just close
-      // the question and let the enemy encounter clear either way.
+      // the question.
       overlays.remove('QuestionOverlay');
       questionShowing = false;
-      currentEnemy?.defeat();
       resumeEngine();
     }
   }

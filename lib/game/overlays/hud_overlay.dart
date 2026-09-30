@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
@@ -19,23 +20,64 @@ class HudOverlayWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Hearts — the same shared pool shown on the menu screens
-                  // (GAMEPLAY-V2.md section 8), not a level-local counter.
-                  Row(
-                    children: List.generate(
-                      GameConstants.maxHearts,
-                      (i) => Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Image.asset(
-                          i < game.hearts
-                              ? 'assets/ui/heart_full.png'
-                              : 'assets/ui/heart_empty.png',
-                          width: 26,
-                          height: 26,
+                  // Hearts, with the Kaalaman charge orbs stacked directly
+                  // beneath them rather than alongside — the two read as one
+                  // "player resources" block in the top-left corner, and the
+                  // orbs stay clear of the level/score/coin widgets that
+                  // share this row.
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // The same shared pool shown on the menu screens
+                      // (GAMEPLAY-V2.md section 8), not a level-local counter.
+                      Row(
+                        children: List.generate(
+                          GameConstants.maxHearts,
+                          (i) => Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Image.asset(
+                              i < game.hearts
+                                  ? 'assets/ui/heart_full.png'
+                                  : 'assets/ui/heart_empty.png',
+                              width: 26,
+                              height: 26,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 5),
+                      // Kaalaman charges (GAMEPLAY-V2.md Section 4) — "a
+                      // small row of glowing orbs", kept next to HP as the
+                      // design asks, just stacked under it. Plain circles
+                      // for now, not dedicated art: no such asset exists
+                      // yet, same "plumbing now, real asset later" split
+                      // Phase 0 used for audio.
+                      Row(
+                        children: List.generate(
+                          CombatConstants.kaalamanCap,
+                          (i) => Padding(
+                            padding: const EdgeInsets.only(right: 3),
+                            child: Container(
+                              width: 14,
+                              height: 14,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: i < game.kaalaman
+                                    ? AppColors.info
+                                    : Colors.white24,
+                                border: Border.all(
+                                  color: AppColors.primaryDark,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const Spacer(),
                   // Level indicator

@@ -1,9 +1,11 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import '../../core/combat_constants.dart';
 import '../chrono_game.dart';
 import '../game_collision.dart';
-import '../quiz_handler.dart';
+import '../kaalaman_handler.dart';
+import 'attack_hitbox_component.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'wall_component.dart';
@@ -61,6 +63,40 @@ class PlayerComponent extends SpriteAnimationComponent
   late SpriteAnimation jumpAnim;
   late SpriteAnimation hurtAnim;
 
+  /// Time left before another `attack()` can spawn a new hitbox
+  /// (CombatConstants.attackCooldown) — counted down every frame, not a
+  /// `Future.delayed`, so it can be checked synchronously from `attack()`.
+  double _attackCooldownRemaining = 0;
+
+  /// True from the moment contact damage lands until
+  /// `CombatConstants.invincibilityDuration` elapses — gates *all* further
+  /// contact damage (enemy or wall) during that window, independent of
+  /// `isHurt`/`triggerHurt()`'s own, shorter 600ms animation-swap-back
+  /// timer. The two are sibling reactions to the same damage event with
+  /// genuinely different durations, tracked separately on purpose — see
+  /// `_takeContactDamage()`.
+  bool invincible = false;
+  double _iframeTimer = 0;
+
+  /// Toggled during the invincibility window to flash the sprite. `render()`
+  /// skips drawing entirely while this is false.
+  bool _flashVisible = true;
+  double _flashTimer = 0;
+
+  /// Whether the sprite is currently drawn — false only mid-flash during
+  /// the invincibility window. Exposed so tests can assert the flash never
+  /// leaves the player permanently invisible once the window ends.
+  @visibleForTesting
+  bool get isFlashVisible => _flashVisible;
+
+  /// Horizontal velocity imparted by the most recent contact-damage
+  /// knockback, decremented toward zero over
+  /// `CombatConstants.knockbackDuration`. Added on top of joystick-driven
+  /// movement in `update()`, not instead of it — the player can still steer
+  /// during a knockback.
+  double _knockbackVelocityX = 0;
+  double _knockbackRemaining = 0;
+
   PlayerComponent({required this.characterId});
 
   @override
@@ -110,6 +146,8 @@ class PlayerComponent extends SpriteAnimationComponent
   void update(double dt) {
     super.update(dt);
 
+    if (_attackCooldownRemaining > 0) _attackCooldownRemaining -= dt;
+
     // Joystick-driven horizontal movement (GAMEPLAY-V2.md Section 3):
     // relativeDelta.x is already normalised to [-1, 1] by how far the knob
     // is pulled from center, so this both sets speed and direction.
@@ -118,6 +156,18 @@ class PlayerComponent extends SpriteAnimationComponent
       position.x += forwardSpeed * horizontalInput * dt;
       facingRight = horizontalInput > 0;
     }
+
+    // Knockback from contact damage — added on top of joystick movement,
+    // not instead of it, so the player can still steer while shoved back.
+    // Decays linearly to zero over CombatConstants.knockbackDuration rather
+    // than cutting off sharply, so it reads as a shove losing momentum
+    // instead of an abrupt stop.
+    if (_knockbackRemaining > 0) {
+      position.x += _knockbackVelocityX * dt;
+      _knockbackRemaining -= dt;
+      if (_knockbackRemaining <= 0) _knockbackVelocityX = 0;
+    }
+
     // Never walk back past the level's start — there's no ground or
     // background authored to the left of it (Phase 4 gives levels real
     // bounds via Tiled).
@@ -139,6 +189,22 @@ class PlayerComponent extends SpriteAnimationComponent
     }
     isOnGround = onGround;
 
+    // Invincibility-frame flashing (GAMEPLAY-V2.md Section 5: "~1s of
+    // invincibility frames (flashing sprite)"). Deliberately independent of
+    // isHurt/triggerHurt()'s own timer — see _takeContactDamage().
+    if (invincible) {
+      _iframeTimer -= dt;
+      _flashTimer -= dt;
+      if (_flashTimer <= 0) {
+        _flashTimer = CombatConstants.flashInterval;
+        _flashVisible = !_flashVisible;
+      }
+      if (_iframeTimer <= 0) {
+        invincible = false;
+        _flashVisible = true;
+      }
+    }
+
     // Fall in gap handling
     if (position.y > game.size.y + 50) {
       game.playerFellInGap();
@@ -147,6 +213,8 @@ class PlayerComponent extends SpriteAnimationComponent
 
   @override
   void render(Canvas canvas) {
+    if (!_flashVisible) return;
+
     if (facingRight) {
       super.render(canvas);
       return;
@@ -170,6 +238,31 @@ class PlayerComponent extends SpriteAnimationComponent
       animation = jumpAnim;
       game.audioService.playJump();
     }
+  }
+
+  /// Swings the attack hitbox in the facing direction (GAMEPLAY-V2.md
+  /// Section 3). Gated by both cooldown and charge cost — spending the
+  /// charge is what can fail "with a small 'no charges' shake" per the
+  /// design doc; the shake itself isn't built yet, this just declines to
+  /// spawn a hitbox when there's nothing to spend.
+  void attack() {
+    if (_attackCooldownRemaining > 0) return;
+    if (!game.trySpendCharge()) return;
+
+    _attackCooldownRemaining = CombatConstants.attackCooldown;
+
+    final hitboxSize = Vector2(
+      CombatConstants.attackHitboxWidth,
+      CombatConstants.attackHitboxHeight,
+    );
+    final offsetX = facingRight ? size.x : -hitboxSize.x;
+    final offsetY = (size.y - hitboxSize.y) / 2;
+    game.world.add(
+      AttackHitboxComponent(
+        position: position + Vector2(offsetX, offsetY),
+        size: hitboxSize,
+      ),
+    );
   }
 
   void triggerHurt() {
@@ -215,21 +308,44 @@ class PlayerComponent extends SpriteAnimationComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
 
-    if (other is EnemyComponent && !game.questionShowing && !other.defeated) {
-      game.showQuestion(other.question, other);
+    if (other is EnemyComponent && !other.defeated) {
+      // Contact damage (GAMEPLAY-V2.md Section 5), not the quiz — enemies
+      // no longer open it on contact. Knockback pushes away from wherever
+      // the enemy actually is, in whichever direction that is.
+      _takeContactDamage(
+        knockbackDirection: worldX < other.position.x ? -1 : 1,
+      );
     }
     if (other is CoinComponent && !other.collected) {
       other.collect();
       game.collectCoin();
     }
-    if (other is WallComponent && !isHurt) {
-      // Player failed to jump over the wall in time — this used to snap
-      // the player's position up onto the wall (looked like an automatic,
-      // unintended jump) with no actual consequence. Now it deals damage,
-      // consistent with falling in a gap, and the wall is removed so it
-      // can't linger and double-hit on subsequent frames.
+    if (other is WallComponent) {
+      // Player failed to jump over the wall in time. The wall is removed
+      // so it can't linger and double-hit on subsequent frames — contact
+      // damage in general is -1 HP with knockback (Section 5), same as an
+      // enemy touch, just always pushed back the way the player came from
+      // since a wall doesn't have a "side" to push away from.
       other.removeFromParent();
-      game.playerHitObstacle();
+      _takeContactDamage(knockbackDirection: -1);
     }
+  }
+
+  /// The one place contact damage (enemy touch or wall) is decided from.
+  /// Early-returns while [invincible] is already true — this is the "don't
+  /// get chain-hit" guard (Section 5), and it's what stops a wall from
+  /// landing a second hit inside an enemy's own i-frame window, or vice
+  /// versa, regardless of which triggered first. Deliberately separate
+  /// from `isHurt`/`triggerHurt()`'s own, shorter 600ms animation-swap-back
+  /// timer: invincibility (1.0s) is a render-layer flash, hurt (0.6s) is
+  /// which animation frames play, and the two windows don't share a clock.
+  void _takeContactDamage({required int knockbackDirection}) {
+    if (invincible) return;
+
+    game.loseLife();
+    _knockbackVelocityX = CombatConstants.knockbackForce * knockbackDirection;
+    _knockbackRemaining = CombatConstants.knockbackDuration;
+    invincible = true;
+    _iframeTimer = CombatConstants.invincibilityDuration;
   }
 }

@@ -13,18 +13,18 @@ extension GameSpawning on ChronoGame {
   void setupSpawning() {
     groundSpawner = GroundSpawner(game: this);
     groundSpawner.spawnInitialGround();
+    spawner = EnemySpawner(game: this);
 
     // Questions are intentionally bundled with the app — no backend
-    // round-trip.
-    final questions = QuestionBank.getQuestions(currentEra, currentLevel);
+    // round-trip. Enemies no longer carry a question (GAMEPLAY-V2.md
+    // Section 15, Phase 2), so only a boss level's fight-phase questions are
+    // kept; the bank still returns bossWarmupQuestions + bossFightQuestions
+    // for a boss level (QuestionBank._targetCount), but the warm-up slice
+    // has nothing left to consume it and is discarded rather than plumbed
+    // anywhere.
     if (isBossLevel) {
-      // Split into warm-up (regular enemies) and boss-phase (asked while
-      // fighting).
-      final warmup = questions.take(GameConstants.bossWarmupQuestions).toList();
+      final questions = QuestionBank.getQuestions(currentEra, currentLevel);
       bossQuestions = questions.skip(GameConstants.bossWarmupQuestions).toList();
-      spawner = EnemySpawner(game: this, questions: warmup);
-    } else {
-      spawner = EnemySpawner(game: this, questions: questions);
     }
   }
 

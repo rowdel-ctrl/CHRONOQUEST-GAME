@@ -68,9 +68,7 @@ class GameInput {
         color: Colors.redAccent,
       ),
       margin: const EdgeInsets.only(right: 15, bottom: 35),
-      // Phase 2 wires this to the attack hitbox — GAMEPLAY-V2.md Section 15,
-      // Phase 1 prompt: "the attack button should do nothing yet".
-      onPressed: () {},
+      onPressed: game.onPlayerAttack,
     );
 
     game.camera.viewport.addAll([joystick, jumpButton, attackButton]);

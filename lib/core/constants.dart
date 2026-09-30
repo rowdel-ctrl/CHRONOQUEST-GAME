@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../models/level.dart';
+import 'combat_constants.dart';
 
 // ─── COLORS ─────────────────────────────────────────────────────────────────
 // Retro pixel-adventure palette. Field names are unchanged from the old
@@ -201,6 +202,7 @@ class EraData {
           index: i + 1,
           curriculum: CurriculumTag(grade: grade, term: term, weeks: levelWeeks[i]),
           isBoss: i + 1 == levelWeeks.length,
+          lengthUnits: CombatConstants.lengthUnitsDefault,
         ),
       );
 }

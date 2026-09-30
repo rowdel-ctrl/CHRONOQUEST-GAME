@@ -20,7 +20,6 @@ import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/enemy_spawner.dart';
 import 'package:chronoquest/game/components/player_component.dart';
 import 'package:chronoquest/game/components/tile_platform_component.dart';
-import 'package:chronoquest/models/question.dart';
 
 const double _playerHeight = 120;
 const double _playerWidth = 96;
@@ -41,14 +40,6 @@ class _ScaleGame extends ChronoGame {
     setupSpawning();
   }
 }
-
-Question _question() => Question(
-      id: 'q1',
-      era: 'spanish',
-      questionText: 'test',
-      options: const [],
-      correctAnswer: '',
-    );
 
 Vector2 _hitboxSize(PositionComponent component) =>
     component.children.whereType<ShapeHitbox>().first.size;
@@ -78,7 +69,7 @@ Future<_ScaleGame> _mount(WidgetTester tester, Component component) async {
 void main() {
   testWidgets('enemies read at the same scale as the player, hitbox included',
       (tester) async {
-    final enemy = EnemyComponent(question: _question(), eraId: 'spanish');
+    final enemy = EnemyComponent(eraId: 'spanish');
     await _mount(tester, enemy);
 
     expect(enemy.size.y, greaterThan(_playerHeight * 0.7),

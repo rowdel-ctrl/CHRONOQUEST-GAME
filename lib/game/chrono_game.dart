@@ -1,15 +1,18 @@
 import 'package:flame/game.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../core/combat_constants.dart';
 import '../core/constants.dart';
+import '../models/level.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
 import 'components/player_component.dart';
-import 'components/enemy_component.dart';
 import 'components/boss_component.dart';
 import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
@@ -18,6 +21,7 @@ import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
 import 'game_spawning.dart';
+import 'kaalaman_handler.dart';
 import 'stretch_to_fill_viewport.dart';
 
 /// Main Flame game class for ChronoQuest.
@@ -28,7 +32,14 @@ import 'stretch_to_fill_viewport.dart';
 /// without this, those Flutter overlays are only built once when added and
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
-class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
+///
+/// Mixes in KeyboardEvents for the Phase 2 debug Kaalaman-grant key only
+/// (kaalaman_handler.dart) — a physical/connected-keyboard-only shortcut
+/// for testing combat before Phase 3's real artifact rewards exist. Delete
+/// this mixin along with the rest of that debug scaffolding once Phase 3
+/// lands.
+class ChronoGame extends FlameGame
+    with HasCollisionDetection, ChangeNotifier, KeyboardEvents {
   /// The game renders into a fixed virtual height that Flame scales to the
   /// real device, rather than drawing in raw device pixels. Without it the
   /// same sprite was ~11% of a desktop window's height and ~22% of a
@@ -83,6 +94,11 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// never a fixed number.
   bool get isBossLevel => currentLevel == getEraById(currentEra).levels.length;
 
+  /// The [Level] data for [currentLevel] within [currentEra] — `Level.index`
+  /// is 1-based, matching `currentLevel` directly.
+  Level get currentLevelData =>
+      getEraById(currentEra).levels[currentLevel - 1];
+
   // Game state
   late PlayerComponent player;
   late GameInput gameInput;
@@ -114,6 +130,16 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// new count to the same `HeartsState` pool shown on the menu screens.
   Function()? onHeartLost;
 
+  /// Attack charges (GAMEPLAY-V2.md Section 4) — a level-local resource,
+  /// same shape as [hearts]: every level starts fresh at
+  /// `CombatConstants.kaalamanStart`, not carried over or persisted. This
+  /// is a different layer from the persistent, Hive-backed `HeartsState`
+  /// pool `hud_overlay.dart` references — there is no persistent Kaalaman
+  /// pool. Real rewards (correct artifact answers) are Phase 3; until then
+  /// this is only spent by attacking and granted by the debug key (see
+  /// kaalaman_handler.dart).
+  int kaalaman = CombatConstants.kaalamanStart;
+
   int score = 0;
   int playerCoins = 0;
   bool questionShowing = false;
@@ -121,7 +147,6 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   bool bossPhase = false;
   bool shieldActive = false;
   Question? currentQuestion;
-  EnemyComponent? currentEnemy;
   BossComponent? boss;
   List<QuestionSnapshot> answers = [];
   List<Question> bossQuestions = [];
@@ -214,6 +239,22 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
+  /// Debug-only Kaalaman grant (see the class doc comment and
+  /// kaalaman_handler.dart) — only reachable from a physical/connected
+  /// keyboard, so it's inert on a touch-only device.
+  @override
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (event is KeyDownEvent &&
+        event.logicalKey == CombatConstants.debugChargeGrantKey) {
+      debugGrantCharges();
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
@@ -224,6 +265,10 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  void onPlayerAttack() {
+    if (!questionShowing) player.attack();
   }
 
   /// Spends one heart from the shared pool and plays the hurt reaction.
@@ -261,9 +306,13 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   // ─── LEVEL STATE ──────────────────────────────────────────────────────────
 
+  /// A level ends on distance, not "all enemies dead" — enemies no longer
+  /// gate progress (GAMEPLAY-V2.md Section 14, Phase 2: contact damage +
+  /// Kaalaman replace the quiz-on-contact loop, so a level must be
+  /// finishable without killing a single enemy). This is the interim rule
+  /// for Phases 2-3; Phase 4's Tiled `exit` object replaces it.
   void checkLevelEnd() {
-    if (spawner.allEnemiesSpawned &&
-        world.children.whereType<EnemyComponent>().isEmpty) {
+    if (player.worldX >= currentLevelData.lengthUnits) {
       if (isBossLevel && !bossPhase) {
         startBossFight();
       } else if (!isBossLevel) {

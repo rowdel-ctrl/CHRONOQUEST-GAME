@@ -1,21 +1,23 @@
 import 'dart:math';
-import '../../models/question.dart';
 import '../chrono_game.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'tile_platform_component.dart';
 import '../../core/constants.dart';
 
-/// Spawns enemies and coins ahead of the camera as the player advances
-/// through the world. Each enemy carries one quiz question from the
-/// pre-fetched list.
+/// Spawns enemies, coins and platforms ahead of the camera as the player
+/// advances through the world.
+///
+/// Enemies no longer carry a question (GAMEPLAY-V2.md Section 15, Phase 2:
+/// contact no longer opens the quiz), so there's no fixed per-level roster
+/// to spawn through — any Walker or Heavy is behaviourally interchangeable
+/// with any other. Enemies now spawn periodically off distance travelled,
+/// uncapped, the same rhythm coins and platforms already use on their own
+/// independent timers below, rather than working through a finite list.
 class EnemySpawner {
   final ChronoGame game;
-  final List<Question> questions;
   double distanceTraveled = 0.0;
   double spawnInterval = GameConstants.spawnInterval;
-  int nextIndex = 0;
-  bool allEnemiesSpawned = false;
 
   /// The player's furthest-right `worldX` reached so far — the high-water
   /// mark spawning distance is measured from (GAMEPLAY-V2.md Section 14,
@@ -26,12 +28,6 @@ class EnemySpawner {
   /// standing still adds none and backtracking over already-spawned ground
   /// never re-spawns it.
   late double _furthestX;
-
-  /// How many enemies have been spawned so far.
-  int get spawnedCount => nextIndex;
-
-  /// Total number of enemies (questions) for this level.
-  int get totalEnemies => questions.length;
 
   /// Platform surfaces spawn between these heights above the ground, in world
   /// units. The player's jump peaks at about 128 (jumpForce² / 2·gravity), so
@@ -57,7 +53,7 @@ class EnemySpawner {
   double _coinTimer = 0;
   double _platformTimer = 0;
 
-  EnemySpawner({required this.game, required this.questions}) {
+  EnemySpawner({required this.game}) {
     _furthestX = game.player.worldX;
   }
 
@@ -67,11 +63,10 @@ class EnemySpawner {
       distanceTraveled += progressX - _furthestX;
       _furthestX = progressX;
     }
-    if (distanceTraveled >= spawnInterval && nextIndex < questions.length) {
+    if (distanceTraveled >= spawnInterval) {
       _spawnEnemy();
       distanceTraveled = 0;
     }
-    if (nextIndex >= questions.length) allEnemiesSpawned = true;
     _coinTimer += dt;
     if (_coinTimer > 1.5 + _random.nextDouble() * 2.0) {
       _coinTimer = 0;
@@ -85,12 +80,8 @@ class EnemySpawner {
   }
 
   void _spawnEnemy() {
-    final enemy = EnemyComponent(
-      question: questions[nextIndex],
-      eraId: game.currentEra,
-    );
+    final enemy = EnemyComponent(eraId: game.currentEra);
     game.world.add(enemy);
-    nextIndex++;
   }
 
   void _spawnCoin() {
