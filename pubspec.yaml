@@ -1,6 +1,8 @@
 name: chronoquest
 description: ChronoQuest - Philippine History Auto-Runner Platformer Game
 publish_to: 'none'
+# Build number (+N) is ignored for Android — android/app/build.gradle.kts
+# overrides versionCode with the git commit count at build time.
 version: 1.0.0+1
 
 environment:

@@ -4,6 +4,21 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Unique, always-incrementing versionCode derived from git history, so every
+// build gets a new build number without editing pubspec.yaml by hand.
+fun gitCommitCount(): Int {
+    return try {
+        val process = ProcessBuilder("git", "rev-list", "--count", "HEAD")
+            .redirectErrorStream(true)
+            .start()
+        val output = process.inputStream.bufferedReader().use { it.readText() }.trim()
+        process.waitFor()
+        output.toInt()
+    } catch (e: Exception) {
+        1
+    }
+}
+
 android {
     namespace = "com.chronoquest.chronoquest"
     compileSdk = 36
@@ -18,7 +33,7 @@ android {
         applicationId = "com.chronoquest.chronoquest"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
+        versionCode = gitCommitCount()
         versionName = flutter.versionName
     }
 
