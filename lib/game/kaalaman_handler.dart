@@ -18,13 +18,4 @@ extension KaalamanHandler on ChronoGame {
     return true;
   }
 
-  /// Debug-only: grants CombatConstants.debugGrantAmount charges, capped at
-  /// CombatConstants.kaalamanCap. Bound to a keyboard key (see
-  /// ChronoGame.onKeyEvent) so combat can be tested before Phase 3's real
-  /// artifact rewards exist.
-  void debugGrantCharges() {
-    kaalaman = (kaalaman + CombatConstants.debugGrantAmount)
-        .clamp(0, CombatConstants.kaalamanCap);
-    notifyState();
-  }
 }

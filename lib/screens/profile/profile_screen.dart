@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/storage_service.dart';
+import 'codex_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -230,6 +231,69 @@ class ProfileScreen extends ConsumerWidget {
                                     ],
                                   ),
                                 ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 12),
+
+                            // Codex — claimed artifacts (GAMEPLAY-V2.md
+                            // Section 6). Opens its own screen rather than
+                            // inlining a grid here, since the collection
+                            // grows past what this card can hold.
+                            Semantics(
+                              button: true,
+                              label: 'Buksan ang Kodeks',
+                              child: GestureDetector(
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                    builder: (_) => const CodexScreen(),
+                                  ),
+                                ),
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: AppColors.accent
+                                          .withValues(alpha: 0.4),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/collectibles/artifact_1.png',
+                                        width: 28,
+                                        height: 28,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Expanded(
+                                        child: Text(
+                                          'KODEKS',
+                                          style: TextStyle(
+                                            color: AppColors.accent,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${StorageService.getCodexTotal()}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      const Icon(
+                                        Icons.chevron_right,
+                                        color: Colors.white54,
+                                        size: 20,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
 

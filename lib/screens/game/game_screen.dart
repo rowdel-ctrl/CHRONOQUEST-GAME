@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../../game/chrono_game.dart';
+import '../../core/combat_constants.dart';
+import '../../game/answer_point_handler.dart';
 import '../../game/quiz_handler.dart';
 import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
@@ -34,7 +36,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ..currentLevel = widget.level
       ..selectedCharacterId = gameState.selectedCharacterId
       ..playerPowerUps = gameState.powerUps
-      ..hearts = gameState.hearts.count;
+      ..hearts = gameState.hearts.count
+      // Section 4's sanctioned tutorial freebie. Set here rather than in
+      // ChronoGame's field initialiser, which runs before currentLevel is
+      // assigned and so could not see the level number.
+      ..kaalaman = widget.level <= CombatConstants.kaalamanTutorialLevels
+          ? CombatConstants.kaalamanTutorialStart
+          : CombatConstants.kaalamanStart;
 
     // Every heart lost in-level spends from the same persistent pool shown
     // on the menu screens (GAMEPLAY-V2.md section 8 — one shared pool, not
@@ -135,9 +143,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       HudOverlayWidget(game: game as ChronoGame),
                   'QuestionOverlay': (context, chronoGame) {
                     final g = chronoGame as ChronoGame;
+                    // Artifacts and gates resolve their own way (claim,
+                    // charges, retry, crumble); boss questions keep the
+                    // original path, which is bound by Section 12's frozen
+                    // POST payload.
+                    final fromAnswerPoint =
+                        g.activeArtifact != null || g.activeGate != null;
                     return QuestionOverlayWidget(
                       game: g,
-                      onAnswer: g.handleAnswer,
+                      onAnswer: fromAnswerPoint
+                          ? g.handleAnswerPointAnswer
+                          : g.handleAnswer,
                     );
                   },
                   'BossHealthOverlay': (context, game) =>

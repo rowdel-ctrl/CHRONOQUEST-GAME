@@ -2,13 +2,15 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
+import '../answer_point_handler.dart';
 import '../chrono_game.dart';
 import '../game_collision.dart';
 import '../kaalaman_handler.dart';
+import 'artifact_component.dart';
 import 'attack_hitbox_component.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
-import 'wall_component.dart';
+import 'gate_component.dart';
 
 /// Player character — `position.x` is the player's real world x-position,
 /// `worldX`. Horizontal movement is driven by the on-screen joystick
@@ -173,6 +175,20 @@ class PlayerComponent extends SpriteAnimationComponent
     // bounds via Tiled).
     if (position.x < 0) position.x = 0;
 
+    // A standing gate is a hard stop (GAMEPLAY-V2.md Section 6: "blocks the
+    // full height of the corridor — you cannot jump it"). Clamped here in
+    // update() rather than on collision so it holds on every frame the
+    // player pushes against it, and so it works whether they arrive walking,
+    // falling or knocked back. Only gates ahead of the player block: one
+    // already passed must not pull them back.
+    for (final gate in game.world.children.whereType<GateComponent>()) {
+      if (!gate.isBlocking) continue;
+      final limit = gate.blockX - size.x;
+      if (position.x > limit && position.x < gate.position.x + gate.size.x) {
+        position.x = limit;
+      }
+    }
+
     // Apply gravity
     if (!isOnGround) {
       velocityY += gravity * dt;
@@ -320,14 +336,15 @@ class PlayerComponent extends SpriteAnimationComponent
       other.collect();
       game.collectCoin();
     }
-    if (other is WallComponent) {
-      // Player failed to jump over the wall in time. The wall is removed
-      // so it can't linger and double-hit on subsequent frames — contact
-      // damage in general is -1 HP with knockback (Section 5), same as an
-      // enemy touch, just always pushed back the way the player came from
-      // since a wall doesn't have a "side" to push away from.
-      other.removeFromParent();
-      _takeContactDamage(knockbackDirection: -1);
+    if (other is ArtifactComponent && other.isInteractable) {
+      // Walk into it and the question opens (GAMEPLAY-V2.md Section 6).
+      // No damage, ever — an artifact is an opportunity, not a hazard.
+      game.showArtifactQuestion(other);
+    }
+    if (other is GateComponent && other.isBlocking && !other.questionPending) {
+      // Gates block rather than hurt. The hold is applied in update() so it
+      // survives every frame the player leans on it, not just this one.
+      game.showGateQuestion(other);
     }
   }
 

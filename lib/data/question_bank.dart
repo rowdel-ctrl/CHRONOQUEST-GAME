@@ -114,6 +114,20 @@ class QuestionBank {
     return (List<Question>.from(pool)..shuffle(random)).take(target).toList();
   }
 
+  /// The whole authored pool for a level, in source order, or an empty list
+  /// if nothing loaded for it. Unlike [getQuestions] this neither samples,
+  /// pads nor shuffles — [QuestionPool] owns those decisions now, because
+  /// serving questions one at a time across an attempt needs state that a
+  /// static, stateless draw can't keep (GAMEPLAY-V2.md Section 14, Phase 3:
+  /// "rework QuestionBank from a list into a pool").
+  static List<Question> poolFor(String era, int level) =>
+      List<Question>.unmodifiable(_bank[era]?[level] ?? const <Question>[]);
+
+  /// Whether real authored content exists for this era/level, as opposed to
+  /// [getQuestions] silently substituting generated placeholders.
+  static bool hasRealQuestions(String era, int level) =>
+      (_bank[era]?[level]?.isNotEmpty) ?? false;
+
   static List<Question> _placeholderQuestions(
     String era,
     int level,

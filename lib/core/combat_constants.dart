@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 
 /// All Phase 2 combat/Kaalaman tuning numbers in one place (GAMEPLAY-V2.md
 /// Section 15, Phase 2 prompt: "Put all tuning numbers... in one clearly
@@ -9,21 +8,18 @@ import 'package:flutter/services.dart';
 /// it was written about.
 class CombatConstants {
   // ─── Kaalaman charges (Section 4) ──────────────────────────────────────
-  /// **Temporarily 3, not the 0 Section 4 specifies.** Artifacts are the
-  /// real source of charges and don't exist until Phase 3, and the debug
-  /// grant below needs a physical keyboard — so on a touch device a level
-  /// starting at 0 leaves the attack button permanently dead and combat
-  /// impossible to playtest at all. Set back to 0 in Phase 3, once
-  /// answering an artifact's question actually awards charges.
-  static const int kaalamanStart = 3;
+  /// Every level starts at 0 (Section 4). Artifacts are the only source of
+  /// charges — Phase 3 restored this after Phase 2 temporarily started at 3
+  /// so combat was testable before artifacts existed.
+  static const int kaalamanStart = 0;
   static const int kaalamanCap = 6;
   static const int attackChargeCost = 1;
 
-  /// How many charges one debug-key press grants, capped at [kaalamanCap].
-  /// Only reachable via a physical/connected keyboard — see
-  /// [debugChargeGrantKey] — and is meant to be deleted once Phase 3 wires
-  /// up real artifact rewards.
-  static const int debugGrantAmount = 3;
+  /// Section 4 sanctions a tutorial freebie: "Levels 1-2 of each era may
+  /// grant 1 as a tutorial freebie." Without it the very first level opens
+  /// with a dead attack button until the first artifact is claimed.
+  static const int kaalamanTutorialLevels = 2;
+  static const int kaalamanTutorialStart = 1;
 
   // ─── Attack hitbox (Section 3: "a short forward hitbox... ~0.25s") ─────
   static const double attackHitboxWidth = 64;
@@ -90,13 +86,42 @@ class CombatConstants {
   /// end almost immediately and got a win screen that read like a bug.
   static const double lengthUnitsDefault = 25000;
 
-  // ─── Debug ────────────────────────────────────────────────────────────────
-  /// K for "Kaalaman". Desktop/connected-keyboard only by nature — not a
-  /// shipped mobile control, and meant to be deleted once Phase 3 lands real
-  /// artifact rewards, so it deliberately lives here rather than behind a
-  /// DevFlags-style --dart-define gate (that mechanism is reserved for
-  /// things that must be provably unreachable in a release build, like
-  /// DEV_SKIP_AUTH bypassing login — an unreachable keyboard shortcut on a
-  /// touch device carries no equivalent risk).
-  static const LogicalKeyboardKey debugChargeGrantKey = LogicalKeyboardKey.keyK;
+  // ─── Artifacts and gates (Section 6) ─────────────────────────────────────
+  /// Charges granted for claiming an artifact first try, and after a wrong
+  /// attempt at the same artifact. "Being wrong costs you time and power,
+  /// which are the things you actually care about in the moment."
+  static const int artifactReward = 2;
+  static const int artifactRetryReward = 1;
+
+  /// How long a wrongly-answered artifact stays inert before re-lighting.
+  static const double artifactInertSeconds = 5.0;
+
+  /// Drawn size of an artifact. Larger than a coin (42) so it reads as a
+  /// deliberate objective rather than pickup clutter, smaller than the
+  /// 96x120 player.
+  static const double artifactSize = 56;
+
+  /// How high above the ground an artifact floats, and its gentle bob.
+  static const double artifactHoverHeight = 150;
+  static const double artifactBobAmplitude = 6;
+  static const double artifactBobSpeed = 2.2;
+
+  /// Artifacts per level (Section 6 asks for 4-6, "the optional, rewarded
+  /// layer on top").
+  static const int artifactsPerLevel = 5;
+
+  /// Gates per level. Section 6 is explicit: "Put 3 gates in every level and
+  /// every student answers at least 3 questions correctly." This is the
+  /// educational floor — do not lower it without revisiting that argument.
+  static const int gatesPerLevel = 3;
+
+  /// A gate blocks the full corridor height and cannot be jumped, so it is
+  /// far taller than the old 40x50 WallComponent it replaces.
+  static const double gateWidth = 48;
+  static const double gateHeight = 260;
+
+  /// How far in front of a gate the player is stopped, so they don't stand
+  /// visually inside it while the question is open.
+  static const double gateStandoff = 8;
+
 }

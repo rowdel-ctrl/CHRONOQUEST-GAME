@@ -1,5 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../core/constants.dart';
+import '../models/codex_entry.dart';
 import '../models/hearts_state.dart';
 import '../models/student.dart';
 
@@ -108,6 +110,40 @@ class StorageService {
 
   static Future<void> clearPendingResults() async {
     await appBox.put(_pendingResultsKey, []);
+  }
+
+  // ─── CODEX (claimed artifacts) ───────────────────────────────────────────
+  // One key per era, matching the 'levels_<eraId>' pattern above. Stored as
+  // a map keyed by questionId rather than a list, so re-claiming the same
+  // artifact on a replay updates in place instead of duplicating the tile.
+
+  static String _codexKey(String eraId) => 'codex_$eraId';
+
+  /// Records a claimed artifact. Idempotent per question: claiming the same
+  /// one again (replaying a level) overwrites rather than appends.
+  static Future<void> saveCodexEntry(CodexEntry entry) async {
+    final key = _codexKey(entry.eraId);
+    final Map<dynamic, dynamic> entries =
+        Map<dynamic, dynamic>.from(appBox.get(key, defaultValue: {}) as Map);
+    entries[entry.questionId] = entry.toJson();
+    await appBox.put(key, entries);
+  }
+
+  /// Every artifact claimed in [eraId], newest claim first.
+  static List<CodexEntry> getCodexEntries(String eraId) {
+    final data = appBox.get(_codexKey(eraId));
+    if (data == null) return [];
+    final Map<dynamic, dynamic> raw = Map<dynamic, dynamic>.from(data as Map);
+    final entries = raw.values
+        .map((e) => CodexEntry.fromJson(Map<String, dynamic>.from(e as Map)))
+        .toList();
+    entries.sort((a, b) => b.claimedAtMs.compareTo(a.claimedAtMs));
+    return entries;
+  }
+
+  /// Total claimed across every era — the Profile tab's headline count.
+  static int getCodexTotal() {
+    return allEras.fold(0, (sum, era) => sum + getCodexEntries(era.id).length);
   }
 
   // ─── TUTORIAL ─────────────────────────────────────────────────────────────

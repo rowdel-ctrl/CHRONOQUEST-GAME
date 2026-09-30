@@ -14,7 +14,7 @@ import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
-import 'package:chronoquest/game/components/wall_component.dart';
+import 'package:chronoquest/game/components/gate_component.dart';
 import 'package:chronoquest/game/game_input.dart';
 
 /// A blank single-frame animation — contact damage routes through
@@ -159,25 +159,22 @@ void main() {
           reason: 'chain-hits inside the i-frame window must be ignored');
     });
 
-    test('a wall hit inside an enemy\'s window costs nothing', () async {
-      // The specific cross-hazard case: contact damage is shared between
-      // enemies and walls, so one must not land inside the other's window.
+    test('touching a gate costs no HP at all', () async {
+      // Phase 3 replaced WallComponent (which dealt contact damage) with
+      // GateComponent, which blocks instead. A gate that also hurt would
+      // punish the student for reaching the thing they're meant to answer.
       final game = await _bareGameWithPlayer();
-      final enemy = _enemyAt(game, 500);
+      final startingHearts = game.hearts;
 
-      game.player.onCollisionStart({}, enemy);
-      final heartsAfterEnemy = game.hearts;
+      final gate = GateComponent(worldX: 500)
+        ..size = Vector2(48, 260)
+        ..position = Vector2(500, game.groundY - 260);
+      gate.game = game;
 
-      game.player.update(0.1);
-      final wall = WallComponent()
-        ..size = Vector2(40, 100)
-        ..position = Vector2(420, game.groundY - 100);
-      wall.game = game;
-      game.player.onCollisionStart({}, wall);
+      game.player.onCollisionStart({}, gate);
 
-      expect(game.hearts, heartsAfterEnemy,
-          reason: 'a wall must not land a second hit inside an enemy i-frame '
-              'window');
+      expect(game.hearts, startingHearts,
+          reason: 'gates block passage; they are not a hazard');
     });
 
     test('expires after invincibilityDuration, allowing damage again', () async {

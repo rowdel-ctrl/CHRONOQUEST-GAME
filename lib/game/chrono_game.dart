@@ -1,17 +1,18 @@
 import 'package:flame/game.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../core/combat_constants.dart';
 import '../core/constants.dart';
+import '../data/question_pool.dart';
 import '../models/level.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
+import 'components/artifact_component.dart';
+import 'components/gate_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
 import 'components/gap_component.dart';
@@ -21,7 +22,6 @@ import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
 import 'game_spawning.dart';
-import 'kaalaman_handler.dart';
 import 'stretch_to_fill_viewport.dart';
 
 /// Main Flame game class for ChronoQuest.
@@ -33,13 +33,8 @@ import 'stretch_to_fill_viewport.dart';
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
 ///
-/// Mixes in KeyboardEvents for the Phase 2 debug Kaalaman-grant key only
-/// (kaalaman_handler.dart) — a physical/connected-keyboard-only shortcut
-/// for testing combat before Phase 3's real artifact rewards exist. Delete
-/// this mixin along with the rest of that debug scaffolding once Phase 3
-/// lands.
 class ChronoGame extends FlameGame
-    with HasCollisionDetection, ChangeNotifier, KeyboardEvents {
+    with HasCollisionDetection, ChangeNotifier {
   /// The game renders into a fixed virtual height that Flame scales to the
   /// real device, rather than drawing in raw device pixels. Without it the
   /// same sprite was ~11% of a desktop window's height and ~22% of a
@@ -148,6 +143,23 @@ class ChronoGame extends FlameGame
   bool shieldActive = false;
   Question? currentQuestion;
   BossComponent? boss;
+
+  /// Which answer point opened the question currently on screen, if any.
+  /// Exactly one is non-null while an artifact or gate question is up; both
+  /// are null for boss questions, which take `quiz_handler.dart`'s path.
+  ArtifactComponent? activeArtifact;
+  GateComponent? activeGate;
+
+  /// This attempt's question supply (GAMEPLAY-V2.md Section 14, Phase 3).
+  /// Per-attempt, not static: two levels played in one session must not
+  /// share a served-set. Built in [setupSpawning].
+  QuestionPool? questionPool;
+
+  /// Serves one question for an artifact or gate, avoiding [exclude] so a
+  /// retry is guaranteed to differ. Null only when the level has no
+  /// authored content at all.
+  Question? drawQuestion({Question? exclude}) =>
+      questionPool?.draw(exclude: exclude);
   List<QuestionSnapshot> answers = [];
   List<Question> bossQuestions = [];
 
@@ -239,22 +251,6 @@ class ChronoGame extends FlameGame
     }
   }
 
-  /// Debug-only Kaalaman grant (see the class doc comment and
-  /// kaalaman_handler.dart) — only reachable from a physical/connected
-  /// keyboard, so it's inert on a touch-only device.
-  @override
-  KeyEventResult onKeyEvent(
-    KeyEvent event,
-    Set<LogicalKeyboardKey> keysPressed,
-  ) {
-    if (event is KeyDownEvent &&
-        event.logicalKey == CombatConstants.debugChargeGrantKey) {
-      debugGrantCharges();
-      return KeyEventResult.handled;
-    }
-    return KeyEventResult.ignored;
-  }
-
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
@@ -333,8 +329,26 @@ class ChronoGame extends FlameGame
     pauseEngine();
     audioService.playLevelComplete();
 
-    final correct = answers.where((a) => a.isCorrect).length;
-    final total = answers.length;
+    // Scored per distinct question, taking the best attempt — not per
+    // recorded attempt.
+    //
+    // Phase 3 lets a wrong answer be retried (GAMEPLAY-V2.md Section 6:
+    // "There is no dead end"), and every attempt is still logged to
+    // `answers` because Section 12 requires the payload to carry them all.
+    // Counting raw attempts would mean a student who got every question
+    // right on the second try scored 50% and one star, which inverts the
+    // teaching goal: the explanation panel exists to be learned from, so
+    // learning from it must not be punished. Retrying still costs real
+    // things — time, charges, and an artifact's reward drops from 2 to 1.
+    //
+    // `answers` itself is untouched, so `_submitResult` posts exactly the
+    // same array shape it always did.
+    final bestByQuestion = <String, bool>{};
+    for (final a in answers) {
+      bestByQuestion[a.questionId] = (bestByQuestion[a.questionId] ?? false) || a.isCorrect;
+    }
+    final correct = bestByQuestion.values.where((ok) => ok).length;
+    final total = bestByQuestion.length;
     final percentage = total > 0 ? (correct / total * 100).round() : 0;
 
     // Check perfect level bonus

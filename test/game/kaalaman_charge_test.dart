@@ -4,6 +4,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
+import 'package:chronoquest/game/answer_point_handler.dart';
 import 'package:chronoquest/game/kaalaman_handler.dart';
 
 void main() {
@@ -27,20 +28,29 @@ void main() {
     });
   });
 
-  group('debugGrantCharges', () {
-    test('grants debugGrantAmount from 0', () {
+  // Phase 3 replaced Phase 2's debug keyboard grant with the real source:
+  // claiming an artifact. The cap behaviour these used to cover now belongs
+  // to grantCharges, which is what artifacts call.
+  group('grantCharges', () {
+    test('adds the artifact reward', () {
       final game = ChronoGame()..kaalaman = 0;
 
-      game.debugGrantCharges();
+      game.grantCharges(CombatConstants.artifactReward);
 
-      expect(game.kaalaman, CombatConstants.debugGrantAmount);
+      expect(game.kaalaman, CombatConstants.artifactReward);
     });
 
-    test('clamps at kaalamanCap even when called repeatedly', () {
+    test('the retry reward is smaller than the first-try reward', () {
+      // Section 6: being wrong costs you power, not HP.
+      expect(CombatConstants.artifactRetryReward,
+          lessThan(CombatConstants.artifactReward));
+    });
+
+    test('clamps at kaalamanCap rather than hoarding past it', () {
       final game = ChronoGame()..kaalaman = 0;
 
       for (var i = 0; i < 10; i++) {
-        game.debugGrantCharges();
+        game.grantCharges(CombatConstants.artifactReward);
       }
 
       expect(game.kaalaman, CombatConstants.kaalamanCap);
@@ -49,9 +59,24 @@ void main() {
     test('never exceeds the cap starting from just below it', () {
       final game = ChronoGame()..kaalaman = CombatConstants.kaalamanCap - 1;
 
-      game.debugGrantCharges();
+      game.grantCharges(CombatConstants.artifactReward);
 
       expect(game.kaalaman, CombatConstants.kaalamanCap);
+    });
+  });
+
+  group('starting charges', () {
+    test('levels start at 0 — artifacts are the only source', () {
+      // Phase 2 temporarily started at 3 so combat was testable before
+      // artifacts existed; Section 4 specifies 0 and Phase 3 restored it.
+      expect(CombatConstants.kaalamanStart, 0);
+    });
+
+    test('the tutorial freebie is smaller than one artifact reward', () {
+      // A freebie big enough to skip the first artifact would undercut the
+      // loop it exists to bootstrap.
+      expect(CombatConstants.kaalamanTutorialStart,
+          lessThanOrEqualTo(CombatConstants.artifactReward));
     });
   });
 }
