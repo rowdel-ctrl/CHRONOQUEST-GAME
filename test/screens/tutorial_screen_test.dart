@@ -19,6 +19,7 @@
 // convention (see HANDOFF.md's "Definition of perfect").
 import 'dart:io';
 
+import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/screens/tutorial/tutorial_screen.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,24 @@ GoRouter _router() => GoRouter(
       ],
     );
 
+/// Stands in for GameNotifier, whose constructor fires a Hive write
+/// (saveHeartsState). Created inside a widget test's fake-time zone that write
+/// never completes, and it keeps Hive's lock forever — every later Hive call
+/// (the next test's reset, Hive.close() in tearDownAll) then hangs until
+/// flutter_test's 10-minute timeout. The tutorial only reads the selected
+/// character, so it needs none of the real notifier's persistence.
+class _QuietGameNotifier extends StateNotifier<GameState>
+    implements GameNotifier {
+  _QuietGameNotifier() : super(GameState());
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 Widget _app() => ProviderScope(
+      overrides: [
+        gameProvider.overrideWith((ref) => _QuietGameNotifier()),
+      ],
       child: MaterialApp.router(routerConfig: _router()),
     );
 
@@ -58,6 +76,16 @@ Future<void> _tapAndAwaitWrite(WidgetTester tester, Key buttonKey) async {
       await Future.delayed(const Duration(milliseconds: 25));
     }
   });
+}
+
+/// Taps Next until the last page, so the tests do not hard-code how many
+/// pages the tutorial has.
+Future<void> goToLastStep(WidgetTester tester) async {
+  for (var i = 0; i < 30; i++) {
+    if (find.byKey(TutorialScreen.doneButtonKey).evaluate().isNotEmpty) return;
+    await tester.tap(find.byKey(TutorialScreen.nextButtonKey));
+    await tester.pumpAndSettle();
+  }
 }
 
 void main() {
@@ -83,11 +111,14 @@ void main() {
     }
   });
 
-  tearDown(() async {
-    await StorageService.appBox.clear();
-  });
+  // Cleared per test inside runAsync, not in a tearDown: a tearDown runs in
+  // the widget test's fake-time zone, where a real Hive write never completes
+  // and the test hangs until flutter_test's 10-minute default timeout.
+  Future<void> resetStorage(WidgetTester tester) =>
+      tester.runAsync(() => StorageService.appBox.clear()) as Future<void>;
 
   testWidgets('renders the first step on open', (tester) async {
+    await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
@@ -97,13 +128,11 @@ void main() {
   });
 
   testWidgets('Next advances through every step to the last', (tester) async {
+    await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    for (var i = 0; i < 5; i++) {
-      await tester.tap(find.byKey(TutorialScreen.nextButtonKey));
-      await tester.pumpAndSettle();
-    }
+    await goToLastStep(tester);
 
     expect(find.text('GAMITIN ANG POWER-UP'), findsOneWidget);
     expect(find.byKey(TutorialScreen.doneButtonKey), findsOneWidget);
@@ -111,6 +140,7 @@ void main() {
   });
 
   testWidgets('Skip marks the tutorial as seen', (tester) async {
+    await resetStorage(tester);
     expect(StorageService.hasSeenTutorial(), isFalse);
 
     await tester.pumpWidget(_app());
@@ -122,13 +152,11 @@ void main() {
 
   testWidgets('Done on the last step marks the tutorial as seen',
       (tester) async {
+    await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    for (var i = 0; i < 5; i++) {
-      await tester.tap(find.byKey(TutorialScreen.nextButtonKey));
-      await tester.pumpAndSettle();
-    }
+    await goToLastStep(tester);
     await _tapAndAwaitWrite(tester, TutorialScreen.doneButtonKey);
 
     expect(StorageService.hasSeenTutorial(), isTrue);
