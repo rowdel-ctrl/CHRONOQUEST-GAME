@@ -21,6 +21,22 @@ class AudioService {
   static const double _bgmVolume = 0.4;
   static const double _sfxVolume = 1.0;
 
+  /// How many players each sound effect keeps ready. A jump lasts well under a
+  /// second, so a few are plenty; one asked for while all are busy is made on
+  /// the spot and dropped afterwards (`AudioPool`), so nothing is ever skipped.
+  static const int _poolSize = 3;
+
+  /// Effects played often enough to be worth preparing before the level starts,
+  /// so the first jump does not wait for a player to be built.
+  static const List<String> _preloaded = [
+    'jump.mp3',
+    'coin.mp3',
+    'player_hurt.mp3',
+    'correct.mp3',
+    'wrong.mp3',
+    'enemy_defeat.mp3',
+  ];
+
   bool _soundEnabled = true;
   bool _musicEnabled = true;
 
@@ -29,6 +45,41 @@ class AudioService {
   /// constructor would drag the plugin into every test that merely builds a
   /// `ChronoGame` (its `audioService` is a field initializer).
   bool _initialized = false;
+
+  /// Effects use their own cache instead of `FlameAudio`'s global one, which
+  /// keeps them off the `FlameAudio.bgm` player that touching it would build.
+  final AudioCache _sfxCache = AudioCache(prefix: _assetPrefix);
+
+  /// One pool of ready players per sound file, built on first use.
+  final Map<String, Future<AudioPool>> _pools = {};
+
+  /// Builds a pool for [file]. Replaceable so a test can count what is built
+  /// without a platform plugin.
+  @visibleForTesting
+  Future<AudioPool> Function(String file) poolFactory = _newPool;
+
+  /// Forgets every pool and goes back to the real builder.
+  @visibleForTesting
+  void resetSfxForTesting() {
+    _pools.clear();
+    poolFactory = _newPool;
+  }
+
+  /// Effects play over the music rather than pausing it, which is what
+  /// `FlameAudio.play` did too.
+  static final AudioContext _mixWithMusic =
+      AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers).build();
+
+  static Future<AudioPool> _newPool(String file) {
+    final service = AudioService();
+    return AudioPool.create(
+      source: AssetSource(file),
+      audioCache: service._sfxCache,
+      audioContext: _mixWithMusic,
+      minPlayers: 1,
+      maxPlayers: _poolSize,
+    );
+  }
 
   /// The era whose BGM is currently loaded, so [toggleMusic] can resume the
   /// right track after being switched back on.
@@ -40,19 +91,49 @@ class AudioService {
   Future<void> _ensureInitialized() async {
     if (_initialized) return;
     _initialized = true;
-    // Updates the prefix on both the shared cache and the BGM player's own
-    // cache — the one call covers music and effects.
+    // Points the BGM player's cache at the music folder.
     FlameAudio.updatePrefix(_assetPrefix);
     // Registers the lifecycle observer that auto-pauses music when the app
     // is backgrounded and resumes it on return.
     await FlameAudio.bgm.initialize();
   }
 
+  /// The pool for [file], built the first time it is asked for. A pool that
+  /// failed to build is forgotten, so the next play tries again.
+  Future<AudioPool> _poolFor(String file) async {
+    try {
+      return await (_pools[file] ??= poolFactory(file));
+    } catch (_) {
+      _pools.remove(file);
+      rethrow;
+    }
+  }
+
+  /// Gets the frequent effects ready, so no jump or coin has to build a player
+  /// mid-level. Safe to call without waiting; failures are logged and the
+  /// effect is built on its first play instead.
+  Future<void> preloadSfx() async {
+    for (final file in _preloaded) {
+      try {
+        await _poolFor(file);
+      } catch (e) {
+        debugPrint('AudioService: could not prepare $file: $e');
+      }
+    }
+  }
+
+  /// Plays an effect through its pool of reused players.
+  ///
+  /// `FlameAudio.play` made a brand-new `AudioPlayer` for every call and never
+  /// disposed it. A level has hundreds of jumps and coin pickups, so players,
+  /// their platform channels and their native sound handles piled up the longer
+  /// a level ran. Phones got slower toward the end of a level (playtest report,
+  /// two phones). A pool keeps a handful of players per sound and reuses them.
   Future<void> _playSfx(String file) async {
     if (!_soundEnabled) return;
     try {
-      await _ensureInitialized();
-      await FlameAudio.play(file, volume: _sfxVolume);
+      final pool = await _poolFor(file);
+      await pool.start(volume: _sfxVolume);
     } catch (e) {
       debugPrint('AudioService: failed to play $file: $e');
     }

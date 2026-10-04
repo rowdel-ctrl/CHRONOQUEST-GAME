@@ -52,11 +52,27 @@ class CombatConstants {
   static const int heavyHp = 2;
 
   // ─── Contact damage / knockback / i-frames (Section 5) ──────────────────
-  /// Initial horizontal velocity imparted away from whatever was touched,
-  /// world units/second. Chosen so knockback's total travel
-  /// (force * duration) is a visible shove well under one patrol range.
-  static const double knockbackForce = 220;
-  static const double knockbackDuration = 0.2;
+  /// How far a hit shoves the player, away from whatever was touched, in world
+  /// units. Playtest (2026-10-04): the old 44-unit shove left the player inside
+  /// the enemy's reach, and the 1.5s of invincibility that follows was long
+  /// enough to simply walk through it. 160 puts a clear gap between them.
+  ///
+  /// The numbers that make that true, all at the 210 units/s walking speed:
+  /// after the [knockbackDuration] of lost control there are
+  /// (1.5 - 0.3) * 210 = 252 units of invincible walking left, but getting
+  /// back through the enemy takes the 160 pushed away plus about 146 to cross
+  /// its hit area and the player's own width, so 306. It cannot be done before
+  /// the invincibility ends. `contact_damage_test.dart` pins this arithmetic.
+  static const double knockbackDistance = 160;
+
+  /// Seconds the shove lasts, and so how long the player cannot steer: the
+  /// student is "hit-stunned" for this long, so they cannot walk straight
+  /// back into the enemy while it is still on them.
+  static const double knockbackDuration = 0.3;
+
+  /// Speed of the shove, derived so it covers [knockbackDistance] exactly in
+  /// [knockbackDuration]. World units/second.
+  static const double knockbackForce = knockbackDistance / knockbackDuration;
 
   /// Section 5 says "~1s". Raised to 1.5 after the 2026-10-03 playtest: with
   /// contact damage now re-checked every frame of an overlap (it used to fire
@@ -131,8 +147,11 @@ class CombatConstants {
   static const int gatesPerLevel = 1;
 
   /// A gate blocks the full corridor height and cannot be jumped, so it is
-  /// far taller than the old 40x50 WallComponent it replaces.
-  static const double gateWidth = 48;
+  /// far taller than the old 40x50 WallComponent it replaces. Widened from 48 to
+  /// 144 (6 tiles) after playtesting: at 48 it was half as wide as the player and
+  /// read as a post, not a gate. The generator leaves 120 of floor past the exit
+  /// so it fits (tools/levelgen/rules.js, exitMargin).
+  static const double gateWidth = 144;
   static const double gateHeight = 260;
 
   /// How far in front of a gate the player is stopped, so they don't stand

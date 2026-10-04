@@ -181,22 +181,26 @@ class PlayerComponent extends SpriteAnimationComponent
 
     if (_attackCooldownRemaining > 0) _attackCooldownRemaining -= dt;
 
-    // Joystick-driven horizontal movement (GAMEPLAY-V2.md Section 3):
-    // relativeDelta.x is already normalised to [-1, 1] by how far the knob
-    // is pulled from center, so this both sets speed and direction.
-    final horizontalInput = game.gameInput.joystick.relativeDelta.x;
+    // Player-driven horizontal movement (GAMEPLAY-V2.md Section 3): -1..1,
+    // from the joystick's pull or from the arrow buttons, so this both sets
+    // speed and direction whichever control scheme is on screen.
+    //
+    // Ignored while knocked back: a hit takes the controls for the length of
+    // the shove, so the student cannot walk back into the enemy at once and
+    // use the invincibility that follows to pass through it.
+    final horizontalInput =
+        _knockbackRemaining > 0 ? 0.0 : game.gameInput.horizontal;
     if (horizontalInput != 0) {
       position.x += forwardSpeed * horizontalInput * dt;
       facingRight = horizontalInput > 0;
     }
 
-    // Knockback from contact damage — added on top of joystick movement,
-    // not instead of it, so the player can still steer while shoved back.
-    // Decays linearly to zero over CombatConstants.knockbackDuration rather
-    // than cutting off sharply, so it reads as a shove losing momentum
-    // instead of an abrupt stop.
+    // Knockback from contact damage: a steady shove away from the enemy for
+    // CombatConstants.knockbackDuration, covering knockbackDistance in all.
+    // The player cannot steer during it (above). On the ground it stops at the
+    // edge of the ledge, so a hit never throws anyone into a gap.
     if (_knockbackRemaining > 0) {
-      position.x += _knockbackVelocityX * dt;
+      position.x = _keepOnGround(position.x + _knockbackVelocityX * dt);
       _knockbackRemaining -= dt;
       if (_knockbackRemaining <= 0) _knockbackVelocityX = 0;
     }
@@ -255,8 +259,16 @@ class PlayerComponent extends SpriteAnimationComponent
     // Remember the last spot the player could actually stand, for
     // `respawn()` after a fall. Skipped during knockback so being shoved
     // off a ledge doesn't anchor them to the edge they were pushed over.
+    //
+    // Only counts when the whole foot span is over ground, never a platform:
+    // a platform hangs over a gap, so anchoring there respawned the player
+    // at ground height over nothing and they fell again.
     if (onGround && _knockbackRemaining <= 0) {
-      respawnAnchorX = position.x;
+      final centre = position.x + size.x / 2;
+      final half = size.x * footSpanFraction / 2;
+      if (game.isGroundUnder(centre - half, centre + half)) {
+        respawnAnchorX = position.x;
+      }
     }
 
     // Invincibility-frame flashing (GAMEPLAY-V2.md Section 5: "~1s of
@@ -368,8 +380,25 @@ class PlayerComponent extends SpriteAnimationComponent
   /// would drop the player back into the same hole they just fell through,
   /// draining the whole heart pool in seconds. Horizontal position now
   /// returns to [respawnAnchorX].
+  ///
+  /// It returns a run-up *before* that spot, not to it. The anchor is where
+  /// the player last stood, which is the lip of the gap they fell into;
+  /// respawning on the lip with the joystick still held walked them straight
+  /// back off, one heart per second, until the level failed. Backing up
+  /// (never past the start of that ground) gives them time to jump.
+  static const double respawnRunway = 300;
+
   void respawn() {
-    position.x = respawnAnchorX;
+    final centre = respawnAnchorX + size.x / 2;
+    var x = respawnAnchorX - respawnRunway;
+    for (final section in game.groundSections) {
+      if (centre >= section.position.x &&
+          centre <= section.position.x + section.size.x) {
+        if (x < section.position.x) x = section.position.x;
+        break;
+      }
+    }
+    position.x = x < 0 ? 0 : x;
     position.y = game.groundY - size.y;
     velocityY = 0;
     isOnGround = true;
@@ -419,6 +448,37 @@ class PlayerComponent extends SpriteAnimationComponent
     // the player 8px short of the gate, so these hitboxes never overlap and
     // this branch never ran — see the gate loop in update(), which both
     // blocks and asks.
+  }
+
+  /// Limits [x] so a shoved player who is standing on something stays on it.
+  ///
+  /// Finds the ground section or platform the whole foot span is over and keeps
+  /// the foot span inside it, so a hit never throws anyone into a gap, from a
+  /// ledge or from a platform fight. Airborne, or already off the edge, there is
+  /// nothing to stay on, so [x] is returned unchanged.
+  double _keepOnGround(double x) {
+    if (!isOnGround) return x;
+    final half = size.x * footSpanFraction / 2;
+    final centre = position.x + size.x / 2;
+    double clampTo(double start, double width) => x.clamp(
+          start + half - size.x / 2,
+          start + width - half - size.x / 2,
+        );
+    for (final s in game.groundSections) {
+      if (centre - half >= s.position.x &&
+          centre + half <= s.position.x + s.size.x) {
+        return clampTo(s.position.x, s.size.x);
+      }
+    }
+    final feetY = position.y + size.y;
+    for (final p in game.platforms) {
+      if ((feetY - p.surfaceY).abs() < 1 &&
+          centre - half >= p.position.x &&
+          centre + half <= p.position.x + p.size.x) {
+        return clampTo(p.position.x, p.size.x);
+      }
+    }
+    return x;
   }
 
   /// The one place contact damage (enemy touch or wall) is decided from.

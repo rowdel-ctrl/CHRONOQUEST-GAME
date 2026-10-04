@@ -37,6 +37,20 @@ extension GroundQueries on ChronoGame {
     }
     return false;
   }
+
+  /// Whether the span [left]..[right] lies entirely over one platform whose top
+  /// is at [surfaceY]. An enemy standing on a platform uses this to turn round
+  /// at its edge, the way a ground enemy does at a ledge.
+  bool isPlatformUnder(double left, double right, double surfaceY) {
+    for (final p in platforms) {
+      if ((p.surfaceY - surfaceY).abs() < 1 &&
+          left >= p.position.x &&
+          right <= p.position.x + p.size.x) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 extension PlayerGroundCollision on PlayerComponent {

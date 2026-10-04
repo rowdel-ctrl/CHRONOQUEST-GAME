@@ -8,6 +8,7 @@ import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/overlays/hud_overlay.dart';
 import 'package:chronoquest/game/overlays/hud_widgets.dart';
+import 'package:chronoquest/widgets/gate_icon.dart';
 
 Future<void> _pumpHud(WidgetTester tester, ChronoGame game) async {
   await tester.binding.setSurfaceSize(const Size(800, 360));
@@ -65,7 +66,7 @@ void main() {
       ..artifactsAnswered = 5;
     await _pumpHud(tester, game);
 
-    expect(find.byIcon(Icons.lock_open), findsOneWidget);
+    expect(find.byType(GateIcon), findsOneWidget);
   });
 
   testWidgets('progress pill updates when the game notifies', (tester) async {

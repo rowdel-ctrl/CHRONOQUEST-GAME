@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
+import 'gate_hud.dart';
 import 'hud_widgets.dart';
 
 /// HUD overlay — health and Kaalaman bars, gate/artifact progress, score and
@@ -18,6 +19,16 @@ class HudOverlayWidget extends StatelessWidget {
         listenable: game,
         builder: (context, _) => Stack(
           children: [
+            // Under the artifact counter: once every artifact is answered, how
+            // far the gate is (gate_hud.dart). Ignores touches so it can never
+            // get in the way of the controls.
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 46),
+                child: IgnorePointer(child: GateHud(game: game)),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(

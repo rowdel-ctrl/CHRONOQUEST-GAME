@@ -7,6 +7,7 @@ import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/components/tile_platform_component.dart';
 import 'package:chronoquest/game/game_collision.dart';
 
 /// Two ground spans, 0..1000 and 1200..2200, with a 200px gap between them.
@@ -33,12 +34,14 @@ Future<EnemyComponent> _mountWalker(
   ChronoGame game, {
   required double x,
   required double patrol,
+  double? surfaceY,
 }) async {
   final enemy = EnemyComponent(
     eraId: 'spanish',
     enemyTypeOverride: 'spanish_soldier',
     worldX: x,
     patrolRangeOverride: patrol,
+    surfaceY: surfaceY,
   );
   game.world.add(enemy);
   await game.ready();
@@ -140,6 +143,66 @@ void main() {
       }
 
       expect(enemy.patrolDirection, directionBefore);
+    });
+  });
+
+  group('platform enemies', () {
+    // A 192-wide platform over the gap (1000..1200), top 108 above the ground.
+    ChronoGame gameWithPlatform() {
+      final game = _gameWithGap();
+      final surface = game.groundY - 108;
+      game.platforms.add(
+        TilePlatformComponent(
+          widthInTiles: 8,
+          surfaceY: surface,
+          spawnPosition: Vector2(1004, surface),
+        ),
+      );
+      return game;
+    }
+
+    test('stands on the platform, not on the ground', () async {
+      final game = gameWithPlatform();
+      final surface = game.groundY - 108;
+      final enemy = await _mountWalker(game, x: 1055, patrol: 36, surfaceY: surface);
+
+      expect(enemy.position.y + enemy.size.y, closeTo(surface, 0.01));
+    });
+
+    test('a patrol wider than the platform turns round at its edge', () async {
+      final game = gameWithPlatform();
+      final surface = game.groundY - 108;
+      // Patrol of 300 would carry it off both ends of the 192-wide platform.
+      final enemy = await _mountWalker(game, x: 1055, patrol: 300, surfaceY: surface);
+
+      var turns = 0;
+      var last = enemy.patrolDirection;
+      for (var i = 0; i < 60 * 30; i++) {
+        enemy.update(1 / 60);
+        final centre = enemy.position.x + enemy.size.x / 2;
+        const half = EnemyComponent.spriteWidth * footSpanFraction / 2;
+        expect(game.isPlatformUnder(centre - half, centre + half, surface), isTrue,
+            reason: 'frame $i: foot span left the platform at x=${enemy.position.x}');
+        if (enemy.patrolDirection != last) turns++;
+        last = enemy.patrolDirection;
+      }
+      expect(turns, greaterThanOrEqualTo(2),
+          reason: 'it should pace between both edges, not stick at one');
+    });
+
+    test('a platform enemy ignores the ground below', () async {
+      // The ground spans end at 1000 and restart at 1200, so a ground check would
+      // call this enemy unsupported everywhere over the gap.
+      final game = gameWithPlatform();
+      final surface = game.groundY - 108;
+      final enemy = await _mountWalker(game, x: 1055, patrol: 36, surfaceY: surface);
+      final start = enemy.position.x;
+
+      for (var i = 0; i < 60 * 5; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.position.x, isNot(start), reason: 'it patrols');
+      expect(enemy.position.x, inInclusiveRange(1055 - 36 - 1, 1055 + 36 + 1));
     });
   });
 }

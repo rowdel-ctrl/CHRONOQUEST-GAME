@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flame/game.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../core/combat_constants.dart';
 import '../core/constants.dart';
 import '../data/question_pool.dart';
+import '../models/control_scheme.dart';
 import '../models/level.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
@@ -14,6 +17,7 @@ import '../services/audio_service.dart';
 import 'components/artifact_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
+import 'components/gate_component.dart';
 import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
 import 'components/parallax_background.dart';
@@ -98,6 +102,11 @@ class ChronoGame extends FlameGame
   // Game state
   late PlayerComponent player;
   late GameInput gameInput;
+
+  /// The movement controls to show, set by the screen from the student's
+  /// saved choice before the level loads. Changing it later (after a trip to
+  /// Settings from the pause menu) goes through `gameInput.setScheme`.
+  ControlScheme controlScheme = ControlScheme.joystick;
 
   /// The pre-Phase-4 runtime spawners, created only on levels with no
   /// authored `.tmx` (see game_spawning.dart).
@@ -298,7 +307,7 @@ class ChronoGame extends FlameGame
     // On-screen joystick + jump/attack buttons (game_input.dart) — added to
     // the viewport, so they read player input regardless of where the
     // camera is looking.
-    gameInput = GameInput(game: this);
+    gameInput = GameInput(game: this, scheme: controlScheme);
     gameInput.setup();
 
     // Level content (game_spawning.dart): an authored Tiled map when one
@@ -311,8 +320,38 @@ class ChronoGame extends FlameGame
     // Start timer
     _stopwatch.start();
 
-    // Play BGM
+    // Get the sound effects ready, then play the BGM. Not awaited: audio must
+    // never hold up the level.
+    unawaited(audioService.preloadSfx());
     audioService.playBgm(currentEra);
+  }
+
+  /// Longest stretch of game time one frame may advance. A stall longer than
+  /// this (playtest: dropping off the internet) is treated as this long,
+  /// so the game pauses for the stall instead of jumping forward through it.
+  static const double maxFrameDt = 0.1;
+
+  /// Longest single simulation step. A late frame is split into steps no
+  /// longer than this rather than run as one big step.
+  ///
+  /// Playtest bug: the game took each frame's full elapsed time as one step,
+  /// and ground contact is only checked once per step. After a stall the
+  /// player moved hundreds of units in one go, past solid ground and into a
+  /// gap, and a long fall step could also skip past the 20-unit landing band
+  /// (game_collision.dart) and drop through the floor. At 1/60 s the fastest
+  /// fall moves about 11 units per step.
+  static const double maxStepDt = 1 / 60;
+
+  @override
+  void updateTree(double dt) {
+    // Always at least one call, even for a zero-length frame: Flame also
+    // mounts newly added components inside updateTree.
+    var remaining = dt > maxFrameDt ? maxFrameDt : dt;
+    do {
+      final step = remaining > maxStepDt ? maxStepDt : remaining;
+      super.updateTree(step);
+      remaining -= step;
+    } while (remaining > 1e-6);
   }
 
   @override
@@ -357,6 +396,25 @@ class ChronoGame extends FlameGame
   /// Lets [QuizHandler] (quiz_handler.dart) notify overlay listeners, since
   /// [notifyListeners] is protected and can't be called from an extension.
   void notifyState() => notifyListeners();
+
+  /// How far the player still has to walk to the end gate, in world units, once
+  /// every artifact is answered and the gate is the only thing between them
+  /// and the exit. Null before then, when there is no gate to head for, or once
+  /// it has opened. Zero when standing at it.
+  ///
+  /// Measured from the player's right edge to where they are held in front of
+  /// the gate (`CombatConstants.gateStandoff` short of it), so it reads 0 at
+  /// the spot they actually stop.
+  double? gateDistanceUnits() {
+    if (artifactsTotal == 0 || !canPassEndGate) return null;
+    for (final gate in world.children.whereType<GateComponent>()) {
+      if (!gate.isLevelExit || !gate.isBlocking) continue;
+      final playerRight = player.position.x + player.size.x;
+      final left = gate.position.x - CombatConstants.gateStandoff - playerRight;
+      return left < 0 ? 0 : left;
+    }
+    return null;
+  }
 
   void playerFellInGap() {
     if (!loseLife()) player.respawn();

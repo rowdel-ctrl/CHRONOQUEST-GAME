@@ -18,6 +18,7 @@ import 'package:chronoquest/game/components/artifact_component.dart';
 import 'package:chronoquest/game/components/gate_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
 import 'package:chronoquest/game/game_spawning.dart';
+import 'package:chronoquest/game/level_loader.dart';
 
 class _PointGame extends ChronoGame {
   @override
@@ -53,6 +54,17 @@ Future<_PointGame> _mount(WidgetTester tester, Component component) async {
 }
 
 void main() {
+  // These tests cover the procedural placement (_placeAnswerPoints). They
+  // used to rely on Spanish 1 having no map; it now has a generated one, so
+  // switch the manifest off for the whole file instead of depending on which
+  // levels happen to be authored.
+  late Set<(int, int)> savedAuthored;
+  setUp(() {
+    savedAuthored = LevelLoader.authored;
+    LevelLoader.authored = const {};
+  });
+  tearDown(() => LevelLoader.authored = savedAuthored);
+
   group('ArtifactComponent', () {
     testWidgets('starts interactable and rewards the full amount',
         (tester) async {
@@ -84,9 +96,10 @@ void main() {
       a.goInert();
       expect(a.isInteractable, false);
 
-      // Drive past the 5s window.
-      for (var i = 0; i < 40; i++) {
-        game.updateTree(CombatConstants.artifactInertSeconds / 20);
+      // Drive past the 5s window. Steps stay within ChronoGame.maxFrameDt:
+      // a longer frame is capped, so it would not advance the full amount.
+      for (var i = 0; i < 60; i++) {
+        game.updateTree(CombatConstants.artifactInertSeconds / 50);
       }
 
       expect(a.isInert, false);

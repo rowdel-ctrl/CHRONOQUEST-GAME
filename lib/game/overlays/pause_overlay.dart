@@ -4,12 +4,20 @@ import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
 
-/// Pause menu overlay — resume or quit.
+/// Pause menu overlay: resume, open settings, or quit.
+///
+/// Ituloy has the full width and Settings and Umalis share the row beneath
+/// it. Three stacked buttons made the panel as tall as a sideways phone's
+/// whole screen (about 360), so the panel stays compact instead.
 class PauseOverlayWidget extends StatelessWidget {
   final ChronoGame game;
   final VoidCallback onQuit;
+
+  /// Opens Settings over the paused level. Null hides the button, which is
+  /// how the overlay behaves wherever there is no router to open it with.
+  final VoidCallback? onSettings;
   const PauseOverlayWidget(
-      {super.key, required this.game, required this.onQuit});
+      {super.key, required this.game, required this.onQuit, this.onSettings});
 
   @override
   Widget build(BuildContext context) {
@@ -23,32 +31,37 @@ class PauseOverlayWidget extends StatelessWidget {
             child: GamePanel(
               color: AppColors.surface,
               margin: const EdgeInsets.symmetric(horizontal: 40),
-              padding: const EdgeInsets.all(28),
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.pause,
-                      size: 32,
-                      color: Colors.white,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.pause,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'PAUSE',
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          height: 1.4,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'PAUSE',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      height: 1.4,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
 
                   // Resume button
                   GameButton(
@@ -56,7 +69,7 @@ class PauseOverlayWidget extends StatelessWidget {
                     icon: Icons.play_arrow,
                     color: AppColors.success,
                     textColor: Colors.white,
-                    width: 220,
+                    width: 280,
                     onPressed: () {
                       game.overlays.remove('PauseOverlay');
                       game.resumeEngine();
@@ -64,14 +77,39 @@ class PauseOverlayWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Quit button
-                  GameButton(
-                    label: 'UMALIS',
-                    icon: Icons.exit_to_app,
-                    color: AppColors.surfaceAlt,
-                    textColor: AppColors.danger,
-                    width: 220,
-                    onPressed: () => _confirmQuit(context),
+                  SizedBox(
+                    width: 280,
+                    child: Row(
+                      children: [
+                        if (onSettings != null) ...[
+                          Expanded(
+                            child: GameButton(
+                              label: 'SETTINGS',
+                              icon: Icons.settings,
+                              color: AppColors.surfaceAlt,
+                              textColor: AppColors.textPrimary,
+                              fontSize: 8,
+                              minHeight: 48,
+                              horizontalPadding: 10,
+                              onPressed: onSettings,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                        ],
+                        Expanded(
+                          child: GameButton(
+                            label: 'UMALIS',
+                            icon: Icons.exit_to_app,
+                            color: AppColors.surfaceAlt,
+                            textColor: AppColors.danger,
+                            fontSize: 8,
+                            minHeight: 48,
+                            horizontalPadding: 10,
+                            onPressed: () => _confirmQuit(context),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

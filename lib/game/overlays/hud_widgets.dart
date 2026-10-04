@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
+import '../../widgets/gate_icon.dart';
 import '../chrono_game.dart';
 
 /// A row of equal segments, the first [filled] of them lit. Used for both
@@ -162,8 +163,7 @@ class HudProgressPill extends StatelessWidget {
             if (allAnswered) ...[
               const SizedBox(width: 8),
               // The gate is open — the student can head for the exit.
-              const Icon(Icons.lock_open,
-                  size: 16, color: AppColors.success),
+              const GateIcon(size: 20),
             ],
           ],
         ),

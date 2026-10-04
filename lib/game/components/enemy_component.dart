@@ -73,11 +73,17 @@ class EnemyComponent extends SpriteAnimationComponent
   /// a narrow ledge.
   final double? patrolRangeOverride;
 
+  /// World y of the surface this enemy's feet stand on, when that is a platform
+  /// rather than the ground. Null means the ground. A platform enemy patrols
+  /// between the platform's edges and turns round there (see [_isSupportedAt]).
+  final double? surfaceY;
+
   EnemyComponent({
     required this.eraId,
     this.enemyTypeOverride,
     this.worldX,
     this.patrolRangeOverride,
+    this.surfaceY,
   });
 
   /// Effective patrol range: the authored override when there is one, else
@@ -110,7 +116,7 @@ class EnemyComponent extends SpriteAnimationComponent
     size = Vector2(spriteWidth, spriteHeight);
     position = Vector2(
       worldX ?? game.cameraRightEdgeX + 60,
-      game.groundY - size.y,
+      (surfaceY ?? game.groundY) - size.y,
     );
     _spawnX = position.x;
     // Sized to the drawn figure, not the whole sprite box. The art has
@@ -167,6 +173,11 @@ class EnemyComponent extends SpriteAnimationComponent
   bool _isSupportedAt(double x) {
     final footHalfWidth = size.x * footSpanFraction / 2;
     final centre = x + size.x / 2;
+    final surface = surfaceY;
+    if (surface != null) {
+      return game.isPlatformUnder(
+          centre - footHalfWidth, centre + footHalfWidth, surface);
+    }
     return game.isGroundUnder(centre - footHalfWidth, centre + footHalfWidth);
   }
 

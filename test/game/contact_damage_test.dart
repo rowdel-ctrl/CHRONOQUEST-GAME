@@ -19,7 +19,9 @@ import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/gate_component.dart';
+import 'package:chronoquest/game/components/tile_platform_component.dart';
 import 'package:chronoquest/game/game_input.dart';
 
 /// A blank single-frame animation — contact damage routes through
@@ -265,6 +267,115 @@ void main() {
       // The flash toggles during the window; whatever phase it ended on, it
       // must never leave the player permanently invisible.
       expect(game.player.isFlashVisible, true);
+    });
+  });
+
+  group('knockback', () {
+    /// Runs the player's own update() for [seconds] at 60 fps.
+    void run(ChronoGame game, double seconds) {
+      for (var i = 0; i < (seconds * 60).round(); i++) {
+        game.player.update(1 / 60);
+      }
+    }
+
+    test('the numbers rule out walking back through the enemy', () {
+      // After the stun, the invincibility that is left covers this much walking.
+      const walkable = (CombatConstants.invincibilityDuration -
+              CombatConstants.knockbackDuration) *
+          PlayerComponent.forwardSpeed;
+      // Getting back through the enemy: the shove, plus its hit area (0.55 of
+      // 90 wide) and the player's own width.
+      const crossing = CombatConstants.knockbackDistance + 0.55 * 90 + 96;
+      expect(walkable, lessThan(crossing),
+          reason: 'the student could pass through the enemy before the '
+              'invincibility ends');
+    });
+
+    test('a hit shoves the player back by the knockback distance', () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      final enemy = _enemyAt(game, 500);
+      final start = game.player.position.x;
+
+      game.player.onCollision({}, enemy);
+      run(game, CombatConstants.knockbackDuration + 0.05);
+
+      expect(start - game.player.position.x,
+          closeTo(CombatConstants.knockbackDistance, 12),
+          reason: 'pushed left, away from the enemy on the right');
+    });
+
+    test('the player cannot steer back into the enemy during the shove',
+        () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      final enemy = _enemyAt(game, 500);
+      final start = game.player.position.x;
+
+      game.player.onCollision({}, enemy);
+      game.gameInput.joystick.delta.setValues(10, 0); // full right, at the enemy
+      run(game, CombatConstants.knockbackDuration);
+
+      expect(game.player.position.x, lessThan(start - 100),
+          reason: 'holding toward the enemy must not cancel the shove');
+    });
+
+    test('steering works again once the shove is over', () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      final enemy = _enemyAt(game, 500);
+
+      game.player.onCollision({}, enemy);
+      run(game, CombatConstants.knockbackDuration + 0.1);
+      final afterShove = game.player.position.x;
+      game.gameInput.joystick.delta.setValues(10, 0);
+      run(game, 0.2);
+
+      expect(game.player.position.x, greaterThan(afterShove));
+    });
+
+    test('a shove stops at the edge of the ground instead of into a gap',
+        () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      // Ground starts at 300, so a 160 shove left from 400 would cross the edge.
+      final ground = GroundSection(
+        sectionWidth: 1700,
+        sectionPosition: Vector2(300, game.groundY),
+      )..size = Vector2(1700, 60);
+      game.groundSections.add(ground);
+      game.player.isOnGround = true;
+      final enemy = _enemyAt(game, 500);
+
+      game.player.onCollision({}, enemy);
+      run(game, CombatConstants.knockbackDuration + 0.05);
+
+      // Foot span is the middle 48 of 96, so the sprite's left edge can go to
+      // the ground's edge minus 24.
+      expect(game.player.position.x, closeTo(300 + 24 - 48, 1));
+      expect(game.hearts, lessThan(5), reason: 'it still cost a heart');
+    });
+
+    test('a shove stops at the edge of a platform instead of into the gap',
+        () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      // A 192-wide platform at 300..492, 108 above the ground, over a gap: there
+      // is no ground section at all, so only the platform can hold them up.
+      final surface = game.groundY - 108;
+      game.platforms.add(
+        TilePlatformComponent(
+          widthInTiles: 8,
+          surfaceY: surface,
+          spawnPosition: Vector2(300, surface),
+        ),
+      );
+      game.player.position.y = surface - game.player.size.y;
+      game.player.isOnGround = true;
+      final enemy = _enemyAt(game, 500);
+
+      game.player.onCollision({}, enemy);
+      run(game, CombatConstants.knockbackDuration + 0.05);
+
+      expect(game.player.position.x, closeTo(300 + 24 - 48, 1),
+          reason: 'stopped with the foot span on the platform edge');
+      expect(game.player.position.y + game.player.size.y, closeTo(surface, 0.01),
+          reason: 'still standing on the platform, not dropped into the gap');
     });
   });
 }
