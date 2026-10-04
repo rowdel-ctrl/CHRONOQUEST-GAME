@@ -35,7 +35,7 @@ void main() {
     test('uses the authored exit once a Tiled level is loaded', () {
       final game = _game();
       game.tiledLevel = LevelLoader.parse(
-        File('assets/tiles/levels/era1_1.tmx').readAsStringSync(),
+        File('test/fixtures/hand_built_level.tmx').readAsStringSync(),
       );
 
       expect(game.levelEndX, 3140);
@@ -53,23 +53,25 @@ void main() {
       // author placed, so it has no reason to match that number — and if a
       // map ever did, it would be a sign the exit had not been read.
       final level = LevelLoader.parse(
-        File('assets/tiles/levels/era1_1.tmx').readAsStringSync(),
+        File('test/fixtures/hand_built_level.tmx').readAsStringSync(),
       );
       expect(level.exitX, lessThan(CombatConstants.lengthUnitsDefault));
     });
   });
 
   group('LevelLoader.authored manifest', () {
-    test('lists the hand-built reference level', () {
+    test('lists the first level', () {
       expect(LevelLoader.exists(1, 1), isTrue);
     });
 
     test('does not claim levels that have no .tmx yet', () {
       // The generator adds entries here as it writes files; until then the
       // game must fall back to the spawner rather than try to load a file
-      // that is not there.
-      expect(LevelLoader.exists(2, 1), isFalse);
+      // that is not there. The bosses are never generated (Phase 5), so they
+      // stay unclaimed however many other levels get a map.
       expect(LevelLoader.exists(6, 5), isFalse);
+      expect(LevelLoader.exists(2, 5), isFalse);
+      expect(LevelLoader.exists(1, 10), isFalse);
     });
 
     test('every authored entry has a real file on disk', () {

@@ -1,0 +1,228 @@
+[
+  {
+    "id": "pre-colonial",
+    "grade": 5,
+    "term": 1,
+    "enemyTypes": [
+      "tribal_warrior",
+      "dark_spirit"
+    ],
+    "levelWeeks": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8
+      ],
+      [
+        9
+      ],
+      [
+        10
+      ]
+    ],
+    "heavy": []
+  },
+  {
+    "id": "spanish",
+    "grade": 5,
+    "term": 2,
+    "enemyTypes": [
+      "spanish_soldier",
+      "tax_collector"
+    ],
+    "levelWeeks": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        8
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "heavy": [
+      "tax_collector"
+    ]
+  },
+  {
+    "id": "nationalism",
+    "grade": 5,
+    "term": 3,
+    "enemyTypes": [
+      "spanish_soldier",
+      "tax_collector"
+    ],
+    "levelWeeks": [
+      [
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10
+      ]
+    ],
+    "heavy": [
+      "tax_collector"
+    ]
+  },
+  {
+    "id": "american",
+    "grade": 6,
+    "term": 1,
+    "enemyTypes": [
+      "american_soldier",
+      "propaganda"
+    ],
+    "levelWeeks": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "heavy": []
+  },
+  {
+    "id": "ww2",
+    "grade": 6,
+    "term": 2,
+    "enemyTypes": [
+      "japanese_soldier",
+      "tank"
+    ],
+    "levelWeeks": [
+      [
+        1,
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10
+      ]
+    ],
+    "heavy": [
+      "tank"
+    ]
+  },
+  {
+    "id": "modern",
+    "grade": 6,
+    "term": 3,
+    "enemyTypes": [
+      "corruption_figure",
+      "misinfo_cloud"
+    ],
+    "levelWeeks": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "heavy": [
+      "corruption_figure"
+    ]
+  }
+]

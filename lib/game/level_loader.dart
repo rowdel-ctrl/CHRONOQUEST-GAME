@@ -11,6 +11,7 @@ import 'components/enemy_component.dart';
 import 'components/gap_component.dart';
 import 'components/gate_component.dart';
 import 'components/tile_platform_component.dart';
+import 'generated_level_manifest.dart';
 import 'game_collision.dart' show footSpanFraction;
 
 /// Loads a hand-authored Tiled level and turns it into game components
@@ -67,6 +68,47 @@ class LoadedLevel {
   bool isOverGround(double worldX) => groundSpans.any(
         (s) => worldX >= s.startX && worldX < s.startX + s.width,
       );
+
+  /// World y of the ground surface. An enemy object's `y` is where its feet
+  /// stand: this for an enemy on the ground, the platform's top for one on a
+  /// platform (a platform fight). Matches `ChronoGame.groundY`.
+  static const double groundSurfaceY = 660;
+
+  /// Whether [e] stands on a platform rather than the ground.
+  bool enemyIsOnPlatform(LevelEntity e) => e.y < groundSurfaceY - 1;
+
+  /// The platform [e] stands on: the one whose top is at the enemy's feet and
+  /// whose span holds the middle of the sprite. Null for a ground enemy, or an
+  /// enemy whose y matches no platform under it.
+  LevelEntity? platformUnder(LevelEntity e) {
+    if (!enemyIsOnPlatform(e)) return null;
+    final centre = e.x + EnemyComponent.spriteWidth / 2;
+    for (final p in entities) {
+      if (p.type == 'platform' &&
+          (p.y - e.y).abs() < 1 &&
+          centre >= p.x &&
+          centre <= p.x + p.width) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  /// Whether an enemy keeps its whole patrol corridor over what it stands on:
+  /// one ground span, or the platform it was placed on. Measured with the same
+  /// foot span the enemy obeys at runtime.
+  bool enemyStaysOnSupport(LevelEntity e) {
+    if (!enemyIsOnPlatform(e)) return enemyStaysOnGround(e);
+    final platform = platformUnder(e);
+    if (platform == null) return false;
+    final range = e.behavior == 'heavy'
+        ? 0.0
+        : (e.patrol ?? CombatConstants.patrolRange);
+    const inset = EnemyComponent.spriteWidth * (1 - footSpanFraction) / 2;
+    final left = e.x - range + inset;
+    final right = e.x + range + EnemyComponent.spriteWidth - inset;
+    return left >= platform.x && right <= platform.x + platform.width;
+  }
 
   /// Whether an enemy placed at [e] keeps its whole patrol corridor over one
   /// ground span, measured with the same foot span the enemy obeys at
@@ -137,7 +179,7 @@ class LevelLoader {
   /// emits files, so it stays the single source of truth.
   @visibleForTesting
   static Set<(int, int)> authored = const {
-    (1, 1), // era1_1.tmx — Phase 4's hand-built reference level
+    ...generatedLevels, // written by tools/levelgen/generate.js
   };
 
   /// Whether a level file exists for this era/level. Phase 4 ships one
@@ -323,10 +365,11 @@ class LevelBuilder {
     for (final e in level.entities) {
       switch (e.type) {
         case 'enemy':
-          if (!level.enemyStaysOnGround(e)) {
+          if (!level.enemyStaysOnSupport(e)) {
             debugPrint(
-              'LevelBuilder: enemy at x=${e.x} patrols off its ground span '
-              'and will turn back at the ledge. Move it onto solid ground.',
+              'LevelBuilder: enemy at x=${e.x} patrols off its ground span or '
+              'platform and will turn back at the ledge. Move it onto solid '
+              'ground, or set its y to the top of the platform it stands on.',
             );
           }
           world.add(
@@ -335,6 +378,8 @@ class LevelBuilder {
               enemyTypeOverride: e.kind,
               worldX: e.x,
               patrolRangeOverride: e.patrol,
+              // Feet on a platform when the object's y is above the ground.
+              surfaceY: e.y < groundY - 1 ? e.y : null,
             ),
           );
 

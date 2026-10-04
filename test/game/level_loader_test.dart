@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Parses the real hand-built reference level from disk rather than a
-/// fixture string, so these tests fail if `era1_1.tmx` itself regresses —
-/// the whole point of a reference level is that it is the thing the loader
-/// is known to handle (GAMEPLAY-V2.md Section 11).
+/// Parses the hand-built reference map from disk rather than a fixture
+/// string. It is the original `era1_1` prototype, kept in test/fixtures when
+/// that level became a generated one, so the loader stays pinned against a map
+/// a person made as well as against the generator's output
+/// (GAMEPLAY-V2.md Section 11).
 String _referenceTmx() =>
-    File('assets/tiles/levels/era1_1.tmx').readAsStringSync();
+    File('test/fixtures/hand_built_level.tmx').readAsStringSync();
 
 void main() {
   group('LevelLoader.assetPathFor', () {
@@ -67,14 +68,14 @@ void main() {
         final second = level.groundSpans[1];
         final gapStart = first.startX + first.width;
         expect(gapStart, lessThan(second.startX));
-        expect(second.startX - gapStart, 144);
+        expect(second.startX - gapStart, 192);
       });
 
       test('the second gap is also real and harder', () {
         final second = level.groundSpans[1];
         final third = level.groundSpans[2];
         final gapStart = second.startX + second.width;
-        expect(third.startX - gapStart, 176);
+        expect(third.startX - gapStart, 208);
       });
 
       test('every gap is wider than the player, or it cannot be fallen into',
@@ -98,7 +99,8 @@ void main() {
       test('every gap is inside the jump arc, so none is a forced fall', () {
         // gravity 900 and jumpForce -480 give 1.067s of airtime; at the
         // 210 u/s top speed that is 224px of horizontal reach. A gap wider
-        // than that cannot be cleared on foot.
+        // than that, plus the 48px foot span that only has to land, cannot be
+        // cleared on foot. This reference level stays under the plain reach.
         const jumpReach = 224.0;
         for (var i = 0; i < level.groundSpans.length - 1; i++) {
           final gapStart =
@@ -250,7 +252,7 @@ void main() {
         }
       });
 
-      test('platforms sit at the protected 90-110 height above the ground',
+      test('platforms sit 104-112 above the ground, clear of every enemy',
           () {
         // groundY for a 720-tall map with a 60px ground band.
         const groundSurfaceY = 660.0;
@@ -258,9 +260,10 @@ void main() {
           final heightAboveGround = groundSurfaceY - p.y;
           expect(
             heightAboveGround,
-            inInclusiveRange(90, 110),
+            inInclusiveRange(104, 112),
             reason: 'platform at x=${p.x} is $heightAboveGround above ground, '
-                'outside the tuned jump arc',
+                'outside 104-112: lower and an enemy can touch a student on it, '
+                'higher and the jump cannot reach it',
           );
         }
       });
@@ -355,6 +358,69 @@ void main() {
             type: 'enemy', x: 250, y: 0, behavior: 'heavy', patrol: 500)),
         isTrue,
       );
+    });
+  });
+
+  group('LoadedLevel — enemies on platforms', () {
+    // Ground 0..500 and 900..2000 with a 400-wide gap, a 192-wide platform in it
+    // (600..792, top at 552, which is 108 above the 660 ground).
+    LoadedLevel level(List<LevelEntity> enemies) => LoadedLevel(
+          spawnX: 0,
+          exitX: 2000,
+          groundSpans: const [
+            (startX: 0.0, width: 500.0),
+            (startX: 900.0, width: 1100.0),
+          ],
+          entities: [
+            const LevelEntity(type: 'platform', x: 600, y: 552, width: 192),
+            ...enemies,
+          ],
+        );
+    LevelEntity enemy(double x, double y, {double patrol = 36, String behavior = 'walker'}) =>
+        LevelEntity(type: 'enemy', x: x, y: y, behavior: behavior, patrol: patrol);
+
+    test('an enemy whose feet are above the ground is on a platform', () {
+      final l = level([]);
+      expect(l.enemyIsOnPlatform(enemy(651, 552)), isTrue);
+      expect(l.enemyIsOnPlatform(enemy(100, 660)), isFalse);
+    });
+
+    test('finds the platform under it', () {
+      final l = level([]);
+      final p = l.platformUnder(enemy(651, 552));
+      expect(p, isNotNull);
+      expect(p!.x, 600);
+      expect(l.platformUnder(enemy(100, 660)), isNull);
+    });
+
+    test('a centred patrol that fits the platform stays on it', () {
+      expect(level([]).enemyStaysOnSupport(enemy(651, 552, patrol: 36)), isTrue);
+    });
+
+    test('a patrol that reaches past the platform edge does not', () {
+      // Centred, a 75 patrol puts the foot span 1.5 units past each end.
+      expect(level([]).enemyStaysOnSupport(enemy(651, 552, patrol: 76)), isFalse);
+    });
+
+    test('an enemy standing in the gap beside the platform is not supported', () {
+      expect(level([]).enemyStaysOnSupport(enemy(500, 552, patrol: 0)), isFalse);
+    });
+
+    test('an enemy at platform height with no platform under it is not supported',
+        () {
+      // Same y as the platform, but over the far ground: nothing holds it up.
+      expect(level([]).enemyStaysOnSupport(enemy(1500, 552, patrol: 0)), isFalse);
+    });
+
+    test('a y that matches no platform top is not supported', () {
+      expect(level([]).enemyStaysOnSupport(enemy(651, 500, patrol: 0)), isFalse);
+    });
+
+    test('a ground enemy is still checked against the ground', () {
+      final l = level([]);
+      expect(l.enemyStaysOnSupport(enemy(100, 660, patrol: 100)), isTrue);
+      expect(l.enemyStaysOnSupport(enemy(450, 660, patrol: 100)), isFalse,
+          reason: 'its patrol reaches the gap');
     });
   });
 

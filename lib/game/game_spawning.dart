@@ -20,7 +20,7 @@ import 'level_loader.dart';
 /// replaces the runtime spawner with hand-authored Tiled maps. Both paths
 /// live here during the migration: a level with a `.tmx` loads it, and one
 /// without still falls back to the procedural spawner, so the game stays
-/// playable for all 43 levels while only `era1_1` has a real map. The
+/// playable for every level that has no generated map yet. The
 /// fallback (and `GroundSpawner`/`EnemySpawner` with it) goes away once
 /// every level has been authored.
 extension GameSpawning on ChronoGame {

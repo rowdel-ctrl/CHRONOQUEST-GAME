@@ -1,0 +1,20 @@
+{
+  "forwardSpeed": 210,
+  "gravity": 900,
+  "jumpForce": -480,
+  "lengthUnits": 25000,
+  "artifactsPerLevel": 10,
+  "artifactSize": 56,
+  "gateWidth": 144,
+  "playerWidth": 96,
+  "enemyWidth": 90,
+  "enemyHeight": 108,
+  "footSpanFraction": 0.5,
+  "platformTile": 24,
+  "tile": 16,
+  "mapRows": 45,
+  "groundRow": 41,
+  "groundGid": 2,
+  "groundSurfaceY": 660,
+  "playerX": 220
+}

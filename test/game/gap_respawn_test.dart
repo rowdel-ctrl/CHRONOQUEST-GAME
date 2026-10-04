@@ -82,4 +82,4 @@ void main() {
 }
 
 String _readReference() =>
-    File('assets/tiles/levels/era1_1.tmx').readAsStringSync();
+    File('test/fixtures/hand_built_level.tmx').readAsStringSync();

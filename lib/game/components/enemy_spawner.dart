@@ -40,7 +40,10 @@ class EnemySpawner {
   /// player: they read as steps to walk into rather than ledges to jump
   /// onto. Raised so the whole range sits between the player's shoulders
   /// and the top of their head, which is as high as the jump arc allows.
-  static const double platformMinHeight = 90;
+  /// Raised again to 104 (2026-10-04): an enemy's hit area reaches 99.9 above
+  /// the ground, so anything lower lets an enemy touch a student standing on
+  /// the platform.
+  static const double platformMinHeight = 104;
 
   /// Bumped to exactly `jumpPeak - 15` (113) — the ceiling
   /// `platform_layering_test.dart`'s "spawn no higher than the jump can
