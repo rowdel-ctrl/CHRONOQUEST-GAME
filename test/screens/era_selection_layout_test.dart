@@ -13,6 +13,7 @@ import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/providers/progress_provider.dart';
 import 'package:chronoquest/providers/unlock_all_provider.dart';
 import 'package:chronoquest/screens/home/era_selection_screen.dart';
+import 'package:chronoquest/widgets/hearts_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -98,6 +99,17 @@ void main() {
     '800x360': Size(800, 360),
     '915x412': Size(915, 412),
   };
+
+  testWidgets('era select no longer shows hearts, and has a Settings gear',
+      (tester) async {
+    await _pump(tester, const Size(800, 360), unlockAll: false);
+
+    expect(find.byType(HeartsPill), findsNothing,
+        reason: 'hearts show on character select and level select only');
+    final gear = find.byTooltip('Settings');
+    expect(gear, findsOneWidget);
+    expect(gear.hitTestable(), findsOneWidget);
+  });
 
   for (final entry in sizes.entries) {
     testWidgets('all six eras are on screen and tappable at ${entry.key}',

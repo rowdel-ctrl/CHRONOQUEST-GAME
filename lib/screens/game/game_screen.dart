@@ -11,6 +11,8 @@ import '../../game/overlays/gate_locked_overlay.dart';
 import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
+import '../../models/control_scheme.dart';
+import '../../providers/control_scheme_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
 import 'level_complete_screen.dart';
@@ -38,6 +40,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ..selectedCharacterId = gameState.selectedCharacterId
       ..playerPowerUps = gameState.powerUps
       ..hearts = gameState.hearts.count
+      ..controlScheme = ref.read(controlSchemeProvider)
       // Section 4's sanctioned tutorial freebie. Set here rather than in
       // ChronoGame's field initialiser, which runs before currentLevel is
       // assigned and so could not see the level number.
@@ -128,6 +131,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // A student can open Settings from the pause menu and change their
+    // controls; the level swaps them in as soon as the choice is made. The
+    // engine is paused, so the new buttons appear on the first frame after
+    // Ituloy. `isLoaded` guards the brief window before the level has built
+    // its input.
+    ref.listen<ControlScheme>(controlSchemeProvider, (_, next) {
+      if (game.isLoaded) game.gameInput.setScheme(next);
+    });
+
     return Scaffold(
       backgroundColor: Colors.black,
       // No wrapping GestureDetector — jump/attack are now the on-screen
@@ -176,6 +188,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   'PauseOverlay': (context, game) => PauseOverlayWidget(
                         game: game as ChronoGame,
                         onQuit: _quitToLevelSelect,
+                        // Opens over the paused level; Back returns to the
+                        // pause menu, which is still showing underneath.
+                        onSettings: () => context.push('/settings'),
                       ),
                 },
                 initialActiveOverlays: const ['HudOverlay'],

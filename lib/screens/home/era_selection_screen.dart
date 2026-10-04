@@ -9,7 +9,6 @@ import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/progress_provider.dart';
 import '../../providers/unlock_all_provider.dart';
-import '../../widgets/hearts_pill.dart';
 
 class EraSelectionScreen extends ConsumerStatefulWidget {
   const EraSelectionScreen({super.key});
@@ -86,8 +85,14 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                       ),
                     ),
                     IconButton(
+                      tooltip: 'Profile',
                       onPressed: () => context.push('/profile'),
                       icon: const Icon(Icons.person, color: Colors.white70),
+                    ),
+                    IconButton(
+                      tooltip: 'Settings',
+                      onPressed: () => context.push('/settings'),
+                      icon: const Icon(Icons.settings, color: Colors.white70),
                     ),
                   ],
                 ),
@@ -139,8 +144,6 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                       style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     const Spacer(),
-                    const HeartsPill(heartSize: 16),
-                    const SizedBox(width: 12),
                     Image.asset('assets/ui/star_full.png',
                         width: 18, height: 18),
                     const SizedBox(width: 4),

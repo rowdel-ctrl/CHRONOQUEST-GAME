@@ -7,6 +7,8 @@ import '../screens/auth/login_screen.dart';
 import '../screens/auth/change_password_screen.dart';
 import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
+import '../screens/settings/controls_screen.dart';
+import '../screens/settings/settings_screen.dart';
 import '../screens/tutorial/tutorial_screen.dart';
 import '../screens/game/background_history_screen.dart';
 import '../screens/game/level_select_screen.dart';
@@ -54,6 +56,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/era-selection',
       builder: (context, state) => const EraSelectionScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/settings/controls',
+      builder: (context, state) => const ControlsScreen(),
     ),
     GoRoute(
       path: '/tutorial',

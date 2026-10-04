@@ -6,7 +6,6 @@ import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
-import '../../widgets/hearts_pill.dart';
 import 'codex_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -130,14 +129,6 @@ class ProfileScreen extends ConsumerWidget {
                               label: 'Coins',
                               value: '${student?.coins ?? 0}',
                               icon: Icons.monetization_on,
-                            ),
-                            const SizedBox(height: 8),
-                            // The shared pool, shown here too so a student
-                            // checking their profile can see whether they can
-                            // play without walking back to the level map.
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: HeartsPill(heartSize: 16),
                             ),
                           ],
                         ),

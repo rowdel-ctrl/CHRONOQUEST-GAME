@@ -8,6 +8,7 @@ import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
+import '../../widgets/hearts_pill.dart';
 import 'level_node.dart';
 
 String _formatCountdown(Duration d) {
@@ -162,7 +163,10 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48), // balance
+                    // The shared hearts pool, the same pill character select
+                    // shows in the same corner. Level select is where hearts
+                    // gate starting a level, so it is where they matter most.
+                    const HeartsPill(),
                   ],
                 ),
               ),
@@ -222,49 +226,12 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
               // Bottom info
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${completedLevels.length}/$levelCount Levels Tapos',
-                      style: const TextStyle(
-                        color: Colors.white60,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // Shared hearts pool (GAMEPLAY-V2.md section 8) — the
-                    // same pool the in-game HUD spends from, one icon
-                    // everywhere. Gates starting or retrying a level.
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ...List.generate(
-                          GameConstants.maxHearts,
-                          (i) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 2),
-                            child: Image.asset(
-                              i < hearts.count
-                                  ? 'assets/ui/heart_full.png'
-                                  : 'assets/ui/heart_empty.png',
-                              width: 18,
-                              height: 18,
-                            ),
-                          ),
-                        ),
-                        if (timeUntilNext != null) ...[
-                          const SizedBox(width: 8),
-                          Text(
-                            'Susunod: ${_formatCountdown(timeUntilNext)}',
-                            style: const TextStyle(
-                              color: Colors.white60,
-                              fontSize: 11,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
+                child: Text(
+                  '${completedLevels.length}/$levelCount Levels Tapos',
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ],

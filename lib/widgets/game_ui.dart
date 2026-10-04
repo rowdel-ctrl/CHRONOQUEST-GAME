@@ -73,6 +73,10 @@ class GameButton extends StatefulWidget {
   final double minHeight;
   final double? width;
 
+  /// Space either side of the label. Narrow buttons that share a row lower it
+  /// so the label is not cut off.
+  final double horizontalPadding;
+
   const GameButton({
     super.key,
     required this.label,
@@ -83,6 +87,7 @@ class GameButton extends StatefulWidget {
     this.fontSize = 13,
     this.minHeight = 52,
     this.width,
+    this.horizontalPadding = 20,
   });
 
   @override
@@ -112,7 +117,8 @@ class _GameButtonState extends State<GameButton> {
         ),
         width: widget.width,
         constraints: BoxConstraints(minHeight: widget.minHeight),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: EdgeInsets.symmetric(
+            horizontal: widget.horizontalPadding, vertical: 12),
         decoration: BoxDecoration(
           color: fillColor,
           borderRadius: BorderRadius.circular(6),

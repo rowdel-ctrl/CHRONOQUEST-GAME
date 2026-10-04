@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants.dart';
 import '../models/codex_entry.dart';
+import '../models/control_scheme.dart';
 import '../models/hearts_state.dart';
 import '../models/student.dart';
 
@@ -59,6 +60,18 @@ class StorageService {
 
   static String getCharacter() {
     return appBox.get(_characterKey, defaultValue: 'rizal') as String;
+  }
+
+  // ─── CONTROL SCHEME ───────────────────────────────────────────────────────
+  static const _controlSchemeKey = 'control_scheme';
+
+  /// Movement controls chosen in Settings. Joystick until a student picks
+  /// otherwise.
+  static ControlScheme getControlScheme() =>
+      ControlScheme.fromName(appBox.get(_controlSchemeKey) as String?);
+
+  static Future<void> setControlScheme(ControlScheme scheme) async {
+    await appBox.put(_controlSchemeKey, scheme.name);
   }
 
   // ─── TESTING SWITCH ───────────────────────────────────────────────────────

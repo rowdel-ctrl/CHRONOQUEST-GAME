@@ -208,6 +208,12 @@ class _CharacterSelectionScreenState
                   tooltip: 'Paano Laruin',
                   onTap: () => context.push('/tutorial'),
                 ),
+                const SizedBox(width: 8),
+                _SideIconButton(
+                  icon: Icons.settings,
+                  tooltip: 'Settings',
+                  onTap: () => context.push('/settings'),
+                ),
               ],
             ),
           ),

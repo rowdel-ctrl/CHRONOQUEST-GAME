@@ -21,8 +21,8 @@ class TutorialStep {
 List<TutorialStep> tutorialSteps(String charId) => [
       TutorialStep(
         title: 'ANG IYONG BAYANI',
-        body: 'Gamitin ang joystick para gumalaw, ang JUMP para tumalon, at '
-            'ang ATK para umatake sa mga kaaway.',
+        body: 'Gamitin ang joystick o ang mga arrow para gumalaw, ang JUMP '
+            'para tumalon, at ang ATK para umatake sa mga kaaway.',
         illustration: _SpriteIllustration(
           paths: ['assets/characters/${charId}_walk_1.png'],
         ),

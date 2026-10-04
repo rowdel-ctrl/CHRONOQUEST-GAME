@@ -28,7 +28,7 @@ String formatHeartCountdown(Duration d) {
 class HeartsPill extends ConsumerStatefulWidget {
   final double heartSize;
 
-  const HeartsPill({super.key, this.heartSize = 20});
+  const HeartsPill({super.key, this.heartSize = 16});
 
   @override
   ConsumerState<HeartsPill> createState() => _HeartsPillState();
