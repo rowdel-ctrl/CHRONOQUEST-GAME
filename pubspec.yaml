@@ -23,6 +23,10 @@ dependencies:
   google_fonts: ^6.1.0
   cached_network_image: ^3.3.1
   flame_audio: ^2.12.2
+  flame_tiled: ^3.1.2
+  # Pulled in transitively by flame_tiled, but level_loader.dart imports it
+  # directly to parse .tmx files, so it is declared explicitly.
+  tiled: ^0.11.1
 
 dev_dependencies:
   flutter_test:
@@ -42,6 +46,7 @@ flutter:
     - assets/bosses/
     - assets/obstacles/
     - assets/tiles/
+    - assets/tiles/levels/
     - assets/collectibles/
     - assets/powerups/
     - assets/ui/

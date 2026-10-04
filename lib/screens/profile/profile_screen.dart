@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
+import '../../widgets/hearts_pill.dart';
 import 'codex_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -128,6 +130,14 @@ class ProfileScreen extends ConsumerWidget {
                               label: 'Coins',
                               value: '${student?.coins ?? 0}',
                               icon: Icons.monetization_on,
+                            ),
+                            const SizedBox(height: 8),
+                            // The shared pool, shown here too so a student
+                            // checking their profile can see whether they can
+                            // play without walking back to the level map.
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: HeartsPill(heartSize: 16),
                             ),
                           ],
                         ),
@@ -298,6 +308,44 @@ class ProfileScreen extends ConsumerWidget {
                             ),
 
                             const SizedBox(height: 16),
+
+                            // Temporary testing switch: opens every era and
+                            // level so the whole game can be played.
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.white24),
+                              ),
+                              child: SwitchListTile(
+                                contentPadding: EdgeInsets.zero,
+                                dense: true,
+                                activeThumbColor: AppColors.accent,
+                                title: Text(
+                                  'Buksan lahat ng panahon at level',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Pansamantala, para sa pagsubok lang.',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white54,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                                value: ref.watch(unlockAllProvider),
+                                onChanged: (v) => ref
+                                    .read(unlockAllProvider.notifier)
+                                    .set(v),
+                              ),
+                            ),
+
+                            const SizedBox(height: 12),
 
                             // Logout
                             OutlinedButton.icon(

@@ -67,26 +67,27 @@ void main() {
       expect(enemy.isRemoving, false);
     });
 
-    test('despawns once the camera has fully passed it', () async {
+    test('survives the camera passing it, so a backtracking player finds it',
+        () async {
+      // Inverted in Phase 4 (GAMEPLAY-V2.md Section 11, level_culling.dart).
+      // This test used to assert the opposite — that an enemy behind the
+      // camera despawns — which was correct when the player was locked to a
+      // fixed screen x and could never go back. Phase 1 unlocked the
+      // player's x and Phase 4 made levels authored, so an enemy culled
+      // behind the player is a placed object that silently vanishes.
       final game = _bareGame(playerWorldX: 0);
       final enemy = EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank');
       game.world.add(enemy);
       await game.ready();
 
-      // Place it at a known world position, then advance the player far
-      // enough that the camera's left edge has moved past the enemy.
       enemy.position.x = 200;
       game.player.position.x =
           200 + enemy.size.x + GameConstants.playerX + 50;
 
-      // Call the component's own update() directly rather than
-      // game.update() — cascading through the full tree while it also
-      // mutates (removeFromParent) trips Flame's iterator, and this test
-      // only needs to exercise EnemyComponent's despawn check anyway.
       enemy.update(1 / 60);
       await game.ready();
 
-      expect(enemy.parent, isNull);
+      expect(enemy.parent, isNotNull);
     });
   });
 }

@@ -7,6 +7,7 @@ import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
+import 'tutorial_content.dart';
 
 /// "How to play" tutorial — shown once automatically the first time a
 /// student starts a level (gated in LevelSelectScreen._startLevel, not on
@@ -14,9 +15,11 @@ import '../../widgets/game_ui.dart';
 /// selection. All entry points land on this same screen so there is only
 /// one place to keep the explanations in sync.
 ///
-/// Built entirely from sprites and icons that already exist elsewhere in the
-/// game (character walk frames, enemy/obstacle art, the quiz check/X icons
-/// from `answer_feedback.dart`) — no new art was made for it.
+/// The game is landscape-locked, so a phone gives this screen plenty of width
+/// and very little height (about 160px for the card on a 360px-tall screen).
+/// Each page is therefore laid out in two columns — illustration beside the
+/// text — and the page scrolls rather than overflowing if a very short screen
+/// still cannot fit it.
 class TutorialScreen extends ConsumerStatefulWidget {
   const TutorialScreen({super.key});
 
@@ -44,71 +47,6 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
     super.dispose();
   }
 
-  List<_TutorialStep> _steps(String charId) => [
-        _TutorialStep(
-          title: 'ANG IYONG BAYANI',
-          body: 'Tumatakbo at tumatalon ang iyong bayani sa buong panahon '
-              'ng kasaysayan. I-tap ang screen para tumalon!',
-          illustration: _SpriteIllustration(
-            paths: ['assets/characters/${charId}_walk_1.png'],
-          ),
-        ),
-        const _TutorialStep(
-          title: 'IWASAN ANG BALAKID',
-          body: 'Tumalon para maiwasan ang mga kaaway at balakid sa daan. '
-              'Ang pagbangga sa kanila ay nawawalan ka ng buhay.',
-          illustration: _SpriteIllustration(
-            paths: [
-              'assets/enemies/spanish_soldier_1.png',
-              'assets/obstacles/spanish_wall.png',
-            ],
-          ),
-        ),
-        const _TutorialStep(
-          title: 'KOLEKTAHIN ANG BARYA',
-          body: 'Mangolekta ng barya at artifact habang tumatakbo para '
-              'dumagdag ang iyong puntos.',
-          illustration: _SpriteIllustration(
-            paths: [
-              'assets/collectibles/coin.png',
-              'assets/collectibles/artifact_1.png',
-            ],
-          ),
-        ),
-        const _TutorialStep(
-          title: 'SAGUTIN NANG TAMA',
-          body: 'Paminsan-minsan may lalabas na tanong tungkol sa '
-              'kasaysayan. Tamang sagot ay tumatalo sa kaaway — maling '
-              'sagot ay walang parusa, subukan lang ulit.',
-          illustration: _AnswerIconsIllustration(),
-        ),
-        _TutorialStep(
-          title: 'ALAGAAN ANG PUSO',
-          body: 'May ${GameConstants.maxHearts} puso kang dala sa buong '
-              'laro, hindi lang sa isang antas. Kapag naubos, maghintay ng '
-              'isang minuto bago ka makapagsimula ulit.',
-          illustration: _SpriteIllustration(
-            paths: [
-              ...List.filled(3, 'assets/ui/heart_full.png'),
-              ...List.filled(2, 'assets/ui/heart_empty.png'),
-            ],
-            size: 36,
-          ),
-        ),
-        const _TutorialStep(
-          title: 'GAMITIN ANG POWER-UP',
-          body: 'Makakakuha ka ng power-up sa ilang antas — gamitin ang mga '
-              'ito kapag mahirap na ang tanong.',
-          illustration: _SpriteIllustration(
-            paths: [
-              'assets/powerups/fifty_fifty.png',
-              'assets/powerups/shield.png',
-              'assets/powerups/time_freeze.png',
-            ],
-          ),
-        ),
-      ];
-
   Future<void> _finish() async {
     await StorageService.markTutorialSeen();
     if (!mounted) return;
@@ -122,18 +60,18 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   @override
   Widget build(BuildContext context) {
     final charId = ref.watch(gameProvider).selectedCharacterId;
-    final steps = _steps(charId);
+    final steps = tutorialSteps(charId);
     final isLast = _index == steps.length - 1;
 
     return Scaffold(
       body: GameBackdrop(
         imagePath: 'assets/backgrounds/bookshelf_bg.png',
-        scrimOpacity: 0.65,
+        scrimOpacity: 0.55,
         child: SafeArea(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 12, 0),
+                padding: const EdgeInsets.fromLTRB(20, 8, 12, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -143,7 +81,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 2,
-                        color: AppColors.accent.withValues(alpha: 0.85),
+                        color: AppColors.accent,
                       ),
                     ),
                     TextButton(
@@ -154,7 +92,7 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white70,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -170,32 +108,17 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                child: Column(
+                padding: const EdgeInsets.fromLTRB(24, 4, 24, 12),
+                child: Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        steps.length,
-                        (i) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          width: i == _index ? 22 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: i == _index
-                                ? AppColors.accent
-                                : Colors.white24,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                      ),
+                    Expanded(
+                      child: _PageDots(count: steps.length, index: _index),
                     ),
-                    const SizedBox(height: 16),
                     GameButton(
                       key: isLast
                           ? TutorialScreen.doneButtonKey
                           : TutorialScreen.nextButtonKey,
+                      width: 200,
                       label: isLast ? 'SIMULAN NA!' : 'SUSUNOD',
                       icon: isLast
                           ? Icons.play_arrow_rounded
@@ -218,114 +141,113 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   }
 }
 
-class _TutorialStep {
-  final String title;
-  final String body;
-  final Widget illustration;
-
-  const _TutorialStep({
-    required this.title,
-    required this.body,
-    required this.illustration,
-  });
-}
-
-class _TutorialPage extends StatelessWidget {
-  final _TutorialStep step;
-  const _TutorialPage({required this.step});
+class _PageDots extends StatelessWidget {
+  final int count;
+  final int index;
+  const _PageDots({required this.count, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      // Was a dark (55% black) panel on top of the backdrop's own dark scrim
-      // — two stacked dark layers with a near-black border gave the whole
-      // card almost no separation from its background (the "low contrast"
-      // playtest finding). Every other panel in the app uses the light
-      // parchment surface + dark ink text pairing (see level_failed_screen,
-      // level_complete_screen); matching that here instead of inventing a
-      // one-off dark-on-dark style for this screen fixes it outright.
-      child: GamePanel(
-        color: AppColors.surface,
-        borderColor: AppColors.primaryDark,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 96, child: step.illustration),
-            const SizedBox(height: 20),
-            Text(
-              step.title,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              step.body,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                height: 1.5,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
+    return Wrap(
+      alignment: WrapAlignment.center,
+      runSpacing: 4,
+      children: List.generate(
+        count,
+        (i) => AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          width: i == index ? 22 : 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: i == index ? AppColors.accent : Colors.white54,
+            borderRadius: BorderRadius.circular(4),
+          ),
         ),
       ),
     );
   }
 }
 
-/// Renders one or more existing game sprites side by side, falling back to
-/// a placeholder icon if an asset is missing so a typo never blanks a page.
-class _SpriteIllustration extends StatelessWidget {
-  final List<String> paths;
-  final double size;
-  const _SpriteIllustration({required this.paths, this.size = 80});
+class _TutorialPage extends StatelessWidget {
+  final TutorialStep step;
+  const _TutorialPage({required this.step});
+
+  /// Below this width there is no room for two columns, so the illustration
+  /// goes above the text instead.
+  static const double _twoColumnMinWidth = 520;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: paths
-          .map(
-            (p) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Image.asset(
-                p,
-                height: size,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stack) => Icon(
-                  Icons.image_not_supported_outlined,
-                  size: size * 0.6,
-                  color: Colors.white24,
-                ),
-              ),
-            ),
-          )
-          .toList(),
+    final title = Text(
+      step.title,
+      style: GoogleFonts.poppins(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimary,
+      ),
     );
-  }
-}
+    final body = Text(
+      step.body,
+      style: GoogleFonts.poppins(
+        fontSize: 15,
+        height: 1.45,
+        color: AppColors.textSecondary,
+      ),
+    );
+    final illustration = SizedBox(
+      height: 96,
+      child: FittedBox(fit: BoxFit.scaleDown, child: step.illustration),
+    );
 
-/// Shows the same TAMA!/MALI! check and X used on real answer buttons
-/// (`answer_feedback.dart`), so the tutorial page matches what the quiz
-/// actually looks like instead of describing it in words alone.
-class _AnswerIconsIllustration extends StatelessWidget {
-  const _AnswerIconsIllustration();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      child: GamePanel(
+        color: AppColors.surface,
+        borderColor: AppColors.primaryDark,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final twoColumns = box.maxWidth >= _twoColumnMinWidth;
+            final content = twoColumns
+                ? Row(
+                    children: [
+                      Expanded(flex: 2, child: Center(child: illustration)),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [title, const SizedBox(height: 8), body],
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      illustration,
+                      const SizedBox(height: 12),
+                      DefaultTextStyle.merge(
+                        textAlign: TextAlign.center,
+                        child: title,
+                      ),
+                      const SizedBox(height: 8),
+                      DefaultTextStyle.merge(
+                        textAlign: TextAlign.center,
+                        child: body,
+                      ),
+                    ],
+                  );
 
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.check_circle, size: 56, color: AppColors.success),
-        SizedBox(width: 24),
-        Icon(Icons.cancel, size: 56, color: AppColors.danger),
-      ],
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: box.maxHeight),
+                child: Center(child: content),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

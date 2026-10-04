@@ -10,7 +10,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronoquest/core/combat_constants.dart';
+import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/game/chrono_game.dart';
+import 'package:chronoquest/models/question.dart';
+import 'package:chronoquest/game/answer_point_handler.dart';
 import 'package:chronoquest/game/components/artifact_component.dart';
 import 'package:chronoquest/game/components/gate_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
@@ -24,7 +27,13 @@ class _PointGame extends ChronoGame {
     player = PlayerComponent(characterId: 'rizal')
       ..size = Vector2(96, 120)
       ..position = Vector2(0, groundY - 120);
-    setupSpawning();
+    // Awaited: setupSpawning() became async in Phase 4 (it checks for an
+    // authored .tmx first), so firing and forgetting it raced the test's
+    // own pump loop and left the level empty.
+    //
+    // The default era here is 'spanish', which has no Tiled level yet, so
+    // this still exercises the procedural placement these tests cover.
+    await setupSpawning();
   }
 }
 
@@ -157,10 +166,13 @@ void main() {
       final artifacts =
           game.world.children.whereType<ArtifactComponent>().length;
 
-      expect(gates, CombatConstants.gatesPerLevel,
-          reason: 'Section 6: "Put 3 gates in every level" — this is the '
-              'educational floor');
+      expect(gates, 1,
+          reason: 'one gate per level, standing at the exit');
+      expect(gates, CombatConstants.gatesPerLevel);
+      expect(artifacts, 10);
       expect(artifacts, CombatConstants.artifactsPerLevel);
+      expect(game.artifactsTotal, artifacts,
+          reason: 'the gate counts against what was actually placed');
     });
 
     testWidgets('the first answer point is an artifact, not a gate',
@@ -188,6 +200,86 @@ void main() {
           .reduce((a, b) => a < b ? a : b);
 
       expect(firstArtifact, lessThan(firstGate));
+    });
+
+    testWidgets('every artifact is reachable before the only gate',
+        (tester) async {
+      // The softlock that shipped on 2026-10-03: gates started requiring
+      // every artifact to be answered, but procedural levels still put the
+      // first of three gates a quarter of the way in with one artifact behind
+      // it. The student was stopped and told to find artifacts they could not
+      // reach. With one gate after every artifact that cannot happen, and
+      // this pins it so a future layout change cannot bring it back.
+      final game = _PointGame();
+      await tester.pumpWidget(MaterialApp(home: GameWidget(game: game)));
+      await tester.pump();
+      for (var i = 0; i < 10; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)),
+        );
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+
+      final gates = game.world.children.whereType<GateComponent>().toList();
+      expect(gates, hasLength(1));
+      expect(gates.single.isLevelExit, isTrue);
+
+      for (final a in game.world.children.whereType<ArtifactComponent>()) {
+        expect(a.worldX, lessThan(gates.single.worldX),
+            reason: 'artifact at x=${a.worldX} sits past the gate that '
+                'requires it');
+      }
+    });
+
+    testWidgets('an artifact answered twice is counted once', (tester) async {
+      // A Shield absorbs a wrong answer without marking the artifact
+      // attempted, so counting off that flag would have counted it twice.
+      final game = _PointGame();
+      await tester.pumpWidget(MaterialApp(
+        home: GameWidget(
+          game: game,
+          // A bare GameWidget has no overlay builders, and overlays.add
+          // asserts on an unknown name.
+          overlayBuilderMap: {
+            'QuestionOverlay': (_, __) => const SizedBox.shrink(),
+          },
+        ),
+      ));
+      await tester.pump();
+      for (var i = 0; i < 10; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)),
+        );
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+
+      // Two questions so a retry can draw a different one; the bundled bank is
+      // not loaded in this harness.
+      game.questionPool = QuestionPool(questions: [
+        for (final id in ['q1', 'q2'])
+          Question(
+            id: id,
+            era: 'spanish',
+            questionText: 'Sample $id?',
+            options: [
+              const QuestionOption(label: 'A', text: 'right'),
+              const QuestionOption(label: 'B', text: 'wrong'),
+            ],
+            correctAnswer: 'A',
+          ),
+      ]);
+
+      final artifact =
+          game.world.children.whereType<ArtifactComponent>().first;
+      game.showArtifactQuestion(artifact);
+      game.shieldActive = true;
+      game.handleAnswerPointAnswer('definitely-wrong');
+      expect(game.artifactsAnswered, 1);
+
+      game.showArtifactQuestion(artifact);
+      game.handleAnswerPointAnswer('definitely-wrong');
+      expect(game.artifactsAnswered, 1,
+          reason: 'same artifact, second answer: still one');
     });
   });
 }

@@ -41,7 +41,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('PlayerComponent.attack()', () {
-    test('spends one charge and spawns a hitbox when charges are available',
+    test('spawns a hitbox without spending a charge, so a miss is free',
         () async {
       final game = _bareGameWithPlayer();
       game.kaalaman = 3;
@@ -50,7 +50,7 @@ void main() {
       game.player.attack();
       await game.ready();
 
-      expect(game.kaalaman, 3 - CombatConstants.attackChargeCost);
+      expect(game.kaalaman, 3);
       expect(_hitboxCount(game), 1);
     });
 
@@ -69,7 +69,7 @@ void main() {
     test('a second swing inside the cooldown spends nothing and spawns nothing',
         () async {
       final game = _bareGameWithPlayer();
-      game.kaalaman = CombatConstants.kaalamanCap;
+      game.kaalaman = 6;
       await game.ready();
 
       game.player.attack();
@@ -89,7 +89,7 @@ void main() {
     test('a swing after the cooldown elapses spawns a second hitbox',
         () async {
       final game = _bareGameWithPlayer();
-      game.kaalaman = CombatConstants.kaalamanCap;
+      game.kaalaman = 6;
       await game.ready();
 
       game.player.attack();
@@ -166,6 +166,40 @@ void main() {
       hitbox.onCollisionStart({}, enemy);
 
       expect(enemy.defeated, true);
+    });
+
+    test('spends exactly one charge when a swing connects', () async {
+      final game = _bareGameWithPlayer();
+      game.kaalaman = 3;
+      final enemy = EnemyComponent(eraId: 'spanish', enemyTypeOverride: 'spanish_soldier');
+      game.world.add(enemy);
+      await game.ready();
+
+      final hitbox = AttackHitboxComponent(
+        position: enemy.position.clone(),
+        size: enemy.size.clone(),
+      );
+      game.world.add(hitbox);
+      await game.ready();
+
+      hitbox.onCollisionStart({}, enemy);
+
+      expect(game.kaalaman, 3 - CombatConstants.attackChargeCost);
+    });
+
+    test('a swing that hits nothing spends nothing', () async {
+      final game = _bareGameWithPlayer();
+      game.kaalaman = 3;
+      await game.ready();
+
+      game.player.attack();
+      await game.ready();
+      final hitbox =
+          game.world.children.whereType<AttackHitboxComponent>().first;
+      hitbox.update(CombatConstants.attackHitboxDuration + 0.01);
+      await game.ready();
+
+      expect(game.kaalaman, 3);
     });
 
     test('does not double-hit the same enemy across multiple collision frames',

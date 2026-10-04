@@ -76,8 +76,17 @@ void main() {
         reason: 'an enemy dwarfed by the player does not read as a threat');
     expect(enemy.size.y, lessThan(_playerHeight),
         reason: 'the player should still read as the hero');
-    expect(_hitboxSize(enemy), enemy.size,
-        reason: 'hit area must follow the sprite the student aims at');
+    // Deliberately smaller than the sprite box since 2026-10-03: the art has
+    // transparent margins, and a full-size hitbox hurt the player from a
+    // visible gap away. It still has to track the sprite's scale, just inset
+    // to the drawn figure.
+    final hitbox = _hitboxSize(enemy);
+    expect(hitbox.x, lessThan(enemy.size.x),
+        reason: 'a full-width hit area causes phantom hits');
+    expect(hitbox.x, greaterThan(enemy.size.x * 0.4),
+        reason: 'too narrow and the student cannot land a hit either');
+    expect(hitbox.y, greaterThan(enemy.size.y * 0.7),
+        reason: 'the enemy must still be hittable at most heights');
   });
 
   testWidgets('coins scale with the world and sit above the ground line',

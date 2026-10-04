@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
+import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
 import 'level_node.dart';
 
@@ -47,6 +48,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   }
 
   bool _isLevelUnlocked(int level, int levelCount) {
+    // Testing switch (Profile): everything open.
+    if (ref.read(unlockAllProvider)) return true;
     if (level == 1) return true;
     if (level == levelCount) return completedLevels.length >= levelCount - 1;
     return completedLevels.containsKey(level - 1);
@@ -111,6 +114,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Watched so the map redraws if the testing switch changes.
+    ref.watch(unlockAllProvider);
     final era = getEraById(widget.eraId);
     final levelCount = era.levels.length;
     final hearts = ref.watch(gameProvider).hearts;

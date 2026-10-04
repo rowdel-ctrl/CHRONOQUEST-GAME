@@ -61,6 +61,18 @@ class StorageService {
     return appBox.get(_characterKey, defaultValue: 'rizal') as String;
   }
 
+  // ─── TESTING SWITCH ───────────────────────────────────────────────────────
+  static const _unlockAllKey = 'dev_unlock_all';
+
+  /// Whether every era and level is shown as unlocked (a temporary testing
+  /// aid; see `unlock_all_provider.dart`).
+  static bool getUnlockAll() =>
+      appBox.get(_unlockAllKey, defaultValue: false) as bool;
+
+  static Future<void> setUnlockAll(bool value) async {
+    await appBox.put(_unlockAllKey, value);
+  }
+
   // ─── ERA PROGRESS CACHE ───────────────────────────────────────────────────
   static Future<void> cacheEraProgress(
       String eraId, Map<String, dynamic> progress) async {

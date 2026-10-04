@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
 import '../chrono_game.dart';
 import '../enemy_behavior.dart';
+import '../game_collision.dart';
 import 'coin_component.dart';
 
 /// Enemy encountered as the player advances through the world. Spawns at a
@@ -22,6 +23,11 @@ import 'coin_component.dart';
 class EnemyComponent extends SpriteAnimationComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   final String eraId;
+
+  /// Drawn size. Public so level data can be checked against the real
+  /// footprint (see `LoadedLevel.enemyStaysOnGround`).
+  static const double spriteWidth = 90;
+  static const double spriteHeight = 108;
 
   /// True once HP has reached 0 and the death sequence has started —
   /// checked before any further hit or contact-damage processing so a
@@ -54,7 +60,30 @@ class EnemyComponent extends SpriteAnimationComponent
   @visibleForTesting
   final String? enemyTypeOverride;
 
-  EnemyComponent({required this.eraId, this.enemyTypeOverride});
+  /// Where this enemy stands, in world x. Null means "spawn just off the
+  /// right edge of the camera", which is what the runtime EnemySpawner wants
+  /// and what every enemy did before Phase 4. Tiled-authored enemies pass a
+  /// real position instead (GAMEPLAY-V2.md Section 11) — they are placed by
+  /// a person at a specific spot, not fed in from off-screen.
+  final double? worldX;
+
+  /// How far this enemy patrols from where it was placed, overriding
+  /// [CombatConstants.patrolRange]. Tiled's `patrol` property maps here so a
+  /// level author can make one enemy pace a wide corridor and another guard
+  /// a narrow ledge.
+  final double? patrolRangeOverride;
+
+  EnemyComponent({
+    required this.eraId,
+    this.enemyTypeOverride,
+    this.worldX,
+    this.patrolRangeOverride,
+  });
+
+  /// Effective patrol range: the authored override when there is one, else
+  /// the global default.
+  double get _patrolRange =>
+      patrolRangeOverride ?? CombatConstants.patrolRange;
 
   @override
   Future<void> onLoad() async {
@@ -78,13 +107,24 @@ class EnemyComponent extends SpriteAnimationComponent
     // hitbox below is added after this and derives from `size`, so the hit
     // area grows with the sprite — deliberate, since the sprite is what the
     // student aims at.
-    size = Vector2(90, 108);
+    size = Vector2(spriteWidth, spriteHeight);
     position = Vector2(
-      game.cameraRightEdgeX + 60,
+      worldX ?? game.cameraRightEdgeX + 60,
       game.groundY - size.y,
     );
     _spawnX = position.x;
-    add(RectangleHitbox());
+    // Sized to the drawn figure, not the whole sprite box. The art has
+    // transparent margins, so a full-size hitbox made the enemy hurt the
+    // player from a visible gap away — the "phantom hit" the project's own
+    // Flame conventions warn about, and what a playtester read as the enemy
+    // damaging them without being touched.
+    add(
+      RectangleHitbox.relative(
+        Vector2(0.55, 0.85),
+        parentSize: size,
+        anchor: Anchor.center,
+      ),
+    );
   }
 
   @override
@@ -93,21 +133,41 @@ class EnemyComponent extends SpriteAnimationComponent
     if (defeated) return;
 
     if (_behavior == EnemyBehavior.walker) {
-      position.x += CombatConstants.patrolSpeed * _direction * dt;
+      final nextX = position.x + CombatConstants.patrolSpeed * _direction * dt;
+
+      // Turn around at a ledge rather than walk out over a gap. Only applies
+      // while currently standing on ground: an enemy placed over a hole by
+      // mistake would otherwise flip direction every frame.
+      if (_isSupportedAt(position.x) && !_isSupportedAt(nextX)) {
+        _direction = -_direction;
+        return;
+      }
+
+      position.x = nextX;
       final offsetFromSpawn = position.x - _spawnX;
-      if (offsetFromSpawn.abs() >= CombatConstants.patrolRange) {
+      if (offsetFromSpawn.abs() >= _patrolRange) {
         // Clamp back onto the range's edge rather than let one frame's
         // movement overshoot it, then turn around.
-        position.x = _spawnX + CombatConstants.patrolRange * _direction;
+        position.x = _spawnX + _patrolRange * _direction;
         _direction = -_direction;
       }
     }
     // Heavy: deliberately no movement of its own ("barely moves" — Section
     // 5). The camera panning past it is the only motion it shows.
 
-    if (position.x < game.cameraLeftEdgeX - size.x) {
-      removeFromParent();
-    }
+    // Never culled behind the camera (see level_culling.dart). A living
+    // enemy the player ran past is still there if they come back — which
+    // also means running past one is a real decision rather than a way to
+    // make it cease to exist. Defeated enemies are removed by the death
+    // sequence in _die(), not by position.
+  }
+
+  /// Whether the centre of the sprite, at world x [x], is over solid ground —
+  /// the same foot span the player is held to (`footSpanFraction`).
+  bool _isSupportedAt(double x) {
+    final footHalfWidth = size.x * footSpanFraction / 2;
+    final centre = x + size.x / 2;
+    return game.isGroundUnder(centre - footHalfWidth, centre + footHalfWidth);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
 import '../chrono_game.dart';
+import '../kaalaman_handler.dart';
 import 'enemy_component.dart';
 
 /// The transient attack hitbox spawned when the player swings
@@ -24,6 +25,10 @@ class AttackHitboxComponent extends PositionComponent
   /// registering more than one hit from the same 0.25s-lived hitbox if it
   /// stays overlapping across multiple collision-detection frames.
   final Set<EnemyComponent> _alreadyHit = {};
+
+  /// One swing costs one charge no matter how many enemies it catches, and
+  /// costs nothing if it catches none.
+  bool _chargeSpent = false;
 
   AttackHitboxComponent({required super.position, required super.size});
 
@@ -52,6 +57,10 @@ class AttackHitboxComponent extends PositionComponent
     super.onCollisionStart(intersectionPoints, other);
     if (other is EnemyComponent && !other.defeated && !_alreadyHit.contains(other)) {
       _alreadyHit.add(other);
+      if (!_chargeSpent) {
+        _chargeSpent = true;
+        game.trySpendCharge();
+      }
       other.takeHit();
     }
   }

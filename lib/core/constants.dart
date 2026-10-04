@@ -128,6 +128,10 @@ class GameConstants {
   static const int maxHearts = 5;
   static const Duration heartRegenInterval = Duration(minutes: 1);
 
+  /// Coins to buy one heart. A placeholder chosen by the user on 2026-10-03
+  /// ("for now we use 20 coins"); the purchase itself is not wired yet.
+  static const int heartPriceCoins = 20;
+
   static const int questionsPerLevel = 10; // levels 1-9
   static const int bossWarmupQuestions = 10; // level 10, phase 1
   static const int bossFightQuestions = 12; // level 10, phase 2
@@ -439,6 +443,18 @@ EraData getEraById(String eraId) {
     (e) => e.id == eraId,
     orElse: () => allEras[1], // default to spanish
   );
+}
+
+/// This era's 1-based number in Section 1's era table (1 = Sinaunang
+/// Pilipinas … 6 = Batas Militar). [allEras] is declared in that order, so
+/// the number is simply the index + 1.
+///
+/// Used by the Tiled level loader, whose files are named
+/// `era<N>_<n>.tmx` — filenames use the number rather than the string id so
+/// levels sort in curriculum order on disk. Returns 0 for an unknown id.
+int eraNumberFor(String eraId) {
+  final i = allEras.indexWhere((e) => e.id == eraId);
+  return i < 0 ? 0 : i + 1;
 }
 
 // Helper to look up character data by ID

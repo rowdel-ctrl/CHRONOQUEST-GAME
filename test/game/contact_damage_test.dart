@@ -3,9 +3,14 @@
 // get chain-hit."
 //
 // Bare-game pattern (this codebase's default for pure update()/state-machine
-// logic) with onCollisionStart called directly rather than going through
-// Flame's broad phase — the same approach player_movement_test.dart uses for
-// ground contact.
+// logic) with the collision callbacks called directly rather than going
+// through Flame's broad phase — the same approach player_movement_test.dart
+// uses for ground contact.
+//
+// Enemy contact is driven through `onCollision` (every frame of an overlap),
+// not `onCollisionStart` (once per new overlap). The 2026-10-03 playtest
+// found that start-only damage made standing inside an enemy free and made
+// whether a touch hurt depend on whether the player had separated first.
 import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
@@ -68,13 +73,21 @@ EnemyComponent _enemyAt(ChronoGame game, double x) {
 /// pull the player below the viewport within about a second and trip
 /// `update()`'s fall-in-gap check — which costs a heart of its own and
 /// silently corrupts the heart arithmetic these tests assert on.
-void _advancePastInvincibility(ChronoGame game) {
+/// Must wait real time, not just pump frames: invincibility is a wall-clock
+/// deadline now, precisely so a paused question cannot bank it.
+Future<void> _advancePastInvincibility(ChronoGame game) async {
   final groundedY = game.groundY - game.player.size.y;
-  final frames = (CombatConstants.invincibilityDuration * 60).ceil() + 10;
-  for (var i = 0; i < frames; i++) {
+  final deadline = DateTime.now().add(
+    Duration(
+      milliseconds:
+          (CombatConstants.invincibilityDuration * 1000).round() + 120,
+    ),
+  );
+  while (DateTime.now().isBefore(deadline)) {
     game.player.update(1 / 60);
     game.player.position.y = groundedY;
     game.player.velocityY = 0;
+    await Future<void>.delayed(const Duration(milliseconds: 16));
   }
 }
 
@@ -87,7 +100,7 @@ void main() {
       final startingHearts = game.hearts;
       final enemy = _enemyAt(game, 500);
 
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
 
       expect(game.hearts, startingHearts - 1);
     });
@@ -97,7 +110,7 @@ void main() {
       final enemy = _enemyAt(game, 500);
 
       expect(game.player.invincible, false);
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
 
       expect(game.player.invincible, true);
     });
@@ -107,7 +120,7 @@ void main() {
       final enemy = _enemyAt(game, 500); // to the player's right
       final startX = game.player.position.x;
 
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
       game.player.update(1 / 60);
 
       expect(game.player.position.x, lessThan(startX),
@@ -119,7 +132,7 @@ void main() {
       final enemy = _enemyAt(game, 300); // to the player's left
       final startX = game.player.position.x;
 
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
       game.player.update(1 / 60);
 
       expect(game.player.position.x, greaterThan(startX),
@@ -136,7 +149,7 @@ void main() {
       // that way (that's enemy_behavior_test.dart's job).
       enemy.defeated = true;
 
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
 
       expect(game.hearts, startingHearts,
           reason: 'a fading, already-defeated enemy must not still hurt');
@@ -148,12 +161,12 @@ void main() {
       final game = await _bareGameWithPlayer();
       final enemy = _enemyAt(game, 500);
 
-      game.player.onCollisionStart({}, enemy);
+      game.player.onCollision({}, enemy);
       final heartsAfterFirst = game.hearts;
 
       // Well inside CombatConstants.invincibilityDuration.
       game.player.update(0.1);
-      game.player.onCollisionStart({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 500));
 
       expect(game.hearts, heartsAfterFirst,
           reason: 'chain-hits inside the i-frame window must be ignored');
@@ -179,23 +192,74 @@ void main() {
 
     test('expires after invincibilityDuration, allowing damage again', () async {
       final game = await _bareGameWithPlayer();
-      game.player.onCollisionStart({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 500));
       final heartsAfterFirst = game.hearts;
 
-      _advancePastInvincibility(game);
+      await _advancePastInvincibility(game);
       expect(game.player.invincible, false);
 
-      game.player.onCollisionStart({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 500));
 
       expect(game.hearts, heartsAfterFirst - 1,
           reason: 'damage must work again once the window has expired');
     });
 
+    test('standing inside an enemy damages again once the window expires',
+        () async {
+      // The playtest bug: damage fired only on `onCollisionStart`, so a
+      // student who stayed inside an enemy was never hit again — the overlap
+      // never "began" a second time. Holding still must not be safer than
+      // moving.
+      final game = await _bareGameWithPlayer();
+      final enemy = _enemyAt(game, 500);
+
+      game.player.onCollision({}, enemy);
+      final afterFirst = game.hearts;
+
+      // Never leaves the overlap; just waits inside it.
+      final groundedY = game.groundY - game.player.size.y;
+      final deadline = DateTime.now().add(Duration(
+          milliseconds:
+              (CombatConstants.invincibilityDuration * 1000).round() + 120));
+      while (DateTime.now().isBefore(deadline)) {
+        game.player.update(1 / 60);
+        game.player.position.y = groundedY;
+        game.player.velocityY = 0;
+        game.player.onCollision({}, enemy);
+        await Future<void>.delayed(const Duration(milliseconds: 16));
+      }
+
+      expect(game.hearts, lessThan(afterFirst),
+          reason: 'standing inside an enemy must eventually hurt again');
+    });
+
+    test('a paused question cannot bank invincibility', () async {
+      // The other half of the playtest report. The i-frame timer used to
+      // count down in update(), which pauseEngine() stops for the whole time
+      // a question is open — so a student who answered for 20s came back
+      // still invincible. Wall-clock time cannot be banked, so simulating a
+      // pause (no update() calls at all) must still let it expire.
+      final game = await _bareGameWithPlayer();
+      game.player.onCollision({}, _enemyAt(game, 500));
+      expect(game.player.invincible, true);
+
+      // Not a single update() call — exactly what a paused engine does.
+      await Future<void>.delayed(
+        Duration(
+          milliseconds:
+              (CombatConstants.invincibilityDuration * 1000).round() + 120,
+        ),
+      );
+
+      expect(game.player.invincible, false,
+          reason: 'invincibility must expire on real time, not frame time');
+    });
+
     test('leaves the sprite visible once the window ends', () async {
       final game = await _bareGameWithPlayer();
-      game.player.onCollisionStart({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 500));
 
-      _advancePastInvincibility(game);
+      await _advancePastInvincibility(game);
 
       expect(game.player.invincible, false);
       // The flash toggles during the window; whatever phase it ended on, it

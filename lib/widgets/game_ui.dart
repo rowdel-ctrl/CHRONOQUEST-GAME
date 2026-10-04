@@ -255,20 +255,25 @@ class GameBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final path = imagePath;
+    if (path == null) {
+      return Container(color: baseColor, child: child);
+    }
+    // The scrim sits between the image and the content. As a
+    // foregroundDecoration it painted over the content too, dimming every
+    // panel, label and button on the screen by `scrimOpacity`.
     return Container(
       decoration: BoxDecoration(
         color: baseColor,
-        image: imagePath != null
-            ? DecorationImage(
-                image: AssetImage(imagePath!),
-                fit: BoxFit.cover,
-              )
-            : null,
+        image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
       ),
-      foregroundDecoration: imagePath != null
-          ? BoxDecoration(color: Colors.black.withValues(alpha: scrimOpacity))
-          : null,
-      child: child,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ColoredBox(color: Colors.black.withValues(alpha: scrimOpacity)),
+          child,
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
+import '../../core/constants.dart';
 import '../answer_point_handler.dart';
 import '../chrono_game.dart';
 import '../game_collision.dart';
@@ -77,8 +78,19 @@ class PlayerComponent extends SpriteAnimationComponent
   /// timer. The two are sibling reactions to the same damage event with
   /// genuinely different durations, tracked separately on purpose — see
   /// `_takeContactDamage()`.
-  bool invincible = false;
-  double _iframeTimer = 0;
+  /// When the current invincibility window ends, as wall-clock time.
+  ///
+  /// Deliberately NOT a `dt`-driven countdown. A question calls
+  /// `pauseEngine()`, which stops `update()` entirely, so a countdown froze
+  /// for the whole time a question was open: a student who spent 20s
+  /// answering came back with a full second of invincibility still banked,
+  /// and the window then expired mid-overlap so the *next* contact landed.
+  /// That is the "sometimes immune after answering, sometimes not" bug from
+  /// the 2026-10-03 playtest. Real time cannot be banked.
+  DateTime? _invincibleUntil;
+
+  bool get invincible =>
+      _invincibleUntil != null && DateTime.now().isBefore(_invincibleUntil!);
 
   /// Toggled during the invincibility window to flash the sprite. `render()`
   /// skips drawing entirely while this is false.
@@ -90,6 +102,25 @@ class PlayerComponent extends SpriteAnimationComponent
   /// leaves the player permanently invisible once the window ends.
   @visibleForTesting
   bool get isFlashVisible => _flashVisible;
+
+  /// The last world x at which the player was standing on solid ground —
+  /// the "respawn anchor" of GAMEPLAY-V2.md's Phase 4 gap handling.
+  ///
+  /// Before Phase 4 the ground was one unbroken slab (`GroundSpawner` laid a
+  /// single million-unit section), so falling was only possible off the
+  /// bottom of the screen and `respawn()` could simply reset y and keep
+  /// worldX. Tiled levels have real gaps, so a fall now has to put the
+  /// player back somewhere they can actually stand — otherwise respawning
+  /// in place drops them straight back down the same hole, costing every
+  /// remaining heart in a couple of seconds.
+  ///
+  /// Updated only while genuinely grounded and not mid-knockback, so a
+  /// player shoved out over a gap anchors to where they were standing
+  /// before the hit rather than to the lip they were knocked off.
+  ///
+  /// Seeded by the level loader from the Tiled `spawn` object, so a fall
+  /// before ever touching ground still has somewhere valid to go.
+  double respawnAnchorX = GameConstants.playerX;
 
   /// Horizontal velocity imparted by the most recent contact-damage
   /// knockback, decremented toward zero over
@@ -181,11 +212,27 @@ class PlayerComponent extends SpriteAnimationComponent
     // player pushes against it, and so it works whether they arrive walking,
     // falling or knocked back. Only gates ahead of the player block: one
     // already passed must not pull them back.
+    //
+    // Opening (or explaining why not) also happens here, NOT in
+    // onCollisionStart. That was a real softlock: the clamp parks the player
+    // at `blockX - size.x`, which is `CombatConstants.gateStandoff` (8px)
+    // short of the gate, so the two hitboxes never overlap and the collision
+    // event never fired. The player was held against an invisible wall with
+    // no way through. Deciding from the same loop that does the blocking
+    // keeps the two in lockstep.
     for (final gate in game.world.children.whereType<GateComponent>()) {
       if (!gate.isBlocking) continue;
       final limit = gate.blockX - size.x;
       if (position.x > limit && position.x < gate.position.x + gate.size.x) {
         position.x = limit;
+        if (gate.requirementMet) {
+          // Every artifact answered: the gate simply opens. It asks nothing.
+          game.passEndGate(gate);
+        } else {
+          // Blocked for a reason the student can act on: they still have
+          // artifacts to find. Telling them beats silently refusing.
+          game.showGateLockedNotice();
+        }
       }
     }
 
@@ -205,20 +252,24 @@ class PlayerComponent extends SpriteAnimationComponent
     }
     isOnGround = onGround;
 
+    // Remember the last spot the player could actually stand, for
+    // `respawn()` after a fall. Skipped during knockback so being shoved
+    // off a ledge doesn't anchor them to the edge they were pushed over.
+    if (onGround && _knockbackRemaining <= 0) {
+      respawnAnchorX = position.x;
+    }
+
     // Invincibility-frame flashing (GAMEPLAY-V2.md Section 5: "~1s of
     // invincibility frames (flashing sprite)"). Deliberately independent of
     // isHurt/triggerHurt()'s own timer — see _takeContactDamage().
     if (invincible) {
-      _iframeTimer -= dt;
       _flashTimer -= dt;
       if (_flashTimer <= 0) {
         _flashTimer = CombatConstants.flashInterval;
         _flashVisible = !_flashVisible;
       }
-      if (_iframeTimer <= 0) {
-        invincible = false;
-        _flashVisible = true;
-      }
+    } else if (!_flashVisible) {
+      _flashVisible = true;
     }
 
     // Fall in gap handling
@@ -257,13 +308,11 @@ class PlayerComponent extends SpriteAnimationComponent
   }
 
   /// Swings the attack hitbox in the facing direction (GAMEPLAY-V2.md
-  /// Section 3). Gated by both cooldown and charge cost — spending the
-  /// charge is what can fail "with a small 'no charges' shake" per the
-  /// design doc; the shake itself isn't built yet, this just declines to
-  /// spawn a hitbox when there's nothing to spend.
+  /// Section 3). Needs at least one charge and an expired cooldown, but the
+  /// charge is only spent when the swing hits an enemy, so a miss is free.
   void attack() {
     if (_attackCooldownRemaining > 0) return;
-    if (!game.trySpendCharge()) return;
+    if (!game.canAttack) return;
 
     _attackCooldownRemaining = CombatConstants.attackCooldown;
 
@@ -310,13 +359,46 @@ class PlayerComponent extends SpriteAnimationComponent
     });
   }
 
+  /// Puts the player back on the last solid ground they stood on, after a
+  /// fall into a gap (GAMEPLAY-V2.md Phase 4).
+  ///
+  /// Pre-Phase-4 this reset only vertical state and deliberately kept
+  /// worldX, which was correct when the ground was one unbroken slab and a
+  /// "gap" could not exist. Tiled levels have real gaps, so keeping worldX
+  /// would drop the player back into the same hole they just fell through,
+  /// draining the whole heart pool in seconds. Horizontal position now
+  /// returns to [respawnAnchorX].
   void respawn() {
-    // Only vertical state resets — worldX keeps advancing; the player fell
-    // in a gap, they didn't warp backward in the world.
+    position.x = respawnAnchorX;
     position.y = game.groundY - size.y;
     velocityY = 0;
     isOnGround = true;
+    // A respawn cancels any in-flight knockback — otherwise the shove that
+    // pushed the player into the gap keeps pushing once they are back.
+    _knockbackVelocityX = 0;
+    _knockbackRemaining = 0;
     animation = walkAnimation;
+  }
+
+  /// Enemy contact is checked every frame of an overlap, not only on the
+  /// frame it begins.
+  ///
+  /// `onCollisionStart` alone fired once per *new* overlap, so standing
+  /// inside an enemy was free, and whether a touch hurt depended on whether
+  /// the player had separated first rather than on anything the student
+  /// could see. (It also produced the "the enemy only hurts me when it
+  /// faces me" report: the hitbox is the same box in both directions — only
+  /// the sprite mirrors — so what actually varied was whether the overlap
+  /// was new.) The i-frame guard in `_takeContactDamage` is what keeps this
+  /// from becoming damage every frame.
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is EnemyComponent && !other.defeated) {
+      _takeContactDamage(
+        knockbackDirection: worldX < other.position.x ? -1 : 1,
+      );
+    }
   }
 
   @override
@@ -324,14 +406,6 @@ class PlayerComponent extends SpriteAnimationComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
 
-    if (other is EnemyComponent && !other.defeated) {
-      // Contact damage (GAMEPLAY-V2.md Section 5), not the quiz — enemies
-      // no longer open it on contact. Knockback pushes away from wherever
-      // the enemy actually is, in whichever direction that is.
-      _takeContactDamage(
-        knockbackDirection: worldX < other.position.x ? -1 : 1,
-      );
-    }
     if (other is CoinComponent && !other.collected) {
       other.collect();
       game.collectCoin();
@@ -341,11 +415,10 @@ class PlayerComponent extends SpriteAnimationComponent
       // No damage, ever — an artifact is an opportunity, not a hazard.
       game.showArtifactQuestion(other);
     }
-    if (other is GateComponent && other.isBlocking && !other.questionPending) {
-      // Gates block rather than hurt. The hold is applied in update() so it
-      // survives every frame the player leans on it, not just this one.
-      game.showGateQuestion(other);
-    }
+    // Gates are deliberately NOT handled here. The clamp in update() stops
+    // the player 8px short of the gate, so these hitboxes never overlap and
+    // this branch never ran — see the gate loop in update(), which both
+    // blocks and asks.
   }
 
   /// The one place contact damage (enemy touch or wall) is decided from.
@@ -362,7 +435,11 @@ class PlayerComponent extends SpriteAnimationComponent
     game.loseLife();
     _knockbackVelocityX = CombatConstants.knockbackForce * knockbackDirection;
     _knockbackRemaining = CombatConstants.knockbackDuration;
-    invincible = true;
-    _iframeTimer = CombatConstants.invincibilityDuration;
+    _invincibleUntil = DateTime.now().add(
+      Duration(
+        milliseconds:
+            (CombatConstants.invincibilityDuration * 1000).round(),
+      ),
+    );
   }
 }

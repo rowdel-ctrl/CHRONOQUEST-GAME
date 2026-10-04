@@ -46,22 +46,54 @@ void main() {
           lessThan(CombatConstants.artifactReward));
     });
 
-    test('clamps at kaalamanCap rather than hoarding past it', () {
+    test('is uncapped: a full level of artifacts is never clamped away', () {
       final game = ChronoGame()..kaalaman = 0;
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < CombatConstants.artifactsPerLevel; i++) {
         game.grantCharges(CombatConstants.artifactReward);
       }
 
-      expect(game.kaalaman, CombatConstants.kaalamanCap);
+      expect(game.kaalaman,
+          CombatConstants.artifactsPerLevel * CombatConstants.artifactReward);
+    });
+  });
+
+  group('regeneration', () {
+    test('restores one charge after the regen time when at zero', () {
+      final game = ChronoGame()..kaalaman = 0;
+
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds - 1);
+      expect(game.kaalaman, 0);
+
+      game.updateKaalamanRegen(1);
+      expect(game.kaalaman, CombatConstants.kaalamanRegenFloor);
     });
 
-    test('never exceeds the cap starting from just below it', () {
-      final game = ChronoGame()..kaalaman = CombatConstants.kaalamanCap - 1;
+    test('stops at the floor and never tops up past it', () {
+      final game = ChronoGame()..kaalaman = 0;
 
-      game.grantCharges(CombatConstants.artifactReward);
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds);
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 5);
 
-      expect(game.kaalaman, CombatConstants.kaalamanCap);
+      expect(game.kaalaman, CombatConstants.kaalamanRegenFloor);
+    });
+
+    test('does not regenerate when the player already has charges', () {
+      final game = ChronoGame()..kaalaman = 2;
+
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 3);
+
+      expect(game.kaalaman, 2);
+    });
+
+    test('spending down to zero starts a full wait, not a partial one', () {
+      final game = ChronoGame()..kaalaman = 1;
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 0.9);
+      game.trySpendCharge();
+
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 0.5);
+
+      expect(game.kaalaman, 0);
     });
   });
 

@@ -12,7 +12,6 @@ import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
 import 'components/artifact_component.dart';
-import 'components/gate_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
 import 'components/gap_component.dart';
@@ -22,6 +21,8 @@ import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
 import 'game_spawning.dart';
+import 'kaalaman_handler.dart';
+import 'level_loader.dart';
 import 'stretch_to_fill_viewport.dart';
 
 /// Main Flame game class for ChronoQuest.
@@ -97,8 +98,17 @@ class ChronoGame extends FlameGame
   // Game state
   late PlayerComponent player;
   late GameInput gameInput;
-  late EnemySpawner spawner;
-  late GroundSpawner groundSpawner;
+
+  /// The pre-Phase-4 runtime spawners, created only on levels with no
+  /// authored `.tmx` (see game_spawning.dart).
+  ///
+  /// Nullable rather than `late` on purpose: `setupSpawning()` became async
+  /// in Phase 4 (it reads the level file from the asset bundle), so there is
+  /// now a window where `update()` runs before setup has finished. With
+  /// `late` that window threw a LateInitializationError on the first frame;
+  /// null simply means "not spawning yet", which `updateSpawning` checks.
+  EnemySpawner? spawner;
+  GroundSpawner? groundSpawner;
 
   // Maintained by GroundSection's onMount/onRemove (see gap_component.dart)
   // so PlayerComponent can check ground collision without scanning/filtering
@@ -110,6 +120,16 @@ class ChronoGame extends FlameGame
   // groundSections above — lets PlayerComponent check elevated-platform
   // landings without scanning game.children every frame.
   final List<TilePlatformComponent> platforms = [];
+
+  /// The authored Tiled level this attempt is playing, or null when the
+  /// level has no `.tmx` yet and fell back to the procedural spawner
+  /// (GAMEPLAY-V2.md Section 11, Phase 4).
+  ///
+  /// Doubles as the "is this level authored" flag: `updateSpawning` skips
+  /// the runtime spawners when it is set, and `checkLevelEnd` uses the
+  /// authored `exit` position instead of `Level.lengthUnits`. One field
+  /// rather than a separate bool, so the two can't disagree.
+  LoadedLevel? tiledLevel;
 
   String currentEra = 'spanish';
   int currentLevel = 1;
@@ -135,10 +155,68 @@ class ChronoGame extends FlameGame
   /// kaalaman_handler.dart).
   int kaalaman = CombatConstants.kaalamanStart;
 
+  /// Answer-point progress shown in the HUD pill: how many gates and
+  /// artifacts this level has, and how many the student has cleared. Totals
+  /// are set when the level is built (authored count for Tiled levels, the
+  /// fixed `CombatConstants` counts for procedural ones) and stay 0 on boss
+  /// levels, which have neither.
+  int artifactsTotal = 0;
+  int artifactsClaimed = 0;
+
+  /// Distinct artifacts the student has answered at all, right or wrong.
+  ///
+  /// This, not [artifactsClaimed], is what the end gate requires. Demanding
+  /// *correct* answers would drive every student to 100% and leave the
+  /// teacher dashboard measuring nothing — no error rates, no weak topics,
+  /// no learning gain. A wrong answer still shows the explanation, still
+  /// counts here, and still reaches the dashboard as the wrong answer it was.
+  int artifactsAnswered = 0;
+
+  /// Whether the end gate's requirement is met.
+  bool get canPassEndGate => artifactsAnswered >= artifactsTotal;
+
+  /// How many artifacts the student still has to reach.
+  int get artifactsRemaining =>
+      (artifactsTotal - artifactsAnswered).clamp(0, artifactsTotal);
+
+  /// True while the "you still have artifacts to find" notice is on screen.
+  bool gateLockedNoticeShowing = false;
+  DateTime? _gateNoticeUntil;
+
+  /// Shows the locked-gate notice, if one isn't already up.
+  ///
+  /// Called from the player's update loop, so it fires on every frame the
+  /// student pushes against the gate — the flag and the wall-clock cooldown
+  /// are what keep that from restarting the notice continuously.
+  void showGateLockedNotice() {
+    final until = _gateNoticeUntil;
+    if (gateLockedNoticeShowing) return;
+    if (until != null && DateTime.now().isBefore(until)) return;
+
+    gateLockedNoticeShowing = true;
+    _gateNoticeUntil = DateTime.now().add(const Duration(seconds: 4));
+    if (isMounted) {
+      overlays.add('GateLockedOverlay');
+      notifyListeners();
+    }
+  }
+
+  void dismissGateLockedNotice() {
+    if (!gateLockedNoticeShowing) return;
+    gateLockedNoticeShowing = false;
+    if (isMounted) {
+      overlays.remove('GateLockedOverlay');
+      notifyListeners();
+    }
+  }
+
+  /// Seconds accumulated toward the next regenerated charge; see
+  /// `updateKaalamanRegen` in kaalaman_handler.dart.
+  double kaalamanRegenTimer = 0;
+
   int score = 0;
   int playerCoins = 0;
   bool questionShowing = false;
-  bool hasJumped = false;
   bool bossPhase = false;
   bool shieldActive = false;
   Question? currentQuestion;
@@ -148,7 +226,6 @@ class ChronoGame extends FlameGame
   /// Exactly one is non-null while an artifact or gate question is up; both
   /// are null for boss questions, which take `quiz_handler.dart`'s path.
   ArtifactComponent? activeArtifact;
-  GateComponent? activeGate;
 
   /// This attempt's question supply (GAMEPLAY-V2.md Section 14, Phase 3).
   /// Per-attempt, not static: two levels played in one session must not
@@ -224,10 +301,12 @@ class ChronoGame extends FlameGame
     gameInput = GameInput(game: this);
     gameInput.setup();
 
-    // Ground + enemy spawners (game_spawning.dart). After `player` exists —
-    // EnemySpawner seeds its distance tracking from the player's starting
-    // worldX.
-    setupSpawning();
+    // Level content (game_spawning.dart): an authored Tiled map when one
+    // exists, else the procedural spawner. After `player` exists — the
+    // Tiled path repositions the player onto the map's `spawn` object, and
+    // EnemySpawner seeds its distance tracking from the player's worldX.
+    // Awaited so no frame can run against a half-built level.
+    await setupSpawning();
 
     // Start timer
     _stopwatch.start();
@@ -246,6 +325,7 @@ class ChronoGame extends FlameGame
     updateCamera();
 
     if (!questionShowing && !bossPhase) {
+      updateKaalamanRegen(dt);
       updateSpawning(dt);
       checkLevelEnd();
     }
@@ -254,13 +334,7 @@ class ChronoGame extends FlameGame
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
-    if (!questionShowing) {
-      player.jump();
-      if (!hasJumped) {
-        hasJumped = true;
-        notifyListeners();
-      }
-    }
+    if (!questionShowing) player.jump();
   }
 
   void onPlayerAttack() {
@@ -302,13 +376,20 @@ class ChronoGame extends FlameGame
 
   // ─── LEVEL STATE ──────────────────────────────────────────────────────────
 
-  /// A level ends on distance, not "all enemies dead" — enemies no longer
-  /// gate progress (GAMEPLAY-V2.md Section 14, Phase 2: contact damage +
-  /// Kaalaman replace the quiz-on-contact loop, so a level must be
-  /// finishable without killing a single enemy). This is the interim rule
-  /// for Phases 2-3; Phase 4's Tiled `exit` object replaces it.
+  /// Where this level finishes, in world x.
+  ///
+  /// An authored level ends at its Tiled `exit` object — the spot a person
+  /// chose (GAMEPLAY-V2.md Section 11). A level without a `.tmx` yet falls
+  /// back to `Level.lengthUnits`, the Phase 2 interim rule, which is a
+  /// global default rather than anything authored.
+  double get levelEndX => tiledLevel?.exitX ?? currentLevelData.lengthUnits;
+
+  /// A level ends on reaching [levelEndX], not "all enemies dead" — enemies
+  /// no longer gate progress (GAMEPLAY-V2.md Section 14, Phase 2: contact
+  /// damage + Kaalaman replace the quiz-on-contact loop, so a level must be
+  /// finishable without killing a single enemy).
   void checkLevelEnd() {
-    if (player.worldX >= currentLevelData.lengthUnits) {
+    if (player.worldX >= levelEndX) {
       if (isBossLevel && !bossPhase) {
         startBossFight();
       } else if (!isBossLevel) {
@@ -324,7 +405,15 @@ class ChronoGame extends FlameGame
     overlays.add('BossHealthOverlay');
   }
 
+  /// Set once a level has completed or failed, so it can only end once.
+  /// Completion can be reached two ways (the end gate, and the exit marker's
+  /// distance check) and a hit can land during the crumble effect; without
+  /// this a student could complete a level twice or fail one they had won.
+  bool levelEnded = false;
+
   void levelComplete() {
+    if (levelEnded) return;
+    levelEnded = true;
     _stopwatch.stop();
     pauseEngine();
     audioService.playLevelComplete();
@@ -364,6 +453,8 @@ class ChronoGame extends FlameGame
   }
 
   void showLevelFailed() {
+    if (levelEnded) return;
+    levelEnded = true;
     _stopwatch.stop();
     pauseEngine();
     audioService.playLevelFailed();

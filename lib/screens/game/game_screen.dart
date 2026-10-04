@@ -7,6 +7,7 @@ import '../../game/chrono_game.dart';
 import '../../core/combat_constants.dart';
 import '../../game/answer_point_handler.dart';
 import '../../game/quiz_handler.dart';
+import '../../game/overlays/gate_locked_overlay.dart';
 import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
@@ -100,6 +101,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     game.onLevelComplete = null;
     game.onLevelFailed = null;
     if (!mounted) return;
+    // Resume before leaving. A paused Flame engine stops stepping its own
+    // render loop, so the GameWidget held a frozen frame while the route
+    // tore down around it — read on device as "the screen freezes and I have
+    // to wait". Nothing can navigate over this any more: both callbacks are
+    // already null.
+    game.resumeEngine();
     context.go('/level-select/${widget.eraId}');
   }
 
@@ -108,7 +115,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // The era BGM loops forever once started, and nothing else in the app
     // stops it — without this it would keep playing over the menus after the
     // level is completed, failed or quit.
-    game.audioService.stopBgm();
+    //
+    // Deliberately unawaited and scheduled off this frame. `stopBgm()` is an
+    // async platform-channel call, and on the first level of a session the
+    // audio plugin is still initialising, so letting it run inside dispose()
+    // stalled the very frame that should have painted the next route — the
+    // "freezes on the first try" half of the same playtest report.
+    final audio = game.audioService;
+    Future<void>.microtask(audio.stopBgm);
     super.dispose();
   }
 
@@ -147,8 +161,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     // charges, retry, crumble); boss questions keep the
                     // original path, which is bound by Section 12's frozen
                     // POST payload.
-                    final fromAnswerPoint =
-                        g.activeArtifact != null || g.activeGate != null;
+                    final fromAnswerPoint = g.activeArtifact != null;
                     return QuestionOverlayWidget(
                       game: g,
                       onAnswer: fromAnswerPoint
@@ -158,6 +171,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   },
                   'BossHealthOverlay': (context, game) =>
                       BossHealthOverlayWidget(game: game as ChronoGame),
+                  'GateLockedOverlay': (context, game) =>
+                      GateLockedOverlayWidget(game: game as ChronoGame),
                   'PauseOverlay': (context, game) => PauseOverlayWidget(
                         game: game as ChronoGame,
                         onQuit: _quitToLevelSelect,

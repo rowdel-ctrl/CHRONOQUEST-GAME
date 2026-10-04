@@ -85,13 +85,16 @@ class GroundSection extends PositionComponent
     add(RectangleHitbox());
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-    if (position.x + sectionWidth < game.cameraLeftEdgeX) {
-      removeFromParent();
-    }
-  }
+  // No update() override: ground is never culled behind the camera
+  // (GAMEPLAY-V2.md Section 11, and see level_culling.dart).
+  //
+  // This one mattered more than the other cull sites. Pre-Phase-4 the only
+  // section was a single million-unit slab whose right edge was never behind
+  // the camera, so the check here could not fire and the bug stayed hidden.
+  // Tiled levels lay one section per solid span — tens of units wide, not
+  // millions — so the same check would start deleting the floor a
+  // backtracking player had already walked over, dropping them through
+  // ground that is still visibly drawn in the level's tile layer.
 
   @override
   void onMount() {
@@ -157,7 +160,20 @@ class GroundSection extends PositionComponent
   }
 }
 
-/// Spawns ground sections with gaps between them.
+/// Lays the ground for a level that has no authored Tiled map yet.
+///
+/// **Being retired (GAMEPLAY-V2.md Section 11, Phase 4).** Tiled levels get
+/// their ground from the `ground` tile layer, where a gap is simply a column
+/// nobody painted. This class is what the remaining unauthored levels fall
+/// back to, and it goes away once the generator has emitted a `.tmx` for all
+/// 43 — it cannot be deleted before then without leaving those levels with
+/// no floor at all.
+///
+/// Note the name overpromises: despite "gaps between them" in its original
+/// doc comment, it lays **one unbroken section** and has never produced a
+/// gap. That is why falling into one is new behaviour in Phase 4 rather than
+/// something being re-pointed, and why the fall-through path in
+/// `GroundSection` was written but never exercised.
 class GroundSpawner {
   final ChronoGame game;
 
@@ -176,6 +192,4 @@ class GroundSpawner {
     );
     game.world.add(section);
   }
-
-  void update(double dt) {}
 }

@@ -12,8 +12,16 @@ class CombatConstants {
   /// charges — Phase 3 restored this after Phase 2 temporarily started at 3
   /// so combat was testable before artifacts existed.
   static const int kaalamanStart = 0;
-  static const int kaalamanCap = 6;
+  /// How many orbs/segments the HUD bar is scaled to. Not a limit: charges
+  /// are bounded by content (5 artifacts x 2), so nothing is clamped to it.
+  static const int kaalamanDisplayMax = 10;
   static const int attackChargeCost = 1;
+
+  /// A student at 0 charges slowly earns one back, so they can never be
+  /// stranded without an attack. Regeneration stops at this floor; only
+  /// artifacts push a player above it.
+  static const int kaalamanRegenFloor = 1;
+  static const double kaalamanRegenSeconds = 20.0;
 
   /// Section 4 sanctions a tutorial freebie: "Levels 1-2 of each era may
   /// grant 1 as a tutorial freebie." Without it the very first level opens
@@ -27,7 +35,7 @@ class CombatConstants {
   static const double attackHitboxDuration = 0.25;
 
   /// Not specified by the design doc (only "with a cooldown so it can't be
-  /// spammed") — set so the charge economy (cap 6, cost 1/swing) runs out
+  /// spammed") — set so the charge economy (cost 1 per hit) runs out
   /// before the cooldown itself would ever limit attack rate, keeping this a
   /// feel-tuning knob rather than the real rate limiter.
   static const double attackCooldown = 0.4;
@@ -50,8 +58,11 @@ class CombatConstants {
   static const double knockbackForce = 220;
   static const double knockbackDuration = 0.2;
 
-  /// "~1s" per Section 5.
-  static const double invincibilityDuration = 1.0;
+  /// Section 5 says "~1s". Raised to 1.5 after the 2026-10-03 playtest: with
+  /// contact damage now re-checked every frame of an overlap (it used to fire
+  /// only when an overlap began), 1s was not long enough to walk clear of an
+  /// enemy before the next hit landed.
+  static const double invincibilityDuration = 1.5;
 
   /// Seconds per visibility toggle while invincible — the flashing effect.
   static const double flashInterval = 0.1;
@@ -106,14 +117,18 @@ class CombatConstants {
   static const double artifactBobAmplitude = 6;
   static const double artifactBobSpeed = 2.2;
 
-  /// Artifacts per level (Section 6 asks for 4-6, "the optional, rewarded
-  /// layer on top").
-  static const int artifactsPerLevel = 5;
+  /// Artifacts per level: 10, matching `GameConstants.questionsPerLevel`
+  /// (changed from 5 on 2026-10-04). Artifacts are mandatory now — the end
+  /// gate stays shut until every one has been answered — so this is also how
+  /// many questions a student must meet. Levels have only about 5 written
+  /// questions today, so the pool recycles and each appears about twice; that
+  /// ends when the question bank reaches its 10-15 per level target.
+  static const int artifactsPerLevel = 10;
 
-  /// Gates per level. Section 6 is explicit: "Put 3 gates in every level and
-  /// every student answers at least 3 questions correctly." This is the
-  /// educational floor — do not lower it without revisiting that argument.
-  static const int gatesPerLevel = 3;
+  /// Gates per level: exactly one, standing at the exit. It asks no question
+  /// and opens when every artifact has been answered (Section 6's 2026-10-03
+  /// and 2026-10-04 corrections).
+  static const int gatesPerLevel = 1;
 
   /// A gate blocks the full corridor height and cannot be jumped, so it is
   /// far taller than the old 40x50 WallComponent it replaces.

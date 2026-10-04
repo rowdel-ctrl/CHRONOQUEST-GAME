@@ -47,9 +47,8 @@ class CoinComponent extends SpriteComponent
     _bobTime += dt * 3;
     position.y = _baseY + (sin(_bobTime) * 4);
 
-    if (position.x < game.cameraLeftEdgeX - size.x) {
-      removeFromParent();
-    }
+    // Never culled behind the camera — see level_culling.dart. A coin the
+    // player jumped over and came back for must still be there.
   }
 
   void collect() {

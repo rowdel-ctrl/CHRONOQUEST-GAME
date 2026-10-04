@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/hearts_pill.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
   const CharacterSelectionScreen({super.key});
@@ -191,14 +192,23 @@ class _CharacterSelectionScreenState
             ),
           ),
 
-          // How to play top-right button
+          // Hearts + how-to-play, top right. Hearts sit in this existing icon
+          // row rather than taking a new band of vertical space, which a
+          // 320px-tall landscape phone does not have to spare.
           Positioned(
             top: MediaQuery.of(context).padding.top + 8,
             right: 12,
-            child: _SideIconButton(
-              icon: Icons.menu_book_rounded,
-              tooltip: 'Paano Laruin',
-              onTap: () => context.push('/tutorial'),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const HeartsPill(),
+                const SizedBox(width: 8),
+                _SideIconButton(
+                  icon: Icons.menu_book_rounded,
+                  tooltip: 'Paano Laruin',
+                  onTap: () => context.push('/tutorial'),
+                ),
+              ],
             ),
           ),
         ],

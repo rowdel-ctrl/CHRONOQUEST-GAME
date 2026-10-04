@@ -115,13 +115,10 @@ class TilePlatformComponent extends PositionComponent
     super.onRemove();
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-    if (position.x < game.cameraLeftEdgeX - size.x) {
-      removeFromParent();
-    }
-  }
+  // No update() override: platforms are never culled behind the camera (see
+  // level_culling.dart). Deleting one the player had already passed removed
+  // it from `game.platforms` too, so backtracking onto a ledge dropped the
+  // player straight through where it used to be.
 
   @override
   void render(Canvas canvas) {

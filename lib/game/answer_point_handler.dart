@@ -1,4 +1,3 @@
-import '../core/combat_constants.dart';
 import '../models/codex_entry.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
@@ -7,12 +6,7 @@ import 'chrono_game.dart';
 import 'components/artifact_component.dart';
 import 'components/gate_component.dart';
 
-/// What opened the question currently on screen. Boss questions keep their
-/// own path in `quiz_handler.dart`; these two are Phase 3's answer points
-/// (GAMEPLAY-V2.md Section 6).
-enum AnswerPointKind { artifact, gate }
-
-/// The question flow for artifacts and gates.
+/// The question flow for artifacts, and the end gate that follows them.
 ///
 /// Kept separate from `quiz_handler.dart` on purpose: that file's
 /// `handleAnswer` is the boss path and is bound by Section 12's frozen POST
@@ -28,24 +22,24 @@ extension AnswerPointHandler on ChronoGame {
 
     artifact.lastQuestion = question;
     activeArtifact = artifact;
-    activeGate = null;
     _openQuestion(question);
   }
 
-  /// Opens a question for a gate the player has walked up against.
-  void showGateQuestion(GateComponent gate) {
-    final question = drawQuestion(exclude: gate.lastQuestion);
-    if (question == null) {
-      // Nothing to ask — never trap the player behind an unanswerable gate.
-      gate.open();
-      return;
+  /// Opens the end gate. It asks nothing: the student has already answered
+  /// every artifact, which is the whole requirement. If it is the level's
+  /// exit, the level completes once the crumble effect has started.
+  void passEndGate(GateComponent gate) {
+    if (gate.opened) return;
+    gate.open();
+    if (gate.isLevelExit) {
+      // Deferred so the crumble starts before the completion screen takes
+      // over. levelComplete() is itself guarded against running twice, since
+      // reaching the exit marker can also trigger it.
+      Future<void>.delayed(const Duration(milliseconds: 350), () {
+        if (isMounted) levelComplete();
+      });
     }
-
-    gate.lastQuestion = question;
-    gate.questionPending = true;
-    activeGate = gate;
-    activeArtifact = null;
-    _openQuestion(question);
+    notifyState();
   }
 
   void _openQuestion(Question question) {
@@ -55,7 +49,7 @@ extension AnswerPointHandler on ChronoGame {
     overlays.add('QuestionOverlay');
   }
 
-  /// Resolves an answer to an artifact or gate question.
+  /// Resolves an answer to an artifact question.
   ///
   /// Records the attempt in the same `answers` array boss questions use —
   /// Section 12 says to log every attempt, and de-duplicating here would
@@ -76,7 +70,15 @@ extension AnswerPointHandler on ChronoGame {
     ));
 
     final artifact = activeArtifact;
-    final gate = activeGate;
+
+    // Counted once per artifact, on its first answer, right or wrong — the end
+    // gate requires engagement, not perfection (see `artifactsAnswered`). Its
+    // own flag, not `attempted`: a Shield absorbs a wrong answer without
+    // setting `attempted`, which would have counted the same artifact twice.
+    if (artifact != null && !artifact.counted) {
+      artifact.counted = true;
+      artifactsAnswered++;
+    }
 
     if (isCorrect) {
       score += 10;
@@ -87,8 +89,7 @@ extension AnswerPointHandler on ChronoGame {
         grantCharges(artifact.reward);
         _recordCodexEntry(artifact, question);
         artifact.claim();
-      } else if (gate != null) {
-        gate.open();
+        artifactsClaimed++;
       }
     } else {
       // No HP is lost — Section 6 is explicit. A Shield absorbs the
@@ -98,15 +99,10 @@ extension AnswerPointHandler on ChronoGame {
 
       if (artifact != null && !absorbed) {
         artifact.goInert();
-      } else if (gate != null) {
-        // The gate stays shut and will re-ask with a different question the
-        // next time the player walks into it.
-        gate.questionPending = false;
       }
     }
 
     activeArtifact = null;
-    activeGate = null;
     currentQuestion = null;
     overlays.remove('QuestionOverlay');
     questionShowing = false;
@@ -127,10 +123,11 @@ extension AnswerPointHandler on ChronoGame {
     );
   }
 
-  /// Adds [amount] charges, capped (Section 4: "Cap: 6. This stops hoarding
-  /// and keeps the player returning to artifacts.").
+  /// Adds [amount] charges. Uncapped: a level only holds a fixed number of
+  /// artifacts, so supply is bounded by content, and a cap would only punish
+  /// students who answer the most.
   void grantCharges(int amount) {
-    kaalaman = (kaalaman + amount).clamp(0, CombatConstants.kaalamanCap);
+    kaalaman += amount;
     notifyState();
   }
 }

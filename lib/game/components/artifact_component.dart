@@ -38,6 +38,10 @@ class ArtifactComponent extends SpriteComponent
   bool get isInert => _inertTimer > 0;
   double _inertTimer = 0;
 
+  /// True once this artifact has been answered at all, right or wrong, so the
+  /// end gate's tally counts it exactly once however many tries it takes.
+  bool counted = false;
+
   /// True once answered wrongly at least once, which permanently reduces
   /// this artifact's reward for the rest of the attempt.
   bool attempted = false;
@@ -90,10 +94,11 @@ class ArtifactComponent extends SpriteComponent
     _bobTime += dt * CombatConstants.artifactBobSpeed;
     position.y = _baseY + sin(_bobTime) * CombatConstants.artifactBobAmplitude;
 
-    // Despawn well behind the camera, same as every other world component.
-    if (position.x < game.cameraLeftEdgeX - size.x) {
-      removeFromParent();
-    }
+    // Deliberately never culled behind the camera (GAMEPLAY-V2.md Section
+    // 11, and see level_culling.dart). An artifact is authored content: the
+    // player can walk past one, turn around and come back for it, and the
+    // old "despawn behind the camera" rule deleted it in between — taking
+    // its question, its charges and its Codex entry with it.
   }
 
   /// Whether walking into this should open a question right now.

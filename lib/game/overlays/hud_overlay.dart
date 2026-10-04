@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
+import 'hud_widgets.dart';
 
-/// HUD overlay — shows hearts, level, score over Flame canvas.
+/// HUD overlay — health and Kaalaman bars, gate/artifact progress, score and
+/// coins over the Flame canvas.
 class HudOverlayWidget extends StatelessWidget {
   final ChronoGame game;
   const HudOverlayWidget({super.key, required this.game});
@@ -22,125 +23,11 @@ class HudOverlayWidget extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Hearts, with the Kaalaman charge orbs stacked directly
-                  // beneath them rather than alongside — the two read as one
-                  // "player resources" block in the top-left corner, and the
-                  // orbs stay clear of the level/score/coin widgets that
-                  // share this row.
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // The same shared pool shown on the menu screens
-                      // (GAMEPLAY-V2.md section 8), not a level-local counter.
-                      Row(
-                        children: List.generate(
-                          GameConstants.maxHearts,
-                          (i) => Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Image.asset(
-                              i < game.hearts
-                                  ? 'assets/ui/heart_full.png'
-                                  : 'assets/ui/heart_empty.png',
-                              width: 26,
-                              height: 26,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      // Kaalaman charges (GAMEPLAY-V2.md Section 4) — "a
-                      // small row of glowing orbs", kept next to HP as the
-                      // design asks, just stacked under it. Plain circles
-                      // for now, not dedicated art: no such asset exists
-                      // yet, same "plumbing now, real asset later" split
-                      // Phase 0 used for audio.
-                      Row(
-                        children: List.generate(
-                          CombatConstants.kaalamanCap,
-                          (i) => Padding(
-                            padding: const EdgeInsets.only(right: 3),
-                            child: Container(
-                              width: 14,
-                              height: 14,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: i < game.kaalaman
-                                    ? AppColors.info
-                                    : Colors.white24,
-                                border: Border.all(
-                                  color: AppColors.primaryDark,
-                                  width: 1.5,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  HudStatusBars(game: game),
                   const Spacer(),
-                  // Level indicator
-                  GameBadge(
-                    text: game.isBossLevel
-                        ? 'BOSS'
-                        : 'LVL ${game.currentLevel}',
-                    color: AppColors.primary,
-                    textColor: Colors.white,
-                    fontSize: 10,
-                  ),
+                  HudProgressPill(game: game),
                   const Spacer(),
-                  // Score
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDark,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: AppColors.accent, width: 2),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/ui/star_full.png',
-                            width: 16, height: 16),
-                        const SizedBox(width: 5),
-                        Text(
-                          '${game.score}',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 10,
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  // Coins
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDark,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: AppColors.accent, width: 2),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/collectibles/coin.png',
-                            width: 16, height: 16),
-                        const SizedBox(width: 5),
-                        Text(
-                          '${game.playerCoins}',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 10,
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  HudStatsPanel(game: game),
                   const SizedBox(width: 8),
                   // Pause button
                   Semantics(
@@ -171,26 +58,6 @@ class HudOverlayWidget extends StatelessWidget {
                 ],
               ),
             ),
-            if (!game.hasJumped)
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    'JOYSTICK TO MOVE • TAP JUMP',
-                    style: GoogleFonts.poppins(
-                      fontSize: 11,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
           ],
         ),
       ),
