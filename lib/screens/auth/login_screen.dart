@@ -5,9 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/qr_scan_panel.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  /// The camera view for QR scanning. Tests pass a fake; the app uses the camera.
+  final ScannerViewBuilder scannerBuilder;
+
+  const LoginScreen({super.key, this.scannerBuilder = cameraScannerView});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -29,9 +33,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
 
+  /// The class code a QR scan filled in. The field stays editable: it shows the
+  /// green "scanned" look only while it still holds exactly this.
+  String? _scannedCode;
+
   @override
   void initState() {
     super.initState();
+    _classCodeController.addListener(() {
+      if (_scannedCode != null && mounted) setState(() {});
+    });
     _animController = AnimationController(
       duration: const Duration(milliseconds: 1200),
       vsync: this,
@@ -53,6 +64,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     _animController.dispose();
     super.dispose();
   }
+
+  void _applyScannedCode(String code) {
+    setState(() => _scannedCode = code);
+    _classCodeController.text = code;
+  }
+
+  Future<void> _scanFromSheet() async {
+    final code = await showQrScanSheet(context, scannerBuilder: widget.scannerBuilder);
+    if (code != null && mounted) _applyScannedCode(code);
+  }
+
+  bool get _codeIsScanned =>
+      _scannedCode != null && _classCodeController.text.trim() == _scannedCode;
 
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
@@ -90,47 +114,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 opacity: _fadeAnimation,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // Top-aligned: the form is taller than a landscape phone, and
+                  // centred the scan card slid below the first screen.
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (screenSize.width > 700) ...[
                       Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(18),
-                              decoration: BoxDecoration(
-                                color: AppColors.accent.withValues(alpha: 0.15),
-                                border: Border.all(
-                                  color: AppColors.accent,
-                                  width: 3,
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.auto_stories,
-                                size: 44,
-                                color: AppColors.accent,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              'CHRONOQUEST',
-                              style: GoogleFonts.poppins(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                height: 1.4,
-                                color: AppColors.accent,
+                            // Small wordmark: the logo block gave way to the
+                            // scanner, but the name stays.
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.auto_stories,
+                                      size: 18, color: AppColors.accent),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'CHRONOQUEST',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.accent,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 12),
-                            Text(
-                              'Tuklasin ang Kasaysayan\nng Pilipinas',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                color: Colors.white70,
-                                height: 1.4,
-                              ),
+                            const SizedBox(height: 10),
+                            QrScanPanel(
+                              onCode: _applyScannedCode,
+                              scannerBuilder: widget.scannerBuilder,
                             ),
                           ],
                         ),
@@ -225,7 +242,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                               controller: _classCodeController,
                               textCapitalization: TextCapitalization.characters,
                               decoration:
-                                  _inputDeco(Icons.class_, 'e.g. EDG5A1'),
+                                  _inputDeco(Icons.class_, 'e.g. EDG5A1')
+                                      .copyWith(
+                                enabledBorder: _codeIsScanned
+                                    ? OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(4),
+                                        borderSide: const BorderSide(
+                                            color: AppColors.success, width: 3),
+                                      )
+                                    : null,
+                                suffixIcon: _codeIsScanned
+                                    ? const Icon(Icons.check_circle,
+                                        color: AppColors.success, size: 20)
+                                    : screenSize.width > 700
+                                        ? null
+                                        : IconButton(
+                                            tooltip: 'I-scan ang QR',
+                                            icon: const Icon(
+                                                Icons.qr_code_scanner,
+                                                color: AppColors.primary),
+                                            onPressed: _scanFromSheet,
+                                          ),
+                              ),
                               validator: (v) => v == null || v.trim().isEmpty
                                   ? 'Kailangan ang class code'
                                   : null,

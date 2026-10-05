@@ -27,6 +27,7 @@ dependencies:
   # Pulled in transitively by flame_tiled, but level_loader.dart imports it
   # directly to parse .tmx files, so it is declared explicitly.
   tiled: ^0.11.1
+  mobile_scanner: ^7.4.2
 
 dev_dependencies:
   flutter_test:
