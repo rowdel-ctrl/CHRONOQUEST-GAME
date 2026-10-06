@@ -137,11 +137,12 @@ class CombatConstants {
 
   /// Drawn size of an artifact. Larger than a coin (42) so it reads as a
   /// deliberate objective rather than pickup clutter, smaller than the
-  /// 96x120 player.
-  static const double artifactSize = 56;
+  /// 96x120 player. 56 until 2026-10-06 (playtest: "a little small"), now 72.
+  static const double artifactSize = 72;
 
-  /// How high above the ground an artifact floats, and its gentle bob.
-  static const double artifactHoverHeight = 150;
+  /// How high above the ground an artifact floats, and its gentle bob. The top
+  /// edge: 158 keeps the middle where it was (150 at the old size of 56).
+  static const double artifactHoverHeight = 158;
   static const double artifactBobAmplitude = 6;
   static const double artifactBobSpeed = 2.2;
 

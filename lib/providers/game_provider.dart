@@ -62,10 +62,38 @@ class GameNotifier extends StateNotifier<GameState> {
   /// a level-select countdown) reflects real elapsed time, not just the
   /// value from when the provider was created.
   void refreshHearts() {
+    if (_inLevel) return; // the clock is stopped during a level
     final hearts = state.hearts.regenerated(DateTime.now());
     if (hearts.count != state.hearts.count) {
       StorageService.saveHeartsState(hearts);
     }
+    state = state.copyWith(hearts: hearts);
+  }
+
+  /// Hearts do not come back while a level is being played: the regen clock
+  /// stops when it starts and carries on, from where it was, when it ends.
+  /// (Before this, a heart could reappear mid-level, so what the menu showed
+  /// afterwards did not match the level.)
+  bool _inLevel = false;
+  Duration? _remainingAtLevelStart;
+
+  void enterLevel() {
+    if (_inLevel) return;
+    final now = DateTime.now();
+    final hearts = state.hearts.regenerated(now);
+    _remainingAtLevelStart = hearts.timeUntilNext(now);
+    _inLevel = true;
+    StorageService.saveHeartsState(hearts);
+    state = state.copyWith(hearts: hearts);
+  }
+
+  void exitLevel() {
+    if (!_inLevel) return;
+    _inLevel = false;
+    final hearts =
+        state.hearts.resumedAfterLevel(DateTime.now(), _remainingAtLevelStart);
+    _remainingAtLevelStart = null;
+    StorageService.saveHeartsState(hearts);
     state = state.copyWith(hearts: hearts);
   }
 
@@ -77,7 +105,12 @@ class GameNotifier extends StateNotifier<GameState> {
   /// per hit, so the persisted count stays in lockstep with the in-game HUD
   /// instead of only updating once per fully-failed level.
   void loseHeart() {
-    final hearts = state.hearts.afterLevelFailed(DateTime.now());
+    final now = DateTime.now();
+    // In a level nothing is regenerated first: a heart must not appear just
+    // before one is taken.
+    final hearts = _inLevel
+        ? state.hearts.consumed(now)
+        : state.hearts.afterLevelFailed(now);
     StorageService.saveHeartsState(hearts);
     state = state.copyWith(hearts: hearts);
   }

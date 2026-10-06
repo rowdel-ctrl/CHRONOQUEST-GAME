@@ -4,7 +4,7 @@
   "jumpForce": -480,
   "lengthUnits": 25000,
   "artifactsPerLevel": 10,
-  "artifactSize": 56,
+  "artifactSize": 72,
   "gateWidth": 144,
   "playerWidth": 96,
   "enemyWidth": 90,

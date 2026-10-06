@@ -56,6 +56,23 @@ class HeartsState {
   /// forgotten) at call sites.
   HeartsState afterLevelFailed(DateTime now) => regenerated(now).consumed(now);
 
+  /// The pool as it should be when a level ends, given that the regen clock
+  /// does not run during a level. [remaining] is the time that was left until
+  /// the next heart when the level began (null if no countdown was running, in
+  /// which case a fresh full interval starts now). The countdown picks up where
+  /// it left off, however long the level took.
+  HeartsState resumedAfterLevel(DateTime now, Duration? remaining) {
+    if (count >= GameConstants.maxHearts) {
+      return HeartsState(count: count, regenStartMs: null);
+    }
+    final intervalMs = GameConstants.heartRegenInterval.inMilliseconds;
+    final remainingMs = (remaining?.inMilliseconds ?? intervalMs).clamp(0, intervalMs);
+    return HeartsState(
+      count: count,
+      regenStartMs: now.millisecondsSinceEpoch - (intervalMs - remainingMs),
+    );
+  }
+
   /// Time remaining until the next heart, or null if the pool is full.
   Duration? timeUntilNext(DateTime now) {
     if (count >= GameConstants.maxHearts || regenStartMs == null) return null;

@@ -81,7 +81,7 @@
   <object id="5" type="coin" x="2820" y="620"/>
   <object id="6" type="coin" x="2860" y="620"/>
   <object id="7" type="coin" x="2900" y="620"/>
-  <object id="8" type="artifact" x="2988" y="660">
+  <object id="8" type="artifact" x="2980" y="660">
    <properties>
     <property name="art" value="artifact_3"/>
    </properties>
@@ -98,7 +98,7 @@
   <object id="12" type="coin" x="5124" y="620"/>
   <object id="13" type="coin" x="5164" y="620"/>
   <object id="14" type="coin" x="5204" y="620"/>
-  <object id="15" type="artifact" x="5292" y="660">
+  <object id="15" type="artifact" x="5284" y="660">
    <properties>
     <property name="art" value="artifact_4"/>
    </properties>
@@ -115,7 +115,7 @@
   <object id="19" type="coin" x="7428" y="620"/>
   <object id="20" type="coin" x="7468" y="620"/>
   <object id="21" type="coin" x="7508" y="620"/>
-  <object id="22" type="artifact" x="7596" y="660">
+  <object id="22" type="artifact" x="7588" y="660">
    <properties>
     <property name="art" value="artifact_5"/>
    </properties>
@@ -132,7 +132,7 @@
   <object id="26" type="coin" x="9732" y="620"/>
   <object id="27" type="coin" x="9772" y="620"/>
   <object id="28" type="coin" x="9812" y="620"/>
-  <object id="29" type="artifact" x="9900" y="660">
+  <object id="29" type="artifact" x="9892" y="660">
    <properties>
     <property name="art" value="artifact_1"/>
    </properties>
@@ -149,7 +149,7 @@
   <object id="33" type="coin" x="12036" y="620"/>
   <object id="34" type="coin" x="12076" y="620"/>
   <object id="35" type="coin" x="12116" y="620"/>
-  <object id="36" type="artifact" x="12204" y="660">
+  <object id="36" type="artifact" x="12196" y="660">
    <properties>
     <property name="art" value="artifact_2"/>
    </properties>
@@ -166,7 +166,7 @@
   <object id="40" type="coin" x="14340" y="620"/>
   <object id="41" type="coin" x="14380" y="620"/>
   <object id="42" type="coin" x="14420" y="620"/>
-  <object id="43" type="artifact" x="14508" y="660">
+  <object id="43" type="artifact" x="14500" y="660">
    <properties>
     <property name="art" value="artifact_3"/>
    </properties>
@@ -183,7 +183,7 @@
   <object id="47" type="coin" x="16644" y="620"/>
   <object id="48" type="coin" x="16684" y="620"/>
   <object id="49" type="coin" x="16724" y="620"/>
-  <object id="50" type="artifact" x="16812" y="660">
+  <object id="50" type="artifact" x="16804" y="660">
    <properties>
     <property name="art" value="artifact_4"/>
    </properties>
@@ -208,7 +208,7 @@
   <object id="56" type="coin" x="18948" y="620"/>
   <object id="57" type="coin" x="18988" y="620"/>
   <object id="58" type="coin" x="19028" y="620"/>
-  <object id="59" type="artifact" x="19116" y="660">
+  <object id="59" type="artifact" x="19108" y="660">
    <properties>
     <property name="art" value="artifact_5"/>
    </properties>
@@ -225,7 +225,7 @@
   <object id="63" type="coin" x="21252" y="620"/>
   <object id="64" type="coin" x="21292" y="620"/>
   <object id="65" type="coin" x="21332" y="620"/>
-  <object id="66" type="artifact" x="21420" y="660">
+  <object id="66" type="artifact" x="21412" y="660">
    <properties>
     <property name="art" value="artifact_1"/>
    </properties>
@@ -242,7 +242,7 @@
   <object id="70" type="coin" x="23556" y="620"/>
   <object id="71" type="coin" x="23596" y="620"/>
   <object id="72" type="coin" x="23636" y="620"/>
-  <object id="73" type="artifact" x="23724" y="660">
+  <object id="73" type="artifact" x="23716" y="660">
    <properties>
     <property name="art" value="artifact_2"/>
    </properties>

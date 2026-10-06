@@ -116,4 +116,36 @@ void main() {
       expect(result.regenStartMs, now.millisecondsSinceEpoch);
     });
   });
+
+  group('HeartsState.resumedAfterLevel (the clock stops during a level)', () {
+    test('carries on from where it was, however long the level took', () {
+      // Two hearts down, 20 s into the minute when the level began.
+      final before = HeartsState(
+        count: GameConstants.maxHearts - 2,
+        regenStartMs: _t0.millisecondsSinceEpoch,
+      );
+      final remaining = before.timeUntilNext(_t0.add(const Duration(seconds: 20)));
+
+      // A ten-minute level later, the countdown still has 40 s to run.
+      final after = before.resumedAfterLevel(
+          _t0.add(const Duration(minutes: 10)), remaining);
+
+      expect(after.count, GameConstants.maxHearts - 2, reason: 'nothing came back');
+      expect(after.timeUntilNext(_t0.add(const Duration(minutes: 10)))!.inSeconds,
+          40);
+    });
+
+    test('a heart lost during the level starts a full countdown afterwards', () {
+      final lost = HeartsState.initial().consumed(_t0); // no countdown before it
+      final after = lost.resumedAfterLevel(_t0.add(const Duration(minutes: 5)), null);
+
+      expect(after.timeUntilNext(_t0.add(const Duration(minutes: 5))), _interval);
+    });
+
+    test('a full pool has no countdown', () {
+      final after = HeartsState.initial().resumedAfterLevel(_t0, null);
+      expect(after.regenStartMs, isNull);
+      expect(after.count, GameConstants.maxHearts);
+    });
+  });
 }

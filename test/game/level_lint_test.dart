@@ -26,7 +26,7 @@ const double _platformMaxHeight = 112;
 const double _groundSurfaceY = 660;
 const double _platformTile = 24;
 const double _enemyWidth = 90;
-const double _artifactSize = 56;
+const double _artifactSize = 72;
 
 /// A floor for every level. The generator holds itself to 600; the hand-built
 /// fixture (test/fixtures) has two walkers 480 apart.

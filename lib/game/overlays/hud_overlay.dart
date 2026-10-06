@@ -36,7 +36,7 @@ class HudOverlayWidget extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
+                  padding: const EdgeInsets.only(bottom: 9),
                   child: IgnorePointer(child: LevelProgressBar(game: game)),
                 ),
               ),

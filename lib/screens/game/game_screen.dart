@@ -28,6 +28,7 @@ class GameScreen extends ConsumerStatefulWidget {
 
 class _GameScreenState extends ConsumerState<GameScreen> {
   late ChronoGame game;
+  late final GameNotifier _hearts = ref.read(gameProvider.notifier);
 
   @override
   void initState() {
@@ -52,6 +53,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // on the menu screens (GAMEPLAY-V2.md section 8 — one shared pool, not
     // a level-local counter).
     game.onHeartLost = () => ref.read(gameProvider.notifier).loseHeart();
+
+    // Hearts stop regenerating while the level is on screen. Deferred a frame:
+    // changing a provider is not allowed while the widget tree is building.
+    Future<void>.microtask(_hearts.enterLevel);
 
     // Set callbacks for navigation
     game.onLevelComplete = (score, correct, total, answers) {
@@ -126,6 +131,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // "freezes on the first try" half of the same playtest report.
     final audio = game.audioService;
     Future<void>.microtask(audio.stopBgm);
+    // The hearts clock starts again; also deferred, for the same reason.
+    Future<void>.microtask(_hearts.exitLevel);
     super.dispose();
   }
 

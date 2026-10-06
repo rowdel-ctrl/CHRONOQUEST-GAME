@@ -5,10 +5,11 @@ import '../../core/constants.dart';
 import '../../widgets/gate_icon.dart';
 import '../chrono_game.dart';
 
-/// How far along the level the student is, as a bar along the bottom: the
-/// hero's face moves from the start to the gate at the right end, with a small
-/// tick where each artifact waits. Like the wave bar in Plants vs Zombies, so a
-/// child can see how much is left without counting.
+/// How far along the level the student is: a small pill at the bottom centre
+/// with the hero's face riding a thin gold line towards the gate. Like the wave
+/// bar in Plants vs Zombies, but quiet (playtest, 2026-10-06: the first version
+/// was 340 wide and too spacious on small screens; this is the "mini pill" from
+/// the approved mockup).
 ///
 /// The position changes every frame but the HUD only rebuilds when game state
 /// notifies, so this runs its own short ticker (the same approach as
@@ -17,6 +18,9 @@ import '../chrono_game.dart';
 class LevelProgressBar extends StatefulWidget {
   final ChronoGame game;
   const LevelProgressBar({super.key, required this.game});
+
+  static const double width = 112;
+  static const double height = 18;
 
   /// The fraction of the way from the start to the end, 0 to 1.
   static double fractionFor({
@@ -38,7 +42,6 @@ class _LevelProgressBarState extends State<LevelProgressBar> {
 
   Timer? _ticker;
   double _fraction = 0;
-  List<double> _artifacts = const [];
 
   double get _startX => widget.game.tiledLevel?.spawnX ?? 0;
 
@@ -55,67 +58,87 @@ class _LevelProgressBarState extends State<LevelProgressBar> {
     super.dispose();
   }
 
-  /// Where each artifact sits along the bar. Read from the level data rather
-  /// than the live components, because far-away artifacts are not in the world.
-  List<double> _artifactFractions() {
-    final game = widget.game;
-    final level = game.tiledLevel;
-    if (level == null) return const [];
-    return [
-      for (final e in level.entities.where((e) => e.type == 'artifact'))
-        LevelProgressBar.fractionFor(
-            playerX: e.x, startX: level.spawnX, endX: game.levelEndX),
-    ];
-  }
-
   void _refresh() {
     if (!mounted) return;
     final game = widget.game;
     // Before the level has loaded there is no player to follow yet.
     if (!game.isLoaded) return;
-    if (_artifacts.isEmpty) _artifacts = _artifactFractions();
     final next = LevelProgressBar.fractionFor(
       playerX: game.player.worldX,
       startX: _startX,
       endX: game.levelEndX,
     );
-    // Whole pixels are all a 300-wide bar can show.
-    if ((next - _fraction).abs() >= 0.002) setState(() => _fraction = next);
+    // Whole pixels are all a 112-wide pill can show.
+    if ((next - _fraction).abs() >= 0.004) setState(() => _fraction = next);
   }
 
   @override
   Widget build(BuildContext context) {
+    const w = LevelProgressBar.width;
+    const trackLeft = 9.0;
+    const trackRight = 22.0; // leaves room for the gate
+    const trackWidth = w - trackLeft - trackRight;
     final percent = (_fraction * 100).round();
+
     return Semantics(
       label: '$percent% ng level ang natapos',
-      child: LayoutBuilder(builder: (context, box) {
-        // Between the joystick on the left and the buttons on the right.
-        final width = (box.maxWidth - 340).clamp(120.0, 340.0).toDouble();
-        return SizedBox(
-          width: width,
-          height: 30,
-          child: CustomPaint(
-            painter: _BarPainter(fraction: _fraction, artifacts: _artifacts),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // The gate the bar leads to, standing past its right end.
-                const Positioned(
-                  right: -6,
-                  top: 0,
-                  child: GateIcon(size: 26),
-                ),
-                // The hero's face, riding the fill.
-                Positioned(
-                  left: (width - 38) * _fraction,
-                  top: 4,
-                  child: _HeroMarker(characterId: widget.game.selectedCharacterId),
-                ),
-              ],
+      child: Opacity(
+        opacity: 0.78,
+        child: Container(
+          width: w,
+          height: LevelProgressBar.height,
+          decoration: BoxDecoration(
+            color: AppColors.primaryDark.withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(9),
+            border: Border.all(
+              color: AppColors.accent.withValues(alpha: 0.5),
+              width: 1,
             ),
           ),
-        );
-      }),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              // The line: faint all the way, gold as far as the hero has come.
+              Positioned(
+                left: trackLeft - 1,
+                top: 6,
+                width: trackWidth,
+                height: 3,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.28),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: FractionallySizedBox(
+                      widthFactor: _fraction,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: AppColors.accent,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // The hero's face, riding the line.
+              Positioned(
+                left: trackLeft - 1 + trackWidth * _fraction - 6,
+                top: 1,
+                child: _HeroMarker(characterId: widget.game.selectedCharacterId),
+              ),
+              // The gate the line leads to.
+              const Positioned(
+                right: 3,
+                top: 1,
+                child: GateIcon(size: 13),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -127,75 +150,22 @@ class _HeroMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 22,
-      height: 22,
+      width: 12,
+      height: 12,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.primaryDark,
-        border: Border.all(color: AppColors.accent, width: 2),
+        border: Border.all(color: AppColors.accent, width: 1.2),
       ),
       child: ClipOval(
         child: Image.asset(
           'assets/characters/${characterId}_walk_1.png',
           fit: BoxFit.cover,
           alignment: Alignment.topCenter,
+          filterQuality: FilterQuality.none,
           errorBuilder: (_, __, ___) => const SizedBox.shrink(),
         ),
       ),
     );
   }
-}
-
-class _BarPainter extends CustomPainter {
-  final double fraction;
-  final List<double> artifacts;
-  const _BarPainter({required this.fraction, required this.artifacts});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // The track runs between the hero's start spot and the gate.
-    final track = Rect.fromLTWH(11, size.height / 2 - 5, size.width - 38, 10);
-    final r = RRect.fromRectAndRadius(track, const Radius.circular(5));
-
-    canvas.drawRRect(r, Paint()..color = Colors.black54);
-
-    // The part walked so far.
-    final fill = Rect.fromLTWH(track.left, track.top, track.width * fraction, track.height);
-    if (fill.width > 0) {
-      canvas.save();
-      canvas.clipRRect(r);
-      canvas.drawRect(
-        fill,
-        Paint()
-          ..shader = const LinearGradient(
-            colors: [AppColors.primary, AppColors.accent],
-          ).createShader(track),
-      );
-      canvas.restore();
-    }
-
-    // An artifact tick: gold once passed, white ahead.
-    for (final a in artifacts) {
-      final x = track.left + track.width * a;
-      canvas.drawLine(
-        Offset(x, track.top - 2),
-        Offset(x, track.bottom + 2),
-        Paint()
-          ..color = a <= fraction ? AppColors.accent : Colors.white70
-          ..strokeWidth = 2,
-      );
-    }
-
-    canvas.drawRRect(
-      r,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2
-        ..color = AppColors.primaryDark,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_BarPainter old) =>
-      old.fraction != fraction || old.artifacts != artifacts;
 }
