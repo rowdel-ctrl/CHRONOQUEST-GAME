@@ -369,7 +369,8 @@ class _EraBook extends StatelessWidget {
                             Text(
                               era.name,
                               textAlign: TextAlign.center,
-                              maxLines: 2,
+                              // Era titles run up to 47 characters.
+                              maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
@@ -384,7 +385,7 @@ class _EraBook extends StatelessWidget {
                             Text(
                               era.subtitle,
                               textAlign: TextAlign.center,
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 fontSize: 10,
@@ -481,10 +482,10 @@ class _EraBook extends StatelessWidget {
                     children: [
                       Text(
                         era.name,
-                        maxLines: 2,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           height: 1.2,
@@ -495,7 +496,7 @@ class _EraBook extends StatelessWidget {
                         isInProgress
                             ? '$levelsCompleted/${era.levels.length} levels'
                             : era.subtitle,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontSize: 9,

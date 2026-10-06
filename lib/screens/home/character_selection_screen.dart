@@ -373,6 +373,9 @@ class _CharCard extends StatelessWidget {
 
               // Era pill badge
               Container(
+                // Wraps to two lines instead of widening the card: era titles
+                // run up to 47 characters.
+                constraints: const BoxConstraints(maxWidth: 170),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
@@ -383,6 +386,9 @@ class _CharCard extends StatelessWidget {
                 ),
                 child: Text(
                   char.era,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,

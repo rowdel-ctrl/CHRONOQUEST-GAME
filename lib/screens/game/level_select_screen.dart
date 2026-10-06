@@ -151,15 +151,19 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                           const Icon(Icons.arrow_back, color: Colors.white70),
                     ),
                     Expanded(
-                      child: Text(
-                        era.name.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          height: 1.4,
-                          color: AppColors.accent,
+                      // Shrinks to fit rather than cutting the name: the longest
+                      // is 47 characters.
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          era.name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            height: 1.4,
+                            color: AppColors.accent,
+                          ),
                         ),
                       ),
                     ),

@@ -221,6 +221,10 @@ class EraData {
       );
 }
 
+// Era names and subtitles are the six titles of GAMEPLAY-V2.md Section 1 (the
+// MATATAG Three-Term BOW), the same ones the dashboard shows; they carry no
+// date ranges. Only the ids below stay as they were.
+//
 // Era ids for pre-colonial/spanish/american/ww2/modern predate the six-era
 // curriculum and are kept as-is rather than renamed: they're the join key for
 // already-recorded progress (Hive locally, and QuizResult/EraProgress on the
@@ -236,8 +240,8 @@ class EraData {
 const List<EraData> allEras = [
   EraData(
     id: 'pre-colonial',
-    name: 'Sinaunang Panahon',
-    subtitle: 'Pre-colonial',
+    name: 'Sinaunang Pilipinas',
+    subtitle: 'Ancient Philippines',
     guide: 'Datu Lapu-Lapu',
     enemyTypes: ['tribal_warrior', 'dark_spirit'],
     bossName: 'bakunawa',
@@ -259,8 +263,8 @@ const List<EraData> allEras = [
   ),
   EraData(
     id: 'spanish',
-    name: 'Panahon ng Kastila',
-    subtitle: 'Spanish Colonial 1565–1898',
+    name: 'Pananakop ng Espanya',
+    subtitle: 'Spanish Colonization',
     guide: 'Jose Rizal',
     enemyTypes: ['spanish_soldier', 'tax_collector'],
     bossName: 'governor',
@@ -283,7 +287,7 @@ const List<EraData> allEras = [
   EraData(
     id: 'nationalism',
     name: 'Pag-usbong ng Nasyonalismo',
-    subtitle: 'Rise of Filipino Nationalism',
+    subtitle: 'Rise of Nationalism',
     // Reuses the Spanish era's enemy set, wall art, ground colour and boss
     // sprite throughout the codebase (GAMEPLAY-V2.md Section 1: "Era 3 has
     // no boss sprite... reuse the Governor if time runs out"; "Era 3 reuses
@@ -314,8 +318,8 @@ const List<EraData> allEras = [
   ),
   EraData(
     id: 'american',
-    name: 'Panahon ng Amerikano',
-    subtitle: 'American Period 1898–1946',
+    name: 'Himagsikan at Imperyalismong Amerikano',
+    subtitle: 'Revolution & American Imperialism',
     guide: 'Apolinario Mabini',
     enemyTypes: ['american_soldier', 'propaganda'],
     bossName: 'general',
@@ -337,8 +341,8 @@ const List<EraData> allEras = [
   ),
   EraData(
     id: 'ww2',
-    name: 'Ikalawang Digmaang Pandaigdig',
-    subtitle: 'World War II 1941–1945',
+    name: 'Pamahalaang Kolonyal at Pananakop ng Hapon',
+    subtitle: 'Colonial Government & Japanese Occupation',
     guide: 'Josefa Llanes Escoda',
     enemyTypes: ['japanese_soldier', 'tank'],
     bossName: 'commander',
@@ -359,8 +363,8 @@ const List<EraData> allEras = [
   ),
   EraData(
     id: 'modern',
-    name: 'Makabagong Panahon',
-    subtitle: 'Modern 1946–present',
+    name: 'Batas Militar at Muling Pagbangon ng Demokrasya',
+    subtitle: 'Martial Law & Democracy',
     guide: 'Corazon Aquino',
     enemyTypes: ['corruption_figure', 'misinfo_cloud'],
     bossName: 'corruption_boss',
@@ -403,35 +407,35 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'lapu',
     name: 'Datu Lapu-Lapu',
-    era: 'Sinaunang Panahon',
+    era: 'Sinaunang Pilipinas',
     description: 'Bayani ng Mactan',
     unlockCost: 0,
   ),
   CharacterData(
     id: 'rizal',
     name: 'Jose Rizal',
-    era: 'Panahon ng Kastila',
+    era: 'Pananakop ng Espanya',
     description: 'Pambansang Bayani',
     unlockCost: 0,
   ),
   CharacterData(
     id: 'luna',
     name: 'Heneral Antonio Luna',
-    era: 'Panahon ng Amerikano',
+    era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Heneral ng Hukbong Pilipino',
     unlockCost: 100,
   ),
   CharacterData(
     id: 'bonifacio',
     name: 'Andres Bonifacio',
-    era: 'Panahon ng Kastila',
+    era: 'Pananakop ng Espanya',
     description: 'Ama ng Katipunan',
     unlockCost: 200,
   ),
   CharacterData(
     id: 'delpilar',
     name: 'Gregorio Del Pilar',
-    era: 'Panahon ng Amerikano',
+    era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
     unlockCost: 300,
   ),

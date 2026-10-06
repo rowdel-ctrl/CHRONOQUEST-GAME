@@ -1,5 +1,6 @@
 // The level-complete card: it fits a short landscape phone without scrolling,
 // says x/10 for ten artifacts, and shows one dot per artifact.
+import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/screens/game/level_complete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 Future<void> _show(
   WidgetTester tester, {
   required Size size,
+  String eraId = 'pre-colonial',
   int level = 2,
   int correct = 10,
   int total = 10,
@@ -17,7 +19,7 @@ Future<void> _show(
   addTearDown(tester.view.reset);
   await tester.pumpWidget(MaterialApp(
     home: LevelCompleteScreen(
-      eraId: 'pre-colonial',
+      eraId: eraId,
       level: level,
       result: LevelCompleteResult(score: 535, correct: correct, total: total),
     ),
@@ -41,6 +43,21 @@ void main() {
           expect(tester.takeException(), isNull);
           expect(_maxScroll(tester), 0,
               reason: 'the card is taller than the screen, so it scrolls');
+        });
+      }
+    }
+  });
+
+  group('the longest era titles still fit without scrolling', () {
+    // "Batas Militar at Muling Pagbangon ng Demokrasya" is 47 characters.
+    for (final era in allEras) {
+      for (final size in const [Size(732, 320), Size(640, 360)]) {
+        testWidgets('${era.id} at ${size.width.toInt()}x${size.height.toInt()}',
+            (tester) async {
+          await _show(tester, size: size, eraId: era.id, level: 3);
+
+          expect(tester.takeException(), isNull);
+          expect(_maxScroll(tester), 0);
         });
       }
     }
