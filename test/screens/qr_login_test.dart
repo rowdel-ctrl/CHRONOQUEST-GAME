@@ -169,6 +169,42 @@ void main() {
     }
   });
 
+  group('the live camera view', () {
+    Future<double> cameraSide(WidgetTester tester, Size size) async {
+      await _pump(
+        tester,
+        SizedBox(
+          width: size.width / 2,
+          height: size.height - 48 - 38, // padding and the wordmark
+          child: Center(
+            child: QrScanPanel(onCode: (_) {}, scannerBuilder: _fakeCamera()),
+          ),
+        ),
+        size: size,
+      );
+      await tester.tap(find.text('BUKSAN ANG CAMERA'));
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      return tester.getSize(find.descendant(
+          of: find.byType(QrScanner), matching: find.byType(ClipRect))).width;
+    }
+
+    // Playtest 2026-10-06: the camera was still too small on a phone.
+    testWidgets('uses the height a landscape phone has left, not a fixed 136',
+        (tester) async {
+      expect(await cameraSide(tester, const Size(800, 360)), greaterThan(180));
+    });
+
+    testWidgets('is still bigger than before on the shortest phone',
+        (tester) async {
+      expect(await cameraSide(tester, const Size(732, 320)), greaterThan(136));
+    });
+
+    testWidgets('does not outgrow the screen on a tablet', (tester) async {
+      expect(await cameraSide(tester, const Size(1280, 800)), lessThanOrEqualTo(300));
+    });
+  });
+
   group('on a tablet', () {
     Future<double> cardWidth(WidgetTester tester, Size size) async {
       await _pump(

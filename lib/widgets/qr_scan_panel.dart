@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -179,9 +180,17 @@ class _QrScannerState extends State<QrScanner> {
           ),
         ),
         SizedBox(height: 6 * k),
-        Text(
-          'Itapat sa QR code ng titser',
-          style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12 * k),
+        // One line, shrunk if the camera square is narrower than the text.
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: widget.maxSize),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              'Itapat sa QR code ng titser',
+              maxLines: 1,
+              style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12 * k),
+            ),
+          ),
         ),
       ],
     );
@@ -256,6 +265,9 @@ class _QrScanPanelState extends State<QrScanPanel> {
   /// a tablet has room, and a 150-pixel camera looked lost there.
   double _s = 1;
 
+  /// Side of the live camera square.
+  double _camera = 136;
+
   void _start() => setState(() {
         _state = _PanelState.scanning;
         _failure = null;
@@ -282,6 +294,12 @@ class _QrScanPanelState extends State<QrScanPanel> {
       // Fit the column it sits in, and leave the form room above and below.
       _s = (width / 300).clamp(1.0, 1.8).toDouble();
       _s = _s < height / 380 ? _s : (height / 380).clamp(1.0, 1.8).toDouble();
+      // The camera itself takes whatever height is left: the idle card is
+      // short, so a phone can give the live view more than 136 (playtest,
+      // 2026-10-06: "still too small"). 170 is everything else on the screen
+      // while scanning: page padding, wordmark, card edge, hint and "Isara".
+      final room = math.min(width - 24 * _s, height - 170);
+      _camera = math.max(136 * _s, math.min(room, 300.0));
       return _card(context);
     });
   }
@@ -313,7 +331,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
             mainAxisSize: MainAxisSize.min,
             children: [
               QrScanner(
-                maxSize: 136 * _s,
+                maxSize: _camera,
                 onCode: _got,
                 onFailure: _failed,
                 scannerBuilder: widget.scannerBuilder,
