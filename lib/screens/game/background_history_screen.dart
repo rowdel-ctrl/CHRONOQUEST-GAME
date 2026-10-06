@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 
 class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
@@ -110,12 +112,11 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8, top: 8),
-                        child: IconButton(
+                        child: MenuChip(
                           key: BackgroundHistoryScreen.backButtonKey,
+                          icon: PixelGlyph.back,
                           tooltip: 'Bumalik',
-                          onPressed: _back,
-                          icon: const Icon(Icons.arrow_back,
-                              color: Colors.white70),
+                          onTap: _back,
                         ),
                       ),
                       Expanded(child: _EraHeader(era: era, eraColor: eraColor)),

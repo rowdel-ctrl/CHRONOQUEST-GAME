@@ -9,6 +9,8 @@ import '../../providers/game_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/hearts_pill.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 import 'level_node.dart';
 
 String _formatCountdown(Duration d) {
@@ -146,10 +148,10 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   children: [
-                    IconButton(
-                      onPressed: () => context.go('/era-selection'),
-                      icon:
-                          const Icon(Icons.arrow_back, color: Colors.white70),
+                    MenuChip(
+                      icon: PixelGlyph.back,
+                      tooltip: 'Bumalik',
+                      onTap: () => context.go('/era-selection'),
                     ),
                     Expanded(
                       // Shrinks to fit rather than cutting the name: the longest

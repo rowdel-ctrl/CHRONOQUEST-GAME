@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/api_service.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 
 class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({super.key});
@@ -105,18 +107,17 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Row(
                       children: [
-                        IconButton(
-                          onPressed: () => context.pop(),
+                        MenuChip(
+                          icon: PixelGlyph.back,
                           tooltip: 'Bumalik',
-                          icon: const Icon(Icons.arrow_back,
-                              color: Colors.white70),
+                          onTap: () => context.pop(),
                         ),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.emoji_events,
-                                  color: AppColors.accent, size: 22),
+                              const PixelIcon(PixelGlyph.trophy,
+                                  color: AppColors.accent, size: 24),
                               const SizedBox(width: 8),
                               Text(
                                 'Leaderboard',

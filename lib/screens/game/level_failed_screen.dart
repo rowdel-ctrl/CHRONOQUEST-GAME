@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/pixel_icon.dart';
 
 String _formatCountdown(Duration d) {
   final minutes = d.inMinutes;
@@ -165,7 +166,8 @@ class LevelFailedScreen extends ConsumerWidget {
                       // Back to level select
                       GameButton(
                         label: 'BUMALIK',
-                        icon: Icons.arrow_back,
+                        leading: const PixelIcon(PixelGlyph.back,
+                            size: 20, color: AppColors.textSecondary),
                         color: AppColors.surfaceAlt,
                         textColor: AppColors.textSecondary,
                         width: double.infinity,

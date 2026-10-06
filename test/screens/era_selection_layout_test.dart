@@ -111,6 +111,17 @@ void main() {
     expect(gear.hitTestable(), findsOneWidget);
   });
 
+  testWidgets('Profile sits just left of Settings, which is right-most',
+      (tester) async {
+    await _pump(tester, const Size(800, 360), unlockAll: false);
+
+    final profile = tester.getCenter(find.byTooltip('Profile'));
+    final settings = tester.getCenter(find.byTooltip('Settings'));
+    expect(profile.dx, lessThan(settings.dx));
+    expect(settings.dx - profile.dx, 48, reason: 'chips sit side by side');
+    expect(find.byTooltip('Profile').hitTestable(), findsOneWidget);
+  });
+
   for (final entry in sizes.entries) {
     testWidgets('all six eras are on screen and tappable at ${entry.key}',
         (tester) async {

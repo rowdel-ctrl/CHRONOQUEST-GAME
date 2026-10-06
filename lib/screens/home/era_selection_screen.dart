@@ -7,8 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/game_provider.dart';
 import '../../providers/progress_provider.dart';
 import '../../providers/unlock_all_provider.dart';
+import '../../widgets/character_portrait.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/menu_top_bar.dart';
+import '../../widgets/pixel_icon.dart';
 
 class EraSelectionScreen extends ConsumerStatefulWidget {
   const EraSelectionScreen({super.key});
@@ -62,40 +67,23 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => context.go('/character-selection'),
-                      icon: const Icon(Icons.arrow_back, color: Colors.white70),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'PILIIN ANG PANAHON',
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.accent,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      tooltip: 'Profile',
-                      onPressed: () => context.push('/profile'),
-                      icon: const Icon(Icons.person, color: Colors.white70),
-                    ),
-                    IconButton(
-                      tooltip: 'Settings',
-                      onPressed: () => context.push('/settings'),
-                      icon: const Icon(Icons.settings, color: Colors.white70),
-                    ),
-                  ],
-                ),
+              // Header: the menu's shared top bar. Settings is the right-most
+              // chip and Profile sits just left of it.
+              MenuTopBar(
+                title: 'PILIIN ANG PANAHON',
+                onBack: () => context.go('/character-selection'),
+                actions: [
+                  MenuChip(
+                    icon: PixelGlyph.profile,
+                    tooltip: 'Profile',
+                    onTap: () => context.push('/profile'),
+                  ),
+                  MenuChip(
+                    icon: PixelGlyph.gear,
+                    tooltip: 'Settings',
+                    onTap: () => context.push('/settings'),
+                  ),
+                ],
               ),
 
               // Era books shelf
@@ -127,16 +115,13 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 16,
-                      backgroundColor: AppColors.primary,
-                      child: Text(
-                        (student?.name.isNotEmpty ?? false)
-                            ? student!.name[0]
-                            : '?',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 14),
-                      ),
+                    // The chosen hero, as on the Profile screen.
+                    CharacterPortrait(
+                      characterId: ref.watch(gameProvider).selectedCharacterId,
+                      width: 32,
+                      height: 32,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
                     const SizedBox(width: 10),
                     Text(
@@ -360,8 +345,10 @@ class _EraBook extends StatelessWidget {
                                   : !isUnlocked
                                       ? Image.asset('assets/ui/lock_icon.png',
                                           width: 22, height: 22)
-                                      : Icon(Icons.auto_stories,
-                                          color: bookColor, size: 26),
+                                      // White: the card is bookColor, so the
+                                      // book in bookColor vanished into it.
+                                      : const PixelIcon(PixelGlyph.book,
+                                          color: Colors.white, size: 26),
                             ),
                             const SizedBox(height: 8),
 
@@ -444,7 +431,7 @@ class _EraBook extends StatelessWidget {
         ? Image.asset('assets/ui/star_full.png', width: 20, height: 20)
         : !isUnlocked
             ? Image.asset('assets/ui/lock_icon.png', width: 18, height: 18)
-            : Icon(Icons.auto_stories, color: bookColor, size: 20);
+            : const PixelIcon(PixelGlyph.book, color: Colors.white, size: 20);
 
     return Stack(
       children: [

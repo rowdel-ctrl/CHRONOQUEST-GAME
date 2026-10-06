@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/audio_service.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 import 'settings_header.dart';
 
 /// Tunog: music and sound effects, each with an on/off switch and a volume
@@ -43,7 +45,7 @@ class _SoundScreenState extends State<SoundScreen> {
                       child: Column(
                         children: [
                           _VolumeCard(
-                            icon: Icons.music_note,
+                            icon: PixelGlyph.note,
                             title: 'Musika',
                             on: _audio.musicEnabled,
                             volume: _audio.musicVolume,
@@ -56,7 +58,7 @@ class _SoundScreenState extends State<SoundScreen> {
                           ),
                           const SizedBox(height: 14),
                           _VolumeCard(
-                            icon: Icons.volume_up,
+                            icon: PixelGlyph.speaker,
                             title: 'Sound Effects',
                             on: _audio.soundEnabled,
                             volume: _audio.sfxVolume,
@@ -92,7 +94,7 @@ class _SoundScreenState extends State<SoundScreen> {
 }
 
 class _VolumeCard extends StatelessWidget {
-  final IconData icon;
+  final PixelGlyph icon;
   final String title;
   final bool on;
   final double volume;
@@ -123,16 +125,8 @@ class _VolumeCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: on ? AppColors.primary : AppColors.surfaceAlt,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(on ? icon : Icons.volume_off,
-                    color: Colors.white, size: 22),
-              ),
+              MenuChipFace(
+                  icon: on ? icon : PixelGlyph.speakerOff, size: 40),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -162,8 +156,8 @@ class _VolumeCard extends StatelessWidget {
           ),
           Row(
             children: [
-              const Icon(Icons.volume_mute,
-                  size: 18, color: AppColors.textSecondary),
+              const PixelIcon(PixelGlyph.speakerLow,
+                  size: 20, color: AppColors.textSecondary),
               Expanded(
                 child: SliderTheme(
                   data: SliderTheme.of(context).copyWith(
@@ -181,8 +175,8 @@ class _VolumeCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(Icons.volume_up,
-                  size: 18, color: AppColors.textSecondary),
+              const PixelIcon(PixelGlyph.speaker,
+                  size: 20, color: AppColors.textSecondary),
             ],
           ),
         ],

@@ -8,6 +8,8 @@ import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/hearts_pill.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 
 class CharacterSelectionScreen extends ConsumerStatefulWidget {
   const CharacterSelectionScreen({super.key});
@@ -181,36 +183,43 @@ class _CharacterSelectionScreenState
             ),
           ),
 
-          // Leaderboard top-left button
+          // Leaderboard top-left button. The chips are 48 square to hit and
+          // 40 to look at, so they sit 4 higher and 4 nearer the edge than
+          // the 40 square buttons they replaced.
           Positioned(
-            top: MediaQuery.of(context).padding.top + 8,
-            left: 12,
-            child: _SideIconButton(
-              icon: Icons.emoji_events,
+            top: MediaQuery.of(context).padding.top + 4,
+            left: 8,
+            child: MenuChip(
+              icon: PixelGlyph.trophy,
               tooltip: 'Leaderboard',
               onTap: () => context.push('/leaderboard'),
             ),
           ),
 
-          // Hearts + how-to-play, top right. Hearts sit in this existing icon
-          // row rather than taking a new band of vertical space, which a
-          // 320px-tall landscape phone does not have to spare.
+          // Hearts, how to play, Profile and Settings, top right. Hearts sit in
+          // this existing icon row rather than taking a new band of vertical
+          // space, which a 320px-tall landscape phone does not have to spare.
+          // Settings is always the right-most chip and Profile just left of it.
           Positioned(
-            top: MediaQuery.of(context).padding.top + 8,
-            right: 12,
+            top: MediaQuery.of(context).padding.top + 4,
+            right: 8,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const HeartsPill(),
-                const SizedBox(width: 8),
-                _SideIconButton(
-                  icon: Icons.menu_book_rounded,
+                const SizedBox(width: 4),
+                MenuChip(
+                  icon: PixelGlyph.book,
                   tooltip: 'Paano Laruin',
                   onTap: () => context.push('/tutorial'),
                 ),
-                const SizedBox(width: 8),
-                _SideIconButton(
-                  icon: Icons.settings,
+                MenuChip(
+                  icon: PixelGlyph.profile,
+                  tooltip: 'Profile',
+                  onTap: () => context.push('/profile'),
+                ),
+                MenuChip(
+                  icon: PixelGlyph.gear,
                   tooltip: 'Settings',
                   onTap: () => context.push('/settings'),
                 ),
@@ -446,41 +455,6 @@ class _NavArrow extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.2), width: 1.5),
         ),
         child: Icon(icon, color: Colors.white70, size: 26),
-      ),
-    );
-  }
-}
-
-// ── Side Icon Button ───────────────────────────────────────────────────────────
-class _SideIconButton extends StatelessWidget {
-  final IconData icon;
-  final String tooltip;
-  final VoidCallback onTap;
-
-  const _SideIconButton({
-    required this.icon,
-    required this.tooltip,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 40,
-          height: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(10),
-            border:
-                Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5),
-          ),
-          child: Icon(icon, color: AppColors.accent, size: 20),
-        ),
       ),
     );
   }

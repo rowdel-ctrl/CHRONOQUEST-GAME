@@ -115,7 +115,8 @@ void main() {
       await tester.tap(find.text('OPEN_SETTINGS'));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Hindi mawawala ang puso'), findsOneWidget);
+      expect(find.text('Test Mode'), findsOneWidget);
+      expect(find.textContaining('hindi nawawala ang puso'), findsOneWidget);
     });
   });
 

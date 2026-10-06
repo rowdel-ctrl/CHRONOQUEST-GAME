@@ -69,6 +69,9 @@ class GameButton extends StatefulWidget {
   final Color color;
   final Color textColor;
   final IconData? icon;
+
+  /// A widget in place of [icon], for a pixel icon.
+  final Widget? leading;
   final double fontSize;
   final double minHeight;
   final double? width;
@@ -84,6 +87,7 @@ class GameButton extends StatefulWidget {
     this.color = AppColors.accent,
     this.textColor = AppColors.primaryDark,
     this.icon,
+    this.leading,
     this.fontSize = 13,
     this.minHeight = 52,
     this.width,
@@ -137,7 +141,10 @@ class _GameButtonState extends State<GameButton> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (widget.icon != null) ...[
+            if (widget.leading != null) ...[
+              widget.leading!,
+              const SizedBox(width: 8),
+            ] else if (widget.icon != null) ...[
               Icon(widget.icon, size: widget.fontSize + 6, color: widget.textColor),
               const SizedBox(width: 8),
             ],

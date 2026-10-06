@@ -9,12 +9,14 @@ import '../../providers/control_scheme_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/audio_service.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/menu_chip.dart';
+import '../../widgets/pixel_icon.dart';
 import 'settings_header.dart';
 
 /// Settings: one list of rows, each leading to its own screen. Opened from the
 /// main menu's gear and from the pause menu, and it is the same screen either
 /// way. Kontrol and Tunog are the rows today; further settings become more rows.
-/// Below them sit the testing switch and the logout button.
+/// Below them sit Test Mode and the logout button.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
@@ -36,23 +38,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               const SettingsHeader(title: 'SETTINGS'),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
                   child: Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 440),
                       child: Column(
                         children: [
                           _SettingsRow(
-                            icon: Icons.sports_esports,
+                            icon: PixelGlyph.move,
                             title: 'Kontrol',
                             value: scheme == ControlScheme.arrows
                                 ? 'Mga Arrow'
                                 : 'Joystick',
                             onTap: () => context.push('/settings/controls'),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 10),
                           _SettingsRow(
-                            icon: Icons.volume_up,
+                            icon: PixelGlyph.speaker,
                             title: 'Tunog',
                             value: _soundSummary(),
                             // The summary under the title is read again on the way back.
@@ -61,9 +63,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               if (mounted) setState(() {});
                             },
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 14),
                           const _UnlockAllSwitch(),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 10),
                           const _LogoutButton(),
                         ],
                       ),
@@ -79,7 +81,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 }
 
-/// Temporary testing switch: opens every era and level, and while it is on
+/// Test Mode (temporary): opens every era and level, and while it is on
 /// hearts are not spent, so the whole game can be played without waiting.
 class _UnlockAllSwitch extends ConsumerWidget {
   const _UnlockAllSwitch();
@@ -104,7 +106,7 @@ class _UnlockAllSwitch extends ConsumerWidget {
           dense: true,
           activeThumbColor: AppColors.accent,
           title: Text(
-            'Buksan lahat ng panahon at level',
+            'Test Mode',
             style: GoogleFonts.poppins(
               color: Colors.white,
               fontSize: 12,
@@ -112,7 +114,7 @@ class _UnlockAllSwitch extends ConsumerWidget {
             ),
           ),
           subtitle: Text(
-            'Hindi mawawala ang puso habang naka-on. Pansamantala, para sa pagsubok lang.',
+            'Bukas ang lahat ng panahon at level, at hindi nawawala ang puso.',
             style: GoogleFonts.poppins(color: Colors.white54, fontSize: 10),
           ),
           value: ref.watch(unlockAllProvider),
@@ -130,19 +132,19 @@ class _LogoutButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton.icon(
+    return GameButton(
       key: buttonKey,
+      label: 'I-LOGOUT',
+      color: AppColors.danger,
+      textColor: Colors.white,
+      fontSize: 10,
+      minHeight: 44,
+      width: double.infinity,
+      leading: const PixelIcon(PixelGlyph.door, size: 20, color: Colors.white),
       onPressed: () async {
         await ref.read(authProvider.notifier).logout();
         if (context.mounted) context.go('/login');
       },
-      icon: const Icon(Icons.logout, size: 18),
-      label: const Text('I-LOGOUT'),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.danger,
-        side: BorderSide(color: AppColors.danger.withValues(alpha: 0.5)),
-        padding: const EdgeInsets.symmetric(vertical: 10),
-      ),
     );
   }
 }
@@ -156,7 +158,7 @@ String _soundSummary() {
 }
 
 class _SettingsRow extends StatelessWidget {
-  final IconData icon;
+  final PixelGlyph icon;
   final String title;
   final String value;
   final VoidCallback onTap;
@@ -178,18 +180,10 @@ class _SettingsRow extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         child: GamePanel(
           color: AppColors.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: Colors.white, size: 24),
-              ),
+              MenuChipFace(icon: icon, size: 40),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -213,8 +207,8 @@ class _SettingsRow extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right,
-                  color: AppColors.textSecondary, size: 26),
+              const PixelIcon(PixelGlyph.chevron,
+                  color: AppColors.textSecondary, size: 24),
             ],
           ),
         ),
