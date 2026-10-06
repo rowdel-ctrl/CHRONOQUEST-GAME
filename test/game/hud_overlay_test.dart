@@ -66,7 +66,12 @@ void main() {
       ..artifactsAnswered = 5;
     await _pumpHud(tester, game);
 
-    expect(find.byType(GateIcon), findsOneWidget);
+    // The level progress bar has a gate icon of its own, so look in the pill.
+    expect(
+      find.descendant(
+          of: find.byType(HudProgressPill), matching: find.byType(GateIcon)),
+      findsOneWidget,
+    );
   });
 
   testWidgets('progress pill updates when the game notifies', (tester) async {

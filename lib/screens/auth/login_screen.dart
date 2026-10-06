@@ -65,7 +65,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     super.dispose();
   }
 
+  /// An error belongs to what was typed when it came back; once the student
+  /// changes any field it is stale.
+  void _clearError() => ref.read(authProvider.notifier).clearError();
+
   void _applyScannedCode(String code) {
+    _clearError();
     setState(() => _scannedCode = code);
     _classCodeController.text = code;
   }
@@ -187,8 +192,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () =>
-                                          setState(() => _isNewStudent = true),
+                                      onTap: () {
+                                        ref.read(authProvider.notifier).clearError();
+                                        setState(() => _isNewStudent = true);
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
@@ -211,8 +218,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                                   ),
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () =>
-                                          setState(() => _isNewStudent = false),
+                                      onTap: () {
+                                        ref.read(authProvider.notifier).clearError();
+                                        setState(() => _isNewStudent = false);
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
@@ -240,6 +249,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             _buildLabel('Class Code'),
                             TextFormField(
                               controller: _classCodeController,
+                              onChanged: (_) => _clearError(),
                               textCapitalization: TextCapitalization.characters,
                               decoration:
                                   _inputDeco(Icons.class_, 'e.g. EDG5A1')
@@ -272,6 +282,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             _buildLabel('Username'),
                             TextFormField(
                               controller: _usernameController,
+                              onChanged: (_) => _clearError(),
                               decoration: _inputDeco(
                                   Icons.alternate_email, 'e.g. JuanNinja99'),
                               validator: (v) => v == null || v.trim().isEmpty
@@ -283,6 +294,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                               _buildLabel('Tunay na Pangalan'),
                               TextFormField(
                                 controller: _nameController,
+                                onChanged: (_) => _clearError(),
                                 textCapitalization: TextCapitalization.words,
                                 decoration: _inputDeco(Icons.person,
                                     'Buong pangalan para kay titser'),
@@ -295,6 +307,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                             _buildLabel('Password'),
                             TextFormField(
                               controller: _passwordController,
+                              onChanged: (_) => _clearError(),
                               obscureText: _obscurePassword,
                               decoration:
                                   _inputDeco(Icons.lock, 'Lagyan ng password')
@@ -314,7 +327,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                               validator: (v) {
                                 if (v == null || v.isEmpty)
                                   return 'Kailangan ang password';
-                                if (v.length < 6)
+                                // The length rule is for choosing a password. On
+                                // "Babalik" a short one is just a wrong one, and
+                                // the server says so.
+                                if (_isNewStudent && v.length < 6)
                                   return 'Hindi bababa sa 6 na characters';
                                 return null;
                               },
@@ -324,6 +340,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                               _buildLabel('Kumpirmahin ang Password'),
                               TextFormField(
                                 controller: _confirmPasswordController,
+                                onChanged: (_) => _clearError(),
                                 obscureText: _obscureConfirm,
                                 decoration: _inputDeco(Icons.lock_outline,
                                         'Ulitin ang password')

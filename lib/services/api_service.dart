@@ -5,6 +5,7 @@ import '../models/student.dart';
 import '../models/quiz_result.dart';
 import '../models/era_progress.dart';
 import 'storage_service.dart';
+import '../utils/login_errors.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -51,7 +52,8 @@ class ApiService {
 
       return data;
     } on DioException catch (e) {
-      throw _handleError(e);
+      // A name is only sent when joining ("Bago"); see loginErrorMessage.
+      throw loginErrorMessage(e, joining: name != null && name.isNotEmpty);
     }
   }
 

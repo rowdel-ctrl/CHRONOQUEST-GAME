@@ -1,3 +1,4 @@
+import 'package:flame/components.dart' show Vector2;
 import '../models/codex_entry.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
@@ -5,6 +6,7 @@ import '../services/storage_service.dart';
 import 'chrono_game.dart';
 import 'components/artifact_component.dart';
 import 'components/gate_component.dart';
+import 'components/praise_component.dart';
 
 /// The question flow for artifacts, and the end gate that follows them.
 ///
@@ -84,6 +86,11 @@ extension AnswerPointHandler on ChronoGame {
       score += 10;
       if (question.elapsedSeconds < 10) score += 5;
       player.triggerCheer();
+      // "WOW!" over the hero's head. Skipped when there is no hero on screen
+      // (a bare game in a test).
+      if (player.isMounted) {
+        player.add(PraiseComponent()..position = Vector2(player.size.x / 2, -4));
+      }
 
       if (artifact != null) {
         grantCharges(artifact.reward);

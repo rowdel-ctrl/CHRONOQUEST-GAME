@@ -8,7 +8,7 @@ import '../chrono_game.dart';
 
 /// World units in one metre on the gate indicator. The player is 120 units
 /// tall, so 100 units to the metre makes them a child of about 1.2 m, and the
-/// 210 units/s walking pace about 2 m/s. A 25,000-unit level is 250 m.
+/// 250 units/s walking pace about 2.5 m/s. A 25,000-unit level is 250 m.
 const double gateUnitsPerMetre = 100;
 
 /// The distance shown for [units]: whole metres, rounded up so it never reads

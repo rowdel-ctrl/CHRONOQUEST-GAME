@@ -5,6 +5,7 @@ import '../../widgets/game_ui.dart';
 import '../chrono_game.dart';
 import 'gate_hud.dart';
 import 'hud_widgets.dart';
+import 'level_progress_bar.dart';
 
 /// HUD overlay — health and Kaalaman bars, gate/artifact progress, score and
 /// coins over the Flame canvas.
@@ -29,6 +30,16 @@ class HudOverlayWidget extends StatelessWidget {
                 child: IgnorePointer(child: GateHud(game: game)),
               ),
             ),
+            // How far along the level the student is. Between the joystick and
+            // the buttons; not on a boss level, which has no distance to cover.
+            if (!game.isBossLevel)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: IgnorePointer(child: LevelProgressBar(game: game)),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(

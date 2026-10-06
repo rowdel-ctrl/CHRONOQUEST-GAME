@@ -24,7 +24,7 @@ for (const era of eras) {
 const sample = () => generateLevel({ eraId: 'spanish', levelIndex: 3 }).level;
 
 test('the physics model matches the protected jump numbers', () => {
-  assert.ok(Math.abs(reach - 224) < 0.5, `reach ${reach}`);
+  assert.ok(Math.abs(reach - 266.7) < 0.5, `reach ${reach}`);
   assert.strictEqual(peak, 128);
   assert.ok(rules.gapMax <= footSpan + reach * 0.9 + 1, 'gaps stay under 90% of the reach plus the foot span');
   assert.ok(rules.platformHeights[1] <= peak - 10, 'platforms are below the jump peak with room to land');
@@ -145,7 +145,7 @@ test('the validator catches each broken rule', () => {
   const good = sample();
   assert.deepStrictEqual(validate(good, { generated: true }), []);
 
-  let b = clone(good); b.gaps[0].end = b.gaps[0].start + 272;
+  let b = clone(good); b.gaps[0].end = b.gaps[0].start + 336;
   assert.ok(has(b, /gap at/), 'a gap wider than the jump');
 
   b = clone(good); b.platforms[0].y = 660 - 130;
@@ -273,15 +273,15 @@ test('the validator catches each broken fight rule', () => {
   b = clone(good);
   const q = b.platforms.find((x) => x.x === p.x);
   q.width = 96;
-  assert.ok(has(b, /under 192/), 'a platform too narrow');
+  assert.ok(has(b, /under 240/), 'a platform too narrow');
 
   b = clone(good);
   const gg = fightGaps(b)[0];
-  gg.end = gg.start + 272;
+  gg.end = gg.start + 336;
   assert.ok(has(b, /not a fight gap/), 'a gap that is neither a jump nor a listed fight width');
 
   b = clone(good);
-  b.enemies.find((x) => x.x === e.x).patrol = 90;
+  b.enemies.find((x) => x.x === e.x).patrol = 140;
   assert.ok(has(b, /patrols off its ground/), 'a patrol that leaves the platform');
 
   b = clone(good);

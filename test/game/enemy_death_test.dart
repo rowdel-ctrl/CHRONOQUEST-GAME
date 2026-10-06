@@ -33,9 +33,7 @@ const double _playerHeight = 120;
 const double _playerWidth = 96;
 
 /// The full death-effect duration per CombatConstants.
-const double _deathDuration = CombatConstants.deathColorEffectDuration +
-    CombatConstants.deathScaleEffectDuration +
-    CombatConstants.deathOpacityEffectDuration;
+const double _deathDuration = CombatConstants.deathDuration;
 
 /// ChronoGame minus the parts these tests have no use for — same shape as
 /// sprite_scale_test.dart's _ScaleGame.
@@ -154,6 +152,49 @@ void main() {
     expect(enemy.isRemoving, true);
   });
 
+  testWidgets('the enemy is thrown away from the player, with sparks and a ring',
+      (tester) async {
+    final enemy = EnemyComponent(
+        eraId: 'spanish', enemyTypeOverride: 'spanish_soldier', worldX: 400);
+    final game = await _mount(tester, enemy);
+    final startX = enemy.position.x;
+    expect(game.player.position.x, lessThan(startX));
+
+    enemy.takeHit();
+    game.updateTree(0.01);
+    expect(game.world.children.whereType<ParticleSystemComponent>(), isNotEmpty,
+        reason: 'a burst of sparks');
+    expect(game.world.children.whereType<CircleComponent>(), isNotEmpty,
+        reason: 'a shock ring');
+
+    _advancePastDeathSequence(game);
+    expect(enemy.position.x, greaterThan(startX + 40),
+        reason: 'knocked to the right, away from the player on its left');
+  });
+
+  testWidgets('coins drop where the enemy stood, not where it landed',
+      (tester) async {
+    final enemy = EnemyComponent(
+        eraId: 'spanish', enemyTypeOverride: 'spanish_soldier', worldX: 400);
+    final game = await _mount(tester, enemy);
+    final spot = enemy.position.clone();
+
+    enemy.takeHit();
+    _advancePastDeathSequence(game);
+    for (var i = 0; i < 10; i++) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+
+    final coins = game.world.children.whereType<CoinComponent>().toList();
+    expect(coins, isNotEmpty);
+    for (final c in coins) {
+      expect((c.position.x - spot.x).abs(), lessThan(40));
+    }
+  });
+
   testWidgets('a Heavy does not drop coins or get removed after only one hit',
       (tester) async {
     final enemy = EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank');
@@ -165,5 +206,24 @@ void main() {
     expect(enemy.defeated, false);
     expect(enemy.parent, isNotNull);
     expect(game.world.children.whereType<CoinComponent>().length, 0);
+  });
+
+  testWidgets('a Heavy flinches back and settles on its first hit',
+      (tester) async {
+    final enemy =
+        EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank', worldX: 400);
+    final game = await _mount(tester, enemy);
+    final startX = enemy.position.x;
+
+    enemy.takeHit();
+    game.updateTree(0.001);
+    game.updateTree(0.07); // at the top of the shove
+    expect(enemy.position.x, greaterThan(startX + 5));
+
+    for (var i = 0; i < 20; i++) {
+      game.updateTree(0.02);
+    }
+    expect(enemy.position.x, closeTo(startX, 0.5), reason: 'it settles back');
+    expect(enemy.defeated, false);
   });
 }

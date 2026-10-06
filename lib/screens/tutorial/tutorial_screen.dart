@@ -84,17 +84,23 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                         color: AppColors.accent,
                       ),
                     ),
-                    TextButton(
+                    // A plain X, like the close button on any pop-up: the small
+                    // "LAKTAWAN" text was easy to miss, and children expect an X.
+                    IconButton(
                       key: TutorialScreen.skipButtonKey,
+                      tooltip: 'Isara',
                       onPressed: _finish,
-                      child: Text(
-                        'LAKTAWAN',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                      iconSize: 26,
+                      constraints:
+                          const BoxConstraints(minWidth: 48, minHeight: 48),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.black45,
+                        foregroundColor: Colors.white,
+                        shape: const CircleBorder(
+                          side: BorderSide(color: Colors.white70, width: 2),
                         ),
                       ),
+                      icon: const Icon(Icons.close_rounded),
                     ),
                   ],
                 ),

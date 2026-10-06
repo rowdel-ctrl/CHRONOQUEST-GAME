@@ -1,6 +1,8 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/foundation.dart';
 
+import 'storage_service.dart';
+
 /// Plays the game's bundled music and sound effects through `flame_audio`.
 ///
 /// Every method is fire-and-forget and swallows its own failures: audio is
@@ -18,8 +20,8 @@ class AudioService {
   static const String _assetPrefix = 'assets/sounds/';
 
   /// Music sits under the effects so answer/hurt cues stay audible over it.
-  static const double _bgmVolume = 0.4;
-  static const double _sfxVolume = 1.0;
+  static const double _bgmBaseVolume = 0.4;
+  static const double _sfxBaseVolume = 1.0;
 
   /// How many players each sound effect keeps ready. A jump lasts well under a
   /// second, so a few are plenty; one asked for while all are busy is made on
@@ -35,10 +37,16 @@ class AudioService {
     'correct.mp3',
     'wrong.mp3',
     'enemy_defeat.mp3',
+    'praise.wav',
   ];
 
   bool _soundEnabled = true;
   bool _musicEnabled = true;
+
+  /// What the student set in Settings > Tunog, 0 to 1. It scales the base
+  /// levels above, so "full" keeps music under the effects as before.
+  double _musicVolume = 1.0;
+  double _sfxVolume = 1.0;
 
   /// Deferred until the first real play call. Touching `FlameAudio.bgm` or
   /// `FlameAudio.audioCache` constructs an `AudioPlayer`, so doing it in the
@@ -87,6 +95,28 @@ class AudioService {
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
+  double get musicVolume => _musicVolume;
+  double get sfxVolume => _sfxVolume;
+
+  /// Reads what Settings > Tunog saved. Called once at launch, after storage is
+  /// open; without it (or in a test) everything is on at full volume.
+  void loadSaved() {
+    try {
+      _soundEnabled = StorageService.getSoundEnabled();
+      _musicEnabled = StorageService.getMusicEnabled();
+      _sfxVolume = StorageService.getSoundVolume();
+      _musicVolume = StorageService.getMusicVolume();
+    } catch (e) {
+      debugPrint('AudioService: no saved sound settings: $e');
+    }
+  }
+
+  void _save(Future<void> Function() write) {
+    // Fire and forget: a failed save must never get in the way of the game.
+    try {
+      write().catchError((Object _) {});
+    } catch (_) {}
+  }
 
   Future<void> _ensureInitialized() async {
     if (_initialized) return;
@@ -130,21 +160,46 @@ class AudioService {
   /// a level ran. Phones got slower toward the end of a level (playtest report,
   /// two phones). A pool keeps a handful of players per sound and reuses them.
   Future<void> _playSfx(String file) async {
-    if (!_soundEnabled) return;
+    if (!_soundEnabled || _sfxVolume <= 0) return;
     try {
       final pool = await _poolFor(file);
-      await pool.start(volume: _sfxVolume);
+      await pool.start(volume: _sfxBaseVolume * _sfxVolume);
     } catch (e) {
       debugPrint('AudioService: failed to play $file: $e');
     }
   }
 
-  void toggleSound() {
-    _soundEnabled = !_soundEnabled;
+  void toggleSound() => setSoundEnabled(!_soundEnabled);
+
+  void setSoundEnabled(bool on) {
+    _soundEnabled = on;
+    _save(() => StorageService.setSoundEnabled(on));
   }
 
-  void toggleMusic() {
-    _musicEnabled = !_musicEnabled;
+  void setSfxVolume(double volume) {
+    _sfxVolume = volume.clamp(0.0, 1.0).toDouble();
+    _save(() => StorageService.setSoundVolume(_sfxVolume));
+  }
+
+  /// Takes effect on the music that is playing now, not only the next track.
+  void setMusicVolume(double volume) {
+    _musicVolume = volume.clamp(0.0, 1.0).toDouble();
+    _save(() => StorageService.setMusicVolume(_musicVolume));
+    if (_initialized) {
+      try {
+        FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume);
+      } catch (e) {
+        debugPrint('AudioService: could not change music volume: $e');
+      }
+    }
+  }
+
+  void toggleMusic() => setMusicEnabled(!_musicEnabled);
+
+  void setMusicEnabled(bool on) {
+    if (on == _musicEnabled) return;
+    _musicEnabled = on;
+    _save(() => StorageService.setMusicEnabled(on));
     if (_musicEnabled) {
       final era = _currentBgmEra;
       if (era != null) playBgm(era);
@@ -156,6 +211,10 @@ class AudioService {
   // ─── GAME SFX ─────────────────────────────────────────────────────────────
   Future<void> playJump() => _playSfx('jump.mp3');
   Future<void> playCorrect() => _playSfx('correct.mp3');
+
+  /// The cheer after a correct answer (assets/sounds/praise.wav, made by
+  /// tools/sfx/make_praise.js; drop a recording over it to change it).
+  Future<void> playPraise() => _playSfx('praise.wav');
   Future<void> playWrong() => _playSfx('wrong.mp3');
   Future<void> playCoin() => _playSfx('coin.mp3');
   Future<void> playHurt() => _playSfx('player_hurt.mp3');
@@ -189,7 +248,7 @@ class AudioService {
       // eras needs no explicit stop.
       await FlameAudio.bgm.play(
         'bgm_${_bgmAssetKeyForEra(eraId)}.mp3',
-        volume: _bgmVolume,
+        volume: _bgmBaseVolume * _musicVolume,
       );
     } catch (e) {
       debugPrint('AudioService: failed to play BGM for $eraId: $e');

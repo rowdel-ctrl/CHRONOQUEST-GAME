@@ -11,7 +11,7 @@ const eras = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'eras.json'
 // Ballistics from PlayerComponent: airtime on flat ground, how far a full-speed
 // jump carries, and how high it peaks.
 const airtime = (2 * Math.abs(physics.jumpForce)) / physics.gravity;
-const reach = physics.forwardSpeed * airtime; // 224
+const reach = physics.forwardSpeed * airtime; // 267
 const peak = (physics.jumpForce * physics.jumpForce) / (2 * physics.gravity); // 128
 
 // How far up an enemy can touch: its drawn height is 108 and its hit area is the
@@ -20,15 +20,18 @@ const peak = (physics.jumpForce * physics.jumpForce) / (2 * physics.gravity); //
 const enemyTop = physics.enemyHeight * 0.925;
 // A jump only has to carry the middle half of the sprite (the "feet") from the
 // last ground it touches to the first, so a gap is crossable up to the reach
-// plus that foot span (224 + 48 = 272). Gaps are kept to 90% of the reach plus
-// the foot span (48 + 201 = 249), the same safety margin as before.
+// plus that foot span (267 + 48 = 315). Gaps are kept to 90% of the reach plus
+// the foot span (48 + 240 = 288), the same safety margin as before.
 const footSpan = physics.footSpanFraction * physics.playerWidth;
 
 const rules = {
-  // Widened from 128-200 after playtesting: gaps read as too easy to hop.
-  gapMin: 176,
-  gapMax: 240,
-  gapPlainMax: 208, // without a platform to land on, keep it shorter
+  // Widened from 128-200 after playtesting: gaps read as too easy to hop. The
+  // ceilings were scaled by 250/210 when walking speed went from 210 to 250 (the
+  // jump reach grew with it), so a gap asks the same of a student as before. The
+  // floor stays 192: the hand-built reference level has a gap that narrow.
+  gapMin: 192,
+  gapMax: 288,
+  gapPlainMax: 240, // without a platform to land on, keep it shorter
   minGroundBetweenGaps: 240,
   // Raised from 90-110 so a student on a platform is above every enemy's hit
   // area (99.9) with no special rule. 112 is under the game's verified ceiling
@@ -36,13 +39,13 @@ const rules = {
   platformHeights: [104, 112],
   platformWidth: 96,
   // Platform fights: a gap too wide to jump (the longest crossable gap is the
-  // 224 reach plus the 48 foot span = 272), a wide platform in the middle, and a
+  // 267 reach plus the 48 foot span = 315), a wide platform in the middle, and a
   // walker patrolling it. The student has to hit the enemy from the air or land
-  // beside it. The platform sits 48-80 from each ledge, well inside a jump.
-  fightGaps: [288, 320, 352],
-  fightPlatformWidth: 192, // 8 tiles of 24
+  // beside it. The platform sits 80-112 from each ledge, well inside a jump.
+  fightGaps: [352, 384, 416],
+  fightPlatformWidth: 240, // 10 tiles of 24 (was 192 at the slower walking speed)
   fightPatrol: 36, // each way, so the enemy stays clear of both platform edges
-  fightLedgeMax: 96, // furthest a platform edge may be from a ledge
+  fightLedgeMax: 112, // furthest a platform edge may be from a ledge
   fightEnemySpacing: 400, // between a platform enemy and its neighbour; it is over a gap, so closer is fine
   fightFirstSection: 2, // none in sections 1 and 2 (0-based index of the first allowed)
   enemySpacing: 600, // generated levels; the Dart lint's floor is 400

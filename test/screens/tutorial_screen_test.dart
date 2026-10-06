@@ -117,6 +117,20 @@ void main() {
   Future<void> resetStorage(WidgetTester tester) =>
       tester.runAsync(() => StorageService.appBox.clear()) as Future<void>;
 
+  testWidgets('can be closed with an X a child can hit', (tester) async {
+    await resetStorage(tester);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final skip = find.byKey(TutorialScreen.skipButtonKey);
+    expect(skip, findsOneWidget);
+    expect(find.descendant(of: skip, matching: find.byIcon(Icons.close_rounded)),
+        findsOneWidget);
+    final size = tester.getSize(skip);
+    expect(size.width, greaterThanOrEqualTo(48));
+    expect(size.height, greaterThanOrEqualTo(48));
+  });
+
   testWidgets('renders the first step on open', (tester) async {
     await resetStorage(tester);
     await tester.pumpWidget(_app());

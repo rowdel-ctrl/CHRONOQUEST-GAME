@@ -131,7 +131,13 @@ void main() {
     });
 
     // The card sits in a 360-tall landscape screen with 24 of padding each side.
-    for (final size in const [Size(800, 360), Size(732, 320), Size(900, 412)]) {
+    for (final size in const [
+      Size(800, 360),
+      Size(732, 320),
+      Size(900, 412),
+      Size(1024, 600),
+      Size(1280, 800),
+    ]) {
       testWidgets('fits a ${size.width.toInt()}x${size.height.toInt()} screen in every state',
           (tester) async {
         await _pump(
@@ -161,6 +167,31 @@ void main() {
         expect(tester.takeException(), isNull, reason: 'scanned');
       });
     }
+  });
+
+  group('on a tablet', () {
+    Future<double> cardWidth(WidgetTester tester, Size size) async {
+      await _pump(
+        tester,
+        SizedBox(
+          width: size.width / 2, // the column beside the form
+          height: size.height - 48 - 38,
+          child: Center(
+            child: QrScanPanel(onCode: (_) {}, scannerBuilder: _fakeCamera()),
+          ),
+        ),
+        size: size,
+      );
+      return tester.getSize(find.byType(QrScanPanel)).width;
+    }
+
+    testWidgets('the card is drawn bigger than on a phone', (tester) async {
+      final phone = await cardWidth(tester, const Size(800, 360));
+      final tablet = await cardWidth(tester, const Size(1280, 800));
+
+      expect(phone, lessThanOrEqualTo(300));
+      expect(tablet, greaterThan(phone * 1.3));
+    });
   });
 
   group('the full-screen scanner for narrow phones', () {

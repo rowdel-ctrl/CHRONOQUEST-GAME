@@ -2,6 +2,8 @@
 // facing direction, ~0.25s, with a cooldown so it can't be spammed").
 // Covers the charge-cost/cooldown gating on PlayerComponent.attack() and
 // AttackHitboxComponent's own lifetime and enemy-hit wiring.
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronoquest/core/combat_constants.dart';
@@ -128,6 +130,55 @@ void main() {
         hitbox.position.x,
         game.player.position.x - CombatConstants.attackHitboxWidth,
       );
+    });
+  });
+
+  group('the slash', () {
+    test('travels with the player while the swing lasts', () async {
+      final game = _bareGameWithPlayer();
+      game.kaalaman = 1;
+      await game.ready();
+
+      game.player.attack();
+      await game.ready();
+      final hitbox = game.world.children.whereType<AttackHitboxComponent>().first;
+      final gap = hitbox.position.x - game.player.position.x;
+
+      // The hero walks on; the box keeps its place in front of them.
+      game.player.position.x += 50;
+      hitbox.update(0.05);
+
+      expect(hitbox.position.x - game.player.position.x, closeTo(gap, 1e-9));
+    });
+
+    test('a box made without a player to follow stays where it was put', () async {
+      final game = _bareGameWithPlayer();
+      final hitbox = AttackHitboxComponent(position: Vector2(100, 100), size: Vector2(80, 90));
+      game.world.add(hitbox);
+      await game.ready();
+
+      hitbox.update(0.05);
+
+      expect(hitbox.position, Vector2(100, 100));
+    });
+
+    test('draws at every point of the swing, facing either way, without error', () async {
+      for (final facingRight in [true, false]) {
+        final game = _bareGameWithPlayer();
+        final hitbox = AttackHitboxComponent(
+          position: Vector2(100, 100),
+          size: Vector2(80, 90),
+          facingRight: facingRight,
+        );
+        game.world.add(hitbox);
+        await game.ready();
+
+        final canvas = Canvas(PictureRecorder());
+        for (var i = 0; i < 20; i++) {
+          hitbox.render(canvas);
+          hitbox.update(CombatConstants.attackHitboxDuration / 20);
+        }
+      }
     });
   });
 

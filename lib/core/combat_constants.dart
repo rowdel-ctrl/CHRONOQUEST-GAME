@@ -30,7 +30,9 @@ class CombatConstants {
   static const int kaalamanTutorialStart = 1;
 
   // ─── Attack hitbox (Section 3: "a short forward hitbox... ~0.25s") ─────
-  static const double attackHitboxWidth = 64;
+  /// 64 until 2026-10-06, then 80: walking went from 210 to 250 units/s, so the
+  /// same box left less time to hit an enemy before touching it.
+  static const double attackHitboxWidth = 80;
   static const double attackHitboxHeight = 90;
   static const double attackHitboxDuration = 0.25;
 
@@ -55,15 +57,17 @@ class CombatConstants {
   /// How far a hit shoves the player, away from whatever was touched, in world
   /// units. Playtest (2026-10-04): the old 44-unit shove left the player inside
   /// the enemy's reach, and the 1.5s of invincibility that follows was long
-  /// enough to simply walk through it. 160 puts a clear gap between them.
+  /// enough to simply walk through it. 160 put a clear gap between them.
   ///
-  /// The numbers that make that true, all at the 210 units/s walking speed:
-  /// after the [knockbackDuration] of lost control there are
-  /// (1.5 - 0.3) * 210 = 252 units of invincible walking left, but getting
-  /// back through the enemy takes the 160 pushed away plus about 146 to cross
-  /// its hit area and the player's own width, so 306. It cannot be done before
-  /// the invincibility ends. `contact_damage_test.dart` pins this arithmetic.
-  static const double knockbackDistance = 160;
+  /// Raised to 180 on 2026-10-06 when walking speed went from 210 to 250,
+  /// which grew the walking left in the invincibility window. The numbers that
+  /// make it hold, at the 250 units/s walking speed: after the
+  /// [knockbackDuration] of lost control there are (1.5 - 0.3) * 250 = 300
+  /// units of invincible walking left, but getting back through the enemy
+  /// takes the 180 pushed away plus about 146 to cross its hit area and the
+  /// player's own width, so 326. It cannot be done before the invincibility
+  /// ends. `contact_damage_test.dart` pins this arithmetic.
+  static const double knockbackDistance = 180;
 
   /// Seconds the shove lasts, and so how long the player cannot steer: the
   /// student is "hit-stunned" for this long, so they cannot walk straight
@@ -83,13 +87,21 @@ class CombatConstants {
   /// Seconds per visibility toggle while invincible — the flashing effect.
   static const double flashInterval = 0.1;
 
-  // ─── Death sequence (Section 5: "SequenceEffect... over ~0.3s") ─────────
-  // Split evenly across the three named sub-effects since the design doc
-  // doesn't give a sub-split, summing to exactly the ~0.3s it specifies.
-  static const double deathColorEffectDuration = 0.1;
-  static const double deathScaleEffectDuration = 0.1;
-  static const double deathOpacityEffectDuration = 0.1;
-  static const double deathScaleFactor = 1.3;
+  // ─── Death sequence ──────────────────────────────────────────────────────
+  // Section 5 asked for a ~0.3s flash, grow and fade. Playtest (2026-10-06)
+  // wanted more punch, so it is now a white flash, then the enemy is knocked
+  // away from the player, spinning and shrinking, with a burst of sparks and a
+  // shock ring, and fades out at the end of the flight: about half a second.
+  static const double deathFlashDuration = 0.08;
+  static const double deathFlightDuration = 0.42;
+  static const double deathDuration = deathFlashDuration + deathFlightDuration;
+
+  /// How far the knocked-out enemy flies: away from the player, and up.
+  static const double deathFlightPush = 70;
+  static const double deathFlightRise = 90;
+
+  /// Radians it spins through during the flight (a bit under 1.5 turns).
+  static const double deathSpin = 2.4;
 
   // ─── Coin drops on death ─────────────────────────────────────────────────
   static const int coinDropMin = 2;
@@ -101,7 +113,7 @@ class CombatConstants {
   /// so there is no real per-level length to author yet.
   ///
   /// Derived from Section 1's "a level is roughly 2 minutes": at
-  /// PlayerComponent.forwardSpeed (210 units/s), 2 minutes of continuous
+  /// PlayerComponent.forwardSpeed (210 units/s then, 250 now), 2 minutes of continuous
   /// forward walking is ~25000 units. Real play is slower than that
   /// (fighting, jumping, backtracking), so this is a floor on level length
   /// rather than an exact runtime.

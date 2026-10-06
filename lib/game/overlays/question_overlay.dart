@@ -75,6 +75,10 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     final isCorrect = answer == widget.game.currentQuestion!.correctAnswer;
     if (isCorrect) {
       widget.game.audioService.playCorrect();
+      // The cheer follows the ding, so a right answer sounds like a reward.
+      Future.delayed(const Duration(milliseconds: 250), () {
+        widget.game.audioService.playPraise();
+      });
       // Correct answers keep the game moving at a brisk pace.
       Future.delayed(const Duration(milliseconds: 800), () {
         if (mounted) widget.onAnswer(answer);

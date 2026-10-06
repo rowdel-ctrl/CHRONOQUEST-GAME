@@ -41,6 +41,7 @@ void main() {
     // Back to the real builder and a clean slate for the next test.
     audio.resetSfxForTesting();
     if (!audio.soundEnabled) audio.toggleSound();
+    audio.setSfxVolume(1.0);
   });
 
   test('a whole level of jumps builds one pool, not a player per jump', () async {
@@ -67,6 +68,23 @@ void main() {
   test('plays at full effect volume', () async {
     await audio.playCorrect();
     expect(built['correct.mp3']!.lastVolume, 1.0);
+  });
+
+  test('the volume set in Settings scales every effect', () async {
+    audio.setSfxVolume(0.5);
+    await audio.playCoin();
+    expect(built['coin.mp3']!.lastVolume, 0.5);
+  });
+
+  test('volume at zero plays nothing, and out of range is clamped', () async {
+    audio.setSfxVolume(0);
+    await audio.playCoin();
+    expect(buildOrder, isEmpty);
+
+    audio.setSfxVolume(7);
+    expect(audio.sfxVolume, 1.0);
+    audio.setSfxVolume(-3);
+    expect(audio.sfxVolume, 0.0);
   });
 
   test('plays at once even when two sounds are asked for together', () async {

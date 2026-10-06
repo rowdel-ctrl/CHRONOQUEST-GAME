@@ -74,6 +74,21 @@ class StorageService {
     await appBox.put(_controlSchemeKey, scheme.name);
   }
 
+  // ─── SOUND (Settings > Tunog) ─────────────────────────────────────────────
+  static bool getSoundEnabled() =>
+      appBox.get('sound_enabled', defaultValue: true) as bool;
+  static bool getMusicEnabled() =>
+      appBox.get('music_enabled', defaultValue: true) as bool;
+  static double getSoundVolume() =>
+      (appBox.get('sound_volume', defaultValue: 1.0) as num).toDouble();
+  static double getMusicVolume() =>
+      (appBox.get('music_volume', defaultValue: 1.0) as num).toDouble();
+
+  static Future<void> setSoundEnabled(bool v) => appBox.put('sound_enabled', v);
+  static Future<void> setMusicEnabled(bool v) => appBox.put('music_enabled', v);
+  static Future<void> setSoundVolume(double v) => appBox.put('sound_volume', v);
+  static Future<void> setMusicVolume(double v) => appBox.put('music_volume', v);
+
   // ─── TESTING SWITCH ───────────────────────────────────────────────────────
   static const _unlockAllKey = 'dev_unlock_all';
 

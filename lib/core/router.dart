@@ -9,6 +9,7 @@ import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
 import '../screens/settings/controls_screen.dart';
 import '../screens/settings/settings_screen.dart';
+import '../screens/settings/sound_screen.dart';
 import '../screens/tutorial/tutorial_screen.dart';
 import '../screens/game/background_history_screen.dart';
 import '../screens/game/level_select_screen.dart';
@@ -64,6 +65,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/settings/controls',
       builder: (context, state) => const ControlsScreen(),
+    ),
+    GoRoute(
+      path: '/settings/sound',
+      builder: (context, state) => const SoundScreen(),
     ),
     GoRoute(
       path: '/tutorial',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'services/audio_service.dart';
 import 'services/storage_service.dart';
 import 'services/api_service.dart';
 import 'data/question_bank.dart';
@@ -20,6 +21,7 @@ void main() async {
 
   // Initialize Hive for local storage
   await StorageService.initHive();
+  AudioService().loadSaved();
 
   // Load quiz questions from assets/data/*.json before any screen can ask
   // QuestionBank for questions. This replaced a ~5,300-line hardcoded Dart

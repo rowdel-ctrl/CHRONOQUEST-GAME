@@ -31,13 +31,18 @@ class PlayerComponent extends SpriteAnimationComponent
   /// the camera, spawn positions, and despawn checks still derive from
   /// `worldX`, which is what actually moves.
   ///
+  /// Raised from the original 150 to 210, and from 210 to 250 on 2026-10-06
+  /// (playtest: "medyo mabagal ang galaw"). The jump itself did not change,
+  /// so a full-speed jump now carries 250 * 1.067 = 267 units instead of 224,
+  /// and every gap rule in tools/levelgen/rules.js was re-derived from it.
+  ///
   /// Raised from the original 150 after playtesting found walking too slow.
   /// Nothing needed retuning alongside it: `ParallaxBackground` derives its
   /// scroll speed from this constant by ratio rather than a hardcoded
   /// number (see its own doc comment), and the spawner measures distance
   /// from the player's actual worldX rather than assuming a fixed speed, so
   /// both already track this value automatically.
-  static const double forwardSpeed = 210.0;
+  static const double forwardSpeed = 250.0;
 
   /// The player's real position in world space. Aliases `position.x` —
   /// obstacles/camera never subtract a scroll speed from themselves;
@@ -338,6 +343,8 @@ class PlayerComponent extends SpriteAnimationComponent
       AttackHitboxComponent(
         position: position + Vector2(offsetX, offsetY),
         size: hitboxSize,
+        facingRight: facingRight,
+        follow: this,
       ),
     );
   }

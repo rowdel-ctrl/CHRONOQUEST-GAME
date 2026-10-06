@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
 import '../chrono_game.dart';
@@ -210,7 +211,40 @@ class EnemyComponent extends SpriteAnimationComponent
   void takeHit() {
     if (defeated) return;
     _hp--;
-    if (_hp <= 0) _die();
+    if (_hp <= 0) {
+      _die();
+    } else {
+      _flinch();
+    }
+  }
+
+  /// Which way a hit throws this enemy: 1 to the right, -1 to the left, away
+  /// from the player. With no player to measure from, the way it is walking.
+  int _awayFromPlayer() {
+    try {
+      final player = game.player;
+      final mine = position.x + size.x / 2;
+      final theirs = player.position.x + player.size.x / 2;
+      return mine >= theirs ? 1 : -1;
+    } catch (_) {
+      return _direction;
+    }
+  }
+
+  /// A hit that does not kill (a Heavy's first): it flashes white and is
+  /// shoved back a few units and settles, so the swing visibly landed.
+  void _flinch() {
+    final away = _awayFromPlayer();
+    add(ColorEffect(
+      Colors.white,
+      EffectController(duration: 0.07, reverseDuration: 0.07),
+      opacityFrom: 0,
+      opacityTo: 0.9,
+    ));
+    add(MoveByEffect(
+      Vector2(away * 14.0, 0),
+      EffectController(duration: 0.07, reverseDuration: 0.07),
+    ));
   }
 
   void _die() {
@@ -219,30 +253,100 @@ class EnemyComponent extends SpriteAnimationComponent
     // contact damage while it fades out.
     defeated = true;
     game.audioService.playEnemyDefeat();
-    add(
-      SequenceEffect(
-        [
-          ColorEffect(
-            Colors.white,
-            EffectController(duration: CombatConstants.deathColorEffectDuration),
-            opacityFrom: 0,
-            opacityTo: 1,
-          ),
-          ScaleEffect.by(
-            Vector2.all(CombatConstants.deathScaleFactor),
-            EffectController(duration: CombatConstants.deathScaleEffectDuration),
-          ),
-          OpacityEffect.fadeOut(
-            EffectController(duration: CombatConstants.deathOpacityEffectDuration),
-          ),
-        ],
-        onComplete: () {
-          _dropCoins();
-          removeFromParent();
-        },
+
+    final away = _awayFromPlayer();
+    _deathSpot = position.clone();
+
+    // Spin about the middle, not the top-left corner: re-anchor without
+    // moving the picture.
+    anchor = Anchor.center;
+    position += size / 2;
+    _burst();
+
+    const flash = CombatConstants.deathFlashDuration;
+    const flight = CombatConstants.deathFlightDuration;
+    EffectController thrown() => EffectController(
+        duration: flight, startDelay: flash, curve: Curves.easeOut);
+
+    // White, then thrown away from the player, spinning and shrinking.
+    add(ColorEffect(
+      Colors.white,
+      EffectController(duration: flash),
+      opacityFrom: 0,
+      opacityTo: 1,
+    ));
+    add(MoveByEffect(
+      Vector2(away * CombatConstants.deathFlightPush,
+          -CombatConstants.deathFlightRise),
+      thrown(),
+    ));
+    add(RotateEffect.by(away * CombatConstants.deathSpin, thrown()));
+    add(ScaleEffect.to(Vector2.all(0.55), thrown()));
+    // Gone at the end of the flight, which is also when the coins drop.
+    add(OpacityEffect.fadeOut(
+      EffectController(duration: 0.22, startDelay: flash + flight - 0.22),
+      onComplete: () {
+        _dropCoins();
+        removeFromParent();
+      },
+    ));
+  }
+
+  /// Sparks and a shock ring where the enemy was hit. They live in the world,
+  /// not on the enemy, so they stay put as it flies off.
+  void _burst() {
+    const colors = [Colors.white, Color(0xFFFFEE58), Color(0xFFFF9800)];
+    final centre = position.clone();
+    game.world.add(
+      ParticleSystemComponent(
+        position: centre,
+        priority: 15,
+        particle: Particle.generate(
+          count: 12,
+          lifespan: 0.5,
+          generator: (i) {
+            final angle = i / 12 * 2 * pi + _random.nextDouble() * 0.5;
+            final speed = 120 + _random.nextDouble() * 140;
+            final colour = colors[i % colors.length];
+            final paint = Paint();
+            return AcceleratedParticle(
+              speed: Vector2(cos(angle), sin(angle)) * speed,
+              acceleration: Vector2(0, 420),
+              child: ComputedParticle(renderer: (canvas, particle) {
+                final p = particle.progress;
+                paint.color = colour.withValues(alpha: 1 - p);
+                canvas.drawCircle(Offset.zero, (1 - p) * 5 + 1.5, paint);
+              }),
+            );
+          },
+        ),
       ),
     );
+
+    final ring = CircleComponent(
+      radius: 14,
+      anchor: Anchor.center,
+      position: centre,
+      priority: 14,
+      paint: Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..color = Colors.white,
+    );
+    ring.add(ScaleEffect.to(
+      Vector2.all(4),
+      EffectController(duration: 0.28, curve: Curves.easeOut),
+    ));
+    ring.add(OpacityEffect.fadeOut(
+      EffectController(duration: 0.28),
+      onComplete: ring.removeFromParent,
+    ));
+    game.world.add(ring);
   }
+
+  /// Where the enemy stood when it was struck, which is where its coins fall
+  /// (it has moved by the time the flight is over).
+  Vector2 _deathSpot = Vector2.zero();
 
   void _dropCoins() {
     final count = CombatConstants.coinDropMin +
@@ -251,7 +355,7 @@ class EnemyComponent extends SpriteAnimationComponent
         );
     for (var i = 0; i < count; i++) {
       game.world.add(
-        CoinComponent(spawnPosition: position.clone() + Vector2(i * 10.0, 0)),
+        CoinComponent(spawnPosition: _deathSpot + Vector2(i * 10.0, 0)),
       );
     }
   }

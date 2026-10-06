@@ -12,6 +12,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
   _FakeAuth() : super(const AuthState());
 
   @override
+  void clearError() {}
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

@@ -39,7 +39,8 @@ void main() {
     expect(PlayerComponent.gravity, 900);
     expect(PlayerComponent.jumpForce, -480);
     const airtime = 2 * 480 / 900;
-    expect(PlayerComponent.forwardSpeed * airtime, closeTo(224, 0.5));
+    // 250 u/s since 2026-10-06 (it was 210, reach 224); the jump is unchanged.
+    expect(PlayerComponent.forwardSpeed * airtime, closeTo(266.7, 0.5));
   });
 
   test('eras.json matches the era registry', () {

@@ -195,7 +195,7 @@ void main() {
       for (var i = 0; i + 1 < spans.length; i++) {
         final gapStart = spans[i].startX + spans[i].width;
         final gapEnd = spans[i + 1].startX;
-        if (gapEnd - gapStart <= 240) continue;
+        if (gapEnd - gapStart <= 288) continue; // the widest ordinary gap
         fights++;
         final reason = 'fight at ${gapStart.toInt()}';
         final plat = level.entities.firstWhere(
@@ -244,8 +244,8 @@ void main() {
   });
 
   test('a gap beyond the foot-span reach cannot be cleared (the check can fail)', () {
-    const ground = [(start: 0.0, end: 1000.0), (start: 1300.0, end: 5000.0)];
-    final direct = _window(700, 975, _Landed.ground, ground, const [], _groundY, 1300);
-    expect(direct, 0, reason: 'a 300-unit gap is past 224 + 48');
+    const ground = [(start: 0.0, end: 1000.0), (start: 1340.0, end: 5000.0)];
+    final direct = _window(700, 975, _Landed.ground, ground, const [], _groundY, 1340);
+    expect(direct, 0, reason: 'a 340-unit gap is past 267 + 48');
   });
 }

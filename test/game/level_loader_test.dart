@@ -98,10 +98,10 @@ void main() {
 
       test('every gap is inside the jump arc, so none is a forced fall', () {
         // gravity 900 and jumpForce -480 give 1.067s of airtime; at the
-        // 210 u/s top speed that is 224px of horizontal reach. A gap wider
+        // 250 u/s top speed that is 267px of horizontal reach. A gap wider
         // than that, plus the 48px foot span that only has to land, cannot be
         // cleared on foot. This reference level stays under the plain reach.
-        const jumpReach = 224.0;
+        const jumpReach = 266.7;
         for (var i = 0; i < level.groundSpans.length - 1; i++) {
           final gapStart =
               level.groundSpans[i].startX + level.groundSpans[i].width;

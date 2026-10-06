@@ -76,10 +76,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.toString(),
+        // The API layer throws a ready-to-show message. Anything else is a
+        // bug or a bad reply, and its raw text means nothing to a student.
+        error: e is String ? e : 'May nangyaring problema. Subukan muli.',
       );
       return {'success': false};
     }
+  }
+
+  /// Hides the last error, e.g. when the student switches between "Bago" and
+  /// "Babalik", since the message was about the other one.
+  void clearError() {
+    if (state.error != null) state = state.copyWith(error: null);
   }
 
   Future<void> refreshProfile() async {

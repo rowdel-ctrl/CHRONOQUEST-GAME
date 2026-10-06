@@ -9,6 +9,8 @@ class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
   const BackgroundHistoryScreen({super.key, required this.eraId});
 
+  static const Key backButtonKey = Key('background_back_button');
+
   @override
   State<BackgroundHistoryScreen> createState() =>
       _BackgroundHistoryScreenState();
@@ -52,13 +54,22 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
     super.dispose();
   }
 
+  /// Back to the era list. The screen is reached with `go`, so there is no
+  /// page under it for the phone's own back button to return to.
+  void _back() => context.go('/era-selection');
+
   @override
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
     final eraColor = _getEraColor(widget.eraId);
     final selectedChar = StorageService.getCharacter();
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _back();
+      },
+      child: Scaffold(
       body: Stack(
         children: [
           // ── Bookshelf background image ────────────────────────────────────
@@ -94,7 +105,22 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
               child: Column(
                 children: [
                   // ── Era identity header ─────────────────────────────────
-                  _EraHeader(era: era, eraColor: eraColor),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 8),
+                        child: IconButton(
+                          key: BackgroundHistoryScreen.backButtonKey,
+                          tooltip: 'Bumalik',
+                          onPressed: _back,
+                          icon: const Icon(Icons.arrow_back,
+                              color: Colors.white70),
+                        ),
+                      ),
+                      Expanded(child: _EraHeader(era: era, eraColor: eraColor)),
+                    ],
+                  ),
 
                   // ── Scrollable content ──────────────────────────────────
                   Expanded(
@@ -153,7 +179,7 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
           ),
         ],
       ),
-    );
+    ));
   }
 
   Color _getEraColor(String id) {
@@ -681,9 +707,12 @@ class _GuidePanel extends StatelessWidget {
                         color: eraColor.withValues(alpha: 0.4), width: 1),
                   ),
                   child: Text(
-                    // era.guide keeps its lore role here — a mentor spirit
-                    // for the era, clearly separate from the avatar above.
-                    '"Ika\'y gagabayan ni ${era.guide} sa iyong paglalakbay!"',
+                    // The speaker is the hero the player picked, the same one
+                    // as the avatar and name above. It used to name the era's
+                    // fixed mentor (era.guide), so a Lapu-Lapu player read
+                    // "gagabayan ni Rizal" under Lapu-Lapu's own picture.
+                    '"Ako si ${character.name}. Samahan mo ako sa '
+                    'paglalakbay na ito!"',
                     style: GoogleFonts.poppins(
                       color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 12,

@@ -5,17 +5,23 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/control_scheme.dart';
 import '../../providers/control_scheme_provider.dart';
+import '../../services/audio_service.dart';
 import '../../widgets/game_ui.dart';
 import 'settings_header.dart';
 
 /// Settings: one list of rows, each leading to its own screen. Opened from the
 /// main menu's gear and from the pause menu, and it is the same screen either
-/// way. Kontrol is the only row today; further settings become more rows.
-class SettingsScreen extends ConsumerWidget {
+/// way. Kontrol and Tunog are the rows today; further settings become more rows.
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
+  Widget build(BuildContext context) {
     final scheme = ref.watch(controlSchemeProvider);
 
     return Scaffold(
@@ -31,13 +37,28 @@ class SettingsScreen extends ConsumerWidget {
                   child: Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 440),
-                      child: _SettingsRow(
-                        icon: Icons.sports_esports,
-                        title: 'Kontrol',
-                        value: scheme == ControlScheme.arrows
-                            ? 'Mga Arrow'
-                            : 'Joystick',
-                        onTap: () => context.push('/settings/controls'),
+                      child: Column(
+                        children: [
+                          _SettingsRow(
+                            icon: Icons.sports_esports,
+                            title: 'Kontrol',
+                            value: scheme == ControlScheme.arrows
+                                ? 'Mga Arrow'
+                                : 'Joystick',
+                            onTap: () => context.push('/settings/controls'),
+                          ),
+                          const SizedBox(height: 12),
+                          _SettingsRow(
+                            icon: Icons.volume_up,
+                            title: 'Tunog',
+                            value: _soundSummary(),
+                            // The summary under the title is read again on the way back.
+                            onTap: () async {
+                              await context.push('/settings/sound');
+                              if (mounted) setState(() {});
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -49,6 +70,14 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// What the Tunog row shows under its title.
+String _soundSummary() {
+  final audio = AudioService();
+  final music = audio.musicEnabled ? 'Musika ON' : 'Musika OFF';
+  final sfx = audio.soundEnabled ? 'Effects ON' : 'Effects OFF';
+  return '$music · $sfx';
 }
 
 class _SettingsRow extends StatelessWidget {

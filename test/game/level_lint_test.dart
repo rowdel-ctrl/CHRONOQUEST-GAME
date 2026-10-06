@@ -14,10 +14,10 @@ import 'package:chronoquest/game/enemy_behavior.dart';
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Flat jump reach is 224 (210 u/s * 1.067 s) and only the 48-unit foot span has
-/// to land, so a gap up to 48 + 90% of the reach (249) is crossable with margin.
-const double _gapMin = 176;
-const double _gapMax = 240;
+/// Flat jump reach is 267 (250 u/s * 1.067 s) and only the 48-unit foot span has
+/// to land, so a gap up to 48 + 90% of the reach (288) is crossable with margin.
+const double _gapMin = 192;
+const double _gapMax = 288;
 const double _minGroundBetweenGaps = 240;
 /// Above every enemy's hit area (99.9) so a student on a platform cannot be
 /// touched, and under the verified ceiling of jumpPeak - 15 = 113.
@@ -49,12 +49,12 @@ const int _groups = 10;
 
 /// Platform fights (tools/levelgen/rules.js): a gap too wide to jump with a wide
 /// platform in the middle and an enemy on it. The longest crossable gap is the
-/// 224 reach plus the 48-unit foot span, so these gaps need the platform.
-const List<double> _fightGaps = [288, 320, 352];
-const double _fightPlatformWidth = 192;
-const double _fightLedgeMax = 96;
+/// 267 reach plus the 48-unit foot span, so these gaps need the platform.
+const List<double> _fightGaps = [352, 384, 416];
+const double _fightPlatformWidth = 240;
+const double _fightLedgeMax = 112;
 const int _fightFirstSection = 2; // 0-based: none in sections 1 and 2
-const double _longestJump = 272;
+const double _longestJump = 315;
 
 final _fileName = RegExp(r'era(\d+)_(\d+)\.tmx$');
 
@@ -411,9 +411,9 @@ void main() {
     });
 
     test('a fight platform too narrow to hold its enemy', () {
-      // The only 192-wide platforms are the fight platforms.
-      final bad = base.replaceFirst('width="192"', 'width="96"');
-      expect(lint(bad), complaint('under 192'));
+      // The only 240-wide platforms are the fight platforms.
+      final bad = base.replaceFirst('width="240"', 'width="96"');
+      expect(lint(bad), complaint('under 240'));
     });
 
     test('an enemy right at a ledge', () {

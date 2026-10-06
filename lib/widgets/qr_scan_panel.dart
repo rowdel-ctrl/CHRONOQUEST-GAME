@@ -128,6 +128,8 @@ class _QrScannerState extends State<QrScanner> {
 
   @override
   Widget build(BuildContext context) {
+    // Text and brackets grow with the camera square (a phone's is 136).
+    final k = (widget.maxSize / 136).clamp(1.0, 2.0).toDouble();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -143,27 +145,27 @@ class _QrScannerState extends State<QrScanner> {
                   child:
                       widget.scannerBuilder(context, _onRaw, widget.onFailure),
                 ),
-                const IgnorePointer(child: _Corners()),
+                IgnorePointer(child: _Corners(scale: k)),
                 if (_wrong)
                   Positioned(
                     left: 0,
                     right: 0,
                     bottom: 0,
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8 * k, vertical: 5 * k),
                       color: AppColors.danger,
                       child: Row(
                         children: [
-                          const Icon(Icons.warning_amber_rounded,
-                              size: 14, color: Colors.white),
-                          const SizedBox(width: 6),
+                          Icon(Icons.warning_amber_rounded,
+                              size: 14 * k, color: Colors.white),
+                          SizedBox(width: 6 * k),
                           Expanded(
                             child: Text(
                               'Hindi ito QR ng ChronoQuest. Subukan ulit.',
                               style: GoogleFonts.poppins(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 10 * k,
                                   fontWeight: FontWeight.w600,
                                   height: 1.2),
                             ),
@@ -176,10 +178,10 @@ class _QrScannerState extends State<QrScanner> {
             ),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6 * k),
         Text(
           'Itapat sa QR code ng titser',
-          style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12),
+          style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12 * k),
         ),
       ],
     );
@@ -187,21 +189,26 @@ class _QrScannerState extends State<QrScanner> {
 }
 
 class _Corners extends StatelessWidget {
-  const _Corners();
+  final double scale;
+  const _Corners({this.scale = 1});
 
   @override
-  Widget build(BuildContext context) => CustomPaint(painter: _CornerPainter());
+  Widget build(BuildContext context) =>
+      CustomPaint(painter: _CornerPainter(scale));
 }
 
 class _CornerPainter extends CustomPainter {
+  final double scale;
+  _CornerPainter(this.scale);
+
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()
       ..color = AppColors.accent
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4
+      ..strokeWidth = 4 * scale
       ..strokeCap = StrokeCap.square;
-    const inset = 8.0, len = 26.0;
+    final inset = 8.0 * scale, len = 26.0 * scale;
     final l = inset, t = inset, r = size.width - inset, b = size.height - inset;
     for (final (x, y, dx, dy) in [
       (l, t, 1.0, 1.0),
@@ -215,7 +222,7 @@ class _CornerPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_CornerPainter old) => false;
+  bool shouldRepaint(_CornerPainter old) => old.scale != scale;
 }
 
 enum _PanelState { idle, scanning, done, failed }
@@ -245,6 +252,10 @@ class _QrScanPanelState extends State<QrScanPanel> {
   String? _code;
   ScanFailure? _failure;
 
+  /// How much bigger than the phone layout the card is drawn. A phone gets 1;
+  /// a tablet has room, and a 150-pixel camera looked lost there.
+  double _s = 1;
+
   void _start() => setState(() {
         _state = _PanelState.scanning;
         _failure = null;
@@ -265,11 +276,22 @@ class _QrScanPanelState extends State<QrScanPanel> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, box) {
+      final height = MediaQuery.sizeOf(context).height;
+      final width = box.maxWidth.isFinite ? box.maxWidth : 300.0;
+      // Fit the column it sits in, and leave the form room above and below.
+      _s = (width / 300).clamp(1.0, 1.8).toDouble();
+      _s = _s < height / 380 ? _s : (height / 380).clamp(1.0, 1.8).toDouble();
+      return _card(context);
+    });
+  }
+
+  Widget _card(BuildContext context) {
     final scanning = _state == _PanelState.scanning;
     final done = _state == _PanelState.done;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 300),
-      padding: EdgeInsets.all(scanning ? 10 : 12),
+      constraints: BoxConstraints(maxWidth: 300 * _s),
+      padding: EdgeInsets.all((scanning ? 10 : 12) * _s),
       decoration: BoxDecoration(
         color: scanning
             ? Colors.black
@@ -291,7 +313,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
             mainAxisSize: MainAxisSize.min,
             children: [
               QrScanner(
-                maxSize: 136,
+                maxSize: 136 * _s,
                 onCode: _got,
                 onFailure: _failed,
                 scannerBuilder: widget.scannerBuilder,
@@ -308,16 +330,16 @@ class _QrScanPanelState extends State<QrScanPanel> {
   Widget _idle() => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.qr_code_scanner, size: 40, color: AppColors.accent),
-          const SizedBox(height: 6),
+          Icon(Icons.qr_code_scanner, size: 40 * _s, color: AppColors.accent),
+          SizedBox(height: 6 * _s),
           _title('I-scan ang QR ng titser'),
-          const SizedBox(height: 3),
+          SizedBox(height: 3 * _s),
           _sub('Hindi mo na kailangang i-type ang class code'),
-          const SizedBox(height: 8),
+          SizedBox(height: 8 * _s),
           GameButton(
             label: 'BUKSAN ANG CAMERA',
-            fontSize: 10,
-            minHeight: 44,
+            fontSize: 10 * _s,
+            minHeight: 44 * _s,
             icon: Icons.photo_camera,
             onPressed: _start,
           ),
@@ -328,23 +350,23 @@ class _QrScanPanelState extends State<QrScanPanel> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 56,
-            height: 56,
+            width: 56 * _s,
+            height: 56 * _s,
             decoration: const BoxDecoration(
                 color: AppColors.success, shape: BoxShape.circle),
-            child: const Icon(Icons.check, size: 38, color: Colors.white),
+            child: Icon(Icons.check, size: 38 * _s, color: Colors.white),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8 * _s),
           Text(
             'Nakuha na ang class code',
             style: GoogleFonts.poppins(
                 color: const Color(0xFF8BE08A),
                 fontWeight: FontWeight.bold,
-                fontSize: 15),
+                fontSize: 15 * _s),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6 * _s),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 14 * _s, vertical: 4 * _s),
             decoration: BoxDecoration(
               color: AppColors.surface,
               border: Border.all(color: AppColors.primaryDark, width: 2),
@@ -354,7 +376,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
               style: GoogleFonts.poppins(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 17,
+                  fontSize: 17 * _s,
                   letterSpacing: 2),
             ),
           ),
@@ -367,15 +389,15 @@ class _QrScanPanelState extends State<QrScanPanel> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.no_photography, size: 46, color: Color(0xFFC9A9A6)),
-        const SizedBox(height: 8),
+        Icon(Icons.no_photography, size: 46 * _s, color: const Color(0xFFC9A9A6)),
+        SizedBox(height: 8 * _s),
         _title(
             denied ? 'Walang pahintulot sa camera' : 'Hindi mabuksan ang camera'),
-        const SizedBox(height: 4),
+        SizedBox(height: 4 * _s),
         _sub(denied
             ? 'Payagan ang camera sa Settings ng phone. Pwede pa ring i-type ang class code.'
             : 'Pwede pa ring i-type ang class code.'),
-        const SizedBox(height: 8),
+        SizedBox(height: 8 * _s),
         _link('Subukan ulit', _start),
       ],
     );
@@ -387,7 +409,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
         style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 15 * _s,
             height: 1.3),
       );
 
@@ -395,13 +417,13 @@ class _QrScanPanelState extends State<QrScanPanel> {
         text,
         textAlign: TextAlign.center,
         style: GoogleFonts.poppins(
-            color: Colors.white70, fontSize: 12, height: 1.4),
+            color: Colors.white70, fontSize: 12 * _s, height: 1.4),
       );
 
   Widget _link(String text, VoidCallback onTap) => TextButton(
         onPressed: onTap,
         style: TextButton.styleFrom(
-          minimumSize: const Size(48, 32),
+          minimumSize: Size(48, 32 * _s),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: const EdgeInsets.symmetric(horizontal: 8),
           foregroundColor: AppColors.accent,
@@ -409,7 +431,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
         child: Text(
           text,
           style: GoogleFonts.poppins(
-              fontSize: 12,
+              fontSize: 12 * _s,
               fontWeight: FontWeight.w600,
               decoration: TextDecoration.underline),
         ),
