@@ -3,6 +3,7 @@
 // is the same either way: open Settings, open Kontrol, pick a card, go back.
 import 'package:chronoquest/models/control_scheme.dart';
 import 'package:chronoquest/providers/control_scheme_provider.dart';
+import 'package:chronoquest/providers/unlock_all_provider.dart';
 import 'package:chronoquest/screens/settings/controls_screen.dart';
 import 'package:chronoquest/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +28,26 @@ class _FakeScheme extends StateNotifier<ControlScheme>
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+/// The real notifier reads Hive, which a widget test does not have.
+class _FakeUnlockAll extends StateNotifier<bool> implements UnlockAllNotifier {
+  _FakeUnlockAll([super.state = false]);
+
+  @override
+  Future<void> set(bool value) async => state = value;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 Future<_FakeScheme> _pumpApp(
   WidgetTester tester, {
   ControlScheme initial = ControlScheme.joystick,
+  _FakeUnlockAll? unlockAll,
 }) async {
   await tester.binding.setSurfaceSize(const Size(800, 360));
   addTearDown(() => tester.binding.setSurfaceSize(null));
   final fake = _FakeScheme(initial);
+  final unlock = unlockAll ?? _FakeUnlockAll();
 
   final router = GoRouter(
     initialLocation: '/menu',
@@ -59,7 +73,10 @@ Future<_FakeScheme> _pumpApp(
 
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [controlSchemeProvider.overrideWith((ref) => fake)],
+      overrides: [
+        controlSchemeProvider.overrideWith((ref) => fake),
+        unlockAllProvider.overrideWith((ref) => unlock),
+      ],
       child: MaterialApp.router(routerConfig: router),
     ),
   );
@@ -75,6 +92,33 @@ Future<void> _openControls(WidgetTester tester) async {
 }
 
 void main() {
+  group('the testing switch and logout live in Settings', () {
+    testWidgets('both are there, and the switch turns on and off', (tester) async {
+      final unlock = _FakeUnlockAll();
+      await _pumpApp(tester, unlockAll: unlock);
+      await tester.tap(find.text('OPEN_SETTINGS'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('I-LOGOUT'), findsOneWidget);
+      final toggle = find.byKey(const Key('unlock_all_switch'));
+      await tester.ensureVisible(toggle);
+      expect(toggle, findsOneWidget);
+      expect(unlock.state, isFalse);
+
+      await tester.tap(toggle);
+      await tester.pumpAndSettle();
+      expect(unlock.state, isTrue);
+    });
+
+    testWidgets('the switch says hearts are not lost while it is on', (tester) async {
+      await _pumpApp(tester);
+      await tester.tap(find.text('OPEN_SETTINGS'));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Hindi mawawala ang puso'), findsOneWidget);
+    });
+  });
+
   testWidgets('Settings lists Kontrol with the current choice', (tester) async {
     await _pumpApp(tester);
     await tester.tap(find.text('OPEN_SETTINGS'));

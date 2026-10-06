@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/control_scheme.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/control_scheme_provider.dart';
+import '../../providers/unlock_all_provider.dart';
 import '../../services/audio_service.dart';
 import '../../widgets/game_ui.dart';
 import 'settings_header.dart';
@@ -12,6 +14,7 @@ import 'settings_header.dart';
 /// Settings: one list of rows, each leading to its own screen. Opened from the
 /// main menu's gear and from the pause menu, and it is the same screen either
 /// way. Kontrol and Tunog are the rows today; further settings become more rows.
+/// Below them sit the testing switch and the logout button.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
@@ -58,6 +61,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               if (mounted) setState(() {});
                             },
                           ),
+                          const SizedBox(height: 20),
+                          const _UnlockAllSwitch(),
+                          const SizedBox(height: 12),
+                          const _LogoutButton(),
                         ],
                       ),
                     ),
@@ -67,6 +74,74 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Temporary testing switch: opens every era and level, and while it is on
+/// hearts are not spent, so the whole game can be played without waiting.
+class _UnlockAllSwitch extends ConsumerWidget {
+  const _UnlockAllSwitch();
+
+  static const Key switchKey = Key('unlock_all_switch');
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // A Material rather than a decorated Container: a ListTile needs the
+    // Material directly behind it to paint its ink.
+    return Material(
+      color: Colors.black26,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Colors.white24),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: SwitchListTile(
+          key: switchKey,
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          activeThumbColor: AppColors.accent,
+          title: Text(
+            'Buksan lahat ng panahon at level',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          subtitle: Text(
+            'Hindi mawawala ang puso habang naka-on. Pansamantala, para sa pagsubok lang.',
+            style: GoogleFonts.poppins(color: Colors.white54, fontSize: 10),
+          ),
+          value: ref.watch(unlockAllProvider),
+          onChanged: (v) => ref.read(unlockAllProvider.notifier).set(v),
+        ),
+      ),
+    );
+  }
+}
+
+class _LogoutButton extends ConsumerWidget {
+  const _LogoutButton();
+
+  static const Key buttonKey = Key('logout_button');
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return OutlinedButton.icon(
+      key: buttonKey,
+      onPressed: () async {
+        await ref.read(authProvider.notifier).logout();
+        if (context.mounted) context.go('/login');
+      },
+      icon: const Icon(Icons.logout, size: 18),
+      label: const Text('I-LOGOUT'),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.danger,
+        side: BorderSide(color: AppColors.danger.withValues(alpha: 0.5)),
+        padding: const EdgeInsets.symmetric(vertical: 10),
       ),
     );
   }

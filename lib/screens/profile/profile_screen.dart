@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
 import 'codex_screen.dart';
 
@@ -298,67 +297,6 @@ class ProfileScreen extends ConsumerWidget {
                               ),
                             ),
 
-                            const SizedBox(height: 16),
-
-                            // Temporary testing switch: opens every era and
-                            // level so the whole game can be played.
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.white24),
-                              ),
-                              child: SwitchListTile(
-                                contentPadding: EdgeInsets.zero,
-                                dense: true,
-                                activeThumbColor: AppColors.accent,
-                                title: Text(
-                                  'Buksan lahat ng panahon at level',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  'Pansamantala, para sa pagsubok lang.',
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white54,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                                value: ref.watch(unlockAllProvider),
-                                onChanged: (v) => ref
-                                    .read(unlockAllProvider.notifier)
-                                    .set(v),
-                              ),
-                            ),
-
-                            const SizedBox(height: 12),
-
-                            // Logout
-                            OutlinedButton.icon(
-                              onPressed: () async {
-                                await ref
-                                    .read(authProvider.notifier)
-                                    .logout();
-                                if (context.mounted) {
-                                  context.go('/login');
-                                }
-                              },
-                              icon: const Icon(Icons.logout, size: 18),
-                              label: const Text('I-LOGOUT'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.danger,
-                                side: BorderSide(
-                                    color: AppColors.danger
-                                        .withValues(alpha: 0.5)),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                              ),
-                            ),
                           ],
                         ),
                       ),

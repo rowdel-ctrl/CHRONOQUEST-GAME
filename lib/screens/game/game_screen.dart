@@ -40,7 +40,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ..currentLevel = widget.level
       ..selectedCharacterId = gameState.selectedCharacterId
       ..playerPowerUps = gameState.powerUps
-      ..hearts = gameState.hearts.count
+      // A full bar when hearts are free (the testing switch), so an empty
+      // pool does not end the level on the first hit.
+      ..hearts = _hearts.heartsAreFree
+          ? GameConstants.maxHearts
+          : gameState.hearts.count
       ..controlScheme = ref.read(controlSchemeProvider)
       // Section 4's sanctioned tutorial freebie. Set here rather than in
       // ChronoGame's field initialiser, which runs before currentLevel is

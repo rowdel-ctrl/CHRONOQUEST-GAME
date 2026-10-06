@@ -97,7 +97,12 @@ class GameNotifier extends StateNotifier<GameState> {
     state = state.copyWith(hearts: hearts);
   }
 
-  bool get canStartLevel => state.hearts.count > 0;
+  /// Whether hearts are not spent: the testing switch that opens every era
+  /// (`unlock_all_provider.dart`) is on, so a tester can play on without
+  /// waiting for hearts. Read from storage so it needs no provider.
+  bool get heartsAreFree => StorageService.getUnlockAll();
+
+  bool get canStartLevel => heartsAreFree || state.hearts.count > 0;
 
   /// One heart lost to any in-level damage event (enemy contact, hazard
   /// hit, falling) — the same shared pool shown on the menu screens
@@ -105,6 +110,7 @@ class GameNotifier extends StateNotifier<GameState> {
   /// per hit, so the persisted count stays in lockstep with the in-game HUD
   /// instead of only updating once per fully-failed level.
   void loseHeart() {
+    if (heartsAreFree) return;
     final now = DateTime.now();
     // In a level nothing is regenerated first: a heart must not appear just
     // before one is taken.

@@ -2,6 +2,7 @@
 // slider, and Settings lists the row.
 import 'package:chronoquest/models/control_scheme.dart';
 import 'package:chronoquest/providers/control_scheme_provider.dart';
+import 'package:chronoquest/providers/unlock_all_provider.dart';
 import 'package:chronoquest/screens/settings/settings_screen.dart';
 import 'package:chronoquest/screens/settings/sound_screen.dart';
 import 'package:chronoquest/services/audio_service.dart';
@@ -32,6 +33,17 @@ class _FakeAudio implements AudioService {
   void setSfxVolume(double v) => sfxVolume = v;
   @override
   Future<void> playCoin() async => coins++;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+/// The real notifier reads Hive, which a widget test does not have.
+class _FakeUnlockAll extends StateNotifier<bool> implements UnlockAllNotifier {
+  _FakeUnlockAll([super.state = false]);
+
+  @override
+  Future<void> set(bool value) async => state = value;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -123,7 +135,10 @@ void main() {
       ],
     );
     await tester.pumpWidget(ProviderScope(
-      overrides: [controlSchemeProvider.overrideWith((ref) => _FakeScheme())],
+      overrides: [
+        controlSchemeProvider.overrideWith((ref) => _FakeScheme()),
+        unlockAllProvider.overrideWith((ref) => _FakeUnlockAll()),
+      ],
       child: MaterialApp.router(routerConfig: router),
     ));
     await tester.pump();

@@ -24,7 +24,7 @@ class LevelFailedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hearts = ref.watch(gameProvider).hearts;
-    final hasHearts = hearts.count > 0;
+    final hasHearts = ref.read(gameProvider.notifier).canStartLevel;
     final timeUntilNext = hearts.timeUntilNext(DateTime.now());
 
     return Scaffold(
