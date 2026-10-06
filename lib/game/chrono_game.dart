@@ -494,8 +494,19 @@ class ChronoGame extends FlameGame
     for (final a in answers) {
       bestByQuestion[a.questionId] = (bestByQuestion[a.questionId] ?? false) || a.isCorrect;
     }
-    final correct = bestByQuestion.values.where((ok) => ok).length;
-    final total = bestByQuestion.length;
+    var correct = bestByQuestion.values.where((ok) => ok).length;
+    var total = bestByQuestion.length;
+
+    // A level with artifacts is scored per artifact: the student answered ten,
+    // so the screen says "x/10", whatever the number of distinct questions.
+    // Counting distinct questions gave "5/5" on a level of ten artifacts,
+    // because the question bank holds only five per level and the pool serves
+    // them twice (playtest, 2026-10-06). Claimed means answered correctly at
+    // some attempt, so the best-attempt rule above still holds.
+    if (artifactsTotal > 0) {
+      total = artifactsTotal;
+      correct = artifactsClaimed.clamp(0, artifactsTotal);
+    }
     final percentage = total > 0 ? (correct / total * 100).round() : 0;
 
     // Check perfect level bonus

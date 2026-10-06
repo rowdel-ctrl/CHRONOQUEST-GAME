@@ -111,6 +111,59 @@ void main() {
     });
   });
 
+  group('a level with artifacts is scored per artifact', () {
+    test('ten artifacts read as x/10 even when only five questions exist', () {
+      final game = _game()
+        ..artifactsTotal = 10
+        ..artifactsClaimed = 8;
+      int? reportedCorrect;
+      int? reportedTotal;
+      game.onLevelComplete = (score, correct, total, answers) {
+        reportedCorrect = correct;
+        reportedTotal = total;
+      };
+      // Five distinct questions, each served twice: the old count said 5.
+      for (var i = 0; i < 10; i++) {
+        game.answers.add(_snap('q${i % 5}', true));
+      }
+
+      game.levelComplete();
+
+      expect(reportedTotal, 10);
+      expect(reportedCorrect, 8);
+    });
+
+    test('all ten claimed earns the perfect-level bonus', () {
+      final plain = _game()
+        ..artifactsTotal = 10
+        ..artifactsClaimed = 9;
+      final perfect = _game()
+        ..artifactsTotal = 10
+        ..artifactsClaimed = 10;
+      int? plainScore;
+      int? perfectScore;
+      plain.onLevelComplete = (s, c, t, a) => plainScore = s;
+      perfect.onLevelComplete = (s, c, t, a) => perfectScore = s;
+
+      plain.levelComplete();
+      perfect.levelComplete();
+
+      expect(perfectScore! - plainScore!, 50);
+    });
+
+    test('a level with no artifacts keeps the per-question count', () {
+      final game = _game();
+      int? reportedTotal;
+      game.onLevelComplete = (s, c, t, a) => reportedTotal = t;
+      game.answers.add(_snap('q1', true));
+      game.answers.add(_snap('q2', true));
+
+      game.levelComplete();
+
+      expect(reportedTotal, 2);
+    });
+  });
+
   group('payload is unchanged', () {
     test('every attempt is still handed to onLevelComplete, not deduplicated',
         () {

@@ -24,6 +24,10 @@ void main() {
     } catch (_) {}
   });
 
+  // GameNotifier saves without waiting. Let one test's writes land before the
+  // next test seeds its own, or a late write can overwrite the new state.
+  tearDown(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+
   /// A pool two hearts down whose countdown began [ago] ago.
   Future<GameNotifier> notifierWithTwoDown(Duration ago) async {
     final start = DateTime.now().subtract(ago).millisecondsSinceEpoch;

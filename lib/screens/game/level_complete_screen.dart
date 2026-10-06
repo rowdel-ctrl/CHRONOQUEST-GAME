@@ -29,6 +29,8 @@ class LevelCompleteResult {
 }
 
 class LevelCompleteScreen extends StatefulWidget {
+  static const Key dotsKey = Key('level_complete_dots');
+
   final String eraId;
   final int level;
   final LevelCompleteResult result;
@@ -84,6 +86,11 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
     super.dispose();
   }
 
+  /// Cards wider than this lay out in two columns. The game is landscape, where
+  /// a one-column card (331 tall, 382 with a power-up) was taller than the
+  /// screen and scrolled; two columns come to about 190 (playtest, 2026-10-06).
+  static const double twoColumnMinWidth = 520;
+
   @override
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
@@ -93,141 +100,198 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
         baseColor: AppColors.background,
         child: SafeArea(
           child: Center(
-            // SingleChildScrollView fixes the overflow bug — this card's
-            // content (badge + stars + score + points + era + optional
-            // powerup badge + button) could exceed a short landscape
-            // phone's height and push the SUSUNOD button off-screen.
+            // Still scrollable as a safety net on a screen shorter than the
+            // card, but in two columns that no longer happens on a phone.
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: ScaleTransition(
                 scale: _scaleAnimation,
-                child: GamePanel(
-                  color: AppColors.surface,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.all(24),
-                  borderColor: AppColors.accent,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 380),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // "Level Complete" header
-                        GameBadge(
-                          text: 'LEVEL ${widget.level} TAPOS!',
-                          color: AppColors.accent,
-                          fontSize: 11,
-                        ),
-                        const SizedBox(height: 18),
-
-                        // Stars animation
-                        AnimatedBuilder(
-                          animation: _starController,
-                          builder: (context, _) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(3, (i) {
-                                final delay = i * 0.3;
-                                final progress =
-                                    ((_starController.value - delay) / 0.4)
-                                        .clamp(0.0, 1.0);
-                                final show = i < _stars && progress > 0;
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 4),
-                                  child: Transform.scale(
-                                    scale: show ? progress : 0.5,
-                                    child: Icon(
-                                      show ? Icons.star : Icons.star_border,
-                                      color: show
-                                          ? AppColors.accent
-                                          : AppColors.textMuted,
-                                      size: 40,
-                                    ),
-                                  ),
-                                );
-                              }),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Score
-                        Text(
-                          '$_correct/$_total TAMA',
-                          style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            height: 1.4,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-
-                        // Points earned
-                        GameBadge(
-                          text: '+$_points PUNTOS',
-                          color: AppColors.success,
-                          textColor: Colors.white,
-                          fontSize: 10,
-                        ),
-                        const SizedBox(height: 10),
-
-                        // Era info
-                        Text(
-                          era.name,
-                          style: GoogleFonts.poppins(
-                            fontSize: 13,
-                            color: AppColors.textMuted,
-                          ),
-                        ),
-
-                        // Powerup earned indicator
-                        if (widget.level == 3 || widget.level == 7)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: GamePanel(
-                              color: AppColors.accent.withValues(alpha: 0.15),
-                              borderWidth: 2,
-                              shadowOffset: 0,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 8),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(Icons.card_giftcard,
-                                      color: AppColors.accent, size: 18),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    _getPowerupName(widget.level),
-                                    style: GoogleFonts.poppins(
-                                      color: AppColors.textPrimary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                child: LayoutBuilder(builder: (context, box) {
+                  final wide = box.maxWidth - 40 >= twoColumnMinWidth;
+                  return GamePanel(
+                    color: AppColors.surface,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: wide
+                        ? const EdgeInsets.symmetric(horizontal: 22, vertical: 18)
+                        : const EdgeInsets.all(24),
+                    borderColor: AppColors.accent,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: wide ? 516 : 380),
+                      child: wide
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(child: _resultColumn(compact: true)),
+                                const SizedBox(width: 22),
+                                Expanded(child: _actionColumn(era, compact: true)),
+                              ],
+                            )
+                          : Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _resultColumn(compact: false),
+                                const SizedBox(height: 10),
+                                _actionColumn(era, compact: false),
+                              ],
                             ),
-                          ),
-
-                        const SizedBox(height: 22),
-
-                        // Next button
-                        GameButton(
-                          label: 'SUSUNOD',
-                          width: double.infinity,
-                          onPressed: () {
-                            context.go('/level-select/${widget.eraId}');
-                          },
-                        ),
-                      ],
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  /// Badge, stars, the score and one dot per artifact.
+  Widget _resultColumn({required bool compact}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GameBadge(
+          text: 'LEVEL ${widget.level} TAPOS!',
+          color: AppColors.accent,
+          fontSize: 11,
+        ),
+        SizedBox(height: compact ? 8 : 18),
+        AnimatedBuilder(
+          animation: _starController,
+          builder: (context, _) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(3, (i) {
+                final delay = i * 0.3;
+                final progress =
+                    ((_starController.value - delay) / 0.4).clamp(0.0, 1.0);
+                final show = i < _stars && progress > 0;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Transform.scale(
+                    scale: show ? progress : 0.5,
+                    child: Icon(
+                      show ? Icons.star : Icons.star_border,
+                      color: show ? AppColors.accent : AppColors.textMuted,
+                      size: compact ? 34 : 40,
+                    ),
+                  ),
+                );
+              }),
+            );
+          },
+        ),
+        SizedBox(height: compact ? 8 : 16),
+        Text(
+          '$_correct/$_total TAMA',
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            height: 1.4,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        if (_total > 0 && _total <= maxDots) ...[
+          const SizedBox(height: 6),
+          _dots(),
+        ],
+      ],
+    );
+  }
+
+  /// The most dots drawn; a level with more artifacts than this shows the
+  /// number only, so the row cannot outgrow the column.
+  static const int maxDots = 12;
+
+  /// One dot per artifact: green for each one answered right, an outline for
+  /// each one missed. Says the same as the score, at a glance.
+  Widget _dots() {
+    return Semantics(
+      label: '$_correct sa $_total artifact ang tama',
+      child: ExcludeSemantics(
+        child: Row(
+          key: LevelCompleteScreen.dotsKey,
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(_total, (i) {
+            final right = i < _correct;
+            return Container(
+              width: 10,
+              height: 10,
+              margin: EdgeInsets.only(left: i == 0 ? 0 : 4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: right ? AppColors.success : Colors.transparent,
+                border: Border.all(
+                  color: right ? AppColors.primaryDark : AppColors.textMuted,
+                  width: 1.5,
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  /// Points, the era, the power-up if one was earned, and the button.
+  Widget _actionColumn(EraData era, {required bool compact}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GameBadge(
+          text: '+$_points PUNTOS',
+          color: AppColors.success,
+          textColor: Colors.white,
+          fontSize: 10,
+        ),
+        SizedBox(height: compact ? 6 : 10),
+        Text(
+          era.name,
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            color: AppColors.textMuted,
+          ),
+        ),
+        if (widget.level == 3 || widget.level == 7)
+          Padding(
+            padding: EdgeInsets.only(top: compact ? 8 : 12),
+            child: GamePanel(
+              color: AppColors.accent.withValues(alpha: 0.15),
+              borderWidth: 2,
+              shadowOffset: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.card_giftcard,
+                      color: AppColors.accent, size: 18),
+                  const SizedBox(width: 8),
+                  // Shrinks rather than overflows if a column is narrow.
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        _getPowerupName(widget.level),
+                        style: GoogleFonts.poppins(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        SizedBox(height: compact ? 14 : 22),
+        GameButton(
+          label: 'SUSUNOD',
+          width: double.infinity,
+          onPressed: () {
+            context.go('/level-select/${widget.eraId}');
+          },
+        ),
+      ],
     );
   }
 
