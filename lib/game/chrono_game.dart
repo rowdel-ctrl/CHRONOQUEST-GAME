@@ -261,6 +261,10 @@ class ChronoGame extends FlameGame
       onLevelComplete;
   Function()? onLevelFailed;
 
+  /// Called once the server has the result, so the student's score (which the
+  /// server adds to) can be fetched again. Not called if the post failed.
+  Function()? onResultSubmitted;
+
   // Elapsed time tracking
   final Stopwatch _stopwatch = Stopwatch();
 
@@ -542,6 +546,7 @@ class ChronoGame extends FlameGame
         timeTakenTotal: _stopwatch.elapsed.inSeconds,
         questionSnapshots: answers,
       ));
+      onResultSubmitted?.call();
     } catch (_) {
       // Silently fail — result can be retransmitted later
     }

@@ -40,6 +40,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
           }),
           isLoggedIn: true,
         ));
+  static int refreshes = 0;
+  @override
+  Future<void> refreshProfile() async => refreshes++;
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -110,6 +113,12 @@ void main() {
     try {
       Directory(dir).deleteSync(recursive: true);
     } catch (_) {}
+  });
+
+  testWidgets('asks the server for the score again when it opens', (tester) async {
+    _FakeAuth.refreshes = 0;
+    await _pump(tester, const Size(800, 360));
+    expect(_FakeAuth.refreshes, 1);
   });
 
   testWidgets('shows who the student is, with the totals grouped', (tester) async {

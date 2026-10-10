@@ -26,7 +26,11 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(progressProvider.notifier).loadProgress());
+    Future.microtask(() {
+      ref.read(progressProvider.notifier).loadProgress();
+      // The score changes on the server after every level.
+      ref.read(authProvider.notifier).refreshProfile();
+    });
   }
 
   @override

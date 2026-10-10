@@ -13,6 +13,7 @@ import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
 import '../../models/control_scheme.dart';
 import '../../providers/control_scheme_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
 import 'level_complete_screen.dart';
@@ -29,6 +30,8 @@ class GameScreen extends ConsumerStatefulWidget {
 class _GameScreenState extends ConsumerState<GameScreen> {
   late ChronoGame game;
   late final GameNotifier _hearts = ref.read(gameProvider.notifier);
+  // Kept so the post-result refresh still works after this screen is gone.
+  late final AuthNotifier _auth = ref.read(authProvider.notifier);
 
   @override
   void initState() {
@@ -91,6 +94,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         );
       }
     };
+
+    // The server adds the points, so ask for the new score once it has them.
+    game.onResultSubmitted = () => _auth.refreshProfile();
 
     game.onLevelFailed = () {
       // The pool is already at 0 by the time this fires — every hit that

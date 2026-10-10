@@ -35,7 +35,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     // Reached from character select now, which does not load progress.
-    Future.microtask(() => ref.read(progressProvider.notifier).loadProgress());
+    Future.microtask(() {
+      ref.read(progressProvider.notifier).loadProgress();
+      // The score changes on the server after every level.
+      ref.read(authProvider.notifier).refreshProfile();
+    });
   }
 
   @override

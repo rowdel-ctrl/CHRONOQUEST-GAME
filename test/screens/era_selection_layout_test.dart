@@ -34,6 +34,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
               {'id': 's', 'name': 'Rodel', 'gradeLevel': 'grade5'}),
           isLoggedIn: true,
         ));
+  static int refreshes = 0;
+  @override
+  Future<void> refreshProfile() async => refreshes++;
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -109,6 +112,12 @@ void main() {
     final gear = find.byTooltip('Settings');
     expect(gear, findsOneWidget);
     expect(gear.hitTestable(), findsOneWidget);
+  });
+
+  testWidgets('asks the server for the score again when it opens', (tester) async {
+    _FakeAuth.refreshes = 0;
+    await _pump(tester, const Size(800, 360), unlockAll: false);
+    expect(_FakeAuth.refreshes, 1);
   });
 
   testWidgets('Profile sits just left of Settings, which is right-most',
