@@ -16,6 +16,15 @@ class QuestionBank {
   static final Map<String, Map<int, List<Question>>> _bank = {};
   static bool _loaded = false;
 
+  /// Levels whose questions the student's teacher has changed, downloaded by
+  /// `QuestionSync`. A level listed here replaces the bundled one; every other
+  /// level keeps what shipped in the app, so a phone that has never been online
+  /// plays exactly as before.
+  static final Map<String, Map<int, List<Question>>> _synced = {};
+
+  static List<Question>? _poolOf(String era, int level) =>
+      _synced[era]?[level] ?? _bank[era]?[level];
+
   /// The eras with a corresponding `assets/data/questions_<era>.json` file —
   /// one per registry era. A missing/not-yet-written file (e.g. the new
   /// 'nationalism' era added in Phase 0.5) is not an error: [loadAll]'s
@@ -55,6 +64,73 @@ class QuestionBank {
     _loaded = true;
   }
 
+  /// Uses the questions a teacher published ([levels] is the download:
+  /// `{era: {level: [question, ...]}}`) in place of the bundled ones, and
+  /// returns how many levels it took.
+  ///
+  /// The server checks all of this before it publishes; the game checks again
+  /// because what it holds may be old, damaged or from another version. A
+  /// question that cannot be played is dropped, and a level left with fewer
+  /// questions than shipped (or than the game asks, if that is fewer) keeps the
+  /// bundled ones, so a download can never leave a level thinner than it was.
+  static int applySynced(Map<String, dynamic> levels) {
+    _synced.clear();
+    var used = 0;
+    levels.forEach((era, byLevel) {
+      if (!_eraIds.contains(era) || byLevel is! Map) return;
+      byLevel.forEach((levelKey, list) {
+        final level = int.tryParse('$levelKey');
+        if (level == null || list is! List) return;
+        final questions = <Question>[];
+        for (final raw in list) {
+          final q = _parsePlayable(raw);
+          if (q != null) questions.add(q);
+        }
+        final shipped = _bank[era]?[level]?.length ?? 0;
+        final floor = min(shipped, _targetCount(era, level));
+        if (questions.isEmpty || questions.length < floor) return;
+        (_synced[era] ??= {})[level] = questions;
+        used++;
+      });
+    });
+    return used;
+  }
+
+  /// Goes back to the bundled questions only (on logout).
+  static void clearSynced() => _synced.clear();
+
+  /// The levels currently using downloaded questions, as `era/level` keys.
+  @visibleForTesting
+  static Set<String> get syncedLevels => {
+        for (final e in _synced.entries)
+          for (final l in e.value.keys) '${e.key}/$l',
+      };
+
+  /// Forgets everything loaded, so a test can start from the bundled assets.
+  @visibleForTesting
+  static void resetForTest() {
+    _bank.clear();
+    _synced.clear();
+    _loaded = false;
+  }
+
+  static Question? _parsePlayable(Object? raw) {
+    if (raw is! Map) return null;
+    try {
+      final q = Question.fromJson(Map<String, dynamic>.from(raw));
+      final labels = q.options.map((o) => o.label).toSet();
+      final playable = q.id.isNotEmpty &&
+          q.questionText.trim().isNotEmpty &&
+          q.options.length >= 2 &&
+          labels.length == q.options.length &&
+          q.options.every((o) => o.label.isNotEmpty && o.text.trim().isNotEmpty) &&
+          labels.contains(q.correctAnswer);
+      return playable ? q : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// How many questions a level asks: the boss level's warm-up plus boss
   /// phase, or [GameConstants.questionsPerLevel] for every other level. Which
   /// level number is "the boss level" is era-specific (Section 1's level
@@ -78,7 +154,7 @@ class QuestionBank {
     final rng = random ?? Random();
     final targetCount = _targetCount(era, level);
 
-    final pool = _bank[era]?[level];
+    final pool = _poolOf(era, level);
     final List<Question> questions;
     if (pool == null || pool.isEmpty) {
       questions = _fallbackQuestions(era, level, targetCount);
@@ -121,12 +197,12 @@ class QuestionBank {
   /// static, stateless draw can't keep (GAMEPLAY-V2.md Section 14, Phase 3:
   /// "rework QuestionBank from a list into a pool").
   static List<Question> poolFor(String era, int level) =>
-      List<Question>.unmodifiable(_bank[era]?[level] ?? const <Question>[]);
+      List<Question>.unmodifiable(_poolOf(era, level) ?? const <Question>[]);
 
   /// Whether real authored content exists for this era/level, as opposed to
   /// [getQuestions] silently substituting generated placeholders.
   static bool hasRealQuestions(String era, int level) =>
-      (_bank[era]?[level]?.isNotEmpty) ?? false;
+      (_poolOf(era, level)?.isNotEmpty) ?? false;
 
   static List<Question> _placeholderQuestions(
     String era,

@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/student.dart';
+import '../data/question_bank.dart';
 import '../services/api_service.dart';
+import '../services/question_sync.dart';
 import '../services/storage_service.dart';
 
 class AuthState {
@@ -44,6 +46,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final student = StorageService.getStudent();
       if (student != null) {
         state = AuthState(student: student, isLoggedIn: true);
+        QuestionSync.sync(student.classCode);
       }
     }
   }
@@ -72,6 +75,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Retry any results that were queued while logged out or with an
       // expired token — now that we have a fresh one, this should succeed.
       _api.flushPendingResults();
+      QuestionSync.sync(student.classCode);
       return {'success': true, 'isNewStudent': data['isNewStudent'] ?? false};
     } catch (e) {
       state = state.copyWith(
@@ -94,6 +98,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final student = await _api.getProfile();
       state = state.copyWith(student: student);
+      QuestionSync.sync(student.classCode);
     } catch (_) {
       // Use cached data
     }
@@ -101,6 +106,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     await StorageService.clearAll();
+    QuestionBank.clearSynced();
     state = const AuthState();
   }
 }

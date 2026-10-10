@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants.dart';
@@ -218,6 +220,23 @@ class StorageService {
       await appBox.put(_heartsRegenStartKey, hearts.regenStartMs);
     }
   }
+
+  // ─── DOWNLOADED QUESTIONS (teacher question bank) ────────────────────────
+  static const _questionCacheKey = 'question_bank_cache';
+
+  /// The last question download: `{classCode, tag, levels}`, or null.
+  static Map<String, dynamic>? getQuestionCache() {
+    final raw = appBox.get(_questionCacheKey) as String?;
+    if (raw == null) return null;
+    try {
+      return Map<String, dynamic>.from(jsonDecode(raw) as Map);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> saveQuestionCache(Map<String, dynamic> cache) =>
+      appBox.put(_questionCacheKey, jsonEncode(cache));
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   static Future<void> clearAll() async {

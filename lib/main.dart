@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'services/audio_service.dart';
 import 'services/storage_service.dart';
 import 'services/api_service.dart';
+import 'services/question_sync.dart';
 import 'data/question_bank.dart';
 import 'app.dart';
 
@@ -28,6 +29,11 @@ void main() async {
   // literal, so it's no longer instant/synchronous — it must complete
   // before the first level starts.
   await QuestionBank.loadAll();
+
+  // Questions the student's teacher published, saved from the last time the
+  // phone was online. Used straight away, so they work offline.
+  final student = StorageService.getStudent();
+  if (student != null) QuestionSync.restore(student.classCode);
 
   // Retry any quiz results that failed to submit while offline last session.
   // Fire-and-forget: don't block app launch on network access, and any
