@@ -124,7 +124,10 @@ extension AnswerPointHandler on ChronoGame {
         questionId: question.id,
         artifactSprite: artifact.spriteIndex,
         questionText: question.questionText,
-        blurb: question.explanation,
+        // Questions without an explanation teach with their answer instead.
+        blurb: question.explanation.isNotEmpty
+            ? question.explanation
+            : 'Tamang sagot: ${question.correctText}',
         claimedAtMs: DateTime.now().millisecondsSinceEpoch,
       ),
     );

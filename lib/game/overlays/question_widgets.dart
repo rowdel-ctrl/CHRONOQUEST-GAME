@@ -173,7 +173,7 @@ class ExplanationPanel extends StatelessWidget {
           Text(
             question.explanation.isNotEmpty
                 ? question.explanation
-                : 'Ang tamang sagot ay ${question.correctAnswer}.',
+                : 'Ang tamang sagot ay ${question.correctAnswer}. ${question.correctText}',
             style: TextStyle(
               fontSize: layout.explanationFontSize,
               color: AppColors.textPrimary,

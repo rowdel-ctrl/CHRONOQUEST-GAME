@@ -45,6 +45,14 @@ class Question {
     this.elapsedSeconds = 0,
   });
 
+  /// The text of the correct choice, or '' if [correctAnswer] matches none.
+  String get correctText => options
+      .firstWhere(
+        (o) => o.label == correctAnswer,
+        orElse: () => const QuestionOption(label: '', text: ''),
+      )
+      .text;
+
   /// Returns a new [Question] with the options in random order, relabelled
   /// A, B, C... in that order, and [correctAnswer] pointing at wherever the
   /// original correct option landed. Leaves this instance untouched so the
