@@ -55,7 +55,7 @@ class _HeartsPillState extends ConsumerState<HeartsPill> {
   @override
   Widget build(BuildContext context) {
     final hearts = ref.watch(gameProvider).hearts;
-    final timeUntilNext = hearts.timeUntilNext(DateTime.now());
+    final timeUntilNext = ref.read(gameProvider.notifier).heartCountdown;
     final isFull = hearts.count >= GameConstants.maxHearts;
     final isEmpty = hearts.count <= 0;
 

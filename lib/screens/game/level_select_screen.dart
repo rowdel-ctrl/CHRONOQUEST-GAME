@@ -121,10 +121,10 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     ref.watch(unlockAllProvider);
     final era = getEraById(widget.eraId);
     final levelCount = era.levels.length;
-    final hearts = ref.watch(gameProvider).hearts;
+    ref.watch(gameProvider); // the map redraws as hearts come and go
     // Also true while the testing switch makes hearts free.
     final hasHearts = ref.read(gameProvider.notifier).canStartLevel;
-    final timeUntilNext = hearts.timeUntilNext(DateTime.now());
+    final timeUntilNext = ref.read(gameProvider.notifier).heartCountdown;
 
     return Scaffold(
       body: Container(

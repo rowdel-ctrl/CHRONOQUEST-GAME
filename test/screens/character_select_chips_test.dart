@@ -14,6 +14,9 @@ class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
   _FakeGame()
       : super(GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
   @override
+  Duration? get heartCountdown => null;
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

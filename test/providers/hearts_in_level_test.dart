@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/providers/game_provider.dart';
+import 'package:chronoquest/services/server_clock.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
@@ -34,7 +35,7 @@ void main() {
     await StorageService.saveHeartsState(
       HeartsState(count: GameConstants.maxHearts - 2, regenStartMs: start),
     );
-    return GameNotifier();
+    return GameNotifier(clock: ServerClock.fixed(DateTime.now()));
   }
 
   /// Pretends the clock ran on for [ago] since the countdown began, as it would

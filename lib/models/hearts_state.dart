@@ -73,6 +73,27 @@ class HeartsState {
     );
   }
 
+  /// Starts the countdown at [now] if hearts are missing and none is running (a
+  /// heart was lost before there was a trusted time), and pulls back a start that
+  /// is in the future, which no real clock reading can be.
+  HeartsState anchoredAt(DateTime now) {
+    if (count >= GameConstants.maxHearts) return HeartsState(count: count);
+    final nowMs = now.millisecondsSinceEpoch;
+    final start = regenStartMs;
+    if (start != null && start <= nowMs) return this;
+    return HeartsState(count: count, regenStartMs: nowMs);
+  }
+
+  /// Spends one heart when there is no trusted time to start a countdown with.
+  /// The countdown is left as it was; [anchoredAt] starts one later.
+  HeartsState spentWithoutClock() {
+    if (count <= 0) return this;
+    return HeartsState(count: count - 1, regenStartMs: regenStartMs);
+  }
+
+  /// The same hearts with no countdown running, for [anchoredAt] to start later.
+  HeartsState unanchored() => HeartsState(count: count);
+
   /// Time remaining until the next heart, or null if the pool is full.
   Duration? timeUntilNext(DateTime now) {
     if (count >= GameConstants.maxHearts || regenStartMs == null) return null;

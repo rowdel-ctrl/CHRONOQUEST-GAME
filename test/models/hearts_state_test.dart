@@ -148,4 +148,45 @@ void main() {
       expect(after.count, GameConstants.maxHearts);
     });
   });
+
+  group('with no trusted time yet', () {
+    test('a heart spent without a clock keeps the countdown as it was', () {
+      final spent = HeartsState.initial().spentWithoutClock();
+      expect(spent.count, GameConstants.maxHearts - 1);
+      expect(spent.regenStartMs, isNull);
+      expect(spent.spentWithoutClock().count, GameConstants.maxHearts - 2);
+    });
+
+    test('anchoredAt starts a countdown that had none', () {
+      final spent = HeartsState.initial().spentWithoutClock();
+      final anchored = spent.anchoredAt(_t0);
+      expect(anchored.regenStartMs, _t0.millisecondsSinceEpoch);
+      expect(anchored.count, spent.count);
+    });
+
+    test('anchoredAt leaves a running countdown alone', () {
+      final running = HeartsState.initial().consumed(_t0);
+      final later = _t0.add(const Duration(seconds: 10));
+      expect(running.anchoredAt(later).regenStartMs, running.regenStartMs);
+    });
+
+    test('anchoredAt pulls back a start that is in the future', () {
+      final future = HeartsState(
+        count: GameConstants.maxHearts - 1,
+        regenStartMs: _t0.add(const Duration(days: 1)).millisecondsSinceEpoch,
+      );
+      expect(future.anchoredAt(_t0).regenStartMs, _t0.millisecondsSinceEpoch);
+    });
+
+    test('anchoredAt on a full pool leaves no countdown', () {
+      expect(HeartsState.initial().anchoredAt(_t0).regenStartMs, isNull);
+    });
+
+    test('unanchored drops the countdown but keeps the count', () {
+      final running = HeartsState.initial().consumed(_t0);
+      final dropped = running.unanchored();
+      expect(dropped.count, running.count);
+      expect(dropped.regenStartMs, isNull);
+    });
+  });
 }

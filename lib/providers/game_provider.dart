@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/hearts_state.dart';
 import '../models/student.dart';
+import '../services/server_clock.dart';
 import '../services/storage_service.dart';
 
 class GameState {
@@ -42,18 +43,44 @@ class GameState {
 }
 
 class GameNotifier extends StateNotifier<GameState> {
-  GameNotifier() : super(GameState()) {
+  /// Hearts are counted in the server's time ([ServerClock]), never the phone's:
+  /// the phone's clock is the student's to change.
+  GameNotifier({ServerClock? clock})
+      : _clock = clock ?? ServerClock.instance,
+        super(GameState()) {
     _loadCharacter();
     _loadHearts();
+    _clock.sync().then((_) {
+      if (mounted) refreshHearts();
+    });
   }
+
+  final ServerClock _clock;
 
   void _loadCharacter() {
     final char = StorageService.getCharacter();
     state = state.copyWith(selectedCharacterId: char);
   }
 
+  /// [hearts] with the countdown started if it had no time to start with, and
+  /// whatever has come back since applied. Unchanged until the server's time is
+  /// known: without it nothing comes back.
+  HeartsState _settled(HeartsState hearts) {
+    final now = _clock.now;
+    if (now == null) return hearts;
+    return hearts.anchoredAt(now).regenerated(now);
+  }
+
+  void _store(HeartsState hearts) {
+    final before = state.hearts;
+    if (hearts.count != before.count || hearts.regenStartMs != before.regenStartMs) {
+      StorageService.saveHeartsState(hearts);
+    }
+    state = state.copyWith(hearts: hearts);
+  }
+
   void _loadHearts() {
-    final hearts = StorageService.getHeartsState().regenerated(DateTime.now());
+    final hearts = _settled(StorageService.getHeartsState());
     StorageService.saveHeartsState(hearts);
     state = state.copyWith(hearts: hearts);
   }
@@ -62,12 +89,16 @@ class GameNotifier extends StateNotifier<GameState> {
   /// a level-select countdown) reflects real elapsed time, not just the
   /// value from when the provider was created.
   void refreshHearts() {
+    _clock.syncIfNeeded();
     if (_inLevel) return; // the clock is stopped during a level
-    final hearts = state.hearts.regenerated(DateTime.now());
-    if (hearts.count != state.hearts.count) {
-      StorageService.saveHeartsState(hearts);
-    }
-    state = state.copyWith(hearts: hearts);
+    _store(_settled(state.hearts));
+  }
+
+  /// Time until the next heart, in server time, or null if the pool is full or
+  /// the server's time is not known yet (hearts wait for it).
+  Duration? get heartCountdown {
+    final now = _clock.now;
+    return now == null ? null : state.hearts.timeUntilNext(now);
   }
 
   /// Hearts do not come back while a level is being played: the regen clock
@@ -79,22 +110,23 @@ class GameNotifier extends StateNotifier<GameState> {
 
   void enterLevel() {
     if (_inLevel) return;
-    final now = DateTime.now();
-    final hearts = state.hearts.regenerated(now);
-    _remainingAtLevelStart = hearts.timeUntilNext(now);
+    final hearts = _settled(state.hearts);
+    final now = _clock.now;
+    _remainingAtLevelStart = now == null ? null : hearts.timeUntilNext(now);
     _inLevel = true;
-    StorageService.saveHeartsState(hearts);
-    state = state.copyWith(hearts: hearts);
+    _store(hearts);
   }
 
   void exitLevel() {
     if (!_inLevel) return;
     _inLevel = false;
-    final hearts =
-        state.hearts.resumedAfterLevel(DateTime.now(), _remainingAtLevelStart);
+    final now = _clock.now;
+    // With no server time the countdown starts afresh when there is one.
+    final hearts = now == null
+        ? state.hearts.unanchored()
+        : state.hearts.resumedAfterLevel(now, _remainingAtLevelStart);
     _remainingAtLevelStart = null;
-    StorageService.saveHeartsState(hearts);
-    state = state.copyWith(hearts: hearts);
+    _store(hearts);
   }
 
   /// Whether hearts are not spent: the testing switch that opens every era
@@ -111,14 +143,18 @@ class GameNotifier extends StateNotifier<GameState> {
   /// instead of only updating once per fully-failed level.
   void loseHeart() {
     if (heartsAreFree) return;
-    final now = DateTime.now();
+    final now = _clock.now;
     // In a level nothing is regenerated first: a heart must not appear just
     // before one is taken.
-    final hearts = _inLevel
-        ? state.hearts.consumed(now)
-        : state.hearts.afterLevelFailed(now);
-    StorageService.saveHeartsState(hearts);
-    state = state.copyWith(hearts: hearts);
+    final HeartsState hearts;
+    if (now == null) {
+      hearts = state.hearts.spentWithoutClock();
+    } else {
+      hearts = _inLevel
+          ? state.hearts.anchoredAt(now).consumed(now)
+          : state.hearts.afterLevelFailed(now);
+    }
+    _store(hearts);
   }
 
   void selectCharacter(String characterId) {

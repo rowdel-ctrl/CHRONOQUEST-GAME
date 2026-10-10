@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/providers/game_provider.dart';
+import 'package:chronoquest/services/server_clock.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
@@ -35,7 +36,7 @@ void main() {
       count: hearts,
       regenStartMs: DateTime.now().millisecondsSinceEpoch,
     ));
-    return GameNotifier();
+    return GameNotifier(clock: ServerClock.fixed(DateTime.now()));
   }
 
   test('with the switch on, a hit does not cost a heart', () async {

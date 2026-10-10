@@ -55,6 +55,9 @@ class _QuietGameNotifier extends StateNotifier<GameState>
   _QuietGameNotifier() : super(GameState());
 
   @override
+  Duration? get heartCountdown => null;
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

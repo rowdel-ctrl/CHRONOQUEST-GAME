@@ -26,7 +26,7 @@ class LevelFailedScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hearts = ref.watch(gameProvider).hearts;
     final hasHearts = ref.read(gameProvider.notifier).canStartLevel;
-    final timeUntilNext = hearts.timeUntilNext(DateTime.now());
+    final timeUntilNext = ref.read(gameProvider.notifier).heartCountdown;
 
     return Scaffold(
       body: GameBackdrop(
@@ -134,8 +134,11 @@ class LevelFailedScreen extends ConsumerWidget {
                                     ? 'Tip: Basahin muli ang kasaysayan bago '
                                         'subukan ulit. Makakatulong ito sa '
                                         'pagsagot!'
-                                    : 'Wala nang puso! Susunod na puso sa '
-                                        '${_formatCountdown(timeUntilNext!)}.',
+                                    : timeUntilNext != null
+                                        ? 'Wala nang puso! Susunod na puso sa '
+                                            '${_formatCountdown(timeUntilNext)}.'
+                                        : 'Wala nang puso! Mag-online para '
+                                            'magsimulang bumalik ang mga puso.',
                                 style: GoogleFonts.poppins(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,
