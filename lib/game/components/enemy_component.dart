@@ -176,7 +176,7 @@ class EnemyComponent extends SpriteAnimationComponent
     final centre = x + size.x / 2;
     final surface = surfaceY;
     if (surface != null) {
-      return game.isPlatformUnder(
+      return game.isSurfaceUnder(
           centre - footHalfWidth, centre + footHalfWidth, surface);
     }
     return game.isGroundUnder(centre - footHalfWidth, centre + footHalfWidth);

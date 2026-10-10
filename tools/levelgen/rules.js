@@ -25,10 +25,8 @@ const enemyTop = physics.enemyHeight * 0.925;
 const footSpan = physics.footSpanFraction * physics.playerWidth;
 
 const rules = {
-  // Widened from 128-200 after playtesting: gaps read as too easy to hop. The
-  // ceilings were scaled by 250/210 when walking speed went from 210 to 250 (the
-  // jump reach grew with it), so a gap asks the same of a student as before. The
-  // floor stays 192: the hand-built reference level has a gap that narrow.
+  // Pits a student jumps in one go. The solver (solve.js) plays every level with
+  // a slightly slower, lower jump than the real one and a pit up to 288 passes.
   gapMin: 192,
   gapMax: 288,
   gapPlainMax: 240, // without a platform to land on, keep it shorter
@@ -42,8 +40,8 @@ const rules = {
   // 267 reach plus the 48 foot span = 315), a wide platform in the middle, and a
   // walker patrolling it. The student has to hit the enemy from the air or land
   // beside it. The platform sits 80-112 from each ledge, well inside a jump.
-  fightGaps: [352, 384, 416],
-  fightPlatformWidth: 240, // 10 tiles of 24 (was 192 at the slower walking speed)
+  fightGaps: [360, 384, 408], // 15, 16 and 17 tiles of 24
+  fightPlatformWidth: 240, // 10 tiles of 24
   fightPatrol: 36, // each way, so the enemy stays clear of both platform edges
   fightLedgeMax: 112, // furthest a platform edge may be from a ledge
   fightEnemySpacing: 400, // between a platform enemy and its neighbour; it is over a gap, so closer is fine
@@ -53,20 +51,24 @@ const rules = {
   // Floor left past the exit marker. The gate stands 40 before the exit and is 144
   // wide, so its far edge is 104 past the exit and has to stay on the map.
   exitMargin: 120,
-  safeStart: 1008, // nothing dangerous before this x (Mario 1-1: practise first); a multiple of the 16px tile
+  safeStart: 1008, // nothing dangerous before this x (Mario 1-1: practise first); a multiple of the 24-unit tile
   groups: 10, // one per question
-  groupWidth: 2304, // ~11 s at 210 u/s; 144 tiles
-  restWidth: 592, // the artifact sits in the middle; 37 tiles
+  groupWidth: 2304, // ~9 s at 250 u/s; 96 tiles
+  restWidth: 576, // the artifact sits in the middle; 24 tiles
   padMin: 240, // ground between two gaps (never below minGroundBetweenGaps)
   padMax: 400,
   // Ground between a gap and an enemy lane. The lane has 60 of its own margin
   // inside it, so 112 here leaves an enemy at least 172 from a ledge: room to
-  // land from a jump and look before the enemy is in reach. Tighter than the
-  // gap-to-gap ground so a section can hold a gap, an enemy and a third element.
+  // land from a jump and look before the enemy is in reach.
   padNearMin: 112,
   padNearMax: 192,
-  enemyGapClearance: 160, // an enemy's patrol stays at least this far from any gap edge
-  generatorId: 'levelgen-v1',
+  enemyGapClearance: 160, // an enemy's patrol stays at least this far from any hazard edge of its ground
+  // ── terrain (v2) ──
+  maxRiseTiles: 4, // the tallest step a student is asked to jump up: 96, under the jump's 128 peak
+  stepTiles: 2, // the tallest single hop on a staircase: 48
+  maxHeightTiles: 16, // the tallest ground anywhere: 384, a tower on a highland
+  platformMinY: 300, // platforms never float higher than this (world y)
+  generatorId: 'levelgen-v2',
 };
 
 function eraNumber(eraId) {

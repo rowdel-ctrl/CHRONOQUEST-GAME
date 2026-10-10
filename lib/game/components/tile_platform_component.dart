@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import '../chrono_game.dart';
+import 'terrain_component.dart' show EraTerrain;
 
 /// Floating platform built from slices of the 16x16 ground tileset
 /// (ground_tileset.png — a 7-column x 8-row grid of 16px tiles). Renders a
@@ -93,7 +94,9 @@ class TilePlatformComponent extends PositionComponent
 
   @override
   Future<void> onLoad() async {
-    final tileset = await game.loadSprite('tiles/ground_tileset.png');
+    // The era's own copy of the tileset, the one the terrain is drawn from, so a
+    // platform and the ground beside it are made of the same earth.
+    final tileset = await game.loadSprite(EraTerrain.sheetPath(game.currentEra));
     _sheet =
         SpriteSheet(image: tileset.image, srcSize: Vector2.all(sourceTileSize));
 

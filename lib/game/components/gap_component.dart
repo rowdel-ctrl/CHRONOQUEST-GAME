@@ -18,6 +18,12 @@ import '../chrono_game.dart';
 /// player falls through, they lose a heart and respawn. The section itself
 /// doesn't move; the camera moving past it as the player advances creates
 /// the on-screen leftward motion.
+///
+/// A level loaded from a Tiled map builds one section per block of ground at
+/// its own height (see `GroundBlock`) and passes `drawn: false`: they are
+/// then only collision, and `TerrainComponent` paints the map's tiles. The
+/// self-drawing form below is what the procedural levels (bosses, until Phase
+/// 5) still use.
 class GroundSection extends PositionComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   /// Matches TilePlatformComponent.sourceTileSize — both read the same
@@ -53,6 +59,14 @@ class GroundSection extends PositionComponent
 
   final double sectionWidth;
 
+  /// Whether this section draws itself. False for the sections of a Tiled
+  /// level, which are collision only.
+  final bool drawn;
+
+  /// Height of the section, to the bottom of the screen. Null means the
+  /// standard [bandHeight], right for ground at the base height.
+  final double? sectionHeight;
+
   late final Sprite _capTile;
 
   /// Tiles are drawn one by one at fractional world positions (the camera
@@ -66,6 +80,8 @@ class GroundSection extends PositionComponent
   GroundSection({
     required this.sectionWidth,
     required Vector2 sectionPosition,
+    this.drawn = true,
+    this.sectionHeight,
   }) {
     position = sectionPosition;
   }
@@ -75,14 +91,19 @@ class GroundSection extends PositionComponent
 
   @override
   Future<void> onLoad() async {
-    final tileset = await game.loadSprite('tiles/ground_tileset.png');
-    _capTile = Sprite(
-      tileset.image,
-      srcPosition: Vector2(_topCol * tileSize, _topRow * tileSize),
-      srcSize: Vector2(tileSize, capHeight),
-    );
-    size = Vector2(sectionWidth, bandHeight);
-    add(RectangleHitbox());
+    size = Vector2(sectionWidth, sectionHeight ?? bandHeight);
+    if (drawn) {
+      final tileset = await game.loadSprite('tiles/ground_tileset.png');
+      _capTile = Sprite(
+        tileset.image,
+        srcPosition: Vector2(_topCol * tileSize, _topRow * tileSize),
+        srcSize: Vector2(tileSize, capHeight),
+      );
+    }
+    // Passive: nothing needs to be told when ground is touched (the player's
+    // footing is the hand-rolled test in game_collision.dart), and a level has
+    // a hundred of these, so they take no part in the active-vs-active sweep.
+    add(RectangleHitbox()..collisionType = CollisionType.passive);
   }
 
   // No update() override: ground is never culled behind the camera
@@ -131,6 +152,7 @@ class GroundSection extends PositionComponent
 
   @override
   void render(Canvas canvas) {
+    if (!drawn) return;
     final range = visibleTileRange(
       localLeft: game.cameraLeftEdgeX - position.x,
       localRight: game.cameraRightEdgeX - position.x,

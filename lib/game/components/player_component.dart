@@ -186,6 +186,10 @@ class PlayerComponent extends SpriteAnimationComponent
 
     if (_attackCooldownRemaining > 0) _attackCooldownRemaining -= dt;
 
+    // Where the middle of the sprite is before any horizontal move this frame:
+    // which side of a wall the player is on, if they run into one.
+    final previousCentreX = position.x + size.x / 2;
+
     // Player-driven horizontal movement (GAMEPLAY-V2.md Section 3): -1..1,
     // from the joystick's pull or from the arrow buttons, so this both sets
     // speed and direction whichever control scheme is on screen.
@@ -214,6 +218,11 @@ class PlayerComponent extends SpriteAnimationComponent
     // background authored to the left of it (Phase 4 gives levels real
     // bounds via Tiled).
     if (position.x < 0) position.x = 0;
+
+    // Raised ground is solid at its sides (game_collision.dart). After every
+    // horizontal move, before gravity, so a wall stops the player in the same
+    // frame whatever moved them: the joystick or a knockback.
+    resolveWalls(previousCentreX);
 
     // A standing gate is a hard stop (GAMEPLAY-V2.md Section 6: "blocks the
     // full height of the corridor — you cannot jump it"). Clamped here in
@@ -398,15 +407,19 @@ class PlayerComponent extends SpriteAnimationComponent
   void respawn() {
     final centre = respawnAnchorX + size.x / 2;
     var x = respawnAnchorX - respawnRunway;
+    // The block of ground they last stood on: back up along it, never off it,
+    // and put them on its surface, which is not the base height on raised ground.
+    var surfaceY = game.groundY;
     for (final section in game.groundSections) {
       if (centre >= section.position.x &&
           centre <= section.position.x + section.size.x) {
         if (x < section.position.x) x = section.position.x;
+        surfaceY = section.position.y;
         break;
       }
     }
     position.x = x < 0 ? 0 : x;
-    position.y = game.groundY - size.y;
+    position.y = surfaceY - size.y;
     velocityY = 0;
     isOnGround = true;
     // A respawn cancels any in-flight knockback — otherwise the shove that

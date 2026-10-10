@@ -27,6 +27,7 @@ import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/gate_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/components/terrain_component.dart';
 import 'package:chronoquest/game/components/tile_platform_component.dart';
 import 'package:chronoquest/game/game_collision.dart';
 import 'package:chronoquest/game/game_input.dart';
@@ -95,7 +96,8 @@ void main() {
       children.whereType<TilePlatformComponent>().length,
       level.entities.where((e) => e.type == 'platform').length,
     );
-    expect(game.groundSections.length, level.groundSpans.length);
+    expect(game.groundSections.length, level.groundBlocks.length,
+        reason: 'one collision section per block of ground');
 
     // ── platform fights: enemies stand on their platforms ───────────────
     final fighters = level.entities
@@ -188,7 +190,10 @@ void main() {
     // Without the fix the player falls through, loses a heart and is
     // respawned elsewhere, so "on the ground afterwards" alone proves nothing:
     // check they landed where they were, with no heart lost.
-    final widest = spans.reduce((a, b) => a.size.x >= b.size.x ? a : b);
+    // The widest stretch of BASE ground: the drop below lands on the base height.
+    final widest = spans
+        .where((s) => s.position.y == game.groundY)
+        .reduce((a, b) => a.size.x >= b.size.x ? a : b);
     final dropX = widest.position.x + widest.size.x / 2;
     p.position
       ..x = dropX
@@ -235,8 +240,14 @@ void main() {
 
     // ── ground is real spans with real gaps ──────────────────────────────
     final sections = game.world.children.whereType<GroundSection>().toList();
-    expect(sections.length, level.groundSpans.length);
+    expect(sections.length, level.groundBlocks.length);
     expect(sections.length, greaterThan(5));
+    expect(sections.any((s) => s.position.y < game.groundY), isTrue,
+        reason: 'a generated level has raised ground, not just a flat strip');
+    expect(sections.every((s) => !s.drawn), isTrue,
+        reason: 'the terrain component paints the tiles, not the sections');
+    expect(game.world.children.whereType<TerrainComponent>().length, 1);
+    expect(game.world.children.whereType<WaterComponent>().length, 1);
     for (final s in sections) {
       expect(s.sectionWidth, lessThan(10000),
           reason: 'this should be an authored span, not the old slab');

@@ -20,6 +20,15 @@ import 'components/player_component.dart';
 /// fall through.
 const double footSpanFraction = 0.5;
 
+/// How far below a surface a foot still counts as standing on it (landing).
+const double groundBand = 28;
+
+/// A block that rises more than this above the feet is a wall: even one 24-unit
+/// tile has to be jumped, never walked up. Both are mirrored by
+/// tools/levelgen/sim.js, which the generator plays levels with;
+/// test/game/terrain_parity_test.dart keeps them in step.
+const double wallBand = 12;
+
 extension GroundQueries on ChronoGame {
   /// Whether the horizontal span [left]..[right] lies entirely over one
   /// ground section. Walkers use this to turn around at a ledge instead of
@@ -46,6 +55,22 @@ extension GroundQueries on ChronoGame {
       if ((p.surfaceY - surfaceY).abs() < 1 &&
           left >= p.position.x &&
           right <= p.position.x + p.size.x) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Whether the span lies entirely over one thing whose top is at [surfaceY]: a
+  /// platform, or a block of raised ground. What an enemy above the base ground
+  /// checks before each step, so it turns round at the edge of its mesa the way
+  /// one on a platform does.
+  bool isSurfaceUnder(double left, double right, double surfaceY) {
+    if (isPlatformUnder(left, right, surfaceY)) return true;
+    for (final s in groundSections) {
+      if ((s.position.y - surfaceY).abs() < 1 &&
+          left >= s.position.x &&
+          right <= s.position.x + s.size.x) {
         return true;
       }
     }
@@ -81,28 +106,69 @@ extension PlayerGroundCollision on PlayerComponent {
     final footLeft = position.x + size.x / 2 - footHalfWidth;
     final footRight = position.x + size.x / 2 + footHalfWidth;
 
+    // The highest ground the feet are at: with raised ground, two sections can
+    // both be within reach (the foot span over a step), and the higher one is
+    // the one being stood on.
+    final feet = position.y + size.y;
+    double? best;
     for (final section in game.groundSections) {
       if (footRight > section.position.x &&
           footLeft < section.position.x + section.size.x &&
-          position.y + size.y >= section.position.y &&
-          position.y + size.y <= section.position.y + 20) {
-        position.y = section.position.y - size.y;
-        velocityY = 0;
-        return true;
+          feet >= section.position.y &&
+          feet <= section.position.y + groundBand &&
+          (best == null || section.position.y < best)) {
+        best = section.position.y;
       }
     }
-    if (velocityY >= 0) {
+    if (best == null && velocityY >= 0) {
       for (final platform in game.platforms) {
         if (footRight > platform.position.x &&
             footLeft < platform.position.x + platform.size.x &&
-            position.y + size.y >= platform.surfaceY &&
-            position.y + size.y <= platform.surfaceY + 20) {
-          position.y = platform.surfaceY - size.y;
-          velocityY = 0;
-          return true;
+            feet >= platform.surfaceY &&
+            feet <= platform.surfaceY + groundBand &&
+            (best == null || platform.surfaceY < best)) {
+          best = platform.surfaceY;
         }
       }
     }
-    return false;
+    if (best == null) return false;
+    position.y = best - size.y;
+    velocityY = 0;
+    return true;
+  }
+
+  /// Raised ground is solid at its sides: a block that rises more than
+  /// [wallBand] above the feet is a wall, and the player is pushed back out of
+  /// it to the side they came from. Run right after every horizontal move.
+  ///
+  /// [previousCentreX] is where the middle of the sprite was before this frame's
+  /// move, which says which side of the wall the player is on.
+  ///
+  void resolveWalls(double previousCentreX) {
+    final feet = position.y + size.y;
+    final footHalfWidth = size.x * footSpanFraction / 2;
+    final centre = position.x + size.x / 2;
+    final left = centre - footHalfWidth;
+    final right = centre + footHalfWidth;
+    for (final section in game.groundSections) {
+      final start = section.position.x;
+      final end = start + section.size.x;
+      if (!(right > start && left < end)) continue;
+      // On the ground any rise over [wallBand] is a wall; in the air a landing that
+      // is a little low (up to [groundBand]) still snaps up onto the ledge.
+      if (!(feet > section.position.y + (isOnGround ? wallBand : groundBand))) {
+        continue;
+      }
+      final cameFromLeft = previousCentreX + footHalfWidth <= start;
+      final cameFromRight = previousCentreX - footHalfWidth >= end;
+      final toLeft = cameFromLeft
+          ? true
+          : cameFromRight
+              ? false
+              : centre < (start + end) / 2;
+      position.x = toLeft
+          ? start - footHalfWidth - size.x / 2
+          : end + footHalfWidth - size.x / 2;
+    }
   }
 }

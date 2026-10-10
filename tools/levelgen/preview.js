@@ -5,11 +5,12 @@
 const fs = require('fs');
 const path = require('path');
 const { physics, rules, eras } = require('./rules');
+const T = require('./terrain');
 const tmx = require('./tmx');
 
 const SX = 0.04; // 25,000 units -> 1,000px
-const GY = 118; // ground surface, in svg y
-const VS = 0.25; // vertical exaggeration so a 90-unit platform is visible
+const VS = 0.3; // vertical scale: a 96-high mesa is 29px, a 288 tower 86px
+const GY = 128; // the base ground surface, in svg y
 const W = 1008;
 
 const ACTS = [
@@ -27,11 +28,10 @@ const clock = (units) => {
 };
 
 function strip(level) {
-  const spans = tmx.groundSpans(level);
   const x = (v) => (v * SX).toFixed(1);
   const parts = [];
+  const blocks = T.blocksOf(level.H);
 
-  // act bands (only meaningful for generated levels, which follow the 10 sections)
   if (level.generated) {
     ACTS.forEach((a, i) => {
       const x0 = (rules.safeStart + a.from * rules.groupWidth) * SX;
@@ -40,22 +40,33 @@ function strip(level) {
       parts.push(`<text x="${((x0 + x1) / 2).toFixed(1)}" y="9.5" class="actlabel" text-anchor="middle">${a.name}</text>`);
     });
     for (let g = 0; g <= rules.groups; g++) {
-      parts.push(`<line x1="${x(rules.safeStart + g * rules.groupWidth)}" x2="${x(rules.safeStart + g * rules.groupWidth)}" y1="13" y2="${GY + 14}" class="tick"/>`);
+      parts.push(`<line x1="${x(rules.safeStart + g * rules.groupWidth)}" x2="${x(rules.safeStart + g * rules.groupWidth)}" y1="13" y2="${GY + 22}" class="tick"/>`);
     }
   }
-  for (const s of spans) {
-    parts.push(`<rect x="${x(s.start)}" y="${GY}" width="${((s.end - s.start) * SX).toFixed(1)}" height="14" class="ground"/>`);
+  // pits: water
+  for (const p of T.pitsOf(level.H)) {
+    parts.push(`<rect x="${x(p.start)}" y="${GY}" width="${((p.end - p.start) * SX).toFixed(1)}" height="18" class="water"/>`);
   }
+  // ground: one column of height per block
+  for (const b of blocks) {
+    const h = (physics.groundSurfaceY - b.top) * VS;
+    parts.push(`<rect x="${x(b.start)}" y="${(GY - h).toFixed(1)}" width="${((b.end - b.start) * SX).toFixed(1)}" height="${(h + 18).toFixed(1)}" class="ground"/>`);
+  }
+  const surfaceAt = (px) => {
+    const h = T.heightAt(level.H, px);
+    return h >= 0 ? GY - (physics.groundSurfaceY - T.surfaceY(h)) * VS : GY;
+  };
   for (const p of level.platforms) {
     parts.push(`<rect x="${x(p.x)}" y="${(GY - (physics.groundSurfaceY - p.y) * VS).toFixed(1)}" width="${Math.max(4, p.width * SX).toFixed(1)}" height="3" rx="1" class="platform"/>`);
   }
   for (const e of level.enemies) {
+    const base = e.y !== undefined ? GY - (physics.groundSurfaceY - e.y) * VS : GY;
     const r = e.behavior === 'heavy' ? 0 : e.patrol;
-    if (r > 0) parts.push(`<line x1="${x(e.x - r)}" x2="${x(e.x + r + physics.enemyWidth)}" y1="${GY - 2}" y2="${GY - 2}" class="patrol"/>`);
+    if (r > 0) parts.push(`<line x1="${x(e.x - r)}" x2="${x(e.x + r + physics.enemyWidth)}" y1="${(base - 2).toFixed(1)}" y2="${(base - 2).toFixed(1)}" class="patrol"/>`);
     parts.push(
       e.behavior === 'heavy'
-        ? `<rect x="${(e.x * SX).toFixed(1)}" y="${GY - 9}" width="6" height="9" class="heavy"><title>${esc(e.kind)}</title></rect>`
-        : `<circle cx="${((e.x + 45) * SX).toFixed(1)}" cy="${GY - 5}" r="3.2" class="walker"><title>${esc(e.kind)}, patrol ${e.patrol}</title></circle>`
+        ? `<rect x="${(e.x * SX).toFixed(1)}" y="${(base - 9).toFixed(1)}" width="6" height="9" class="heavy"><title>${esc(e.kind)}</title></rect>`
+        : `<circle cx="${((e.x + 45) * SX).toFixed(1)}" cy="${(base - 5).toFixed(1)}" r="3.2" class="walker"><title>${esc(e.kind)}, patrol ${e.patrol}</title></circle>`
     );
   }
   [...level.artifacts].sort((a, b) => a.x - b.x).forEach((a, i) => {
@@ -63,17 +74,17 @@ function strip(level) {
     parts.push(`<circle cx="${cx.toFixed(1)}" cy="${GY - 150 * VS}" r="6.5" class="artifact"/>`);
     parts.push(`<text x="${cx.toFixed(1)}" y="${GY - 150 * VS + 3}" class="artnum" text-anchor="middle">${i + 1}</text>`);
   });
-  for (const gx of level.gates) parts.push(`<rect x="${x(gx)}" y="${GY - 62}" width="3" height="62" class="gate"><title>end gate</title></rect>`);
+  for (const gx of level.gates) parts.push(`<rect x="${x(gx)}" y="${GY - 62 * VS * 2}" width="3" height="${62 * VS * 2}" class="gate"><title>end gate</title></rect>`);
   parts.push(`<path d="M${x(level.spawnX)} ${GY} v-16 l8 4 l-8 4" class="spawn"/>`);
 
-  // time ruler: where the player is after 0, 30, 60, 90, 120 s of walking
   for (let sec = 0; sec <= 120; sec += 30) {
     const px = sec * physics.forwardSpeed * SX;
     if (px > level.mapWidth * SX + 1) break;
-    parts.push(`<line x1="${px.toFixed(1)}" x2="${px.toFixed(1)}" y1="${GY + 14}" y2="${GY + 19}" class="rule"/>`);
-    parts.push(`<text x="${px.toFixed(1)}" y="${GY + 29}" class="ruletext" text-anchor="${sec === 0 ? 'start' : 'middle'}">${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}</text>`);
+    parts.push(`<line x1="${px.toFixed(1)}" x2="${px.toFixed(1)}" y1="${GY + 18}" y2="${GY + 23}" class="rule"/>`);
+    parts.push(`<text x="${px.toFixed(1)}" y="${GY + 33}" class="ruletext" text-anchor="${sec === 0 ? 'start' : 'middle'}">${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}</text>`);
   }
-  return `<svg viewBox="0 0 ${W} ${GY + 34}" width="${W}" role="img" aria-label="level layout">${parts.join('')}</svg>`;
+  void surfaceAt;
+  return `<svg viewBox="0 0 ${W} ${GY + 38}" width="${W}" role="img" aria-label="level layout">${parts.join('')}</svg>`;
 }
 
 function card(file, level) {
@@ -84,12 +95,16 @@ function card(file, level) {
   const opener = n === 1 && level.generated;
   const d = opener ? 0 : (n - 2) / Math.max(1, count - 3);
   const heavies = level.enemies.filter((e) => e.behavior === 'heavy').length;
-  const plain = level.gaps.filter((g) => !level.platforms.some((p) => p.x < g.end && p.x + p.width > g.start)).length;
+  const blocks = T.blocksOf(level.H);
+  const raised = blocks.filter((b) => b.h > 0).length;
+  const tallest = Math.max(...blocks.map((b) => b.h)) * T.TILE;
+  const pits = T.pitsOf(level.H).length;
   const tag = !level.generated ? 'hand-built prototype' : opener ? 'era opener' : `difficulty ${d.toFixed(2)}`;
   return `<section class="level">
   <h2>${esc(era.id)} ${n} <span class="tag">${tag}</span></h2>
   <ul class="stats">
-    <li><b>${level.gaps.length}</b> gaps${plain ? ` (${plain} without a platform)` : ''}</li>
+    <li><b>${pits}</b> pits</li>
+    <li><b>${raised}</b> raised blocks (tallest <b>${tallest}</b>)</li>
     <li><b>${level.enemies.length}</b> enemies${heavies ? ` (${heavies} heavy)` : ''}</li>
     <li><b>${level.platforms.length}</b> platforms</li>
     <li><b>${level.coins.length}</b> coins</li>
@@ -114,7 +129,7 @@ function build(dir, only) {
   return cards.join('\n');
 }
 
-module.exports = { build };
+module.exports = { build, strip };
 
 if (require.main === module) {
   const args = process.argv.slice(2);

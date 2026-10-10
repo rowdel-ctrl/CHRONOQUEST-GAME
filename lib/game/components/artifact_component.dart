@@ -66,7 +66,16 @@ class ArtifactComponent extends SpriteComponent
   static final Paint _sparklePaint = Paint();
   static Shader? _haloShader;
 
-  ArtifactComponent({required this.worldX, required this.spriteIndex});
+  /// World y of the ground this artifact stands over. Null means the base ground;
+  /// a level with raised ground puts artifacts at the height of the ground under
+  /// each one (the rest areas sit on the level's landscape).
+  final double? surfaceY;
+
+  ArtifactComponent({
+    required this.worldX,
+    required this.spriteIndex,
+    this.surfaceY,
+  });
 
   @override
   Future<void> onLoad() async {
@@ -74,7 +83,7 @@ class ArtifactComponent extends SpriteComponent
     size = Vector2.all(CombatConstants.artifactSize);
     position = Vector2(
       worldX,
-      game.groundY - CombatConstants.artifactHoverHeight,
+      (surfaceY ?? game.groundY) - CombatConstants.artifactHoverHeight,
     );
     _baseY = position.y;
 

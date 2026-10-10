@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 'use strict';
-// Level generator: writes first-draft .tmx files for the unauthored levels.
+// Level generator: writes the .tmx for each non-boss level.
 //
 //   node tools/levelgen/generate.js --era spanish --levels 1-4
 //   node tools/levelgen/generate.js --era all --levels all
 //
-// Each level is built from ~50 seeded candidates; any that break a hard rule
-// are dropped and the one closest to its difficulty target is kept. The same
-// era and level always produce the same file.
+// Each level is built from ~60 seeded candidates; any that break a hard rule, or
+// that the solver cannot finish, are dropped, and the one closest to its
+// difficulty target is kept. The same era and level always produce the same file.
 const fs = require('fs');
 const path = require('path');
 const { eras, rules, eraNumber } = require('./rules');
@@ -21,43 +21,60 @@ const MANIFEST = path.join(__dirname, '..', '..', 'lib', 'game', 'generated_leve
 
 // How far a candidate is from the difficulty target for its place in the era.
 function score(L, era) {
-  // Every section already has one of each (10 gaps, 10 enemies); the ramp is how
-  // many of the six middle sections take a third element.
-  const gapsTarget = L.opener ? 10 : 10 + Math.round(3 * L.d);
-  const enemiesTarget = L.opener ? 10 : 10 + Math.round(3 * L.d);
-  const heavyTarget = era.heavy.length && !L.opener ? Math.round(2 * L.d) : 0;
+  const enemiesTarget = L.opener ? 10 : 11 + Math.round(5 * L.d);
+  const heavyTarget = era.heavy.length && !L.opener ? Math.round(3 * L.d) : 0;
   const heavies = L.enemies.filter((e) => e.behavior === 'heavy').length;
-  let s = Math.abs(L.gaps.length - gapsTarget) + Math.abs(L.enemies.length - enemiesTarget) + 2 * Math.abs(heavies - heavyTarget);
+  let s = Math.abs(L.enemies.length - enemiesTarget) + 2 * Math.abs(heavies - heavyTarget);
   for (let i = 1; i < L.signatures.length; i++) {
-    if (L.signatures[i] !== '' && L.signatures[i] === L.signatures[i - 1]) s += 1; // repetition
+    if (L.signatures[i] !== '' && L.signatures[i] === L.signatures[i - 1]) s += 2; // repetition
   }
-  if (new Set(L.signatures.filter(Boolean)).size < 3) s += 3; // too little variety
+  // Terrain is the point: aim for a third of the level to be raised ground or pits.
+  const T = require('./terrain');
+  const blocks = T.blocksOf(L.H);
+  const raised = blocks.filter((b) => b.h > 0).reduce((s, b) => s + (b.end - b.start), 0);
+  const pits = T.pitsOf(L.H).reduce((s, p) => s + (p.end - p.start), 0);
+  s += Math.max(0, 0.34 - (raised + pits) / L.mapWidth) * 60;
+  // The more kinds of set piece, the better.
+  const kinds = new Set(L.pieces.map((p) => p.type).filter((t) => !['walker', 'heavy'].includes(t)));
+  s += Math.max(0, 6 - kinds.size) * 2;
+  // A level made mostly of one piece is dull however it is arranged.
+  const counts = {};
+  for (const p of L.pieces) counts[p.type] = (counts[p.type] || 0) + 1;
+  s += Math.max(0, Math.max(...Object.values(counts)) - 6);
   return s;
 }
 
-function generateLevel({ eraId, levelIndex, candidates = 50 }) {
+function generateLevel({ eraId, levelIndex, candidates = 60 }) {
   const era = eras.find((e) => e.id === eraId);
   const base = hashString(`${eraId}:${levelIndex}`);
   let best = null;
   let validCount = 0;
+  const rejected = {};
   for (let k = 0; k < candidates; k++) {
     const seed = (base + k * 7919) >>> 0;
     const L = buildLevel({ eraId, levelIndex, rng: mulberry32(seed), seed });
-    if (validate(L, { generated: true }).length > 0) continue;
+    const problems = validate(L, { generated: true });
+    if (problems.length > 0) {
+      const key = problems[0].replace(/[0-9]+/g, 'N');
+      rejected[key] = (rejected[key] || 0) + 1;
+      continue;
+    }
     validCount++;
     const s = score(L, era);
     if (!best || s < best.score) best = { level: L, score: s, candidate: k };
   }
-  if (!best) throw new Error(`no valid candidate for ${eraId} level ${levelIndex}`);
+  if (!best) {
+    const why = Object.entries(rejected).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${n}x ${k}`).join('; ');
+    throw new Error(`no valid candidate for ${eraId} level ${levelIndex}: ${why}`);
+  }
   // What gets written must be what was validated: read the file text back and
-  // check that, not just the in-memory model. (An earlier version validated
-  // the model while the file silently lost ground columns.)
+  // check that, not just the in-memory model.
   const written = tmx.read(tmx.write(best.level));
   const problems = validate(written, { generated: true });
   if (problems.length) {
     throw new Error(`${eraId} ${levelIndex} fails after writing:\n  ${problems.join('\n  ')}`);
   }
-  if (JSON.stringify(written.gaps) !== JSON.stringify(best.level.gaps)) throw new Error('written gaps differ from the model');
+  if (written.H.join() !== best.level.H.join()) throw new Error('written ground differs from the model');
   return { ...best, validCount, tried: candidates };
 }
 
@@ -113,7 +130,7 @@ function main(argv) {
     }
   }
   const out = args.out ? path.resolve(args.out) : DEFAULT_OUT;
-  const candidates = Number(args.candidates || 50);
+  const candidates = Number(args.candidates || 60);
   const eraIds = !args.era || args.era === 'all' ? eras.map((e) => e.id) : [args.era];
   const rows = [];
 
@@ -126,17 +143,22 @@ function main(argv) {
       const file = fileFor(out, eraId, levelIndex);
       const why = !args.force && protectedReason(file);
       if (why) { rows.push(`${label}: skipped (${path.basename(file)} ${why}; use --force)`); continue; }
+      const t0 = Date.now();
       const r = generateLevel({ eraId, levelIndex, candidates });
       if (!args.dry) fs.writeFileSync(file, tmx.write(r.level));
       const L = r.level;
       const heavies = L.enemies.filter((e) => e.behavior === 'heavy').length;
+      const counts = {};
+      for (const p of L.pieces) counts[p.type] = (counts[p.type] || 0) + 1;
+      const mix = Object.entries(counts).map(([k, n]) => `${k}${n}`).join(' ');
       rows.push(
-        `${label}: ${path.basename(file)}  gaps ${L.gaps.length}  enemies ${L.enemies.length} (heavy ${heavies})  ` +
-          `platforms ${L.platforms.length}  valid ${r.validCount}/${r.tried}  score ${r.score}  pick #${r.candidate}`
+        `${label}: ${path.basename(file)}  enemies ${L.enemies.length} (heavy ${heavies})  platforms ${L.platforms.length}  ` +
+          `valid ${r.validCount}/${r.tried}  score ${r.score}  pick #${r.candidate}  ${((Date.now() - t0) / 1000).toFixed(1)}s  [${mix}]`
       );
+      if (args.verbose) console.log(rows[rows.length - 1]);
     }
   }
-  console.log(rows.join('\n'));
+  if (!args.verbose) console.log(rows.join('\n'));
   if (!args.dry && out === DEFAULT_OUT) console.log(`manifest: ${writeManifest(out)} generated levels`);
 }
 

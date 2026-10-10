@@ -11,9 +11,9 @@
   "enemyHeight": 108,
   "footSpanFraction": 0.5,
   "platformTile": 24,
-  "tile": 16,
-  "mapRows": 45,
-  "groundRow": 41,
+  "tile": 24,
+  "mapRows": 30,
+  "groundRow": 27,
   "groundGid": 2,
   "groundSurfaceY": 660,
   "playerX": 220

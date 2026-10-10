@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart' show debugPrint, visibleForTesting;
 import 'package:flutter/services.dart' show rootBundle;
@@ -10,9 +12,59 @@ import 'components/coin_component.dart';
 import 'components/enemy_component.dart';
 import 'components/gap_component.dart';
 import 'components/gate_component.dart';
+import 'components/terrain_component.dart';
 import 'components/tile_platform_component.dart';
 import 'generated_level_manifest.dart';
 import 'game_collision.dart' show footSpanFraction;
+
+/// One run of ground columns that share a surface height. A level's ground is a
+/// row of these: flat stretches, the steps of a hill, a raised mesa, the pillars
+/// between pits. Each becomes one [GroundSection] for collision.
+class GroundBlock {
+  final double startX;
+  final double width;
+
+  /// World y of the surface, where a standing player's feet are.
+  final double topY;
+
+  const GroundBlock({
+    required this.startX,
+    required this.width,
+    required this.topY,
+  });
+
+  double get endX => startX + width;
+
+  /// Tiles above the base ground, rounded: 0 is the base, 2 is 48 units up.
+  int heightInTiles(double tileSize) =>
+      ((LoadedLevel.groundSurfaceY - topY) / tileSize).round();
+}
+
+/// The `ground` tile layer, kept as drawn so the game can paint exactly what
+/// the map says (the caps, edges and walls are chosen when the map is made).
+class TerrainGrid {
+  final int cols;
+  final int rows;
+
+  /// Edge of one tile cell in world units (24: the 16px art drawn at 1.5x).
+  final double tileSize;
+
+  /// World y of the top of row 0. The layer's own `offsety`.
+  final double originY;
+
+  /// One GID per cell, row by row; 0 is empty.
+  final Uint8List gids;
+
+  const TerrainGrid({
+    required this.cols,
+    required this.rows,
+    required this.tileSize,
+    required this.originY,
+    required this.gids,
+  });
+
+  int gidAt(int col, int row) => gids[row * cols + col];
+}
 
 /// Loads a hand-authored Tiled level and turns it into game components
 /// (GAMEPLAY-V2.md Section 11).
@@ -37,10 +89,32 @@ class LoadedLevel {
   /// the level ends where the author put the exit, not at a global default.
   final double exitX;
 
-  /// Solid ground spans as (startX, width) pairs. Gaps are the stretches
-  /// between them — Section 11: "gaps are just places you didn't paint
-  /// ground".
+  /// Solid ground spans as (startX, width) pairs: runs of columns with any
+  /// ground at all, whatever its height. Pits are the stretches between them —
+  /// Section 11: "gaps are just places you didn't paint ground".
   final List<({double startX, double width})> groundSpans;
+
+  /// The ground as runs of one height each (see [GroundBlock]), left to right.
+  /// A flat level is the same list as [groundSpans]; raised ground splits a span
+  /// wherever the surface changes.
+  final List<GroundBlock> groundBlocks;
+
+  /// The ground tile layer, for drawing. Null when the map has none.
+  final TerrainGrid? terrain;
+
+  /// The ground as blocks, whatever the level was built from: [groundBlocks] when
+  /// the map had them, else one block per span at the base height (a level made
+  /// by hand in code, or a flat map).
+  List<GroundBlock> get blocks => groundBlocks.isNotEmpty
+      ? groundBlocks
+      : [
+          for (final s in groundSpans)
+            GroundBlock(
+              startX: s.startX,
+              width: s.width,
+              topY: groundSurfaceY,
+            ),
+        ];
 
   /// Everything on the `entities` object layer that isn't spawn/exit.
   final List<LevelEntity> entities;
@@ -58,6 +132,8 @@ class LoadedLevel {
     required this.exitX,
     required this.groundSpans,
     required this.entities,
+    this.groundBlocks = const [],
+    this.terrain,
     this.curriculum,
     this.kaalamanStart,
   });
@@ -69,13 +145,34 @@ class LoadedLevel {
         (s) => worldX >= s.startX && worldX < s.startX + s.width,
       );
 
-  /// World y of the ground surface. An enemy object's `y` is where its feet
-  /// stand: this for an enemy on the ground, the platform's top for one on a
-  /// platform (a platform fight). Matches `ChronoGame.groundY`.
+  /// World y of the base ground surface. An enemy object's `y` is where its
+  /// feet stand: this for an enemy on the base ground, the top of the raised
+  /// ground or platform it stands on otherwise. Matches `ChronoGame.groundY`.
   static const double groundSurfaceY = 660;
 
-  /// Whether [e] stands on a platform rather than the ground.
+  /// Whether [e] stands above the base ground: on raised ground or a platform.
   bool enemyIsOnPlatform(LevelEntity e) => e.y < groundSurfaceY - 1;
+
+  /// The ground block [e] stands on: the one whose surface is at its feet and
+  /// that holds the middle of the sprite. Null over a pit, or for an enemy
+  /// placed on a platform.
+  GroundBlock? blockUnder(LevelEntity e) {
+    final centre = e.x + EnemyComponent.spriteWidth / 2;
+    for (final b in blocks) {
+      if ((b.topY - e.y).abs() < 1 && centre >= b.startX && centre <= b.endX) {
+        return b;
+      }
+    }
+    return null;
+  }
+
+  /// The ground block that holds world x [x], or null over a pit.
+  GroundBlock? blockAt(double x) {
+    for (final b in blocks) {
+      if (x >= b.startX && x < b.endX) return b;
+    }
+    return null;
+  }
 
   /// The platform [e] stands on: the one whose top is at the enemy's feet and
   /// whose span holds the middle of the sprite. Null for a ground enemy, or an
@@ -98,21 +195,23 @@ class LoadedLevel {
   /// one ground span, or the platform it was placed on. Measured with the same
   /// foot span the enemy obeys at runtime.
   bool enemyStaysOnSupport(LevelEntity e) {
-    if (!enemyIsOnPlatform(e)) return enemyStaysOnGround(e);
-    final platform = platformUnder(e);
-    if (platform == null) return false;
     final range = e.behavior == 'heavy'
         ? 0.0
         : (e.patrol ?? CombatConstants.patrolRange);
     const inset = EnemyComponent.spriteWidth * (1 - footSpanFraction) / 2;
     final left = e.x - range + inset;
     final right = e.x + range + EnemyComponent.spriteWidth - inset;
+    final block = blockUnder(e);
+    if (block != null) return left >= block.startX && right <= block.endX;
+    final platform = platformUnder(e);
+    if (platform == null) return false;
     return left >= platform.x && right <= platform.x + platform.width;
   }
 
-  /// Whether an enemy placed at [e] keeps its whole patrol corridor over one
-  /// ground span, measured with the same foot span the enemy obeys at
-  /// runtime. A heavy never moves, so its corridor is just where it stands.
+  /// Whether an enemy placed at [e] keeps its whole patrol corridor over the one
+  /// block of ground it stands on, measured with the same foot span the enemy
+  /// obeys at runtime. A heavy never moves, so its corridor is just where it
+  /// stands.
   bool enemyStaysOnGround(LevelEntity e) {
     final range = e.behavior == 'heavy'
         ? 0.0
@@ -120,8 +219,7 @@ class LoadedLevel {
     const inset = EnemyComponent.spriteWidth * (1 - footSpanFraction) / 2;
     final left = e.x - range + inset;
     final right = e.x + range + EnemyComponent.spriteWidth - inset;
-    return groundSpans
-        .any((s) => left >= s.startX && right <= s.startX + s.width);
+    return blocks.any((b) => left >= b.startX && right <= b.endX);
   }
 }
 
@@ -207,63 +305,97 @@ class LevelLoader {
     final map = TileMapParser.parseTmx(tmxXml);
 
     final tileWidth = map.tileWidth.toDouble();
+    final ground = _readGround(map);
 
     return LoadedLevel(
       spawnX: _singleObjectX(map, 'spawn') ?? 0,
       exitX: _singleObjectX(map, 'exit') ??
           (map.width * tileWidth), // fall back to the map's right edge
-      groundSpans: _readGroundSpans(map),
+      groundSpans: ground.spans,
+      groundBlocks: ground.blocks,
+      terrain: ground.grid,
       entities: _readEntities(map),
       curriculum: _readCurriculum(map),
       kaalamanStart: map.properties.getValue<int>('kaalamanStart'),
     );
   }
 
-  /// Collapses the ground tile layer into horizontal solid spans.
+  /// Reads the ground tile layer into spans, blocks and the grid to draw.
   ///
-  /// A column counts as solid if *any* row in it has a non-zero GID, which
-  /// is what makes "don't paint ground here" mean "gap" without the author
-  /// having to mark gaps explicitly.
-  static List<({double startX, double width})> _readGroundSpans(TiledMap map) {
+  /// A column counts as ground if *any* row in it has a non-zero GID, which is
+  /// what makes "don't paint ground here" mean "pit" without the author having
+  /// to mark pits explicitly. The first painted row of a column is its surface,
+  /// so painting ground higher in a column raises it: that is all a hill, a
+  /// mesa or a tower is. The layer's `offsety` says where row 0 sits in the
+  /// world (the generator uses 12 so the base surface lands on 660).
+  static ({
+    List<({double startX, double width})> spans,
+    List<GroundBlock> blocks,
+    TerrainGrid? grid,
+  }) _readGround(TiledMap map) {
     final layer = map.layers
         .whereType<TileLayer>()
         .where((l) => l.name == 'ground')
         .firstOrNull;
-    if (layer == null) return const [];
+    final data = layer?.tileData;
+    if (layer == null || data == null) {
+      return (spans: const [], blocks: const [], grid: null);
+    }
 
-    final data = layer.tileData;
-    if (data == null) return const [];
+    final tileW = map.tileWidth.toDouble();
+    final tileH = map.tileHeight.toDouble();
+    final cols = map.width;
+    final rows = map.height;
+    final gids = Uint8List(cols * rows);
+    final topRow = List<int>.filled(cols, -1);
+    for (var row = 0; row < rows && row < data.length; row++) {
+      for (var col = 0; col < cols && col < data[row].length; col++) {
+        final gid = data[row][col].tile;
+        if (gid == 0) continue;
+        gids[row * cols + col] = gid > 255 ? 255 : gid;
+        if (topRow[col] < 0) topRow[col] = row;
+      }
+    }
 
-    final tileWidth = map.tileWidth.toDouble();
     final spans = <({double startX, double width})>[];
-
-    int? runStart;
-    for (var col = 0; col < map.width; col++) {
-      var solid = false;
-      for (var row = 0; row < map.height; row++) {
-        if (row < data.length && col < data[row].length && data[row][col].tile != 0) {
-          solid = true;
-          break;
-        }
-      }
-
-      if (solid && runStart == null) {
-        runStart = col;
-      } else if (!solid && runStart != null) {
+    final blocks = <GroundBlock>[];
+    int? spanStart;
+    int? blockStart;
+    for (var col = 0; col <= cols; col++) {
+      final solid = col < cols && topRow[col] >= 0;
+      if (solid && spanStart == null) spanStart = col;
+      if (!solid && spanStart != null) {
         spans.add((
-          startX: runStart * tileWidth,
-          width: (col - runStart) * tileWidth,
+          startX: spanStart * tileW,
+          width: (col - spanStart) * tileW,
         ));
-        runStart = null;
+        spanStart = null;
       }
+      final sameBlock = col < cols &&
+          blockStart != null &&
+          topRow[col] == topRow[blockStart];
+      if (blockStart != null && !sameBlock) {
+        blocks.add(GroundBlock(
+          startX: blockStart * tileW,
+          width: (col - blockStart) * tileW,
+          topY: layer.offsetY + topRow[blockStart] * tileH,
+        ));
+        blockStart = null;
+      }
+      if (solid && blockStart == null) blockStart = col;
     }
-    if (runStart != null) {
-      spans.add((
-        startX: runStart * tileWidth,
-        width: (map.width - runStart) * tileWidth,
-      ));
-    }
-    return spans;
+
+    return (
+      spans: spans,
+      blocks: blocks,
+      grid: TerrainGrid(
+        cols: cols,
+        rows: rows,
+        tileSize: tileW,
+        originY: layer.offsetY,
+        gids: gids,
+      ),
+    );
   }
 
   static List<LevelEntity> _readEntities(TiledMap map) {
@@ -353,13 +485,23 @@ class LevelBuilder {
     required double groundY,
     required String eraId,
   }) {
-    for (final span in level.groundSpans) {
+    // One collision section per block of ground, at its own height, reaching
+    // down to the bottom of the screen. They are not drawn: the terrain
+    // component below paints the tiles the map holds.
+    for (final block in level.blocks) {
       world.add(
         GroundSection(
-          sectionWidth: span.width,
-          sectionPosition: Vector2(span.startX, groundY),
+          sectionWidth: block.width,
+          sectionPosition: Vector2(block.startX, block.topY),
+          sectionHeight: groundY - block.topY + GroundSection.bandHeight,
+          drawn: false,
         ),
       );
+    }
+    final terrain = level.terrain;
+    if (terrain != null) {
+      world.add(TerrainComponent(grid: terrain, eraId: eraId));
+      world.add(WaterComponent(grid: terrain, eraId: eraId));
     }
 
     for (final e in level.entities) {
@@ -388,6 +530,9 @@ class LevelBuilder {
             ArtifactComponent(
               worldX: e.x,
               spriteIndex: _artifactIndex(e.art),
+              // The map puts each artifact on the ground under it; the base
+              // ground is the default, so older maps behave as they did.
+              surfaceY: e.y > 0 && e.y < groundY - 1 ? e.y : null,
             ),
           );
 
