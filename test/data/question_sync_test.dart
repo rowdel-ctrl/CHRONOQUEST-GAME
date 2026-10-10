@@ -55,28 +55,29 @@ void main() {
 
   group('QuestionBank.applySynced', () {
     test('replaces a level with the downloaded questions', () {
-      final used = QuestionBank.applySynced({'spanish': {'1': _qs(6)}});
+      final used = QuestionBank.applySynced({'spanish': {'1': _qs(12)}});
       expect(used, 1);
-      expect(_ids('spanish', 1), ['c_0', 'c_1', 'c_2', 'c_3', 'c_4', 'c_5']);
+      expect(_ids('spanish', 1), [for (var i = 0; i < 12; i++) 'c_$i']);
       expect(QuestionBank.syncedLevels, {'spanish/1'});
     });
 
     test('leaves every level it does not mention as shipped', () {
-      QuestionBank.applySynced({'spanish': {'1': _qs(6)}});
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}});
       expect(_ids('spanish', 2).first, 'spa_2_1');
       expect(_ids('pre-colonial', 1).first, 'pre_1_1');
     });
 
     test('fills a level that shipped with nothing', () {
-      expect(QuestionBank.hasRealQuestions('nationalism', 1), isFalse);
-      QuestionBank.applySynced({'nationalism': {'1': _qs(3)}});
-      expect(QuestionBank.hasRealQuestions('nationalism', 1), isTrue);
-      expect(_ids('nationalism', 1), hasLength(3));
+      // Level 11 is past the end of the era, so nothing shipped for it.
+      expect(QuestionBank.hasRealQuestions('american', 11), isFalse);
+      QuestionBank.applySynced({'american': {'11': _qs(3)}});
+      expect(QuestionBank.hasRealQuestions('american', 11), isTrue);
+      expect(_ids('american', 11), hasLength(3));
     });
 
     test('keeps the shipped level when the download is thinner than it', () {
-      // Spanish level 1 shipped with 5.
-      expect(QuestionBank.applySynced({'spanish': {'1': _qs(4)}}), 0);
+      // Spanish level 1 shipped with 10.
+      expect(QuestionBank.applySynced({'spanish': {'1': _qs(9)}}), 0);
       expect(_ids('spanish', 1).first, 'spa_1_1');
       expect(QuestionBank.syncedLevels, isEmpty);
     });
@@ -89,19 +90,19 @@ void main() {
         {'id': 'no_options', 'questionText': 'Tanong', 'correctAnswer': 'A'},
         'not even a map',
       ];
-      // 5 good + 5 broken: the good ones are enough.
-      expect(QuestionBank.applySynced({'spanish': {'1': [..._qs(5), ...broken]}}), 1);
-      expect(_ids('spanish', 1), ['c_0', 'c_1', 'c_2', 'c_3', 'c_4']);
+      // 10 good + 5 broken: the good ones are enough.
+      expect(QuestionBank.applySynced({'spanish': {'1': [..._qs(10), ...broken]}}), 1);
+      expect(_ids('spanish', 1), [for (var i = 0; i < 10; i++) 'c_$i']);
 
-      // 4 good + the broken ones: not enough, so the shipped level stays.
-      expect(QuestionBank.applySynced({'spanish': {'1': [..._qs(4), ...broken]}}), 0);
+      // 9 good + the broken ones: not enough, so the shipped level stays.
+      expect(QuestionBank.applySynced({'spanish': {'1': [..._qs(9), ...broken]}}), 0);
       expect(_ids('spanish', 1).first, 'spa_1_1');
     });
 
     test('ignores an unknown era, a bad level number and bad shapes', () {
       final used = QuestionBank.applySynced({
-        'atlantis': {'1': _qs(6)},
-        'spanish': {'one': _qs(6), '2': 'nope', '3': _qs(6)},
+        'atlantis': {'1': _qs(12)},
+        'spanish': {'one': _qs(12), '2': 'nope', '3': _qs(12)},
         'ww2': 'nope',
       });
       expect(used, 1);
@@ -109,14 +110,14 @@ void main() {
     });
 
     test('a second download replaces the first rather than adding to it', () {
-      QuestionBank.applySynced({'spanish': {'1': _qs(6)}});
-      QuestionBank.applySynced({'spanish': {'2': _qs(6)}});
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}});
+      QuestionBank.applySynced({'spanish': {'2': _qs(12)}});
       expect(_ids('spanish', 1).first, 'spa_1_1');
       expect(QuestionBank.syncedLevels, {'spanish/2'});
     });
 
     test('clearSynced goes back to the bundled questions', () {
-      QuestionBank.applySynced({'spanish': {'1': _qs(6)}});
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}});
       QuestionBank.clearSynced();
       expect(_ids('spanish', 1).first, 'spa_1_1');
     });
@@ -136,7 +137,7 @@ void main() {
       String? sentTag = 'unset';
       final changed = await QuestionSync.sync(classCode, fetch: (tag) async {
         sentTag = tag;
-        return {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}};
+        return {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}};
       });
       expect(changed, isTrue);
       expect(sentTag, isNull, reason: 'nothing was held yet');
@@ -147,7 +148,7 @@ void main() {
     });
 
     test('sends the tag it holds and does nothing when up to date', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       QuestionBank.clearSynced();
       String? sentTag;
       final changed = await QuestionSync.sync(classCode, fetch: (tag) async {
@@ -160,21 +161,21 @@ void main() {
     });
 
     test('restore applies the saved copy with no network', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       QuestionBank.clearSynced();
       QuestionSync.restore(classCode);
       expect(_ids('spanish', 1).first, 'c_0');
     });
 
     test('restore ignores a copy saved for another class', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       QuestionBank.clearSynced();
       QuestionSync.restore('ZZZ999');
       expect(_ids('spanish', 1).first, 'spa_1_1');
     });
 
     test('a different class does not send the old tag', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       String? sentTag = 'unset';
       await QuestionSync.sync('ZZZ999', fetch: (tag) async {
         sentTag = tag;
@@ -185,7 +186,7 @@ void main() {
     });
 
     test('offline keeps what the phone already has', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       final changed = await QuestionSync.sync(classCode, fetch: (_) async => throw Exception('offline'));
       expect(changed, isFalse);
       expect(_ids('spanish', 1).first, 'c_0');
@@ -193,7 +194,7 @@ void main() {
     });
 
     test('a teacher who unpublishes everything returns the class to the bundled questions', () async {
-      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(6)}}});
+      await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'bank1:1', 'levels': {'spanish': {'1': _qs(12)}}});
       await QuestionSync.sync(classCode, fetch: (_) async => {'tag': 'none', 'levels': <String, dynamic>{}});
       expect(_ids('spanish', 1).first, 'spa_1_1');
     });

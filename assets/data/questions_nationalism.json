@@ -1,0 +1,2476 @@
+{
+  "1": [
+    {
+      "id": "nat_1_1",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa barangay, sinabi ni Ana na mahal niya ang Pilipinas, pero hindi siya sumasali sa mga proyekto. Si Ben ay mahal din ang Pilipinas, at tumutulong siya sa paglilinis at pagpapaunlad ng kanilang komunidad. Sino ang nagpapakita ng nasyonalismo, hindi lang paghanga sa bayan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Si Ana"
+        },
+        {
+          "label": "B",
+          "text": "Si Ben"
+        },
+        {
+          "label": "C",
+          "text": "Silang dalawa"
+        },
+        {
+          "label": "D",
+          "text": "Wala sa kanila"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_2",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bumili si Mila ng bag na gawa ng Pilipino, kahit mas sikat ang bag na gawa sa ibang bansa. Tinanong siya ng kaibigan niya kung bakit. Ano ang pinakamagandang sagot ni Mila?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mas mura ito"
+        },
+        {
+          "label": "B",
+          "text": "Mas maganda ang kulay"
+        },
+        {
+          "label": "C",
+          "text": "Para makatulong sa kapwa Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Mas malaki ito"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_3",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gagawa ang klase ni Gng. Reyes ng palabas para sa Buwan ng Wika. Sabi ng isang kaklase, wikang banyaga na lang daw ang gamitin para astig. Ano ang pinakamabuting gawin para maipakita ang pagmamahal sa bayan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gumamit ng wikang banyaga lang"
+        },
+        {
+          "label": "B",
+          "text": "Huwag nang ituloy ang palabas"
+        },
+        {
+          "label": "C",
+          "text": "Kopyahin ang palabas ng ibang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Gamitin ang sariling wika"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_4",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nanonood ng laro si Rico. Sumigaw siya ng panlalait sa koponan ng ibang bansa habang winawagayway ang watawat ng Pilipinas. Ano ang mali sa ginawa ni Rico?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hindi siya gumalang sa ibang bansa"
+        },
+        {
+          "label": "B",
+          "text": "Sinuportahan niya ang Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Nanood siya ng laro"
+        },
+        {
+          "label": "D",
+          "text": "Nagdala siya ng watawat"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_5",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Habang inaawit ang Lupang Hinirang, nagkukuwentuhan si Lito. Sabi niya, \"Mahal ko naman ang Pilipinas!\" Ano ang dapat sabihin kay Lito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Umalis sa pila"
+        },
+        {
+          "label": "B",
+          "text": "Igalang ang awit at watawat"
+        },
+        {
+          "label": "C",
+          "text": "Umawit nang pabulong"
+        },
+        {
+          "label": "D",
+          "text": "Hayaan na lang siya"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_6",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Tinuturuan ni Lolo Ador ang mga bata ng katutubong sayaw. Ayaw sumali ng ilang bata dahil mas gusto nila ang sayaw ng ibang bansa. Ano ang makatutulong para hindi mawala ang ating kultura?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ipagbawal ang ibang sayaw"
+        },
+        {
+          "label": "B",
+          "text": "Itigil ang klase"
+        },
+        {
+          "label": "C",
+          "text": "Isayaw ito sa pista kasama ang mga bata"
+        },
+        {
+          "label": "D",
+          "text": "Hintayin silang magbago"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_7",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa bansang Luntian, mahal ng mga tao ang kanilang kultura at magagandang tanawin. Pero ibang bansa ang nag-uutos kung paano sila pamamahalaan. Ano ang kulang para masabing may nasyonalismo sila?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magagandang tanawin"
+        },
+        {
+          "label": "B",
+          "text": "Maraming turista"
+        },
+        {
+          "label": "C",
+          "text": "Pag-awit ng pambansang awit"
+        },
+        {
+          "label": "D",
+          "text": "Gustong maging malaya ang bansa"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_8",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nanalo si Chef Dan sa paligsahan sa ibang bansa. Ipinakilala niya roon ang adobo. Paano nagpakita ng nasyonalismo si Chef Dan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ipinagmalaki niya ang ating bansa"
+        },
+        {
+          "label": "B",
+          "text": "Yumaman siya"
+        },
+        {
+          "label": "C",
+          "text": "Natuto siyang magluto"
+        },
+        {
+          "label": "D",
+          "text": "Nakapaglakbay siya"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_9",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa Linggo ng Nasyonalismo, may 4 na booth: (1) lokal na pagkain, (2) laruang gawa sa ibang bansa, (3) katutubong sayaw, (4) tula sa Filipino. Anong booth ang hindi nagpapakita ng nasyonalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "1"
+        },
+        {
+          "label": "B",
+          "text": "2"
+        },
+        {
+          "label": "C",
+          "text": "3"
+        },
+        {
+          "label": "D",
+          "text": "4"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_1_10",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sabi ni Tomas, \"Ang nasyonalismo ay ang pagkamuhi sa ibang bansa.\" Tama ba si Tomas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Oo, para hindi makialam ang iba"
+        },
+        {
+          "label": "B",
+          "text": "Hindi, dapat gumalang sa ibang bansa"
+        },
+        {
+          "label": "C",
+          "text": "Oo, dahil mahal niya ang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Hindi, walang kinalaman ito sa bansa"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    }
+  ],
+  "2": [
+    {
+      "id": "nat_2_1",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong ika-18 siglo sa Europa, itinuro ng isang guro na may karapatan ang lahat ng tao at dapat gamitin ang katwiran sa pamamahala. Anong kilusan ang ipinapakita nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "La Ilustración"
+        },
+        {
+          "label": "B",
+          "text": "Kalakalang Galyon"
+        },
+        {
+          "label": "C",
+          "text": "Polo y servicio"
+        },
+        {
+          "label": "D",
+          "text": "Cavite Mutiny"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_2",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong 1812, may bagong batas ang Espanya na tinatawag na Konstitusyon ng Cádiz. Isang mamamahayag ang nagsulat ng kaniyang opinyon dahil dito. Anong karapatan ang ginamit niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sapilitang paggawa"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabayad ng tributo"
+        },
+        {
+          "label": "C",
+          "text": "Malayang magsulat ng balita"
+        },
+        {
+          "label": "D",
+          "text": "Kalakalang Galyon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_3",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Dati, napakatagal ng biyahe ng barko mula Europa papuntang Maynila. Noong 1869, binuksan ang Suez Canal at umikli ang biyahe. Ano ang pinakamalamang na nangyari sa Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nawala ang mga pantalan"
+        },
+        {
+          "label": "B",
+          "text": "Tumigil ang kalakalan"
+        },
+        {
+          "label": "C",
+          "text": "Humaba ang biyahe"
+        },
+        {
+          "label": "D",
+          "text": "Mas mabilis dumating ang bagong ideya"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_4",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gumagawa si Nico ng timeline. Ang mga pangyayari: Suez Canal (1869), Konstitusyon ng Cádiz (1812), at ganap na pagbubukas ng mga pantalan (1834). Alin ang tamang pagkakasunod, mula pinakauna?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Suez → Cádiz → Pantalan"
+        },
+        {
+          "label": "B",
+          "text": "Cádiz → Pantalan → Suez"
+        },
+        {
+          "label": "C",
+          "text": "Pantalan → Suez → Cádiz"
+        },
+        {
+          "label": "D",
+          "text": "Cádiz → Suez → Pantalan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_5",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Umaasa si Don Ramon sa galyon na bumibiyahe sa pagitan ng Maynila at Acapulco para sa kaniyang negosyo. Noong 1815, natigil ang Kalakalang Galyon. Ano ang pinakamatalinong gawin niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Maghintay ng galyon"
+        },
+        {
+          "label": "B",
+          "text": "Isara ang negosyo"
+        },
+        {
+          "label": "C",
+          "text": "Makipagkalakalan sa ibang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Itigil ang pagbebenta"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_6",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Hindi lubusang naipatupad sa Pilipinas ang Konstitusyon ng Cádiz. Tanong ng kaklase mo: \"Wala bang naidulot ito?\" Ano ang pinakamagandang sagot?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Meron, namulat ang mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Wala, hindi ito naipatupad"
+        },
+        {
+          "label": "C",
+          "text": "Wala, para sa Espanyol lang"
+        },
+        {
+          "label": "D",
+          "text": "Meron, malaya na ang bansa"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_7",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Tanong ni Migo: \"Kung may kaisipang liberal na noon, bakit hindi agad naging malaya ang Pilipinas?\" Ano ang pinakatamang sagot?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang natutunan ang mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Ayaw ng buong Europa"
+        },
+        {
+          "label": "C",
+          "text": "Hindi totoo ang liberalismo"
+        },
+        {
+          "label": "D",
+          "text": "Nagsisimula pa lang mamulat ang mga Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_8",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bahagyang binuksan ang mga pantalan ng Pilipinas noong 1789. Ganap itong binuksan noong 1834. Ilang taon ang pagitan ng dalawang pangyayari?",
+      "options": [
+        {
+          "label": "A",
+          "text": "35"
+        },
+        {
+          "label": "B",
+          "text": "45"
+        },
+        {
+          "label": "C",
+          "text": "55"
+        },
+        {
+          "label": "D",
+          "text": "65"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_9",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sabi ni Ella, namulat ang mga Pilipino dahil sa mga bagong ideya at paninda na dumating sa bansa. Sabi ni Paolo, dahil daw naipatupad na ng Espanya ang lahat ng liberal na batas. Sino ang mas tama?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Si Paolo"
+        },
+        {
+          "label": "B",
+          "text": "Parehong tama"
+        },
+        {
+          "label": "C",
+          "text": "Si Ella"
+        },
+        {
+          "label": "D",
+          "text": "Parehong mali"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_2_10",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang kaisipang liberal ay naniniwalang malaya at pantay ang lahat. Gusto ng Grade 6 na ipakita ito sa kanilang paaralan. Alin ang pinakaangkop na gawin?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pantay ang tingin sa lahat"
+        },
+        {
+          "label": "B",
+          "text": "Iisa lang ang nagpapasya"
+        },
+        {
+          "label": "C",
+          "text": "May bawal magsalita"
+        },
+        {
+          "label": "D",
+          "text": "Iba ang patakaran sa mayaman"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    }
+  ],
+  "3": [
+    {
+      "id": "nat_3_1",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong 1850s, nagtatanim ng asukal at tabako ang pamilya ni Don Berto at ipinagbibili ito sa ibang bansa. Naipag-aral nila ang anak nila sa Europa. Saang pangkat sila pinakamalamang kabilang?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Panggitnang uri"
+        },
+        {
+          "label": "B",
+          "text": "Karaniwang magsasaka"
+        },
+        {
+          "label": "C",
+          "text": "Mahirap na manggagawa"
+        },
+        {
+          "label": "D",
+          "text": "Prayle"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_2",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong ika-19 na siglo, yumaman ang maraming mangangalakal at may-ari ng lupa. Dumami ang panggitnang uri. Bakit dumami ang panggitnang uri?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagsara ang mga pantalan"
+        },
+        {
+          "label": "B",
+          "text": "Nabuksan ang Maynila sa kalakalan"
+        },
+        {
+          "label": "C",
+          "text": "Natigil ang pagtatanim"
+        },
+        {
+          "label": "D",
+          "text": "Nawala ang mga mangangalakal"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_3",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Carlos ay anak ng mayamang mangangalakal. Nag-aral siya sa Europa at sumulat para sa pagbabago sa Pilipinas. Bakit siya tinawag na ilustrado?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging prayle siya"
+        },
+        {
+          "label": "B",
+          "text": "Naging gobernador siya"
+        },
+        {
+          "label": "C",
+          "text": "Naging sundalo siya"
+        },
+        {
+          "label": "D",
+          "text": "Nakapag-aral siya at naliwanagan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_4",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa Europa, tinawag na \"indio\" ang isang Pilipinong estudyante kahit matalino siya. Ano ang pinakamalamang na nangyari sa kaniya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nakalimutan niya ang bayan"
+        },
+        {
+          "label": "B",
+          "text": "Tumigil siyang mag-aral"
+        },
+        {
+          "label": "C",
+          "text": "Namulat siya sa kalagayan ng bayan"
+        },
+        {
+          "label": "D",
+          "text": "Ayaw na niyang bumalik"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_5",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Mang Ben ay magsasakang hindi nakapag-aral. Sabi ng anak niya, \"Tay, hindi po tayo kasali sa mga ilustrado.\" Anong limitasyon ng mga ilustrado ang ipinapakita nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ayaw nilang tumulong"
+        },
+        {
+          "label": "B",
+          "text": "Hindi lahat ay nakapag-aral"
+        },
+        {
+          "label": "C",
+          "text": "Iisang wika lang sila"
+        },
+        {
+          "label": "D",
+          "text": "Kaaway nila ang magsasaka"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_6",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa museo, may larawan ng apat na bayani. Sino ang HINDI ilustrado ayon sa aralin?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Andres Bonifacio"
+        },
+        {
+          "label": "B",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "C",
+          "text": "Marcelo H. del Pilar"
+        },
+        {
+          "label": "D",
+          "text": "Graciano López Jaena"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_7",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sumulat ang isang ilustrado tungkol sa kasaysayan ng Pilipinas para mabasa ng lahat ng Pilipino. Ano ang pinakamalamang na layunin niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Palitan ang wika natin"
+        },
+        {
+          "label": "B",
+          "text": "Magpasikat sa Europa"
+        },
+        {
+          "label": "C",
+          "text": "Libangin ang mga prayle"
+        },
+        {
+          "label": "D",
+          "text": "Pagbuklurin ang mga Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_8",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gusto ng mga mag-aaral na ipaglaban ang pagbabago sa paaralan sa mapayapang paraan, tulad ng mga ilustrado. Alin ang pinakamalapit sa ginawa ng mga ilustrado?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magsigawan sa silid"
+        },
+        {
+          "label": "B",
+          "text": "Sirain ang gamit"
+        },
+        {
+          "label": "C",
+          "text": "Sumulat ng liham at artikulo"
+        },
+        {
+          "label": "D",
+          "text": "Takutin ang guro"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_9",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pangkat A: napakayaman at makapangyarihan. Pangkat B: mangangalakal, may-ari ng lupa, at propesyonal. Pangkat C: karaniwang magsasaka at manggagawa. Alin ang panggitnang uri?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pangkat A"
+        },
+        {
+          "label": "B",
+          "text": "Pangkat B"
+        },
+        {
+          "label": "C",
+          "text": "Pangkat C"
+        },
+        {
+          "label": "D",
+          "text": "Wala sa kanila"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_3_10",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kung hindi binuksan ang Maynila sa kalakalan noong 1834, hindi sana yumaman ang marami sa pagtatanim at pangangalakal. Ano ang mangyayari sa panggitnang uri?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hindi sana ito lumaki"
+        },
+        {
+          "label": "B",
+          "text": "Lalaki pa rin ito"
+        },
+        {
+          "label": "C",
+          "text": "Mawawala ang mayayaman"
+        },
+        {
+          "label": "D",
+          "text": "Magiging pinakamayaman silang lahat"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    }
+  ],
+  "4": [
+    {
+      "id": "nat_4_1",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang parokya sa Maynila, Espanyol na prayle ang pari. Pero may Pilipinong paring sekular na kayang mamuno. Bakit hindi ito patas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Bawal ang Pilipino sa Simbahan"
+        },
+        {
+          "label": "B",
+          "text": "Ayon sa Simbahan, paring sekular ang dapat mamuno"
+        },
+        {
+          "label": "C",
+          "text": "Dapat prayle ang lahat ng pari"
+        },
+        {
+          "label": "D",
+          "text": "Walang parokya noon"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_2",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Padre Jun ay pari na hindi kasapi ng anumang samahang panrelihiyon tulad ng Agustino o Dominiko. Anong uri ng pari siya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Paring sekular"
+        },
+        {
+          "label": "B",
+          "text": "Paring regular"
+        },
+        {
+          "label": "C",
+          "text": "Prayle"
+        },
+        {
+          "label": "D",
+          "text": "Ilustrado"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_3",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Inilipat ng Simbahan ang pamamahala ng parokya mula sa prayle papunta sa paring sekular. Ano ang tawag dito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pilipinisasyon"
+        },
+        {
+          "label": "B",
+          "text": "Garote"
+        },
+        {
+          "label": "C",
+          "text": "Tributo"
+        },
+        {
+          "label": "D",
+          "text": "Sekularisasyon"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_4",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Binigyan ng pagkakataon ang mga paring Pilipino na mamuno sa mga parokyang dating hawak ng mga Espanyol. Ano ang tawag dito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sekularisasyon"
+        },
+        {
+          "label": "B",
+          "text": "Liberalismo"
+        },
+        {
+          "label": "C",
+          "text": "Pilipinisasyon"
+        },
+        {
+          "label": "D",
+          "text": "Kamalayang pambansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_5",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa museo, may larawan ng paring namatay noong Hunyo 3, 1863 sa lindol. Siya ang unang nanguna sa kilusan. Sino siya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Padre Pedro Peláez"
+        },
+        {
+          "label": "B",
+          "text": "Padre Jose Burgos"
+        },
+        {
+          "label": "C",
+          "text": "Padre Mariano Gómez"
+        },
+        {
+          "label": "D",
+          "text": "Padre Jacinto Zamora"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_6",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Namatay si Padre Peláez, pero nagpatuloy ang kampanya para sa sekularisasyon. Bakit ito nagpatuloy?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Natupad na ang layunin"
+        },
+        {
+          "label": "B",
+          "text": "Ipinagpatuloy ito ng GOMBURZA"
+        },
+        {
+          "label": "C",
+          "text": "Tumigil na ang mga paring Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Nakalimutan na ito ng lahat"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_7",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ayon sa Simbahan, ang mga paring sekular dapat ang namamahala sa parokya. Pero nanatili ito sa mga prayle. Bakit ito hindi makatarungan para sa mga paring Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dayuhan sila"
+        },
+        {
+          "label": "B",
+          "text": "Ayaw nilang mamuno"
+        },
+        {
+          "label": "C",
+          "text": "Hindi sinunod ang alituntunin ng Simbahan"
+        },
+        {
+          "label": "D",
+          "text": "Walang parokya sa Pilipinas"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_8",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Hindi agad natupad ang hiling ng kilusan para sa sekularisasyon. Ano ang naging halaga nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Natapos ang pamamahala ng Espanya"
+        },
+        {
+          "label": "B",
+          "text": "Nawala ang lahat ng prayle"
+        },
+        {
+          "label": "C",
+          "text": "Naging malaya ang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Ipinakita ang hangaring pantay na karapatan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_9",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang paaralan, laging taga-ibang bayan ang punong-guro kahit may mahuhusay na gurong taga-roon. Alin ang pinakakatulad sa layunin ng Pilipinisasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hayaang mamuno ang taga-roon"
+        },
+        {
+          "label": "B",
+          "text": "Paalisin ang lahat ng guro"
+        },
+        {
+          "label": "C",
+          "text": "Isara ang paaralan"
+        },
+        {
+          "label": "D",
+          "text": "Dagdagan ang bakasyon"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_4_10",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "May 20 parokya. Sa halimbawang ito, 2 sa bawat 5 parokya ay hawak ng paring sekular. Ang iba ay hawak ng prayle. Ilang parokya ang hawak ng prayle?",
+      "options": [
+        {
+          "label": "A",
+          "text": "8"
+        },
+        {
+          "label": "B",
+          "text": "10"
+        },
+        {
+          "label": "C",
+          "text": "12"
+        },
+        {
+          "label": "D",
+          "text": "15"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    }
+  ],
+  "5": [
+    {
+      "id": "nat_5_1",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong Enero 20, 1872, nag-aklas ang mga sundalo at manggagawa sa arsenal ng Cavite. Dati, hindi sila nagbabayad ng tributo (buwis) o gumagawa ng sapilitang paggawa. Ano ang pinakamalamang na dahilan ng pag-aklas nila?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Inalis ang espesyal nilang karapatan"
+        },
+        {
+          "label": "B",
+          "text": "Gusto nilang maging gobernador"
+        },
+        {
+          "label": "C",
+          "text": "Nasira ang simbahan"
+        },
+        {
+          "label": "D",
+          "text": "Ipinagbawal ang pagsulat"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_2",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Gobernador-Heneral Carlos de la Torre ay pantay ang tingin sa Pilipino at Espanyol. Nang palitan siya ni Rafael de Izquierdo, marami ang nagbago. Ano ang pagkakaiba nila?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mahigpit si de la Torre; liberal si Izquierdo"
+        },
+        {
+          "label": "B",
+          "text": "Liberal si de la Torre; mahigpit si Izquierdo"
+        },
+        {
+          "label": "C",
+          "text": "Parehong liberal"
+        },
+        {
+          "label": "D",
+          "text": "Parehong mahigpit"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_3",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ayon sa mga Espanyol, planong ibagsak ang pamahalaan ang aklas. Ayon sa maraming Pilipinong mananalaysay, pag-aaklas lang ito ng mga manggagawa. Ano ang dapat gawin ng mag-aaral para malaman ang totoo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Piliin agad ang kuwento ng Espanyol"
+        },
+        {
+          "label": "B",
+          "text": "Huwag na lang alamin"
+        },
+        {
+          "label": "C",
+          "text": "Ihambing ang dalawang kuwento"
+        },
+        {
+          "label": "D",
+          "text": "Piliin ang pinakamaikling kuwento"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_4",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinagbintangan ni Izquierdo ang mga paring nanawagan ng sekularisasyon na sila raw ang nasa likod ng aklas. Ano ang pinakamalamang na dahilan niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sila ang namuno sa aklas"
+        },
+        {
+          "label": "B",
+          "text": "Sila ang nagbayad ng tributo"
+        },
+        {
+          "label": "C",
+          "text": "Sila ay mga sundalo"
+        },
+        {
+          "label": "D",
+          "text": "Sisihin ang mga humihingi ng reporma"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_5",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Naganap ang Cavite Mutiny noong Enero 20, 1872. Iginarote ang GOMBURZA noong Pebrero 17, 1872. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "options": [
+        {
+          "label": "A",
+          "text": "18"
+        },
+        {
+          "label": "B",
+          "text": "28"
+        },
+        {
+          "label": "C",
+          "text": "38"
+        },
+        {
+          "label": "D",
+          "text": "48"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_6",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alam ng mga Pilipino na hindi totoo ang bintang sa tatlong pari. Pero pinatay pa rin sila sa garote. Ano ang naramdaman ng mga Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Galit, at mas lumakas ang nasyonalismo"
+        },
+        {
+          "label": "B",
+          "text": "Pagsang-ayon sa pamahalaan"
+        },
+        {
+          "label": "C",
+          "text": "Tuwa dahil natapos ang aklas"
+        },
+        {
+          "label": "D",
+          "text": "Walang naramdaman"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_7",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nagalit ang mga Pilipinong estudyante sa Espanya sa balita ng paggarote sa GOMBURZA. Ano ang pinakamalamang na ginawa nila?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Bumalik at naging prayle"
+        },
+        {
+          "label": "B",
+          "text": "Tumigil mag-aral"
+        },
+        {
+          "label": "C",
+          "text": "Palakasin ang paghingi ng reporma"
+        },
+        {
+          "label": "D",
+          "text": "Sumang-ayon kay Izquierdo"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_8",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Inialay ni Jose Rizal ang nobelang El Filibusterismo sa GOMBURZA. Ano ang ipinapakita nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kaaway ni Rizal ang tatlong pari"
+        },
+        {
+          "label": "B",
+          "text": "Sila ang sumulat ng nobela"
+        },
+        {
+          "label": "C",
+          "text": "Walang kinalaman ang mga pari sa mga Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Hindi nalimutan ang GOMBURZA"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_9",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Dati, hindi nagbabayad ng tributo o gumagawa ng sapilitang paggawa (polo y servicio) si Mang Andoy. Inalis ito ni Izquierdo. Ano ang mangyayari kay Mang Andoy?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mas kaunti ang babayaran niya"
+        },
+        {
+          "label": "B",
+          "text": "Kailangan na niyang magbayad at magtrabaho"
+        },
+        {
+          "label": "C",
+          "text": "Wala pa ring babayaran"
+        },
+        {
+          "label": "D",
+          "text": "Makakakuha siya ng lupa"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_5_10",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Naniniwala ang ilang pinuno ng Simbahan na walang kasalanan ang tatlong pari. Pero pinatay pa rin sila sa Bagumbayan. Alin ang pinakamalakas na dahilan para sabihing hindi patas ang hatol?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Inosente sila, ayon sa ilang pinuno ng Simbahan"
+        },
+        {
+          "label": "B",
+          "text": "Sa Luneta sila pinatay"
+        },
+        {
+          "label": "C",
+          "text": "Mga pari sila"
+        },
+        {
+          "label": "D",
+          "text": "Nangyari ito noong Pebrero"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    }
+  ],
+  "6": [
+    {
+      "id": "nat_6_1",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gusto ng isang propagandista na may Pilipinong makaupo sa Cortes, ang batasan ng Espanya, para marinig ang boses ng mga Pilipino. Anong layunin ng kilusan ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Bagong buwis"
+        },
+        {
+          "label": "B",
+          "text": "Paglaban gamit ang armas"
+        },
+        {
+          "label": "C",
+          "text": "Pagpapaalis sa mga Espanyol"
+        },
+        {
+          "label": "D",
+          "text": "May kinatawang Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_2",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Naglista si Ria ng mga mapayapang paraan ng Kilusang Propaganda sa paghingi ng reporma. Alin ang HINDI dapat isama?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pag-aalsa gamit ang armas"
+        },
+        {
+          "label": "B",
+          "text": "Pagsulat"
+        },
+        {
+          "label": "C",
+          "text": "Paglilimbag"
+        },
+        {
+          "label": "D",
+          "text": "Pagtatalumpati"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_3",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sumulat si Marcelo H. del Pilar gamit ang sagisag-panulat na Plaridel. Ang sagisag-panulat ay ibang pangalan ng manunulat. Bakit gumamit ng sagisag-panulat ang mga propagandista?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Para maging sikat"
+        },
+        {
+          "label": "B",
+          "text": "Mapanganib ang kanilang kampanya"
+        },
+        {
+          "label": "C",
+          "text": "Bawal ang Tagalog"
+        },
+        {
+          "label": "D",
+          "text": "Nakalimutan nila ang pangalan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_4",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ginamit ng Diaryong Tagalog ang wikang Tagalog at Espanyol. Ano ang pinakamalamang na dahilan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Itago ang balita sa Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Para sa Espanyol lang ito"
+        },
+        {
+          "label": "C",
+          "text": "Maunawaan ng mas maraming Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Magpasikat sa Europa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_5",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Inayos ni Tina ang mga akda ayon sa taon: Diaryong Tagalog (1882), Noli Me Tangere (1887), La Solidaridad (1889), at El Filibusterismo (1891). Alin ang huling nailathala?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Diaryong Tagalog"
+        },
+        {
+          "label": "B",
+          "text": "Noli Me Tangere"
+        },
+        {
+          "label": "C",
+          "text": "La Solidaridad"
+        },
+        {
+          "label": "D",
+          "text": "El Filibusterismo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_6",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "May isang nobela ni Rizal na nagsabing puwedeng maging huling paraan ang paghihimagsik (pag-aaklas) para sa pagbabago. Aling nobela ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "El Filibusterismo"
+        },
+        {
+          "label": "B",
+          "text": "Noli Me Tangere"
+        },
+        {
+          "label": "C",
+          "text": "La Solidaridad"
+        },
+        {
+          "label": "D",
+          "text": "Diaryong Tagalog"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_7",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Itinatago sa mga kahon ang mga kopya ng La Solidaridad bago ipasok sa Pilipinas. Bakit ito palihim ipinasok?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mahal ang papel"
+        },
+        {
+          "label": "B",
+          "text": "Makabayan ang nilalaman nito"
+        },
+        {
+          "label": "C",
+          "text": "Para hindi mabasa ng Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Nasa Barcelona ito"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_8",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nahatulan ang isang Espanyol at isang Pilipino sa parehong kasalanan. Alin ang tugma sa layunin ng kilusan na pantay na pagtrato sa batas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mas mabigat ang parusa ng Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Malaya ang Espanyol"
+        },
+        {
+          "label": "C",
+          "text": "Pareho ang parusa nila"
+        },
+        {
+          "label": "D",
+          "text": "Walang paglilitis"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_9",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang lugar, bawal magsulat ng puna tungkol sa pamahalaan. Aling layunin ng kilusan ang tumutugon dito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Malayang magsalita at magsulat"
+        },
+        {
+          "label": "B",
+          "text": "Sekularisasyon ng parokya"
+        },
+        {
+          "label": "C",
+          "text": "Kinatawan sa Cortes"
+        },
+        {
+          "label": "D",
+          "text": "Pag-alis ng tributo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_6_10",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nakita ni Ben ang mga sagisag-panulat na \"Laong Laan\" at \"Dimasalang\" sa lumang sulatin. Sino ang gumamit ng mga ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Marcelo H. del Pilar"
+        },
+        {
+          "label": "B",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "C",
+          "text": "Graciano López Jaena"
+        },
+        {
+          "label": "D",
+          "text": "Andres Bonifacio"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    }
+  ],
+  "7": [
+    {
+      "id": "nat_7_1",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Binasa ng mga Pilipino ang mga artikulo sa La Solidaridad na nagpapakita ng pang-aabuso. Ano ang pinakamalamang na nangyari?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sumuko sila"
+        },
+        {
+          "label": "B",
+          "text": "Tumigil silang magbasa"
+        },
+        {
+          "label": "C",
+          "text": "Namulat sila sa kanilang karapatan"
+        },
+        {
+          "label": "D",
+          "text": "Naging masunurin sila"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_2",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Rizal ay taga-Calamba, si Del Pilar ay taga-Bulacan, at si López Jaena ay taga-Iloilo. Nagtulungan silang tatlo sa Kilusang Propaganda. Ano ang ipinapakita nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagkakaisa ang mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Iisang lugar ang pinanggalingan nila"
+        },
+        {
+          "label": "C",
+          "text": "Iisa ang wika nila"
+        },
+        {
+          "label": "D",
+          "text": "Magkakamag-anak sila"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_3",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sabi ni Jomar, \"Bigo ang Kilusang Propaganda, kaya walang silbi ito.\" Ano ang pinakamahusay na sagot kay Jomar?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tama ka, walang silbi ito"
+        },
+        {
+          "label": "B",
+          "text": "Natupad ang lahat ng hiniling nito"
+        },
+        {
+          "label": "C",
+          "text": "Walang natutunan ang mga Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Inihanda nito ang isip ng mga Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_4",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Tumigil ang paglalathala ng La Solidaridad noong Nobyembre 1895. Bakit ito tumigil?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Natupad na ang reporma"
+        },
+        {
+          "label": "B",
+          "text": "Kulang ang pera at suporta"
+        },
+        {
+          "label": "C",
+          "text": "Wala nang manunulat"
+        },
+        {
+          "label": "D",
+          "text": "Ipinagbawal ito ng Simbahan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_5",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Itinatag ni Rizal ang La Liga Filipina noong Hulyo 3, 1892. Itinatag ang Katipunan noong Hulyo 7, 1892. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "options": [
+        {
+          "label": "A",
+          "text": "3"
+        },
+        {
+          "label": "B",
+          "text": "4"
+        },
+        {
+          "label": "C",
+          "text": "5"
+        },
+        {
+          "label": "D",
+          "text": "7"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_6",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Humingi ng reporma sa mapayapang paraan ang Kilusang Propaganda. Iba naman ang paraan ng Katipunan. Ano ang paraan ng Katipunan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mapayapang reporma"
+        },
+        {
+          "label": "B",
+          "text": "Pagsulat ng pahayagan"
+        },
+        {
+          "label": "C",
+          "text": "Pag-aaklas gamit ang armas"
+        },
+        {
+          "label": "D",
+          "text": "Pagtatalumpati sa Espanya"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_7",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gumawa si Ana ng talaan ng mga pangyayaring humantong sa Rebolusyong Pilipino. Alin ang tamang pagkakasunod?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Propaganda → Katipunan → Rebolusyon"
+        },
+        {
+          "label": "B",
+          "text": "Katipunan → Propaganda → Rebolusyon"
+        },
+        {
+          "label": "C",
+          "text": "Rebolusyon → Propaganda → Katipunan"
+        },
+        {
+          "label": "D",
+          "text": "Propaganda → Rebolusyon → Katipunan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_8",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong Hulyo 3, 1892, nagtatag si Rizal ng grupo para pagkaisahin ang mga Pilipino. Aling grupo ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "La Solidaridad"
+        },
+        {
+          "label": "B",
+          "text": "Diaryong Tagalog"
+        },
+        {
+          "label": "C",
+          "text": "Katipunan"
+        },
+        {
+          "label": "D",
+          "text": "La Liga Filipina"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_9",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Gumawa si Kaye ng blog na nagpapakita ng maling gawain sa barangay sa mapayapang paraan. Aling gawain ng Propaganda ang ginaya niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pag-aaklas gamit ang armas"
+        },
+        {
+          "label": "B",
+          "text": "Paglalantad ng mali sa sulatin"
+        },
+        {
+          "label": "C",
+          "text": "Paglilihim ng lahat"
+        },
+        {
+          "label": "D",
+          "text": "Pagtakas papuntang Espanya"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_10",
+      "era": "nationalism",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nagtatalo ang klase kung bakit mahalaga pa rin ang Kilusang Propaganda kahit hindi natupad ang hiniling nitong reporma. Alin ang pinakamahusay na patunay ng kahalagahan nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Natupad ang lahat ng reporma"
+        },
+        {
+          "label": "B",
+          "text": "Sumali ang lahat ng Espanyol"
+        },
+        {
+          "label": "C",
+          "text": "Nagmulat ito sa maraming Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Hindi natigil ang La Solidaridad"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_11",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa barangay, sinabi ni Ana na mahal niya ang Pilipinas, pero hindi siya sumasali sa mga proyekto. Si Ben ay mahal din ang Pilipinas, at tumutulong siya sa paglilinis at pagpapaunlad ng kanilang komunidad. Sino ang nagpapakita ng nasyonalismo, hindi lang paghanga sa bayan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Si Ana"
+        },
+        {
+          "label": "B",
+          "text": "Si Ben"
+        },
+        {
+          "label": "C",
+          "text": "Silang dalawa"
+        },
+        {
+          "label": "D",
+          "text": "Wala sa kanila"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_12",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong 1812, may bagong batas ang Espanya na tinatawag na Konstitusyon ng Cádiz. Isang mamamahayag ang nagsulat ng kaniyang opinyon dahil dito. Anong karapatan ang ginamit niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sapilitang paggawa"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabayad ng tributo"
+        },
+        {
+          "label": "C",
+          "text": "Malayang magsulat ng balita"
+        },
+        {
+          "label": "D",
+          "text": "Kalakalang Galyon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_13",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Carlos ay anak ng mayamang mangangalakal. Nag-aral siya sa Europa at sumulat para sa pagbabago sa Pilipinas. Bakit siya tinawag na ilustrado?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging prayle siya"
+        },
+        {
+          "label": "B",
+          "text": "Naging gobernador siya"
+        },
+        {
+          "label": "C",
+          "text": "Naging sundalo siya"
+        },
+        {
+          "label": "D",
+          "text": "Nakapag-aral siya at naliwanagan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_14",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Binigyan ng pagkakataon ang mga paring Pilipino na mamuno sa mga parokyang dating hawak ng mga Espanyol. Ano ang tawag dito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sekularisasyon"
+        },
+        {
+          "label": "B",
+          "text": "Liberalismo"
+        },
+        {
+          "label": "C",
+          "text": "Pilipinisasyon"
+        },
+        {
+          "label": "D",
+          "text": "Kamalayang pambansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_15",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Naganap ang Cavite Mutiny noong Enero 20, 1872. Iginarote ang GOMBURZA noong Pebrero 17, 1872. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "options": [
+        {
+          "label": "A",
+          "text": "18"
+        },
+        {
+          "label": "B",
+          "text": "28"
+        },
+        {
+          "label": "C",
+          "text": "38"
+        },
+        {
+          "label": "D",
+          "text": "48"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_16",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "May isang nobela ni Rizal na nagsabing puwedeng maging huling paraan ang paghihimagsik (pag-aaklas) para sa pagbabago. Aling nobela ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "El Filibusterismo"
+        },
+        {
+          "label": "B",
+          "text": "Noli Me Tangere"
+        },
+        {
+          "label": "C",
+          "text": "La Solidaridad"
+        },
+        {
+          "label": "D",
+          "text": "Diaryong Tagalog"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_17",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nanonood ng laro si Rico. Sumigaw siya ng panlalait sa koponan ng ibang bansa habang winawagayway ang watawat ng Pilipinas. Ano ang mali sa ginawa ni Rico?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hindi siya gumalang sa ibang bansa"
+        },
+        {
+          "label": "B",
+          "text": "Sinuportahan niya ang Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Nanood siya ng laro"
+        },
+        {
+          "label": "D",
+          "text": "Nagdala siya ng watawat"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_18",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Umaasa si Don Ramon sa galyon na bumibiyahe sa pagitan ng Maynila at Acapulco para sa kaniyang negosyo. Noong 1815, natigil ang Kalakalang Galyon. Ano ang pinakamatalinong gawin niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Maghintay ng galyon"
+        },
+        {
+          "label": "B",
+          "text": "Isara ang negosyo"
+        },
+        {
+          "label": "C",
+          "text": "Makipagkalakalan sa ibang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Itigil ang pagbebenta"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_19",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa museo, may larawan ng apat na bayani. Sino ang HINDI ilustrado ayon sa aralin?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Andres Bonifacio"
+        },
+        {
+          "label": "B",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "C",
+          "text": "Marcelo H. del Pilar"
+        },
+        {
+          "label": "D",
+          "text": "Graciano López Jaena"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_20",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ayon sa Simbahan, ang mga paring sekular dapat ang namamahala sa parokya. Pero nanatili ito sa mga prayle. Bakit ito hindi makatarungan para sa mga paring Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dayuhan sila"
+        },
+        {
+          "label": "B",
+          "text": "Ayaw nilang mamuno"
+        },
+        {
+          "label": "C",
+          "text": "Hindi sinunod ang alituntunin ng Simbahan"
+        },
+        {
+          "label": "D",
+          "text": "Walang parokya sa Pilipinas"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_21",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Inialay ni Jose Rizal ang nobelang El Filibusterismo sa GOMBURZA. Ano ang ipinapakita nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kaaway ni Rizal ang tatlong pari"
+        },
+        {
+          "label": "B",
+          "text": "Sila ang sumulat ng nobela"
+        },
+        {
+          "label": "C",
+          "text": "Walang kinalaman ang mga pari sa mga Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Hindi nalimutan ang GOMBURZA"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": ""
+    },
+    {
+      "id": "nat_7_22",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang lugar, bawal magsulat ng puna tungkol sa pamahalaan. Aling layunin ng kilusan ang tumutugon dito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Malayang magsalita at magsulat"
+        },
+        {
+          "label": "B",
+          "text": "Sekularisasyon ng parokya"
+        },
+        {
+          "label": "C",
+          "text": "Kinatawan sa Cortes"
+        },
+        {
+          "label": "D",
+          "text": "Pag-alis ng tributo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": ""
+    }
+  ]
+}

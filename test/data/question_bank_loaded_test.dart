@@ -18,8 +18,17 @@ void main() {
 
   setUpAll(QuestionBank.loadAll);
 
-  test('level 1 is padded to the level size with placeholders last', () {
-    final qs = QuestionBank.getQuestions('pre-colonial', 1, random: Random(1));
+  test('a level with a full lesson of questions needs no placeholders', () {
+    for (final era in ['pre-colonial', 'spanish', 'nationalism']) {
+      final qs = QuestionBank.getQuestions(era, 1, random: Random(1));
+      expect(qs.length, GameConstants.questionsPerLevel, reason: era);
+      expect(qs.any(_isPlaceholder), isFalse, reason: era);
+    }
+  });
+
+  test('a short level is padded to the level size with placeholders last', () {
+    // The American era has not been given its Term 4 questions yet: 5 a level.
+    final qs = QuestionBank.getQuestions('american', 1, random: Random(1));
     expect(qs.length, GameConstants.questionsPerLevel);
 
     final firstPlaceholder = qs.indexWhere(_isPlaceholder);
@@ -51,7 +60,7 @@ void main() {
       final qs = QuestionBank.getQuestions('pre-colonial', 1, random: Random(seed));
       texts.add(_correctText(qs.firstWhere((q) => q.id == 'pre_1_1')));
     }
-    expect(texts, {'Teoryang Austronesian'});
+    expect(texts, {'Talaarawan ni Lola'});
   });
 
   test('boss level returns 22 distinct questions', () {
