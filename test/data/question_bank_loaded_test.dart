@@ -26,18 +26,6 @@ void main() {
     }
   });
 
-  test('a short level is padded to the level size with placeholders last', () {
-    // The American era has not been given its Term 4 questions yet: 5 a level.
-    final qs = QuestionBank.getQuestions('american', 1, random: Random(1));
-    expect(qs.length, GameConstants.questionsPerLevel);
-
-    final firstPlaceholder = qs.indexWhere(_isPlaceholder);
-    // Real questions come first, then only placeholders.
-    expect(firstPlaceholder, isNonNegative);
-    expect(qs.skip(firstPlaceholder).every(_isPlaceholder), isTrue);
-    expect(qs.take(firstPlaceholder).any(_isPlaceholder), isFalse);
-  });
-
   test('level 1 real questions come only from the level 1 pool', () {
     final qs = QuestionBank.getQuestions('pre-colonial', 1, random: Random(1));
     final real = qs.where((q) => !_isPlaceholder(q));

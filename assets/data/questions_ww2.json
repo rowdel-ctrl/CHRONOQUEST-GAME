@@ -1,2032 +1,2778 @@
 {
-    "1": [
+  "1": [
+    {
+      "id": "ww2_1_1",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging kauna-unahang halal na kapulungan ng mga Pilipino na binuksan noong 1907?",
+      "options": [
         {
-            "id": "ww2_1_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangyayari sa Pearl Harbor noong Disyembre 1941 ang nagbunsod sa Estados Unidos na sumali sa Ikalawang Digmaang Pandaigdig?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Sinalakay ng Hapon ang Pearl Harbor"
-                },
-                {
-                    "label": "B",
-                    "text": "Sinalakay ng Alemanya ang Pearl Harbor"
-                },
-                {
-                    "label": "C",
-                    "text": "Nagdeklara ng digmaan ang Espanya"
-                },
-                {
-                    "label": "D",
-                    "text": "Sumuko ang Estados Unidos"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang biglaang pananalakay ng Hapon sa Pearl Harbor noong Disyembre 7, 1941 ang nagtulak sa Estados Unidos na sumali sa digmaan, kasabay ng pagsalakay sa Pilipinas."
+          "label": "A",
+          "text": "Asamblea ng Pilipinas"
         },
         {
-            "id": "ww2_1_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan unang lumapag ang malaking hukbong Hapon sa Luzon noong 1941?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Lingayen Gulf"
-                },
-                {
-                    "label": "B",
-                    "text": "Manila Bay"
-                },
-                {
-                    "label": "C",
-                    "text": "Leyte Gulf"
-                },
-                {
-                    "label": "D",
-                    "text": "Subic Bay"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Lumapag ang malaking bahagi ng hukbong Hapon sa Lingayen Gulf noong Disyembre 1941 bago sumulong patungong Maynila."
+          "label": "B",
+          "text": "Kongreso ng Malolos"
         },
         {
-            "id": "ww2_1_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang ginawa ni Heneral Douglas MacArthur sa Maynila upang maiwasan ang labis na pagkasira nito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Idineklara ang Maynila bilang \"Open City\""
-                },
-                {
-                    "label": "B",
-                    "text": "Sinunog ang buong lungsod"
-                },
-                {
-                    "label": "C",
-                    "text": "Ipinagtanggol ang Maynila hanggang sa huli"
-                },
-                {
-                    "label": "D",
-                    "text": "Umatras patungong Australia agad"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Idineklara ni MacArthur ang Maynila bilang \"Open City\" upang maiwasan ang pagkasira nito, bagamat sinakop pa rin ito ng Hapon."
+          "label": "C",
+          "text": "Senado ng Pilipinas"
         },
         {
-            "id": "ww2_1_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan bumagsak ang Bataan sa mga puwersang Hapon, na kilala bilang Araw ng Kagitingan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Abril 9, 1942"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 7, 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Setyembre 2, 1945"
-                },
-                {
-                    "label": "D",
-                    "text": "Oktubre 20, 1944"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumagsak ang Bataan noong Abril 9, 1942, taunang ginugunita bilang Araw ng Kagitingan sa Pilipinas."
-        },
-        {
-            "id": "ww2_1_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa mahabang at mapanganib na paglalakad ng mga bihag na sundalong Pilipino at Amerikano matapos bumagsak ang Bataan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Bataan Death March"
-                },
-                {
-                    "label": "B",
-                    "text": "Long Walk to Freedom"
-                },
-                {
-                    "label": "C",
-                    "text": "March to Corregidor"
-                },
-                {
-                    "label": "D",
-                    "text": "Trail of Tears"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Bataan Death March ay ang mahirap at mapanganib na paglalakad ng libu-libong bihag mula Bataan patungo sa mga kampo ng Hapon."
+          "label": "D",
+          "text": "Batasang Pambansa"
         }
-    ],
-    "2": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang Asamblea ng Pilipinas ang mababang kapulungan ng Komisyon ng Pilipinas at pinamunuan ni Sergio Osmeña."
+    },
+    {
+      "id": "ww2_1_2",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong batas noong 1916 ang nagpangako ng kalayaan sa Pilipinas at lumikha ng Senado at Kapulungan ng mga Kinatawan?",
+      "options": [
         {
-            "id": "ww2_2_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong isla-tanggulan ang huling bumagsak sa Hapon noong Mayo 1942?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Corregidor"
-                },
-                {
-                    "label": "B",
-                    "text": "Leyte"
-                },
-                {
-                    "label": "C",
-                    "text": "Mindanao"
-                },
-                {
-                    "label": "D",
-                    "text": "Palawan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumagsak ang Corregidor sa Hapon noong Mayo 1942, kasunod ng pagbagsak ng Bataan."
+          "label": "A",
+          "text": "Batas Cooper"
         },
         {
-            "id": "ww2_2_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangakong sinabi ni Heneral MacArthur nang umatras siya papuntang Australia noong 1942?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "\"I shall return\""
-                },
-                {
-                    "label": "B",
-                    "text": "\"Give me liberty or give me death\""
-                },
-                {
-                    "label": "C",
-                    "text": "\"We shall never surrender\""
-                },
-                {
-                    "label": "D",
-                    "text": "\"Remember Pearl Harbor\""
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Kilalang sinabi ni Heneral MacArthur ang \"I shall return\" bilang pangako na babalik siya upang palayain ang Pilipinas."
+          "label": "B",
+          "text": "Batas Tydings-McDuffie"
         },
         {
-            "id": "ww2_2_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging Pangulo ng pamahalaang itinatag ng Hapon (Second Republic) sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Jose P. Laurel"
-                },
-                {
-                    "label": "B",
-                    "text": "Manuel Quezon"
-                },
-                {
-                    "label": "C",
-                    "text": "Sergio Osmena"
-                },
-                {
-                    "label": "D",
-                    "text": "Manuel Roxas"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Jose P. Laurel ang naging Pangulo ng Second Republic, ang pamahalaang itinatag ng Hapon sa Pilipinas noong panahon ng Okupasyon."
+          "label": "C",
+          "text": "Batas Bell"
         },
         {
-            "id": "ww2_2_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa organisasyong itinatag ng Hapon upang isulong ang kanilang layunin sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "B",
-                    "text": "Katipunan"
-                },
-                {
-                    "label": "C",
-                    "text": "Hukbalahap"
-                },
-                {
-                    "label": "D",
-                    "text": "Nacionalista Party"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Kalibapi (Kapisanan sa Paglilingkod sa Bagong Pilipinas) ang naging opisyal na organisasyong pampulitika sa ilalim ng pamahalaang Hapon."
-        },
-        {
-            "id": "ww2_2_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang katangian ng pamahalaang itinatag ng Hapon sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Puppet government o pamahalaang kontrolado ng Hapon"
-                },
-                {
-                    "label": "B",
-                    "text": "Ganap na malayang pamahalaan"
-                },
-                {
-                    "label": "C",
-                    "text": "Pamahalaang kolonyal ng Espanya"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang pamahalaan noong panahong iyon"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang pamahalaan sa ilalim ni Laurel ay kilala bilang \"puppet government\" dahil kontrolado at ginagabayan ito ng Hapon."
+          "label": "D",
+          "text": "Batas Jones"
         }
-    ],
-    "3": [
+      ],
+      "correctAnswer": "D",
+      "explanation": "Tinatawag ding Philippine Autonomy Act ang Batas Jones at nangakong ibibigay ang kalayaan kapag may matatag na pamahalaan."
+    },
+    {
+      "id": "ww2_1_3",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"Filipinization\" sa ilalim ni Gobernador-Heneral Francis Harrison?",
+      "options": [
         {
-            "id": "ww2_3_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong hirap ang karaniwang naranasan ng mga Pilipino sa larangan ng pagkain noong Okupasyong Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Matinding kakulangan sa bigas at pagkain"
-                },
-                {
-                    "label": "B",
-                    "text": "Sobrang dami ng pagkain"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang naranasang paghihirap"
-                },
-                {
-                    "label": "D",
-                    "text": "Libreng pagkain sa lahat"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nakaranas ng matinding kakulangan sa pagkain, lalo na bigas, ang mga Pilipino sa panahon ng Okupasyong Hapon."
+          "label": "A",
+          "text": "Pagpapadala ng mga Pilipino sa Amerika"
         },
         {
-            "id": "ww2_3_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tinawag na palayaw sa salaping inilabas ng gobyernong Hapon dahil sa mababang halaga nito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Mickey Mouse money"
-                },
-                {
-                    "label": "B",
-                    "text": "Piloncitos"
-                },
-                {
-                    "label": "C",
-                    "text": "Peso Fuerte"
-                },
-                {
-                    "label": "D",
-                    "text": "Real de a ocho"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Tinawag na \"Mickey Mouse money\" ang salaping inilabas ng gobyernong Hapon dahil bumagsak ang halaga nito noong panahon ng digmaan."
+          "label": "B",
+          "text": "Pagpapalit ng wikang Tagalog sa Ingles"
         },
         {
-            "id": "ww2_3_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang ipinatupad na oras kung kailan bawal lumabas ng bahay sa panahon ng Okupasyong Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Curfew"
-                },
-                {
-                    "label": "B",
-                    "text": "Fiesta"
-                },
-                {
-                    "label": "C",
-                    "text": "Siesta"
-                },
-                {
-                    "label": "D",
-                    "text": "Recess"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinatupad ang curfew, isang takdang oras kung saan bawal lumabas ang mga tao, bilang bahagi ng kontrol ng Hapon."
+          "label": "C",
+          "text": "Pagpapalit ng mga Amerikano sa tanggapan ng gobyerno ng mga Pilipino"
         },
         {
-            "id": "ww2_3_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa hukbong pangkapulisan ng Hapon na kilala sa kanilang mahigpit na pagpapatupad ng batas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Kempeitai"
-                },
-                {
-                    "label": "B",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "C",
-                    "text": "Hukbalahap"
-                },
-                {
-                    "label": "D",
-                    "text": "USAFFE"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Kempeitai ang hukbong pangkapulisan ng militar ng Hapon na kilala sa kanilang mahigpit na disiplina at pagpapatupad ng batas."
-        },
-        {
-            "id": "ww2_3_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Bakit mahalagang malaman ang mga karanasan ng mga Pilipino noong Okupasyong Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Upang maunawaan ang kahalagahan ng kapayapaan at karapatang pantao"
-                },
-                {
-                    "label": "B",
-                    "text": "Wala itong kabuluhan sa kasalukuyan"
-                },
-                {
-                    "label": "C",
-                    "text": "Para lang malaman ang mga pangalan ng heneral"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang dapat matutunan dito"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang pag-aaral ng mga karanasan noong digmaan ay nagpapaalala sa kahalagahan ng kapayapaan, karapatang pantao, at pagkakaisa."
+          "label": "D",
+          "text": "Pagtatayo ng mga paaralan para sa mga Amerikano"
         }
-    ],
-    "4": [
+      ],
+      "correctAnswer": "C",
+      "explanation": "Dumami ang mga Pilipinong nakapaglingkod sa pamahalaan sa panahon ni Harrison (1913-1921)."
+    },
+    {
+      "id": "ww2_1_4",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namuno sa Misyong Pangkalayaan na tinawag na \"OsRox\" noong 1922?",
+      "options": [
         {
-            "id": "ww2_4_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa hukbong gerilyang itinatag upang lumaban sa mga Hapon, lalo na sa Gitnang Luzon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Hukbalahap"
-                },
-                {
-                    "label": "B",
-                    "text": "Katipunan"
-                },
-                {
-                    "label": "C",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "D",
-                    "text": "Kempeitai"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Hukbalahap (Hukbong Bayan Laban sa Hapon) ay isang kilalang kilusang gerilya na lumaban sa mga Hapon, lalo na sa Gitnang Luzon."
+          "label": "A",
+          "text": "Manuel Quezon at Jose Laurel"
         },
         {
-            "id": "ww2_4_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa opisyal na hukbo ng Estados Unidos at Pilipinas noong panahon ng digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "USAFFE"
-                },
-                {
-                    "label": "B",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "C",
-                    "text": "Kempeitai"
-                },
-                {
-                    "label": "D",
-                    "text": "Hukbalahap"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang USAFFE (United States Army Forces in the Far East) ang naging pinagsamang hukbo ng Estados Unidos at Pilipinas."
+          "label": "B",
+          "text": "Sergio Osmeña at Manuel Roxas"
         },
         {
-            "id": "ww2_4_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naging mahalagang tungkulin ng mga gerilya sa buong digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pagbibigay ng impormasyon (intelligence) sa mga Allied Forces"
-                },
-                {
-                    "label": "B",
-                    "text": "Pakikipagtulungan sa Hapon"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang tungkuling ginampanan"
-                },
-                {
-                    "label": "D",
-                    "text": "Pagbebenta ng armas sa Hapon"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagbigay ang mga gerilya ng mahalagang impormasyon sa mga Allied Forces tungkol sa mga galaw ng hukbong Hapon."
+          "label": "C",
+          "text": "Emilio Aguinaldo at Apolinario Mabini"
         },
         {
-            "id": "ww2_4_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saang bahagi ng Pilipinas nagkaroon din ng malalakas na kilusang gerilya bukod sa Luzon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Visayas at Mindanao"
-                },
-                {
-                    "label": "B",
-                    "text": "Wala sa ibang lugar"
-                },
-                {
-                    "label": "C",
-                    "text": "Espanya"
-                },
-                {
-                    "label": "D",
-                    "text": "Estados Unidos"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagkaroon din ng malalakas na kilusang gerilya sa Visayas at Mindanao, hindi lamang sa Luzon."
-        },
-        {
-            "id": "ww2_4_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang isa sa mga kilalang lider ng kilusang Hukbalahap?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Luis Taruc"
-                },
-                {
-                    "label": "B",
-                    "text": "Jose P. Laurel"
-                },
-                {
-                    "label": "C",
-                    "text": "Manuel Roxas"
-                },
-                {
-                    "label": "D",
-                    "text": "Douglas MacArthur"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Luis Taruc ay isa sa mga kilalang lider ng Hukbalahap sa panahon ng digmaan."
+          "label": "D",
+          "text": "Claro Recto at Elpidio Quirino"
         }
-    ],
-    "5": [
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang OsRox ay pinaikling pangalan nina Osmeña at Roxas, na humiling ng kalayaan sa Estados Unidos."
+    },
+    {
+      "id": "ww2_1_5",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling batas noong 1934 ang nagtakda ng sampung taong Pamahalaang Komonwelt bago ang ganap na kalayaan?",
+      "options": [
         {
-            "id": "ww2_5_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong labanang pandagat noong Oktubre 1944 ang itinuturing na pinakamalaking labanang pandagat sa kasaysayan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Battle of Leyte Gulf"
-                },
-                {
-                    "label": "B",
-                    "text": "Battle of Manila Bay"
-                },
-                {
-                    "label": "C",
-                    "text": "Battle of Mactan"
-                },
-                {
-                    "label": "D",
-                    "text": "Battle of Corregidor"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Battle of Leyte Gulf ay itinuturing na isa sa pinakamalaking labanang pandagat sa kasaysayan, na naganap noong Oktubre 1944."
+          "label": "A",
+          "text": "Batas Tydings-McDuffie"
         },
         {
-            "id": "ww2_5_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan bumalik si Heneral MacArthur upang simulan ang paglaya ng Pilipinas noong 1944?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Leyte"
-                },
-                {
-                    "label": "B",
-                    "text": "Bataan"
-                },
-                {
-                    "label": "C",
-                    "text": "Maynila"
-                },
-                {
-                    "label": "D",
-                    "text": "Corregidor"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumalik si Heneral MacArthur sa Leyte noong Oktubre 1944 upang simulan ang paglaya ng Pilipinas mula sa Hapon."
+          "label": "B",
+          "text": "Batas Hare-Hawes-Cutting"
         },
         {
-            "id": "ww2_5_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan sinimulang palayain ang Maynila mula sa kontrol ng Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pebrero 1945"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Oktubre 1944"
-                },
-                {
-                    "label": "D",
-                    "text": "Setyembre 1945"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naganap ang Labanan sa Maynila noong Pebrero 1945, kung saan nagsimulang mapalaya ang lungsod mula sa Hapon."
+          "label": "C",
+          "text": "Batas Jones"
         },
         {
-            "id": "ww2_5_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod na taon saklaw ang panahon ng paglaya ng Pilipinas mula sa Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1944-1945"
-                },
-                {
-                    "label": "B",
-                    "text": "1898-1902"
-                },
-                {
-                    "label": "C",
-                    "text": "1521-1565"
-                },
-                {
-                    "label": "D",
-                    "text": "1935-1941"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang panahon ng paglaya ng Pilipinas mula sa Hapon ay saklaw ng 1944-1945."
-        },
-        {
-            "id": "ww2_5_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino-sino ang nagtulungan upang palayain ang Pilipinas mula sa Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Mga puwersang Pilipino, Amerikano, at gerilya"
-                },
-                {
-                    "label": "B",
-                    "text": "Mga puwersang Kastila lamang"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang tumulong sa Pilipinas"
-                },
-                {
-                    "label": "D",
-                    "text": "Mga puwersang Hapon lamang"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtulungan ang mga puwersang Pilipino, Amerikano, at gerilya sa pagpapalaya sa Pilipinas mula sa Hapon."
+          "label": "D",
+          "text": "Batas Philippine Bill of 1902"
         }
-    ],
-    "6": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Nilagdaan ito ni Pangulong Franklin D. Roosevelt noong Marso 24, 1934."
+    },
+    {
+      "id": "ww2_1_6",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tumutol sa Hare-Hawes-Cutting Act na naging dahilan ng pagpasa ng Tydings-McDuffie?",
+      "options": [
         {
-            "id": "ww2_6_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong lungsod ang isa sa pinakamalubhang nasira sa Labanan sa Maynila noong 1945?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Maynila"
-                },
-                {
-                    "label": "B",
-                    "text": "Cebu"
-                },
-                {
-                    "label": "C",
-                    "text": "Davao"
-                },
-                {
-                    "label": "D",
-                    "text": "Baguio"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Labis na nasira ang Maynila sa Labanan sa Maynila noong 1945, isa sa pinakamalubhang labanan sa digmaan."
+          "label": "A",
+          "text": "Emilio Aguinaldo"
         },
         {
-            "id": "ww2_6_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang epekto ng digmaan sa ekonomiya ng Pilipinas noong 1945?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Labis na pagkasira ng imprastraktura at kabuhayan"
-                },
-                {
-                    "label": "B",
-                    "text": "Lumago ang ekonomiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang naapektuhan"
-                },
-                {
-                    "label": "D",
-                    "text": "Bumuti kaagad"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Labis na naapektuhan ang ekonomiya ng Pilipinas dahil sa pagkasira ng mga imprastraktura at kabuhayan noong digmaan."
+          "label": "B",
+          "text": "Jose P. Laurel"
         },
         {
-            "id": "ww2_6_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang naging epekto ng digmaan sa mga imprastraktura tulad ng tulay at gusali?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Maraming nasira na kailangang muling itayo"
-                },
-                {
-                    "label": "B",
-                    "text": "Walang nasira"
-                },
-                {
-                    "label": "C",
-                    "text": "Naging mas malakas ang lahat"
-                },
-                {
-                    "label": "D",
-                    "text": "Wala itong naging epekto"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Maraming imprastraktura tulad ng tulay, gusali, at kalsada ang nasira noong digmaan at kailangang muling itayo."
+          "label": "C",
+          "text": "Elpidio Quirino"
         },
         {
-            "id": "ww2_6_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa pagsisimula ng muling pagtatayo ng bansa matapos ang digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Rehabilitasyon"
-                },
-                {
-                    "label": "B",
-                    "text": "Reduccion"
-                },
-                {
-                    "label": "C",
-                    "text": "Kolonisasyon"
-                },
-                {
-                    "label": "D",
-                    "text": "Digmaan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang rehabilitasyon ay ang proseso ng muling pagtatayo ng bansa matapos ang pagkasira dulot ng digmaan."
-        },
-        {
-            "id": "ww2_6_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Bakit mahalagang tandaan ang kabuuang epekto ng digmaan sa buhay ng mga Pilipino?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Para maunawaan ang halaga ng kapayapaan at ang gastos ng digmaan"
-                },
-                {
-                    "label": "B",
-                    "text": "Wala itong halaga sa kasalukuyan"
-                },
-                {
-                    "label": "C",
-                    "text": "Para lang sa pagsusulit"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang dapat pag-aralan dito"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang pag-unawa sa epekto ng digmaan ay tumutulong sa mga mag-aaral na pahalagahan ang kapayapaan at ang gastos ng armadong labanan."
+          "label": "D",
+          "text": "Manuel L. Quezon"
         }
-    ],
-    "7": [
+      ],
+      "correctAnswer": "D",
+      "explanation": "Tinutulan ni Quezon ang Hare-Hawes-Cutting dahil sa mga probisyong hindi pabor sa Pilipinas, kabilang ang mga base militar."
+    },
+    {
+      "id": "ww2_1_7",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan pinasinayaan ang Pamahalaang Komonwelt ng Pilipinas?",
+      "options": [
         {
-            "id": "ww2_7_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan opisyal na sumuko ang Hapon upang tapusin ang Ikalawang Digmaang Pandaigdig?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Setyembre 2, 1945"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 7, 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Abril 9, 1942"
-                },
-                {
-                    "label": "D",
-                    "text": "Oktubre 1944"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Opisyal na sumuko ang Hapon noong Setyembre 2, 1945, na tumapos sa Ikalawang Digmaang Pandaigdig."
+          "label": "A",
+          "text": "Hulyo 4, 1946"
         },
         {
-            "id": "ww2_7_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod na pangyayari ang nagtulak sa Hapon na sumuko noong 1945?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pagbagsak ng Hapon matapos ang malubhang pinsala sa kanilang bansa"
-                },
-                {
-                    "label": "B",
-                    "text": "Kusang-loob na pagsuko dahil sa pagod na lamang"
-                },
-                {
-                    "label": "C",
-                    "text": "Pananalakay ng Pilipinas sa Hapon"
-                },
-                {
-                    "label": "D",
-                    "text": "Kasunduan sa Espanya"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Sumuko ang Hapon noong 1945 matapos dumanas ng malubhang pinsala at pagkatalo sa iba't ibang larangan ng digmaan."
+          "label": "B",
+          "text": "Hunyo 12, 1898"
         },
         {
-            "id": "ww2_7_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang isinagawa matapos ang digmaan upang panagutin ang mga responsable sa mga krimen sa digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "War Crimes Trials"
-                },
-                {
-                    "label": "B",
-                    "text": "Kilusang Propaganda"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Sedition"
-                },
-                {
-                    "label": "D",
-                    "text": "Reduccion"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Isinagawa ang mga War Crimes Trials matapos ang digmaan upang panagutin ang mga heneral at opisyal na responsable sa mga krimen sa digmaan."
+          "label": "C",
+          "text": "Nobyembre 15, 1935"
         },
         {
-            "id": "ww2_7_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pamahalaan ang ibinalik matapos ang digmaan noong 1945?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Commonwealth Government"
-                },
-                {
-                    "label": "B",
-                    "text": "Pamahalaang Espanyol"
-                },
-                {
-                    "label": "C",
-                    "text": "Pamahalaang Hapon"
-                },
-                {
-                    "label": "D",
-                    "text": "Unang Republika"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ibinalik ang Commonwealth Government matapos ang digmaan bilang paghahanda muli tungo sa ganap na kalayaan."
-        },
-        {
-            "id": "ww2_7_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naging susunod na hakbang matapos ang digmaan patungo sa kalayaan ng Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Muling paghahanda para sa deklarasyon ng kalayaan noong 1946"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagbabalik sa pamahalaang kolonyal ng Espanya"
-                },
-                {
-                    "label": "C",
-                    "text": "Pananatiling kolonya ng Hapon"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang susunod na hakbang"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Matapos ang digmaan, muling naghanda ang Pilipinas para sa ipinangakong kalayaan noong 1946."
+          "label": "D",
+          "text": "Disyembre 8, 1941"
         }
-    ],
-    "8": [
+      ],
+      "correctAnswer": "C",
+      "explanation": "Si Manuel L. Quezon ang unang Pangulo ng Komonwelt at si Sergio Osmeña ang Pangalawang Pangulo."
+    },
+    {
+      "id": "ww2_1_8",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ilang taon ang itinakdang paglipat ng Pilipinas patungo sa ganap na kalayaan ayon sa Tydings-McDuffie?",
+      "options": [
         {
-            "id": "ww2_8_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Paano ipinakita ng mga gerilyang Pilipino ang kanilang kabayanihan noong digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Sa pamamagitan ng patuloy na paglaban at pagtulong sa mga Allied Forces"
-                },
-                {
-                    "label": "B",
-                    "text": "Sa pagsuko sa Hapon"
-                },
-                {
-                    "label": "C",
-                    "text": "Sa pananahimik lamang"
-                },
-                {
-                    "label": "D",
-                    "text": "Wala silang ginawang tulong"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinakita ng mga gerilyang Pilipino ang kanilang kabayanihan sa pamamagitan ng patuloy na paglaban laban sa Hapon at pagtulong sa mga Allied Forces."
+          "label": "A",
+          "text": "Limang taon"
         },
         {
-            "id": "ww2_8_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong tungkulin ang ginampanan ng maraming babaeng Pilipino noong digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Nagsilbing nars at nagbigay ng tulong medikal sa mga sugatan"
-                },
-                {
-                    "label": "B",
-                    "text": "Wala silang ginampanang tungkulin"
-                },
-                {
-                    "label": "C",
-                    "text": "Nanatili lamang sa bahay"
-                },
-                {
-                    "label": "D",
-                    "text": "Sumali sa hukbong Hapon"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Maraming babaeng Pilipino ang nagsilbing nars at tumulong sa pag-aalaga ng mga sugatang sundalo noong digmaan."
+          "label": "B",
+          "text": "Sampung taon"
         },
         {
-            "id": "ww2_8_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong katangian ang ipinakita ng mga nakaligtas sa Bataan Death March?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Lakas ng loob at determinasyon na mabuhay"
-                },
-                {
-                    "label": "B",
-                    "text": "Kawalan ng pag-asa"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagsuko sa lahat"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang ipinakitang katangian"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinakita ng mga nakaligtas sa Bataan Death March ang matinding lakas ng loob at pagnanais na mabuhay sa kabila ng matinding hirap."
+          "label": "C",
+          "text": "Dalawampung taon"
         },
         {
-            "id": "ww2_8_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang taunang pagdiriwang bilang pag-alala sa kabayanihan ng mga sundalong Pilipino at Amerikano sa Bataan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Araw ng Kagitingan"
-                },
-                {
-                    "label": "B",
-                    "text": "Araw ng Kalayaan"
-                },
-                {
-                    "label": "C",
-                    "text": "Bonifacio Day"
-                },
-                {
-                    "label": "D",
-                    "text": "Rizal Day"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinagdiriwang taun-taon ang Araw ng Kagitingan tuwing Abril 9 bilang pag-alala sa mga bayaning lumaban sa Bataan."
-        },
-        {
-            "id": "ww2_8_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Bakit mahalagang gunitain ang kabayanihan ng mga Pilipino noong digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Upang alalahanin ang kanilang sakripisyo at pahalagahan ang kapayapaan"
-                },
-                {
-                    "label": "B",
-                    "text": "Wala itong kabuluhan"
-                },
-                {
-                    "label": "C",
-                    "text": "Para lang sa piyesta"
-                },
-                {
-                    "label": "D",
-                    "text": "Para ipagmalaki lamang"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang pag-alala sa kabayanihan ng mga Pilipino ay nagpapaalala sa kahalagahan ng kanilang sakripisyo para sa kalayaan at kapayapaan."
+          "label": "D",
+          "text": "Isang taon"
         }
-    ],
-    "9": [
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang sampung taong panahon ng Komonwelt ay inihanda para sa ganap na kalayaan sa 1946."
+    },
+    {
+      "id": "ww2_1_9",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang tamang kongklusyon tungkol sa pagsisikap ng mga Pilipino na magkaroon ng sariling pamahalaan sa panahon ng mga Amerikano?",
+      "options": [
         {
-            "id": "ww2_9_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Paano naipakita ang pagkakaisa ng mga Pilipino at Amerikano sa panahon ng digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Sa pamamagitan ng magkasamang paglaban laban sa karaniwang kaaway na Hapon"
-                },
-                {
-                    "label": "B",
-                    "text": "Hindi sila nagtulungan"
-                },
-                {
-                    "label": "C",
-                    "text": "Nagkalaban sila sa isa't isa"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naganap na pagtutulungan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtulungan ang mga Pilipino at Amerikano sa pagtatanggol laban sa Hapon, na nagpakita ng matibay na pagkakaisa sa panahon ng digmaan."
+          "label": "A",
+          "text": "Unti-unting nabigyan ng kapangyarihan ang mga Pilipino sa pamamagitan ng mga batas, misyon at pakikipag-ayos"
         },
         {
-            "id": "ww2_9_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naging tugon ng pamahalaan matapos ang digmaan para sa muling pagtatayo ng bansa?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Programa ng rehabilitasyon at rekonstruksyon"
-                },
-                {
-                    "label": "B",
-                    "text": "Walang ginawang hakbang"
-                },
-                {
-                    "label": "C",
-                    "text": "Ipinagpatuloy ang digmaan"
-                },
-                {
-                    "label": "D",
-                    "text": "Bumalik sa pamumuno ng Hapon"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagsagawa ng mga programa ng rehabilitasyon at rekonstruksyon ang pamahalaan upang muling itayo ang bansa matapos ang digmaan."
+          "label": "B",
+          "text": "Ibinigay agad ng Amerika ang kalayaan noong 1902"
         },
         {
-            "id": "ww2_9_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Paano naiimpluwensyahan ng digmaan ang pambansang pagkakakilanlan ng mga Pilipino?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Napatibay ang diwa ng pagkakaisa, tapang, at pagmamahal sa bayan"
-                },
-                {
-                    "label": "B",
-                    "text": "Nawala ang pagmamahal sa bayan"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang naging epekto"
-                },
-                {
-                    "label": "D",
-                    "text": "Nawalan ng interes sa kasaysayan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Napatibay ang diwa ng nasyonalismo, tapang, at pagkakaisa ng mga Pilipino bunga ng kanilang karanasan noong digmaan."
+          "label": "C",
+          "text": "Hindi na kailanman hiniling ng mga Pilipino ang kalayaan"
         },
         {
-            "id": "ww2_9_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong aral ang maaaring matutunan mula sa karanasan ng mga Pilipino noong Ikalawang Digmaang Pandaigdig?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Ang halaga ng kapayapaan, pagkakaisa, at karapatang pantao"
-                },
-                {
-                    "label": "B",
-                    "text": "Walang aral na matutunan"
-                },
-                {
-                    "label": "C",
-                    "text": "Mainam ang digmaan"
-                },
-                {
-                    "label": "D",
-                    "text": "Hindi kailangan ang kalayaan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang karanasan ng mga Pilipino noong digmaan ay nagtuturo ng halaga ng kapayapaan, pagkakaisa, at paggalang sa karapatang pantao."
-        },
-        {
-            "id": "ww2_9_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naging susunod na malaking pangyayari sa kasaysayan ng Pilipinas matapos ang digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Ang pagkamit ng ganap na kalayaan noong 1946"
-                },
-                {
-                    "label": "B",
-                    "text": "Bagong pananakop ng Hapon"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagbabalik ng mga Kastila"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naganap pang pagbabago"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Matapos ang digmaan, ang susunod na malaking pangyayari ay ang pagkamit ng Pilipinas ng ganap na kalayaan noong 1946."
+          "label": "D",
+          "text": "Tuluyang inalis ang pamahalaang Pilipino"
         }
-    ],
-    "10": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang Asamblea, Batas Jones, mga misyon at Tydings-McDuffie ay hakbang tungo sa sariling pamahalaan."
+    },
+    {
+      "id": "ww2_1_10",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tungkulin ng isang \"independence mission\" noong panahon ng Amerikano?",
+      "options": [
         {
-            "id": "ww2_10_1",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangyayari sa Pearl Harbor noong Disyembre 1941 ang nagbunsod sa Estados Unidos na sumali sa digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Sinalakay ng Hapon ang Pearl Harbor"
-                },
-                {
-                    "label": "B",
-                    "text": "Sinalakay ng Alemanya ang Pearl Harbor"
-                },
-                {
-                    "label": "C",
-                    "text": "Nagdeklara ng digmaan ang Espanya"
-                },
-                {
-                    "label": "D",
-                    "text": "Sumuko ang Estados Unidos"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang pananalakay ng Hapon sa Pearl Harbor ang nagtulak sa Estados Unidos na sumali sa digmaan."
+          "label": "A",
+          "text": "Magtayo ng base militar ng Amerika"
         },
         {
-            "id": "ww2_10_2",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan bumagsak ang Bataan sa mga puwersang Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Abril 9, 1942"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 7, 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Setyembre 2, 1945"
-                },
-                {
-                    "label": "D",
-                    "text": "Oktubre 20, 1944"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumagsak ang Bataan noong Abril 9, 1942."
+          "label": "B",
+          "text": "Magbenta ng produkto sa Hapon"
         },
         {
-            "id": "ww2_10_3",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa mahabang at mapanganib na paglalakad ng mga bihag matapos bumagsak ang Bataan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Bataan Death March"
-                },
-                {
-                    "label": "B",
-                    "text": "Long Walk to Freedom"
-                },
-                {
-                    "label": "C",
-                    "text": "March to Corregidor"
-                },
-                {
-                    "label": "D",
-                    "text": "Trail of Tears"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Bataan Death March ang mahirap na paglalakad ng mga bihag matapos bumagsak ang Bataan."
+          "label": "C",
+          "text": "Magturo ng Ingles sa mga Pilipino"
         },
         {
-            "id": "ww2_10_4",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging Pangulo ng pamahalaang itinatag ng Hapon sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Jose P. Laurel"
-                },
-                {
-                    "label": "B",
-                    "text": "Manuel Quezon"
-                },
-                {
-                    "label": "C",
-                    "text": "Sergio Osmena"
-                },
-                {
-                    "label": "D",
-                    "text": "Manuel Roxas"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Jose P. Laurel ang naging Pangulo ng Second Republic sa ilalim ng Hapon."
-        },
-        {
-            "id": "ww2_10_5",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa hukbong gerilyang itinatag laban sa mga Hapon sa Gitnang Luzon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Hukbalahap"
-                },
-                {
-                    "label": "B",
-                    "text": "Katipunan"
-                },
-                {
-                    "label": "C",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "D",
-                    "text": "Kempeitai"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Hukbalahap ang kilalang hukbong gerilya laban sa Hapon sa Gitnang Luzon."
-        },
-        {
-            "id": "ww2_10_6",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong labanang pandagat noong Oktubre 1944 ang itinuturing na pinakamalaki sa kasaysayan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Battle of Leyte Gulf"
-                },
-                {
-                    "label": "B",
-                    "text": "Battle of Manila Bay"
-                },
-                {
-                    "label": "C",
-                    "text": "Battle of Mactan"
-                },
-                {
-                    "label": "D",
-                    "text": "Battle of Corregidor"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Battle of Leyte Gulf ay itinuturing na pinakamalaking labanang pandagat sa kasaysayan."
-        },
-        {
-            "id": "ww2_10_7",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan bumalik si Heneral MacArthur upang simulan ang paglaya ng Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Leyte"
-                },
-                {
-                    "label": "B",
-                    "text": "Bataan"
-                },
-                {
-                    "label": "C",
-                    "text": "Maynila"
-                },
-                {
-                    "label": "D",
-                    "text": "Corregidor"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumalik si MacArthur sa Leyte noong 1944 upang simulan ang paglaya ng Pilipinas."
-        },
-        {
-            "id": "ww2_10_8",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan opisyal na sumuko ang Hapon upang tapusin ang Ikalawang Digmaang Pandaigdig?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Setyembre 2, 1945"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 7, 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Abril 9, 1942"
-                },
-                {
-                    "label": "D",
-                    "text": "Oktubre 1944"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Opisyal na sumuko ang Hapon noong Setyembre 2, 1945."
-        },
-        {
-            "id": "ww2_10_9",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang taunang pagdiriwang bilang pag-alala sa kabayanihan sa Bataan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Araw ng Kagitingan"
-                },
-                {
-                    "label": "B",
-                    "text": "Araw ng Kalayaan"
-                },
-                {
-                    "label": "C",
-                    "text": "Bonifacio Day"
-                },
-                {
-                    "label": "D",
-                    "text": "Rizal Day"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinagdiriwang ang Araw ng Kagitingan tuwing Abril 9."
-        },
-        {
-            "id": "ww2_10_10",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangakong sinabi ni Heneral MacArthur nang umatras siya papuntang Australia?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "\"I shall return\""
-                },
-                {
-                    "label": "B",
-                    "text": "\"Give me liberty or give me death\""
-                },
-                {
-                    "label": "C",
-                    "text": "\"We shall never surrender\""
-                },
-                {
-                    "label": "D",
-                    "text": "\"Remember Pearl Harbor\""
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Kilalang sinabi ni MacArthur ang \"I shall return\"."
-        },
-        {
-            "id": "ww2_10_11",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan unang lumapag ang malaking hukbong Hapon sa Luzon noong 1941?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Lingayen Gulf"
-                },
-                {
-                    "label": "B",
-                    "text": "Manila Bay"
-                },
-                {
-                    "label": "C",
-                    "text": "Leyte Gulf"
-                },
-                {
-                    "label": "D",
-                    "text": "Subic Bay"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Lumapag ang malaking bahagi ng hukbong Hapon sa Lingayen Gulf noong 1941."
-        },
-        {
-            "id": "ww2_10_12",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong isla-tanggulan ang huling bumagsak sa Hapon noong Mayo 1942?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Corregidor"
-                },
-                {
-                    "label": "B",
-                    "text": "Leyte"
-                },
-                {
-                    "label": "C",
-                    "text": "Mindanao"
-                },
-                {
-                    "label": "D",
-                    "text": "Palawan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Bumagsak ang Corregidor sa Hapon noong Mayo 1942."
-        },
-        {
-            "id": "ww2_10_13",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tinawag na palayaw sa salaping inilabas ng gobyernong Hapon dahil sa mababang halaga nito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Mickey Mouse money"
-                },
-                {
-                    "label": "B",
-                    "text": "Piloncitos"
-                },
-                {
-                    "label": "C",
-                    "text": "Peso Fuerte"
-                },
-                {
-                    "label": "D",
-                    "text": "Real de a ocho"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Tinawag na \"Mickey Mouse money\" ang salaping inilabas ng gobyernong Hapon."
-        },
-        {
-            "id": "ww2_10_14",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa hukbong pangkapulisan ng Hapon na kilala sa kanilang mahigpit na pagpapatupad ng batas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Kempeitai"
-                },
-                {
-                    "label": "B",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "C",
-                    "text": "Hukbalahap"
-                },
-                {
-                    "label": "D",
-                    "text": "USAFFE"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Kempeitai ang hukbong pangkapulisan ng militar ng Hapon."
-        },
-        {
-            "id": "ww2_10_15",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa opisyal na hukbo ng Estados Unidos at Pilipinas noong panahon ng digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "USAFFE"
-                },
-                {
-                    "label": "B",
-                    "text": "Kalibapi"
-                },
-                {
-                    "label": "C",
-                    "text": "Kempeitai"
-                },
-                {
-                    "label": "D",
-                    "text": "Hukbalahap"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang USAFFE ang naging pinagsamang hukbo ng Estados Unidos at Pilipinas."
-        },
-        {
-            "id": "ww2_10_16",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang isa sa mga kilalang lider ng kilusang Hukbalahap?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Luis Taruc"
-                },
-                {
-                    "label": "B",
-                    "text": "Jose P. Laurel"
-                },
-                {
-                    "label": "C",
-                    "text": "Manuel Roxas"
-                },
-                {
-                    "label": "D",
-                    "text": "Douglas MacArthur"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Luis Taruc ay isa sa mga kilalang lider ng Hukbalahap."
-        },
-        {
-            "id": "ww2_10_17",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan sinimulang palayain ang Maynila mula sa kontrol ng Hapon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pebrero 1945"
-                },
-                {
-                    "label": "B",
-                    "text": "Disyembre 1941"
-                },
-                {
-                    "label": "C",
-                    "text": "Oktubre 1944"
-                },
-                {
-                    "label": "D",
-                    "text": "Setyembre 1945"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naganap ang Labanan sa Maynila noong Pebrero 1945."
-        },
-        {
-            "id": "ww2_10_18",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang isinagawa matapos ang digmaan upang panagutin ang mga responsable sa mga krimen sa digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "War Crimes Trials"
-                },
-                {
-                    "label": "B",
-                    "text": "Kilusang Propaganda"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Sedition"
-                },
-                {
-                    "label": "D",
-                    "text": "Reduccion"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Isinagawa ang War Crimes Trials matapos ang digmaan."
-        },
-        {
-            "id": "ww2_10_19",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pamahalaan ang ibinalik matapos ang digmaan noong 1945?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Commonwealth Government"
-                },
-                {
-                    "label": "B",
-                    "text": "Pamahalaang Espanyol"
-                },
-                {
-                    "label": "C",
-                    "text": "Pamahalaang Hapon"
-                },
-                {
-                    "label": "D",
-                    "text": "Unang Republika"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ibinalik ang Commonwealth Government matapos ang digmaan."
-        },
-        {
-            "id": "ww2_10_20",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Paano naipakita ang pagkakaisa ng mga Pilipino at Amerikano sa panahon ng digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Sa pamamagitan ng magkasamang paglaban laban sa karaniwang kaaway na Hapon"
-                },
-                {
-                    "label": "B",
-                    "text": "Hindi sila nagtulungan"
-                },
-                {
-                    "label": "C",
-                    "text": "Nagkalaban sila sa isa't isa"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naganap na pagtutulungan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtulungan ang mga Pilipino at Amerikano laban sa Hapon."
-        },
-        {
-            "id": "ww2_10_21",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong aral ang maaaring matutunan mula sa karanasan ng mga Pilipino noong Ikalawang Digmaang Pandaigdig?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Ang halaga ng kapayapaan, pagkakaisa, at karapatang pantao"
-                },
-                {
-                    "label": "B",
-                    "text": "Walang aral na matutunan"
-                },
-                {
-                    "label": "C",
-                    "text": "Mainam ang digmaan"
-                },
-                {
-                    "label": "D",
-                    "text": "Hindi kailangan ang kalayaan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtuturo ang karanasan sa digmaan ng halaga ng kapayapaan at karapatang pantao."
-        },
-        {
-            "id": "ww2_10_22",
-            "era": "ww2",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naging susunod na malaking pangyayari sa kasaysayan ng Pilipinas matapos ang digmaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Ang pagkamit ng ganap na kalayaan noong 1946"
-                },
-                {
-                    "label": "B",
-                    "text": "Bagong pananakop ng Hapon"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagbabalik ng mga Kastila"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naganap pang pagbabago"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang susunod na malaking pangyayari ay ang pagkamit ng kalayaan noong 1946."
+          "label": "D",
+          "text": "Magtungo sa Washington upang humiling ng kalayaan para sa Pilipinas"
         }
-    ]
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang mga misyon ay lumipad o naglakbay patungong Estados Unidos upang makiusap sa Kongreso."
+    }
+  ],
+  "2": [
+    {
+      "id": "ww2_2_1",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging batayan ng pambansang wika na ipinahayag noong 1937?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Cebuano"
+        },
+        {
+          "label": "B",
+          "text": "Ilokano"
+        },
+        {
+          "label": "C",
+          "text": "Kapampangan"
+        },
+        {
+          "label": "D",
+          "text": "Tagalog"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinili ang Tagalog bilang batayan ng wikang pambansa sa ilalim ng Pangulong Quezon."
+    },
+    {
+      "id": "ww2_2_2",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong programa ng Komonwelt ang nagbigay ng karapatang bumoto sa kababaihan noong 1937?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Batas Militar"
+        },
+        {
+          "label": "B",
+          "text": "Batas ng Edukasyon"
+        },
+        {
+          "label": "C",
+          "text": "Plebisito para sa pagboto ng kababaihan"
+        },
+        {
+          "label": "D",
+          "text": "Kasunduan sa Paris"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Bumoto ang mga babae sa plebisito noong 1937 at tinanggap ang karapatang bumoto."
+    },
+    {
+      "id": "ww2_2_3",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang layunin ng \"katarungang panlipunan\" na isinulong ni Quezon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Maging mayaman ang iilang pamilya"
+        },
+        {
+          "label": "B",
+          "text": "Magkaroon ng makatarungang kalagayan ang mga manggagawa at maralita"
+        },
+        {
+          "label": "C",
+          "text": "Alisin ang mga paaralan"
+        },
+        {
+          "label": "D",
+          "text": "Magpataw ng mataas na buwis sa mahihirap"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Layunin nitong bawasan ang agwat ng mayaman at mahirap, sa pamamagitan ng minimum na sahod at iba pang proteksiyon."
+    },
+    {
+      "id": "ww2_2_4",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang Amerikanong heneral na naging tagapayong militar ni Pangulong Quezon sa pagbuo ng hukbong Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Douglas MacArthur"
+        },
+        {
+          "label": "B",
+          "text": "Jonathan Wainwright"
+        },
+        {
+          "label": "C",
+          "text": "Dwight Eisenhower"
+        },
+        {
+          "label": "D",
+          "text": "Chester Nimitz"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Heneral MacArthur ang tumulong sa pagbuo ng Hukbong Pilipino sa ilalim ng National Defense Act ng 1935."
+    },
+    {
+      "id": "ww2_2_5",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang heneral na tumangging manumpa ng katapatan sa Amerika at ipinatapon sa Guam?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "B",
+          "text": "Manuel Quezon"
+        },
+        {
+          "label": "C",
+          "text": "Sergio Osmeña"
+        },
+        {
+          "label": "D",
+          "text": "Artemio Ricarte"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Artemio Ricarte ay hindi sumuko at kalaunan ay namatay sa Pilipinas sa panahon ng digmaan."
+    },
+    {
+      "id": "ww2_2_6",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tagapayo ni Aguinaldo na ipinatapon sa Guam dahil sa pagtangging manumpa sa Estados Unidos?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Felipe Agoncillo"
+        },
+        {
+          "label": "B",
+          "text": "Pedro Paterno"
+        },
+        {
+          "label": "C",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "D",
+          "text": "Isabelo Artacho"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Bumalik si Mabini sa Pilipinas noong 1903 at namatay ilang sandali pagkatapos."
+    },
+    {
+      "id": "ww2_2_7",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tungkulin ng Surian ng Wikang Pambansa na itinatag noong 1936?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magpalit ng pangalan ng bansa"
+        },
+        {
+          "label": "B",
+          "text": "Magsagawa ng pag-aaral at pumili ng batayang wika para sa wikang pambansa"
+        },
+        {
+          "label": "C",
+          "text": "Magpabago ng watawat"
+        },
+        {
+          "label": "D",
+          "text": "Magpalit ng sistema ng pagbubuwis"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ito ang ahensiyang naghanda sa pagpili ng wikang pambansa."
+    },
+    {
+      "id": "ww2_2_8",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang isang bunga ng Saligang Batas ng 1935?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagkakaroon ng pamahalaang may Pangulo at Kongreso na pinili ng mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabalik ng pamahalaang Espanyol"
+        },
+        {
+          "label": "C",
+          "text": "Pag-alis ng karapatang bumoto"
+        },
+        {
+          "label": "D",
+          "text": "Pagiging estado ng Amerika ng Pilipinas"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Itinatag nito ang Komonwelt na may Pangulo, Pangalawang Pangulo at Pambansang Asamblea."
+    },
+    {
+      "id": "ww2_2_9",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang pananaliksik tungkol kay Macario Sakay, alin ang pinakamahalagang ambag niya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagtayo siya ng paaralan sa Maynila"
+        },
+        {
+          "label": "B",
+          "text": "Naging gobernador siya ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Sumulat siya ng Saligang Batas ng 1935"
+        },
+        {
+          "label": "D",
+          "text": "Nagpatuloy siya sa paglaban para sa kalayaan hanggang sa kanyang pagbitay noong 1907"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinatag niya ang Republika ng Katagalugan at nanatiling lumaban hanggang binitay."
+    },
+    {
+      "id": "ww2_2_10",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang dahilan kung bakit maituturing na bayani ang mga Pilipinong lumaban sa mga Amerikano?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil sila ay mayayaman"
+        },
+        {
+          "label": "B",
+          "text": "Dahil sila ay mga dayuhan"
+        },
+        {
+          "label": "C",
+          "text": "Ipinaglaban nila ang kalayaan at karapatan ng bayan sa kabila ng mas malakas na kalaban"
+        },
+        {
+          "label": "D",
+          "text": "Dahil sila ay nakipagkaibigan sa mananakop"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang katapangan at paninindigan para sa bayan ang batayan ng pagiging bayani."
+    }
+  ],
+  "3": [
+    {
+      "id": "ww2_3_1",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan sinalakay ng mga Hapones ang Pilipinas sa pagsisimula ng Ikalawang Digmaang Pandaigdig sa bansa?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hulyo 4, 1946"
+        },
+        {
+          "label": "B",
+          "text": "Disyembre 30, 1896"
+        },
+        {
+          "label": "C",
+          "text": "Disyembre 8, 1941"
+        },
+        {
+          "label": "D",
+          "text": "Agosto 15, 1945"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ilang oras pagkatapos ng Pearl Harbor, binomba ng mga Hapones ang mga base sa Pilipinas, kabilang ang Clark Field."
+    },
+    {
+      "id": "ww2_3_2",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang idineklara ni Heneral MacArthur sa Maynila noong Disyembre 1941 upang maiwasan ang pagkawasak ng lungsod?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Lungsod ng Kalayaan"
+        },
+        {
+          "label": "B",
+          "text": "Bukas na Lungsod (Open City)"
+        },
+        {
+          "label": "C",
+          "text": "Lungsod ng Digmaan"
+        },
+        {
+          "label": "D",
+          "text": "Lungsod ng mga Hapones"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Isang open city ay hindi na ipagtatanggol upang maiwasan ang pagbomba, ngunit pumasok pa rin ang mga Hapones noong Enero 1942."
+    },
+    {
+      "id": "ww2_3_3",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Martsa ng Kamatayan sa Bataan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sapilitang paglalakad ng libu-libong bihag na Pilipino at Amerikano matapos bumagsak ang Bataan"
+        },
+        {
+          "label": "B",
+          "text": "Parada ng mga Hapones sa Maynila"
+        },
+        {
+          "label": "C",
+          "text": "Paglalakbay ng Pangulo patungong Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Pagpupulong ng mga heneral"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Pagkatapos ng pagsuko ng Bataan noong Abril 9, 1942, libu-libong bihag ang namatay sa init, gutom at karahasan."
+    },
+    {
+      "id": "ww2_3_4",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tawag sa Pilipinas na itinatag ng mga Hapones noong 1943 na pinamunuan ni Jose P. Laurel?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Unang Republika"
+        },
+        {
+          "label": "B",
+          "text": "Ikatlong Republika"
+        },
+        {
+          "label": "C",
+          "text": "Komonwelt"
+        },
+        {
+          "label": "D",
+          "text": "Ikalawang Republika"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinatag ang pamahalaang ito noong Oktubre 14, 1943 ngunit hindi kinilala ng maraming Pilipino bilang tunay na malaya."
+    },
+    {
+      "id": "ww2_3_5",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging layunin ng mga Hapones sa pananakop ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magturo ng demokrasya sa mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Ibigay ang kalayaan ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Kontrolin ang likas na yaman at itatag ang Greater East Asia Co-Prosperity Sphere"
+        },
+        {
+          "label": "D",
+          "text": "Magtayo ng pamahalaang Amerikano"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Layon ng Hapon na maging pinuno ng Asya at gamitin ang likas na yaman ng bansang nasasakop."
+    },
+    {
+      "id": "ww2_3_6",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tanyag na pangako ni MacArthur nang umalis siya sa Pilipinas noong 1942?",
+      "options": [
+        {
+          "label": "A",
+          "text": "\"Mabuhay ang Pilipinas\""
+        },
+        {
+          "label": "B",
+          "text": "\"I shall return\""
+        },
+        {
+          "label": "C",
+          "text": "\"Walang iwanan\""
+        },
+        {
+          "label": "D",
+          "text": "\"Pilipinas para sa Pilipino\""
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tinupad niya ang pangako nang lumapag siya sa Leyte noong Oktubre 20, 1944."
+    },
+    {
+      "id": "ww2_3_7",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling lugar ang unang nakatanggap ng pagbabalik ng mga puwersang Amerikano noong Oktubre 1944?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Leyte"
+        },
+        {
+          "label": "B",
+          "text": "Maynila"
+        },
+        {
+          "label": "C",
+          "text": "Baguio"
+        },
+        {
+          "label": "D",
+          "text": "Zamboanga"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang paglapag sa Leyte ay simula ng pagpapalaya ng Pilipinas."
+    },
+    {
+      "id": "ww2_3_8",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Hukbalahap (Hukbong Bayan Laban sa Hapon)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hukbong Hapones sa Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Pangkat ng mga kolaboreytor"
+        },
+        {
+          "label": "C",
+          "text": "Hukbong dagat ng Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Gerilyang samahan na lumaban sa mga Hapones sa Gitnang Luzon"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinatag noong Marso 1942 at pinamunuan ni Luis Taruc."
+    },
+    {
+      "id": "ww2_3_9",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang pinakatamang paglalarawan sa pamahalaang itinatag ng Hapon sa Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ganap na malayang pamahalaan"
+        },
+        {
+          "label": "B",
+          "text": "Pamahalaang Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Papet na pamahalaang kontrolado ng militar ng Hapon"
+        },
+        {
+          "label": "D",
+          "text": "Pamahalaang Espanyol"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Bagaman may Pilipinong pangulo, nasa kamay ng Hapon ang tunay na kapangyarihan."
+    },
+    {
+      "id": "ww2_3_10",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan idineklarang malaya ang Maynila sa kamay ng mga Hapones matapos ang matinding labanan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Disyembre 1941"
+        },
+        {
+          "label": "B",
+          "text": "Marso 1945"
+        },
+        {
+          "label": "C",
+          "text": "Hunyo 1898"
+        },
+        {
+          "label": "D",
+          "text": "Hulyo 1946"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Winasak ang malaking bahagi ng Maynila, lalo na ang Intramuros, sa Labanan sa Maynila noong Pebrero–Marso 1945."
+    }
+  ],
+  "4": [
+    {
+      "id": "ww2_4_1",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong wika ang ipinatupad ng mga Hapones sa mga paaralan kasabay ng Tagalog?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ingles"
+        },
+        {
+          "label": "B",
+          "text": "Nihonggo"
+        },
+        {
+          "label": "C",
+          "text": "Espanyol"
+        },
+        {
+          "label": "D",
+          "text": "Mandarin"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ipinagbawal ang Ingles at itinaguyod ang Nihonggo at Tagalog."
+    },
+    {
+      "id": "ww2_4_2",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tawag sa salaping inilimbag ng mga Hapones na mabilis na nawalan ng halaga?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Salaping \"Mickey Mouse\""
+        },
+        {
+          "label": "B",
+          "text": "Salaping barya"
+        },
+        {
+          "label": "C",
+          "text": "Salaping ginto"
+        },
+        {
+          "label": "D",
+          "text": "Salaping papel ng Amerika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dahil sa dami ng nailimbag, umabot sa sobrang taas ang presyo ng bilihin."
+    },
+    {
+      "id": "ww2_4_3",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang epekto ng digmaan sa pagkain at kabuhayan ng mga Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sobra-sobra ang suplay ng pagkain"
+        },
+        {
+          "label": "B",
+          "text": "Naging libre ang mga bilihin"
+        },
+        {
+          "label": "C",
+          "text": "Natigil ang lahat ng presyo"
+        },
+        {
+          "label": "D",
+          "text": "Nagkaroon ng kakulangan sa pagkain at pagtaas ng presyo ng bilihin"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Rasyon at itim na pamilihan ang bunga ng kakulangan."
+    },
+    {
+      "id": "ww2_4_4",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tungkulin ng Kempeitai?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Samahang tumulong sa mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Hukbong dagat ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Hukbong pulis ng Hapon na naghahanap at nagpaparusa sa mga pinaghihinalaang kalaban"
+        },
+        {
+          "label": "D",
+          "text": "Samahan ng mga guro"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang Kempeitai ay kilala sa pagpapahirap at pagpatay sa mga pinaghihinalaan."
+    },
+    {
+      "id": "ww2_4_5",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tinawag na \"Makapili\"?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mga gerilyang Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Mga Pilipinong kumampi sa mga Hapones laban sa kapwa Pilipino"
+        },
+        {
+          "label": "C",
+          "text": "Mga sundalong Amerikano"
+        },
+        {
+          "label": "D",
+          "text": "Mga guro ng Nihonggo"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Makabayang Katipunan ng mga Pilipino ay isang pangkat ng kolaboreytor."
+    },
+    {
+      "id": "ww2_4_6",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang KALIBAPI?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kapisanan sa Paglilingkod sa Bagong Pilipinas, ang tanging partidong pinahintulutan ng mga Hapones"
+        },
+        {
+          "label": "B",
+          "text": "Samahan ng mga gerilya"
+        },
+        {
+          "label": "C",
+          "text": "Hukbong sandatahan ng Pilipinas"
+        },
+        {
+          "label": "D",
+          "text": "Pahayagan ng Amerika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Sa pamamagitan nito, kinontrol ng Hapon ang pulitika at lipunan."
+    },
+    {
+      "id": "ww2_4_7",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang ginawa ng mga Hapones sa edukasyon sa Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ginawang libre ang lahat ng kolehiyo"
+        },
+        {
+          "label": "B",
+          "text": "Pinalitan ang lahat ng guro ng Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Isinara ang lahat ng paaralan magpakailanman"
+        },
+        {
+          "label": "D",
+          "text": "Binago ang kurikulum upang burahin ang impluwensiya ng Amerika at ituro ang kultura ng Hapon"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinuro ang Nihonggo at pagpapahalagang Asyano."
+    },
+    {
+      "id": "ww2_4_8",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging epekto ng pananakop sa kalayaan ng pamamahayag?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging malaya ang mga mamamahayag"
+        },
+        {
+          "label": "B",
+          "text": "Dumami ang mga pahayagang Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Mahigpit na kinontrol ang mga pahayagan at radyo"
+        },
+        {
+          "label": "D",
+          "text": "Pinayagan ang pagpuna sa Hapon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Sinuri at pinagbawalan ang anumang laban sa mga Hapones."
+    },
+    {
+      "id": "ww2_4_9",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Paano lumaban ang mga ordinaryong Pilipino sa pananakop?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sumunod sa lahat ng utos ng Hapon"
+        },
+        {
+          "label": "B",
+          "text": "Sumali sa gerilya, nagtago ng mga bihag, at nagpalaganap ng lihim na balita"
+        },
+        {
+          "label": "C",
+          "text": "Lumipat sa Hapon"
+        },
+        {
+          "label": "D",
+          "text": "Nagbenta ng armas sa kalaban"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Maraming sibilyan ang tumulong sa kilusang gerilya sa pamamagitan ng pagkain, impormasyon at kanlungan."
+    },
+    {
+      "id": "ww2_4_10",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling pangyayari ang nagpapakita ng kalupitan ng pananakop?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpatay at pagpapahirap sa mga sibilyan at bihag"
+        },
+        {
+          "label": "B",
+          "text": "Pagbibigay ng libreng pagkain sa lahat"
+        },
+        {
+          "label": "C",
+          "text": "Pagpapatayo ng mga ospital ng Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Pagdiriwang ng kalayaan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Maraming sibilyan ang namatay, lalo na noong 1945."
+    }
+  ],
+  "5": [
+    {
+      "id": "ww2_5_1",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng primaryang batis sa pananaliksik tungkol sa Digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Talaarawan ng isang sundalo noong 1944"
+        },
+        {
+          "label": "B",
+          "text": "Aklat-aralin na isinulat noong 2020"
+        },
+        {
+          "label": "C",
+          "text": "Dokumentaryo na gawa noong nakaraang taon"
+        },
+        {
+          "label": "D",
+          "text": "Artikulo sa pahayagan noong 2015"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang primaryang batis ay mula mismo sa panahon o saksi sa pangyayari."
+    },
+    {
+      "id": "ww2_5_2",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng sekundaryang batis?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Liham na isinulat ng isang gerilya"
+        },
+        {
+          "label": "B",
+          "text": "Larawan noong 1945"
+        },
+        {
+          "label": "C",
+          "text": "Opisyal na kautusan ng Pangulo"
+        },
+        {
+          "label": "D",
+          "text": "Aklat ng isang mananalaysay tungkol sa digmaan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang sekundaryang batis ay sinulat ng hindi nakasaksi at nagsusuri ng mga primaryang batis."
+    },
+    {
+      "id": "ww2_5_3",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang Punong Mahistrado na tumangging makipagtulungan sa mga Hapones at binaril noong 1942?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Jose P. Laurel"
+        },
+        {
+          "label": "B",
+          "text": "Claro M. Recto"
+        },
+        {
+          "label": "C",
+          "text": "Jose Abad Santos"
+        },
+        {
+          "label": "D",
+          "text": "Manuel Roxas"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Si Jose Abad Santos ay nanindigan sa katapatan sa bayan at pinatay noong Mayo 7, 1942."
+    },
+    {
+      "id": "ww2_5_4",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang gerilyang pinuno ng Camarines Norte na pinatay noong 1942?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Luis Taruc"
+        },
+        {
+          "label": "B",
+          "text": "Wenceslao Vinzons"
+        },
+        {
+          "label": "C",
+          "text": "Ramon Magsaysay"
+        },
+        {
+          "label": "D",
+          "text": "Macario Peralta"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Vinzons ay dating delegado ng Saligang Batas ng 1935 at pinuno ng gerilya sa Bicol."
+    },
+    {
+      "id": "ww2_5_5",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tagapagtatag ng Girl Scouts of the Philippines na tumulong sa mga bihag at pinatay sa Fort Santiago?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Josefa Llanes Escoda"
+        },
+        {
+          "label": "B",
+          "text": "Gregoria de Jesus"
+        },
+        {
+          "label": "C",
+          "text": "Melchora Aquino"
+        },
+        {
+          "label": "D",
+          "text": "Teresa Magbanua"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Tumulong siya sa mga bihag ng digmaan at dinakip ng Kempeitai noong 1944."
+    },
+    {
+      "id": "ww2_5_6",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit mahalagang suriin kung sino ang sumulat ng isang dokumento sa pananaliksik?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Upang malaman kung mahaba ang dokumento"
+        },
+        {
+          "label": "B",
+          "text": "Upang malaman kung maganda ang sulat-kamay"
+        },
+        {
+          "label": "C",
+          "text": "Upang malaman kung bagong imprenta"
+        },
+        {
+          "label": "D",
+          "text": "Upang malaman kung mapagkakatiwalaan at kung may kinikilingan ito"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mahalaga ang awtor sa pagtatasa ng kredibilidad ng batis."
+    },
+    {
+      "id": "ww2_5_7",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang unang hakbang sa pagsasagawa ng pananaliksik?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magsulat ng kongklusyon"
+        },
+        {
+          "label": "B",
+          "text": "Magpalimbag ng aklat"
+        },
+        {
+          "label": "C",
+          "text": "Pumili ng paksa at bumuo ng tanong na sasagutin"
+        },
+        {
+          "label": "D",
+          "text": "Magbayad ng isang eksperto"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Gabay ng tanong ang paghahanap ng datos at pagsusuri."
+    },
+    {
+      "id": "ww2_5_8",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng pagsisikap ng mga Pilipino para sa ganap na kalayaan matapos ang digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagtanggap ng pananakop ng Hapon"
+        },
+        {
+          "label": "B",
+          "text": "Pakikipag-ayos sa Estados Unidos hanggang sa pagkamit ng kalayaan noong Hulyo 4, 1946"
+        },
+        {
+          "label": "C",
+          "text": "Pagbabalik sa pamamahala ng Espanya"
+        },
+        {
+          "label": "D",
+          "text": "Pagtalikod sa kalayaan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Naganap ang kalayaan nang magtapos ang Komonwelt noong 1946."
+    },
+    {
+      "id": "ww2_5_9",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kapag may magkasalungat na impormasyon sa dalawang batis, ano ang dapat gawin ng mananaliksik?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Suriin at ihambing ang mga batis at humanap ng ikatlong patunay"
+        },
+        {
+          "label": "B",
+          "text": "Piliin ang pinakamaikling batis"
+        },
+        {
+          "label": "C",
+          "text": "Piliin ang batis na pinakamaganda ang pabalat"
+        },
+        {
+          "label": "D",
+          "text": "Huwag na lang magpatuloy sa pananaliksik"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang paghahambing at pagkumpirma ng mga batis ay bahagi ng malalim na pananaliksik."
+    },
+    {
+      "id": "ww2_5_10",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang layunin ng pagsasagawa ng pananaliksik tungkol sa mga bayani ng kalayaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Upang makalimutan ang kasaysayan"
+        },
+        {
+          "label": "B",
+          "text": "Upang magpakitang-gilas lamang"
+        },
+        {
+          "label": "C",
+          "text": "Upang maghanap ng kalaban"
+        },
+        {
+          "label": "D",
+          "text": "Upang maunawaan at mapahalagahan ang kanilang ambag sa pagkamit ng kalayaan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang pananaliksik ay nagbibigay-daan sa wastong pag-unawa sa nakaraan."
+    }
+  ],
+  "6": [
+    {
+      "id": "ww2_6_1",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan ipinagkaloob ng Estados Unidos ang kalayaan ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "B",
+          "text": "Nobyembre 15, 1935"
+        },
+        {
+          "label": "C",
+          "text": "Setyembre 21, 1972"
+        },
+        {
+          "label": "D",
+          "text": "Hulyo 4, 1946"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinasinayaan ang Ikatlong Republika at si Manuel Roxas ang unang Pangulo."
+    },
+    {
+      "id": "ww2_6_2",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang unang Pangulo ng Ikatlong Republika ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Elpidio Quirino"
+        },
+        {
+          "label": "B",
+          "text": "Ramon Magsaysay"
+        },
+        {
+          "label": "C",
+          "text": "Manuel A. Roxas"
+        },
+        {
+          "label": "D",
+          "text": "Sergio Osmeña"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Si Roxas ang nahalal noong Abril 1946 at nanungkulan nang magtamo ng kalayaan ang bansa."
+    },
+    {
+      "id": "ww2_6_3",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang isa sa mga malaking problema ng bansa pagkatapos ng digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Labis na kayamanan ng bansa"
+        },
+        {
+          "label": "B",
+          "text": "Pagkawasak ng mga lungsod at kakulangan ng pagkain at trabaho"
+        },
+        {
+          "label": "C",
+          "text": "Kakulangan ng populasyon"
+        },
+        {
+          "label": "D",
+          "text": "Sobra ang mga paaralan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Napinsala ang Maynila at ibang lungsod, at maraming Pilipino ang nawalan ng tirahan."
+    },
+    {
+      "id": "ww2_6_4",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong lungsod ang itinuring na isa sa pinakanasira sa buong mundo pagkatapos ng digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Maynila"
+        },
+        {
+          "label": "B",
+          "text": "Cebu"
+        },
+        {
+          "label": "C",
+          "text": "Davao"
+        },
+        {
+          "label": "D",
+          "text": "Baguio"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Winasak ang malaking bahagi ng lungsod, lalo na ang Intramuros, sa pinakamabigat na labanan noong 1945."
+    },
+    {
+      "id": "ww2_6_5",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Batas sa Rehabilitasyon ng Pilipinas (Philippine Rehabilitation Act) ng 1946?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Batas na nag-alis ng kalayaan"
+        },
+        {
+          "label": "B",
+          "text": "Batas na nagbawal ng kalakalan"
+        },
+        {
+          "label": "C",
+          "text": "Batas na nagpalit ng wikang pambansa"
+        },
+        {
+          "label": "D",
+          "text": "Batas ng Amerika na nagbigay ng pondo para sa pagkukumpuni ng mga pinsala ng digmaan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang pagtanggap ng bayad ay kinabit sa Bell Trade Act, kaya naging kontrobersiyal."
+    },
+    {
+      "id": "ww2_6_6",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging dahilan ng paglakas ng kilusang Huk pagkatapos ng digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kakulangan ng mga paaralan"
+        },
+        {
+          "label": "B",
+          "text": "Pag-alis ng lahat ng Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Hindi nalutas ang suliranin sa lupa at kahirapan ng mga magsasaka"
+        },
+        {
+          "label": "D",
+          "text": "Pagtaas ng sahod"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Maraming Huk ang naghangad ng reporma sa lupa at lumaban sa pamahalaan."
+    },
+    {
+      "id": "ww2_6_7",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang Pangulo na kilala sa pagtugon sa kilusang Huk at sa pagiging \"Kampeon ng Masa\"?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Elpidio Quirino"
+        },
+        {
+          "label": "B",
+          "text": "Ramon Magsaysay"
+        },
+        {
+          "label": "C",
+          "text": "Manuel Roxas"
+        },
+        {
+          "label": "D",
+          "text": "Carlos P. Garcia"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Magsaysay ay nanungkulan mula 1953 hanggang 1957 at kilalang malapit sa ordinaryong tao."
+    },
+    {
+      "id": "ww2_6_8",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong petsa ang ipinagdiriwang ngayon bilang Araw ng Kalayaan ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hunyo 12"
+        },
+        {
+          "label": "B",
+          "text": "Hulyo 4"
+        },
+        {
+          "label": "C",
+          "text": "Agosto 21"
+        },
+        {
+          "label": "D",
+          "text": "Nobyembre 30"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Inilipat noong 1962 ang pagdiriwang mula Hulyo 4 patungong Hunyo 12 bilang pagkilala sa deklarasyon ng 1898."
+    },
+    {
+      "id": "ww2_6_9",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang naging pagbabago sa lipunang Pilipino matapos ang digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagbabalik ng Espanya"
+        },
+        {
+          "label": "B",
+          "text": "Pagkakaroon ng hari"
+        },
+        {
+          "label": "C",
+          "text": "Pagkawala ng gobyerno"
+        },
+        {
+          "label": "D",
+          "text": "Pagkaroon ng malayang bansa na may bagong hamon sa ekonomiya at seguridad"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Nagsimula ang Ikatlong Republika na may kasamang mga hamon ng rehabilitasyon."
+    },
+    {
+      "id": "ww2_6_10",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tumulong sa pagkilala ng Pilipinas bilang malayang bansa sa daigdig matapos ang digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagsali sa Axis Powers"
+        },
+        {
+          "label": "B",
+          "text": "Pagsuko sa Hapon"
+        },
+        {
+          "label": "C",
+          "text": "Pagiging kasapi ng United Nations bilang isa sa mga unang kasapi"
+        },
+        {
+          "label": "D",
+          "text": "Pagbabalik sa Komonwelt"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Isa ang Pilipinas sa mga bansang lumagda sa Karta ng United Nations noong 1945."
+    }
+  ],
+  "7": [
+    {
+      "id": "ww2_7_1",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang neokolonyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Direktang pananakop gamit ang hukbo"
+        },
+        {
+          "label": "B",
+          "text": "Pagsasarili ng bansa"
+        },
+        {
+          "label": "C",
+          "text": "Di-tuwirang kontrol ng makapangyarihang bansa sa ekonomiya at pulitika ng isang malayang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Pagpapalaya ng kolonya"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Kahit malaya sa pangalan, nanatiling nakadepende ang Pilipinas sa Amerika sa kalakalan at seguridad."
+    },
+    {
+      "id": "ww2_7_2",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong batas noong 1946 ang nagtakda ng malayang kalakalan ng Pilipinas at Amerika sa loob ng walong taon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Batas Jones"
+        },
+        {
+          "label": "B",
+          "text": "Bell Trade Act"
+        },
+        {
+          "label": "C",
+          "text": "Batas Cooper"
+        },
+        {
+          "label": "D",
+          "text": "Batas Hare-Hawes-Cutting"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tinatawag ding Philippine Trade Act, na nagbigay ng kalamangan sa Amerika."
+    },
+    {
+      "id": "ww2_7_3",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"parity rights\" sa ilalim ng Bell Trade Act?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pantay na karapatan ng mga Amerikano at Pilipino sa paggamit ng likas na yaman at pagnenegosyo"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabawal sa mga Amerikano sa Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Pagbibigay ng kalayaan sa mga magsasaka"
+        },
+        {
+          "label": "D",
+          "text": "Pagpapalit ng pera"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Kinailangan ng pag-amyenda sa Saligang Batas ng 1935 upang maipatupad ito."
+    },
+    {
+      "id": "ww2_7_4",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Kasunduang Base Militar (Military Bases Agreement) ng 1947?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagbebenta ng Pilipinas sa Amerika"
+        },
+        {
+          "label": "B",
+          "text": "Pagpapaalis sa mga sundalo ng Amerika"
+        },
+        {
+          "label": "C",
+          "text": "Pagbibigay ng kalayaan sa Pilipinas"
+        },
+        {
+          "label": "D",
+          "text": "Pinahintulutan ang Amerika na magkaroon ng mga base militar sa Pilipinas sa loob ng 99 taon"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kilalang mga base ang Clark Air Base at Subic Naval Base."
+    },
+    {
+      "id": "ww2_7_5",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Mutual Defense Treaty ng 1951?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kasunduang kalakalan lamang"
+        },
+        {
+          "label": "B",
+          "text": "Kasunduang pangkultura"
+        },
+        {
+          "label": "C",
+          "text": "Kasunduang magtulungan ang Pilipinas at Amerika kapag may sumalakay sa alinman"
+        },
+        {
+          "label": "D",
+          "text": "Kasunduang magtatapos ng digmaan sa Hapon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Naging batayan ito ng alyansang militar ng dalawang bansa."
+    },
+    {
+      "id": "ww2_7_6",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Laurel-Langley Agreement ng 1955?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapahinto ng kalakalan"
+        },
+        {
+          "label": "B",
+          "text": "Rebisyon sa Bell Trade Act na naglapat ng mas pantay na kalakalan sa ilang aspeto"
+        },
+        {
+          "label": "C",
+          "text": "Pagbibigay ng lupa sa Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Pagpapalit ng Saligang Batas"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tinanggal nito ang kontrol ng Amerika sa palitan ng piso, ngunit nanatiling pabor sa Amerika ang kalakalan."
+    },
+    {
+      "id": "ww2_7_7",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"Filipino First Policy\" ni Pangulong Carlos P. Garcia?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagbibigay-priyoridad sa mga negosyanteng Pilipino at lokal na produkto"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabawal sa lahat ng dayuhan"
+        },
+        {
+          "label": "C",
+          "text": "Pagpapalit ng wikang pambansa"
+        },
+        {
+          "label": "D",
+          "text": "Pagsunod sa Amerika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Layunin nitong bawasan ang kontrol ng mga dayuhan sa ekonomiya."
+    },
+    {
+      "id": "ww2_7_8",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan tinanggihan ng Senado ang bagong kasunduan sa mga base ng Amerika, na nagtapos sa pananatili ng mga base noong 1992?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hulyo 1946"
+        },
+        {
+          "label": "B",
+          "text": "Disyembre 1941"
+        },
+        {
+          "label": "C",
+          "text": "Pebrero 1986"
+        },
+        {
+          "label": "D",
+          "text": "Setyembre 1991"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Bumoto ang Senado laban sa pagpapatuloy ng kasunduan, kaya umalis ang mga Amerikano sa Clark at Subic."
+    },
+    {
+      "id": "ww2_7_9",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging epekto ng pagkakatali ng piso sa dolyar sa panahon ng Bell Trade Act?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tumaas ang halaga ng piso kahit walang dahilan"
+        },
+        {
+          "label": "B",
+          "text": "Naging libre ang lahat ng produkto"
+        },
+        {
+          "label": "C",
+          "text": "Nawalan ng sariling kontrol ang Pilipinas sa halaga ng kanyang salapi"
+        },
+        {
+          "label": "D",
+          "text": "Nagkaroon ng sariling ginto"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Naipit ang ekonomiya sa mga patakarang pabor sa Amerika."
+    },
+    {
+      "id": "ww2_7_10",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng pagpapakita ng neokolonyalismo sa ekonomiya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagtatayo ng mga sariling pabrika at pamilihan"
+        },
+        {
+          "label": "B",
+          "text": "Pagdepende ng bansa sa kalakalan at tulong ng isang makapangyarihang bansa"
+        },
+        {
+          "label": "C",
+          "text": "Pagtanggi sa lahat ng kalakalan"
+        },
+        {
+          "label": "D",
+          "text": "Pagbabawal sa mga banyaga"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Hindi tuluyang nakalaya ang ekonomiya ng Pilipinas pagkatapos ng 1946."
+    }
+  ],
+  "8": [
+    {
+      "id": "ww2_8_1",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"colonial mentality\" o kolonyal na kaisipan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagmamahal sa sariling kultura"
+        },
+        {
+          "label": "B",
+          "text": "Paniniwalang higit na magaling ang dayuhan at banyagang produkto kaysa sa sarili"
+        },
+        {
+          "label": "C",
+          "text": "Pagtangkilik sa mga lokal na produkto"
+        },
+        {
+          "label": "D",
+          "text": "Pagtanggi sa lahat ng impluwensiya"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Madalas makita ito sa pagpapaboran sa mga imported na gamit at sa pagmamaliit sa sariling wika at kultura."
+    },
+    {
+      "id": "ww2_8_2",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng impluwensiya ng Amerika sa kulturang Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Paggamit ng wikang Ingles at pagtangkilik sa pelikula at musika ng Hollywood"
+        },
+        {
+          "label": "B",
+          "text": "Pagsusuot ng baro't saya lamang"
+        },
+        {
+          "label": "C",
+          "text": "Pagtigil sa pag-aaral ng Ingles"
+        },
+        {
+          "label": "D",
+          "text": "Pagtanggi sa lahat ng dayuhang libangan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Malaki ang naging epekto ng edukasyon at media sa panlasa ng mga Pilipino."
+    },
+    {
+      "id": "ww2_8_3",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang kilalang makabayang mambabatas na nagtaguyod ng \"Filipino First\" at nagpaalala ng pagiging malaya sa dayuhang kontrol?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Manuel Roxas"
+        },
+        {
+          "label": "B",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "C",
+          "text": "Sergio Osmeña"
+        },
+        {
+          "label": "D",
+          "text": "Claro M. Recto"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Recto ay nanguna sa makabayang pagpapahalaga sa kasarinlan ng ekonomiya at patakarang panlabas."
+    },
+    {
+      "id": "ww2_8_4",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang sumulat ng \"The Miseducation of the Filipino\" na nagpuna sa edukasyong kolonyal?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Nick Joaquin"
+        },
+        {
+          "label": "C",
+          "text": "Renato Constantino"
+        },
+        {
+          "label": "D",
+          "text": "Carlos P. Romulo"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ipinakita niya kung paano hinubog ng edukasyon ang kaisipang kolonyal."
+    },
+    {
+      "id": "ww2_8_5",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Paano maipapakita ang pagiging makabayan sa pang-araw-araw na buhay?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagtanggi sa lahat ng dayuhan"
+        },
+        {
+          "label": "B",
+          "text": "Pagtangkilik sa sariling wika, produkto at kultura nang may paggalang sa iba"
+        },
+        {
+          "label": "C",
+          "text": "Paghamak sa mga katutubo"
+        },
+        {
+          "label": "D",
+          "text": "Pagbalewala sa kasaysayan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Hindi pagkamuhi sa iba kundi pagpapahalaga sa sarili ang diwa ng nasyonalismo."
+    },
+    {
+      "id": "ww2_8_6",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang epekto ng neokolonyalismo sa wika?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nangibabaw ang Ingles sa edukasyon, negosyo at gobyerno"
+        },
+        {
+          "label": "B",
+          "text": "Nawala ang lahat ng wika sa bansa"
+        },
+        {
+          "label": "C",
+          "text": "Naging opisyal na wika ang Espanyol"
+        },
+        {
+          "label": "D",
+          "text": "Hindi na ginamit ang Ingles"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dahil sa matagal na paggamit, mas mataas ang tingin ng iba sa Ingles kaysa sa katutubong wika."
+    },
+    {
+      "id": "ww2_8_7",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"brain drain\" na nauugnay sa epekto ng neokolonyal na pananaw?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagdami ng mga paaralan"
+        },
+        {
+          "label": "B",
+          "text": "Pagtaas ng sahod ng mga guro"
+        },
+        {
+          "label": "C",
+          "text": "Pagbabalik ng mga dayuhan"
+        },
+        {
+          "label": "D",
+          "text": "Pag-alis ng mga mahuhusay na Pilipino patungo sa ibang bansa para sa mas magandang oportunidad"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Madalas isipin ng iba na mas maganda ang trabaho sa dayuhang bansa kaysa sa sariling bayan."
+    },
+    {
+      "id": "ww2_8_8",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang tamang kongklusyon tungkol sa epekto ng neokolonyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Wala itong epekto sa lipunan"
+        },
+        {
+          "label": "B",
+          "text": "Napabuti nito ang lahat ng aspeto"
+        },
+        {
+          "label": "C",
+          "text": "Naapektuhan nito ang ekonomiya, kultura at pananaw ng maraming Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Nawala ang kasaysayan ng bansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Dahil sa matagal na ugnayan sa Amerika, nahubog ang maraming pananaw at gawi ng mga Pilipino."
+    },
+    {
+      "id": "ww2_8_9",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang layunin ng pagtatatag ng Cultural Center of the Philippines?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Itaguyod ang kulturang Amerikano"
+        },
+        {
+          "label": "B",
+          "text": "Itaguyod ang sining at kulturang Pilipino"
+        },
+        {
+          "label": "C",
+          "text": "Magturo ng Hapon"
+        },
+        {
+          "label": "D",
+          "text": "Magbenta ng mga banyagang produkto"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ginawa ito upang pagyamanin ang pambansang kamalayan sa sining."
+    },
+    {
+      "id": "ww2_8_10",
+      "era": "ww2",
+      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling kilos ang nagpapakita ng paglaban sa kolonyal na kaisipan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapahalaga sa sariling wika, lokal na produkto at kasaysayan"
+        },
+        {
+          "label": "B",
+          "text": "Pagmamaliit sa sariling wika"
+        },
+        {
+          "label": "C",
+          "text": "Pagtangkilik sa banyaga lamang"
+        },
+        {
+          "label": "D",
+          "text": "Paglimot sa mga bayani"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang pagmamahal sa sariling kultura ay hakbang laban sa kolonyal na kaisipan."
+    },
+    {
+      "id": "ww2_8_11",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging kauna-unahang halal na kapulungan ng mga Pilipino na binuksan noong 1907?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Asamblea ng Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Kongreso ng Malolos"
+        },
+        {
+          "label": "C",
+          "text": "Senado ng Pilipinas"
+        },
+        {
+          "label": "D",
+          "text": "Batasang Pambansa"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang Asamblea ng Pilipinas ang mababang kapulungan ng Komisyon ng Pilipinas at pinamunuan ni Sergio Osmeña."
+    },
+    {
+      "id": "ww2_8_12",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong programa ng Komonwelt ang nagbigay ng karapatang bumoto sa kababaihan noong 1937?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Batas Militar"
+        },
+        {
+          "label": "B",
+          "text": "Batas ng Edukasyon"
+        },
+        {
+          "label": "C",
+          "text": "Plebisito para sa pagboto ng kababaihan"
+        },
+        {
+          "label": "D",
+          "text": "Kasunduan sa Paris"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Bumoto ang mga babae sa plebisito noong 1937 at tinanggap ang karapatang bumoto."
+    },
+    {
+      "id": "ww2_8_13",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Martsa ng Kamatayan sa Bataan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sapilitang paglalakad ng libu-libong bihag na Pilipino at Amerikano matapos bumagsak ang Bataan"
+        },
+        {
+          "label": "B",
+          "text": "Parada ng mga Hapones sa Maynila"
+        },
+        {
+          "label": "C",
+          "text": "Paglalakbay ng Pangulo patungong Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Pagpupulong ng mga heneral"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Pagkatapos ng pagsuko ng Bataan noong Abril 9, 1942, libu-libong bihag ang namatay sa init, gutom at karahasan."
+    },
+    {
+      "id": "ww2_8_14",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tungkulin ng Kempeitai?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Samahang tumulong sa mga Pilipino"
+        },
+        {
+          "label": "B",
+          "text": "Hukbong dagat ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Hukbong pulis ng Hapon na naghahanap at nagpaparusa sa mga pinaghihinalaang kalaban"
+        },
+        {
+          "label": "D",
+          "text": "Samahan ng mga guro"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang Kempeitai ay kilala sa pagpapahirap at pagpatay sa mga pinaghihinalaan."
+    },
+    {
+      "id": "ww2_8_15",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tagapagtatag ng Girl Scouts of the Philippines na tumulong sa mga bihag at pinatay sa Fort Santiago?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Josefa Llanes Escoda"
+        },
+        {
+          "label": "B",
+          "text": "Gregoria de Jesus"
+        },
+        {
+          "label": "C",
+          "text": "Melchora Aquino"
+        },
+        {
+          "label": "D",
+          "text": "Teresa Magbanua"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Tumulong siya sa mga bihag ng digmaan at dinakip ng Kempeitai noong 1944."
+    },
+    {
+      "id": "ww2_8_16",
+      "era": "ww2",
+      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging dahilan ng paglakas ng kilusang Huk pagkatapos ng digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kakulangan ng mga paaralan"
+        },
+        {
+          "label": "B",
+          "text": "Pag-alis ng lahat ng Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Hindi nalutas ang suliranin sa lupa at kahirapan ng mga magsasaka"
+        },
+        {
+          "label": "D",
+          "text": "Pagtaas ng sahod"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Maraming Huk ang naghangad ng reporma sa lupa at lumaban sa pamahalaan."
+    },
+    {
+      "id": "ww2_8_17",
+      "era": "ww2",
+      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"Filipino First Policy\" ni Pangulong Carlos P. Garcia?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagbibigay-priyoridad sa mga negosyanteng Pilipino at lokal na produkto"
+        },
+        {
+          "label": "B",
+          "text": "Pagbabawal sa lahat ng dayuhan"
+        },
+        {
+          "label": "C",
+          "text": "Pagpapalit ng wikang pambansa"
+        },
+        {
+          "label": "D",
+          "text": "Pagsunod sa Amerika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Layunin nitong bawasan ang kontrol ng mga dayuhan sa ekonomiya."
+    },
+    {
+      "id": "ww2_8_18",
+      "era": "ww2",
+      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namuno sa Misyong Pangkalayaan na tinawag na \"OsRox\" noong 1922?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Manuel Quezon at Jose Laurel"
+        },
+        {
+          "label": "B",
+          "text": "Sergio Osmeña at Manuel Roxas"
+        },
+        {
+          "label": "C",
+          "text": "Emilio Aguinaldo at Apolinario Mabini"
+        },
+        {
+          "label": "D",
+          "text": "Claro Recto at Elpidio Quirino"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang OsRox ay pinaikling pangalan nina Osmeña at Roxas, na humiling ng kalayaan sa Estados Unidos."
+    },
+    {
+      "id": "ww2_8_19",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang heneral na tumangging manumpa ng katapatan sa Amerika at ipinatapon sa Guam?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "B",
+          "text": "Manuel Quezon"
+        },
+        {
+          "label": "C",
+          "text": "Sergio Osmeña"
+        },
+        {
+          "label": "D",
+          "text": "Artemio Ricarte"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Artemio Ricarte ay hindi sumuko at kalaunan ay namatay sa Pilipinas sa panahon ng digmaan."
+    },
+    {
+      "id": "ww2_8_20",
+      "era": "ww2",
+      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tanyag na pangako ni MacArthur nang umalis siya sa Pilipinas noong 1942?",
+      "options": [
+        {
+          "label": "A",
+          "text": "\"Mabuhay ang Pilipinas\""
+        },
+        {
+          "label": "B",
+          "text": "\"I shall return\""
+        },
+        {
+          "label": "C",
+          "text": "\"Walang iwanan\""
+        },
+        {
+          "label": "D",
+          "text": "\"Pilipinas para sa Pilipino\""
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tinupad niya ang pangako nang lumapag siya sa Leyte noong Oktubre 20, 1944."
+    },
+    {
+      "id": "ww2_8_21",
+      "era": "ww2",
+      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang ginawa ng mga Hapones sa edukasyon sa Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ginawang libre ang lahat ng kolehiyo"
+        },
+        {
+          "label": "B",
+          "text": "Pinalitan ang lahat ng guro ng Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Isinara ang lahat ng paaralan magpakailanman"
+        },
+        {
+          "label": "D",
+          "text": "Binago ang kurikulum upang burahin ang impluwensiya ng Amerika at ituro ang kultura ng Hapon"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinuro ang Nihonggo at pagpapahalagang Asyano."
+    },
+    {
+      "id": "ww2_8_22",
+      "era": "ww2",
+      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang halimbawa ng pagsisikap ng mga Pilipino para sa ganap na kalayaan matapos ang digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagtanggap ng pananakop ng Hapon"
+        },
+        {
+          "label": "B",
+          "text": "Pakikipag-ayos sa Estados Unidos hanggang sa pagkamit ng kalayaan noong Hulyo 4, 1946"
+        },
+        {
+          "label": "C",
+          "text": "Pagbabalik sa pamamahala ng Espanya"
+        },
+        {
+          "label": "D",
+          "text": "Pagtalikod sa kalayaan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Naganap ang kalayaan nang magtapos ang Komonwelt noong 1946."
+    }
+  ]
 }

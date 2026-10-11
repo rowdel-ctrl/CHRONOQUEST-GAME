@@ -129,7 +129,7 @@ function buildEra({ era, prefix, grade }, lessons) {
     questionText: q.text,
     options: q.options.map((text, i) => ({ label: 'ABCD'[i], text })),
     correctAnswer: q.answer,
-    explanation: '',
+    explanation: q.explanation || '',
   });
 
   const out = {};

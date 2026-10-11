@@ -1,2032 +1,2778 @@
 {
-    "1": [
+  "1": [
+    {
+      "id": "ame_1_1",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan itinatag ang Kataastaasan, Kagalang-galangang Katipunan ng mga Anak ng Bayan (KKK)?",
+      "options": [
         {
-            "id": "ame_1_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong kasunduan ang nilagdaan noong Disyembre 1898 kung saan ipinagbili ng Espanya ang Pilipinas sa Amerika sa halagang \\$20 Milyon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Kasunduan sa Paris"
-                },
-                {
-                    "label": "B",
-                    "text": "Kasunduan sa Biak-na-Bato"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Tydings-McDuffie"
-                },
-                {
-                    "label": "D",
-                    "text": "Kasunduang Bates"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Treaty of Paris (1898) ang pormal na naglipat ng kontrol sa Pilipinas mula Espanya tungo sa US."
+          "label": "A",
+          "text": "Hulyo 7, 1892"
         },
         {
-            "id": "ame_1_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging unang Pangulo ng Unang Republikang Pilipino sa Malolos noong 1899?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Emilio Aguinaldo"
-                },
-                {
-                    "label": "B",
-                    "text": "Manuel Quezon"
-                },
-                {
-                    "label": "C",
-                    "text": "Andres Bonifacio"
-                },
-                {
-                    "label": "D",
-                    "text": "Apolinario Mabini"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naging unang Pangulo ng Unang Republikang Pilipino si Emilio Aguinaldo, na pinasinayaan sa Malolos, Bulacan noong 1899."
+          "label": "B",
+          "text": "Hunyo 12, 1898"
         },
         {
-            "id": "ame_1_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong digmaan ang naganap sa pagitan ng mga Pilipino at Amerikano matapos ang Kasunduan sa Paris?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Digmaang Pilipino-Amerikano"
-                },
-                {
-                    "label": "B",
-                    "text": "Ikalawang Digmaang Pandaigdig"
-                },
-                {
-                    "label": "C",
-                    "text": "Digmaan sa Mactan"
-                },
-                {
-                    "label": "D",
-                    "text": "Rebolusyong Pilipino"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Digmaang Pilipino-Amerikano (1899-1902) ay sumiklab matapos hindi kilalanin ng Amerika ang kalayaan ng Unang Republika."
+          "label": "C",
+          "text": "Disyembre 30, 1896"
         },
         {
-            "id": "ame_1_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging unang Civil Governor ng Pilipinas sa ilalim ng pamahalaang Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "William Howard Taft"
-                },
-                {
-                    "label": "B",
-                    "text": "Douglas MacArthur"
-                },
-                {
-                    "label": "C",
-                    "text": "Manuel Quezon"
-                },
-                {
-                    "label": "D",
-                    "text": "Frank Murphy"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si William Howard Taft ang naging unang Civil Governor ng Pilipinas noong 1901."
-        },
-        {
-            "id": "ame_1_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 1,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa unang anyo ng pamahalaang itinatag ng mga Amerikano sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Insular Government"
-                },
-                {
-                    "label": "B",
-                    "text": "Commonwealth"
-                },
-                {
-                    "label": "C",
-                    "text": "Encomienda"
-                },
-                {
-                    "label": "D",
-                    "text": "Republika"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Insular Government ang naging unang anyo ng pamahalaang sibil na itinatag ng Amerika sa Pilipinas."
+          "label": "D",
+          "text": "Agosto 1, 1896"
         }
-    ],
-    "2": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Itinatag ang Katipunan noong Hulyo 7, 1892 sa Tondo, Maynila, ilang oras matapos ipatapon si Rizal sa Dapitan."
+    },
+    {
+      "id": "ame_1_2",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang nagtatag at naging pinakakilalang pinuno ng Katipunan?",
+      "options": [
         {
-            "id": "ame_2_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saang isla naganap ang kilalang labanan sa pagitan ng mga Pilipino at Amerikano sa Balangiga?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Samar"
-                },
-                {
-                    "label": "B",
-                    "text": "Cebu"
-                },
-                {
-                    "label": "C",
-                    "text": "Bohol"
-                },
-                {
-                    "label": "D",
-                    "text": "Palawan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naganap sa Balangiga, Samar ang isang kilalang labanan sa pagitan ng mga Pilipino at tropang Amerikano."
+          "label": "A",
+          "text": "Emilio Aguinaldo"
         },
         {
-            "id": "ame_2_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong estratehiya ng pakikidigma ang ginamit ng mga Pilipino laban sa mas malakas na hukbong Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Gerilyang pakikidigma (guerilla warfare)"
-                },
-                {
-                    "label": "B",
-                    "text": "Direktang labanan sa bukas na patlang"
-                },
-                {
-                    "label": "C",
-                    "text": "Pananalakay sa dagat gamit ang malalaking barko"
-                },
-                {
-                    "label": "D",
-                    "text": "Diplomasya lamang"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Gumamit ang mga Pilipino ng gerilyang taktika, gaya ng biglaang atake at pagtago sa kabundukan, dahil mas mahina ang kanilang armas kumpara sa Amerikano."
+          "label": "B",
+          "text": "Apolinario Mabini"
         },
         {
-            "id": "ame_2_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan nahuli si Emilio Aguinaldo ng mga Amerikano noong 1901?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Palanan, Isabela"
-                },
-                {
-                    "label": "B",
-                    "text": "Malolos, Bulacan"
-                },
-                {
-                    "label": "C",
-                    "text": "Cavite"
-                },
-                {
-                    "label": "D",
-                    "text": "Bataan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nahuli ng mga Amerikano si Emilio Aguinaldo sa Palanan, Isabela noong Marso 1901, na nagpahina sa paglaban ng mga Pilipino."
+          "label": "C",
+          "text": "Marcelo H. del Pilar"
         },
         {
-            "id": "ame_2_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas ang ipinatupad ng Amerika upang parusahan ang sinumang lumalaban sa awtoridad nito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Batas Sedition"
-                },
-                {
-                    "label": "B",
-                    "text": "Batas Tydings-McDuffie"
-                },
-                {
-                    "label": "C",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "D",
-                    "text": "Batas Organic"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Batas Sedition ay ipinatupad upang parusahan ang sinumang nagtataguyod ng kalayaan o lumalaban sa pamahalaang Amerikano."
-        },
-        {
-            "id": "ame_2_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 2,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan opisyal na idineklara ng Amerika ang katapusan ng Digmaang Pilipino-Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1902"
-                },
-                {
-                    "label": "B",
-                    "text": "1898"
-                },
-                {
-                    "label": "C",
-                    "text": "1935"
-                },
-                {
-                    "label": "D",
-                    "text": "1946"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Opisyal na idineklara ng Amerika ang katapusan ng digmaan noong 1902, bagamat may patuloy pa ring paglaban sa ilang lugar."
+          "label": "D",
+          "text": "Andres Bonifacio"
         }
-    ],
-    "3": [
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Andres Bonifacio, kasama sina Teodoro Plata, Ladislao Diwa at iba pa, ang nagtatag at namuno sa Katipunan."
+    },
+    {
+      "id": "ame_1_3",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang pangunahing layunin ng Katipunan?",
+      "options": [
         {
-            "id": "ame_3_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa mga gurong Amerikanong ipinadala sa Pilipinas upang magturo?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Thomasites"
-                },
-                {
-                    "label": "B",
-                    "text": "Pensionados"
-                },
-                {
-                    "label": "C",
-                    "text": "Ilustrados"
-                },
-                {
-                    "label": "D",
-                    "text": "Katipuneros"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang mga Thomasites ay mga gurong Amerikano na dumating sakay ng barkong USS Thomas upang magpalaganap ng edukasyon."
+          "label": "A",
+          "text": "Humingi ng mga reporma sa pamahalaang Espanyol sa mapayapang paraan"
         },
         {
-            "id": "ame_3_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong wika ang ginamit bilang pangunahing midyum ng pagtuturo sa mga paaralang itinatag ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Ingles"
-                },
-                {
-                    "label": "B",
-                    "text": "Espanyol"
-                },
-                {
-                    "label": "C",
-                    "text": "Hapon"
-                },
-                {
-                    "label": "D",
-                    "text": "Baybayin"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Ingles ang ginamit bilang midyum ng pagtuturo sa sistema ng pampublikong edukasyon na itinatag ng mga Amerikano."
+          "label": "B",
+          "text": "Maging lalawigan ng Espanya ang Pilipinas"
         },
         {
-            "id": "ame_3_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pambansang unibersidad ang itinatag noong 1908 sa panahon ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "University of the Philippines"
-                },
-                {
-                    "label": "B",
-                    "text": "Ateneo de Manila"
-                },
-                {
-                    "label": "C",
-                    "text": "University of Santo Tomas"
-                },
-                {
-                    "label": "D",
-                    "text": "De La Salle University"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Itinatag ang University of the Philippines noong 1908 bilang pambansang unibersidad ng bansa."
+          "label": "C",
+          "text": "Makamit ang kalayaan ng Pilipinas mula sa Espanya sa pamamagitan ng armadong pakikibaka"
         },
         {
-            "id": "ame_3_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa programang nagpapadala ng mga batang Pilipino upang mag-aral sa Estados Unidos?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pensionado Program"
-                },
-                {
-                    "label": "B",
-                    "text": "Thomasite Program"
-                },
-                {
-                    "label": "C",
-                    "text": "Katipunan Program"
-                },
-                {
-                    "label": "D",
-                    "text": "Propaganda Movement"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Pensionado Program ay nagbigay-pagkakataon sa mga piling estudyanteng Pilipino na mag-aral sa Amerika at bumalik bilang eksperto sa iba't ibang larangan."
-        },
-        {
-            "id": "ame_3_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 3,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang pangunahing bunga ng sistema ng pampublikong edukasyon na itinatag ng mga Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pagtaas ng bilang ng marunong bumasa at sumulat na Pilipino"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagbaba ng bilang ng estudyante"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagsasara ng lahat ng paaralan"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naging epekto"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang malawakang pagtatayo ng pampublikong paaralan ay nagdulot ng pagtaas ng literacy rate ng mga Pilipino."
+          "label": "D",
+          "text": "Palitan ang mga prayle ng mga opisyal na Pilipino sa parokya"
         }
-    ],
-    "4": [
+      ],
+      "correctAnswer": "C",
+      "explanation": "Hindi tulad ng La Liga Filipina, naniwala ang Katipunan na kalayaan ang makakamit sa pamamagitan ng himagsikan."
+    },
+    {
+      "id": "ame_1_4",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tawag sa pahayagan ng Katipunan na pinamatnugutan ni Emilio Jacinto?",
+      "options": [
         {
-            "id": "ame_4_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong uri ng patakarang pangkalakalan ang ipinatupad sa pagitan ng Pilipinas at Estados Unidos?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Free Trade (walang taripa)"
-                },
-                {
-                    "label": "B",
-                    "text": "Barter system"
-                },
-                {
-                    "label": "C",
-                    "text": "Bandala"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang kalakalan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinatupad ang patakarang free trade sa pagitan ng Pilipinas at Estados Unidos, na nagpalago sa export ngunit nagpataas din ng dependensiya sa Amerika."
+          "label": "A",
+          "text": "La Solidaridad"
         },
         {
-            "id": "ame_4_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang isa sa mga pangunahing inieksport na produkto ng Pilipinas sa panahon ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Asukal"
-                },
-                {
-                    "label": "B",
-                    "text": "Kotse"
-                },
-                {
-                    "label": "C",
-                    "text": "Elektroniks"
-                },
-                {
-                    "label": "D",
-                    "text": "Bakal"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang asukal, abaka, at niyog ay ilan sa mga pangunahing produktong inieksport ng Pilipinas sa Estados Unidos."
+          "label": "B",
+          "text": "Kalayaan"
         },
         {
-            "id": "ame_4_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang pinaunlad ng mga Amerikano bilang bahagi ng imprastraktura ng bansa?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Mga kalsada, tulay, at riles"
-                },
-                {
-                    "label": "B",
-                    "text": "Mga simbahan lamang"
-                },
-                {
-                    "label": "C",
-                    "text": "Mga bilangguan lamang"
-                },
-                {
-                    "label": "D",
-                    "text": "Wala silang itinayo"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtayo ang mga Amerikano ng mga kalsada, tulay, at riles bilang bahagi ng modernisasyon ng bansa."
+          "label": "C",
+          "text": "Diariong Tagalog"
         },
         {
-            "id": "ame_4_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang pagbabagong idinulot ng mga Amerikano sa larangan ng kalusugan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pagpapabuti ng sanitasyon at pampublikong ospital"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagsasara ng lahat ng ospital"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang binago sa kalusugan"
-                },
-                {
-                    "label": "D",
-                    "text": "Pagpapalaganap ng sakit"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagpakilala ang mga Amerikano ng mga hakbang sa pampublikong kalusugan at sanitasyon na nagpababa ng dami ng maysakit."
-        },
-        {
-            "id": "ame_4_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 4,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong salapi ang ipinakilala ng Amerika na nakabatay sa dolyar ng Estados Unidos?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Peso na nakabatay sa dolyar"
-                },
-                {
-                    "label": "B",
-                    "text": "Piloncitos"
-                },
-                {
-                    "label": "C",
-                    "text": "Yen"
-                },
-                {
-                    "label": "D",
-                    "text": "Real de a ocho"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagpakilala ang mga Amerikano ng bagong sistemang salapi na nakabatay sa dolyar upang mapadali ang kalakalan."
+          "label": "D",
+          "text": "El Filibusterismo"
         }
-    ],
-    "5": [
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Kalayaan ang opisyal na pahayagan ng Katipunan, na inilimbag noong 1896."
+    },
+    {
+      "id": "ame_1_5",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang sumulat ng Kartilya ng Katipunan, ang mga aral na gabay ng mga kasapi?",
+      "options": [
         {
-            "id": "ame_5_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa unang lehislatibong katawan na binubuo ng mga Amerikanong opisyal at itinatag noong 1900?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Philippine Commission"
-                },
-                {
-                    "label": "B",
-                    "text": "Philippine Assembly"
-                },
-                {
-                    "label": "C",
-                    "text": "Katipunan"
-                },
-                {
-                    "label": "D",
-                    "text": "Malolos Congress"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Philippine Commission, na binubuo ng mga Amerikano, ang naunang lehislatibong katawan na itinatag ng Amerika sa Pilipinas."
+          "label": "A",
+          "text": "Emilio Jacinto"
         },
         {
-            "id": "ame_5_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan naganap ang unang pambansang halalan para sa Philippine Assembly?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1907"
-                },
-                {
-                    "label": "B",
-                    "text": "1898"
-                },
-                {
-                    "label": "C",
-                    "text": "1935"
-                },
-                {
-                    "label": "D",
-                    "text": "1946"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Noong 1907, ginanap ang unang pambansang halalan para sa Philippine Assembly, ang unang katawang binubuo ng mga Pilipinong halal."
+          "label": "B",
+          "text": "Andres Bonifacio"
         },
         {
-            "id": "ame_5_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas ang nangako ng kalayaan ng Pilipinas mula sa Estados Unidos noong 1916?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "B",
-                    "text": "Tydings-McDuffie Act"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Sedition"
-                },
-                {
-                    "label": "D",
-                    "text": "Hare-Hawes-Cutting Act"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Jones Law (1916) ang unang batas na nangako ng kalayaan sa Pilipinas kapag handa na itong mamahala sa sarili."
+          "label": "C",
+          "text": "Jose Rizal"
         },
         {
-            "id": "ame_5_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade5",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong partido pampulitika ang itinatag na naging pangunahing puwersa sa pamahalaan noong panahong ito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Nacionalista Party"
-                },
-                {
-                    "label": "B",
-                    "text": "Liberal Party"
-                },
-                {
-                    "label": "C",
-                    "text": "Katipunan Party"
-                },
-                {
-                    "label": "D",
-                    "text": "Kilusang Bagong Lipunan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Nacionalista Party ang naging pangunahing partido pampulitika na nangunguna sa kilusan tungo sa kalayaan."
-        },
-        {
-            "id": "ame_5_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 5,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino sa mga sumusunod ang mga lider ng Nacionalista Party at kilalang tagapagtaguyod ng kalayaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Manuel Quezon at Sergio Osmena"
-                },
-                {
-                    "label": "B",
-                    "text": "Andres Bonifacio at Emilio Jacinto"
-                },
-                {
-                    "label": "C",
-                    "text": "Jose Rizal at Marcelo del Pilar"
-                },
-                {
-                    "label": "D",
-                    "text": "Lapu-Lapu at Sikatuna"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Sina Manuel L. Quezon at Sergio Osmena ang naging mga pangunahing lider ng Nacionalista Party at ng kilusan tungo sa kalayaan."
+          "label": "D",
+          "text": "Gregorio del Pilar"
         }
-    ],
-    "6": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Emilio Jacinto, ang \"Utak ng Katipunan,\" ang sumulat ng Kartilya na naglalaman ng mabuting asal at pagmamahal sa bayan."
+    },
+    {
+      "id": "ame_1_6",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit hinihingan ng Katipunan ng dugo ang mga bagong kasapi sa kanilang panunumpa (sandugo)?",
+      "options": [
         {
-            "id": "ame_6_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa mga delegasyong ipinadala ng Pilipinas sa Kongreso ng Estados Unidos upang isulong ang kalayaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Independence Missions"
-                },
-                {
-                    "label": "B",
-                    "text": "Pensionado Program"
-                },
-                {
-                    "label": "C",
-                    "text": "Kilusang Propaganda"
-                },
-                {
-                    "label": "D",
-                    "text": "Katipunan Mission"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagpadala ang Pilipinas ng ilang Independence Missions sa Kongreso ng US upang direktang isulong ang kalayaan ng bansa."
+          "label": "A",
+          "text": "Upang masubukan kung may sakit ang kasapi"
         },
         {
-            "id": "ame_6_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas noong 1932 ang unang nagbigay ng balangkas para sa kalayaan ngunit tinutulan ni Quezon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Hare-Hawes-Cutting Act"
-                },
-                {
-                    "label": "B",
-                    "text": "Tydings-McDuffie Act"
-                },
-                {
-                    "label": "C",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "D",
-                    "text": "Batas Organic"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Hare-Hawes-Cutting Act (1932) ay unang batas na naglatag ng balangkas para sa kalayaan ngunit tinutulan ni Quezon dahil sa ilang probisyon."
+          "label": "B",
+          "text": "Upang makilala ang mga espiya ng Espanyol"
         },
         {
-            "id": "ame_6_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas noong 1934 ang nagtatag ng Commonwealth of the Philippines at naglatag ng 10 taong transisyon patungo sa kalayaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Tydings-McDuffie Act"
-                },
-                {
-                    "label": "B",
-                    "text": "Hare-Hawes-Cutting Act"
-                },
-                {
-                    "label": "C",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "D",
-                    "text": "Batas Sedition"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Tydings-McDuffie Act (1934) ang nagtatag ng Commonwealth of the Philippines at naglatag ng sampung taong panahon bago ganap na maging malaya."
+          "label": "C",
+          "text": "Upang makabayad ng buwis sa samahan"
         },
         {
-            "id": "ame_6_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ilang taon ang inilaang panahon ng transisyon bago ganap na makamit ang kalayaan sa ilalim ng Tydings-McDuffie Act?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "10 taon"
-                },
-                {
-                    "label": "B",
-                    "text": "5 taon"
-                },
-                {
-                    "label": "C",
-                    "text": "20 taon"
-                },
-                {
-                    "label": "D",
-                    "text": "1 taon"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naglatag ang Tydings-McDuffie Act ng sampung taong panahon ng paghahanda (Commonwealth period) bago ganap na kalayaan."
-        },
-        {
-            "id": "ame_6_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 6,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Kailan opisyal na itinatag ang Commonwealth of the Philippines?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1935"
-                },
-                {
-                    "label": "B",
-                    "text": "1946"
-                },
-                {
-                    "label": "C",
-                    "text": "1898"
-                },
-                {
-                    "label": "D",
-                    "text": "1902"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Itinatag ang Commonwealth of the Philippines noong 1935 bilang paghahanda tungo sa ganap na kalayaan."
+          "label": "D",
+          "text": "Upang patunayan ang katapatan at pagkakapatiran sa samahan"
         }
-    ],
-    "7": [
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang sandugo ay sumisimbolo ng katapatan at ng pagiging magkakapatid ng mga kasapi."
+    },
+    {
+      "id": "ame_1_7",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tatlong antas ng pagkakasapi sa Katipunan?",
+      "options": [
         {
-            "id": "ame_7_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging unang Pangulo ng Commonwealth of the Philippines?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Manuel L. Quezon"
-                },
-                {
-                    "label": "B",
-                    "text": "Sergio Osmena"
-                },
-                {
-                    "label": "C",
-                    "text": "Emilio Aguinaldo"
-                },
-                {
-                    "label": "D",
-                    "text": "Manuel Roxas"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Manuel L. Quezon ang naging unang Pangulo ng Commonwealth of the Philippines noong 1935."
+          "label": "A",
+          "text": "Gobernador, Alkalde, Konsehal"
         },
         {
-            "id": "ame_7_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong Saligang Batas ang pinagtibay noong 1935 para gabayan ang Commonwealth?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1935 Constitution"
-                },
-                {
-                    "label": "B",
-                    "text": "1987 Constitution"
-                },
-                {
-                    "label": "C",
-                    "text": "Malolos Constitution"
-                },
-                {
-                    "label": "D",
-                    "text": "1973 Constitution"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Pinagtibay ang 1935 Constitution bilang batayang batas ng Commonwealth of the Philippines."
+          "label": "B",
+          "text": "Datu, Maharlika, Alipin"
         },
         {
-            "id": "ame_7_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong programa ni Pangulong Quezon ang naglalayong tulungan ang mahihirap at manggagawa?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Social Justice Program"
-                },
-                {
-                    "label": "B",
-                    "text": "Bagong Lipunan Program"
-                },
-                {
-                    "label": "C",
-                    "text": "Martial Law"
-                },
-                {
-                    "label": "D",
-                    "text": "Pensionado Program"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinatupad ni Quezon ang Social Justice Program upang tulungan ang mga magsasaka at manggagawa sa panahon ng Commonwealth."
+          "label": "C",
+          "text": "Katipon, Kawal, Bayani"
         },
         {
-            "id": "ame_7_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong wika ang itinatag na batayan ng Wikang Pambansa noong panahon ng Commonwealth?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Tagalog"
-                },
-                {
-                    "label": "B",
-                    "text": "Ingles"
-                },
-                {
-                    "label": "C",
-                    "text": "Espanyol"
-                },
-                {
-                    "label": "D",
-                    "text": "Cebuano"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Tagalog ang pinili bilang batayan ng Wikang Pambansa sa panahon ng Commonwealth."
-        },
-        {
-            "id": "ame_7_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 7,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong taon inaasahang bibigyan ng ganap na kalayaan ang Pilipinas ayon sa Tydings-McDuffie Act?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1946"
-                },
-                {
-                    "label": "B",
-                    "text": "1935"
-                },
-                {
-                    "label": "C",
-                    "text": "1941"
-                },
-                {
-                    "label": "D",
-                    "text": "1902"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ayon sa Tydings-McDuffie Act, dapat sanang makamit ng Pilipinas ang ganap na kalayaan noong 1946."
+          "label": "D",
+          "text": "Heneral, Koronel, Kapitan"
         }
-    ],
-    "8": [
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang mga kasapi ay umaakyat mula Katipon hanggang Kawal at Bayani, na may kanya-kanyang tanda at lihim na tawag."
+    },
+    {
+      "id": "ame_1_8",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Gregoria de Jesus, asawa ni Bonifacio, ay kilala sa Katipunan bilang ano?",
+      "options": [
         {
-            "id": "ame_8_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod na palakasan ang ipinakilala ng mga Amerikano sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Basketball"
-                },
-                {
-                    "label": "B",
-                    "text": "Sipa"
-                },
-                {
-                    "label": "C",
-                    "text": "Arnis"
-                },
-                {
-                    "label": "D",
-                    "text": "Sabong"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinakilala ng mga Amerikano ang basketball na naging isa sa mga pinakapopular na palakasan sa Pilipinas."
+          "label": "A",
+          "text": "Ina ng Biak-na-Bato"
         },
         {
-            "id": "ame_8_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa proseso ng pagbibigay ng mas maraming posisyon sa gobyerno sa mga Pilipino sa halip na Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Filipinization"
-                },
-                {
-                    "label": "B",
-                    "text": "Americanization"
-                },
-                {
-                    "label": "C",
-                    "text": "Reduccion"
-                },
-                {
-                    "label": "D",
-                    "text": "Colonization"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Filipinization ay ang unti-unting pagbibigay ng higit pang tungkulin sa gobyerno sa mga Pilipino sa halip na sa mga Amerikano."
+          "label": "B",
+          "text": "Lakambini ng Katipunan"
         },
         {
-            "id": "ame_8_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong uri ng pamahalaan ang isinulong ng mga Amerikano bilang modelo para sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Demokrasya"
-                },
-                {
-                    "label": "B",
-                    "text": "Monarkiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Diktadura"
-                },
-                {
-                    "label": "D",
-                    "text": "Teokrasya"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Isinulong ng mga Amerikano ang mga institusyong demokratiko bilang bahagi ng kanilang sistema ng pamamahala sa Pilipinas."
+          "label": "C",
+          "text": "Joan of Arc ng Visayas"
         },
         {
-            "id": "ame_8_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Paano naiimpluwensyahan ang uri ng pananamit ng mga Pilipino noong panahon ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Naging popular ang estilong \"Amerikana\" o kasuotang Kanluranin"
-                },
-                {
-                    "label": "B",
-                    "text": "Bumalik sila sa bahag"
-                },
-                {
-                    "label": "C",
-                    "text": "Walang nagbago"
-                },
-                {
-                    "label": "D",
-                    "text": "Nagbawal ang gobyerno ng pananamit"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naging popular ang estilong Kanluranin o \"Amerikana\" na kasuotan bilang impluwensya ng kulturang Amerikano."
-        },
-        {
-            "id": "ame_8_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 8,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang isang anyo ng libangan na ipinakilala sa Pilipinas sa panahong ito?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Panonood ng sine (cinema)"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagsayaw ng tinikling lamang"
-                },
-                {
-                    "label": "C",
-                    "text": "Karera ng kalabaw"
-                },
-                {
-                    "label": "D",
-                    "text": "Wala"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinakilala ang sine bilang bagong uri ng libangan sa panahon ng Amerikano."
+          "label": "D",
+          "text": "Dakilang Lumpo"
         }
-    ],
-    "9": [
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Gregoria de Jesus ang Lakambini at tagapag-ingat ng mga lihim na dokumento at selyo ng Katipunan."
+    },
+    {
+      "id": "ame_1_9",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa Cavite, anong dalawang sangay ng Katipunan ang naging kilala?",
+      "options": [
         {
-            "id": "ame_9_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang positibong naiwang epekto ng panahon ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Malawakang sistema ng pampublikong edukasyon"
-                },
-                {
-                    "label": "B",
-                    "text": "Kabuuang pagkasira ng ekonomiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagbabawal sa lahat ng wika ng Pilipino"
-                },
-                {
-                    "label": "D",
-                    "text": "Kawalan ng anumang imprastraktura"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang malawakang sistema ng pampublikong edukasyon ay isa sa mga pinakamalaking positibong naiwan ng panahong Amerikano."
+          "label": "A",
+          "text": "Magdalo at Magdiwang"
         },
         {
-            "id": "ame_9_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang isang hamon o negatibong epekto na dulot ng free trade sa Amerika?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Naging umasa ang ekonomiya ng Pilipinas sa Estados Unidos"
-                },
-                {
-                    "label": "B",
-                    "text": "Naging ganap na malaya ang ekonomiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Wala itong idinulot na epekto"
-                },
-                {
-                    "label": "D",
-                    "text": "Bumagsak ang Estados Unidos"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang free trade policy, bagamat nagpalago ng eksport, ay lumikha rin ng malaking dependensiya ng ekonomiya ng Pilipinas sa Estados Unidos."
+          "label": "B",
+          "text": "Magdalo at Magbanua"
         },
         {
-            "id": "ame_9_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang naging bunga ng malawakang paggamit ng Ingles sa edukasyon?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Naging bihasa sa Ingles ang maraming Pilipino, na nakatulong sa internasyunal na komunikasyon"
-                },
-                {
-                    "label": "B",
-                    "text": "Nawala ang lahat ng katutubong wika"
-                },
-                {
-                    "label": "C",
-                    "text": "Nawala ang interes sa edukasyon"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang naging epekto"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang paggamit ng Ingles bilang midyum ng edukasyon ay naging isang malaking bahagi ng kultura at kakayahang pang-internasyunal ng mga Pilipino."
+          "label": "C",
+          "text": "Magdiwang at Magallanes"
         },
         {
-            "id": "ame_9_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naganap sa hukbong Pilipino habang paghahanda tungo sa kalayaan noong panahon ng Commonwealth?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Itinatag ang Philippine Army sa ilalim ni Heneral Douglas MacArthur bilang tagapayo"
-                },
-                {
-                    "label": "B",
-                    "text": "Ganap na natigil ang hukbo"
-                },
-                {
-                    "label": "C",
-                    "text": "Nawalan ng militar ang bansa"
-                },
-                {
-                    "label": "D",
-                    "text": "Naipasa agad ang kalayaan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtatag ng pambansang hukbo sa ilalim ng Commonwealth, kasama si Heneral Douglas MacArthur bilang tagapayo, bilang paghahanda sa depensa ng bansa."
-        },
-        {
-            "id": "ame_9_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 9,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangyayari ang biglang naganap noong 1941 na nakaabala sa balak na kalayaan ng Pilipinas noong 1946?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pananalakay ng Hapon sa Pilipinas"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagbagsak ng ekonomiya ng US"
-                },
-                {
-                    "label": "C",
-                    "text": "Bagong rebolusyon ng mga Pilipino"
-                },
-                {
-                    "label": "D",
-                    "text": "Pagbabalik ng mga Kastila"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Sinalakay ng Hapon ang Pilipinas noong Disyembre 1941, na nagsimula ng Ikalawang Digmaang Pandaigdig sa bansa at nagpaantala sa plano ng kalayaan."
+          "label": "D",
+          "text": "Magsaysay at Magdalo"
         }
-    ],
-    "10": [
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang Magdalo ay pinamunuan ni Baldomero Aguinaldo at ang Magdiwang ni Mariano Alvarez."
+    },
+    {
+      "id": "ame_1_10",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang isang kaibigan ay nagsabing kasapi si Jose Rizal sa Katipunan. Alin ang pinakatamang tugon?",
+      "options": [
         {
-            "id": "ame_10_1",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong kasunduan ang nilagdaan noong 1898 kung saan ipinagbili ng Espanya ang Pilipinas sa Amerika?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Kasunduan sa Paris"
-                },
-                {
-                    "label": "B",
-                    "text": "Kasunduan sa Biak-na-Bato"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Tydings-McDuffie"
-                },
-                {
-                    "label": "D",
-                    "text": "Kasunduang Bates"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Treaty of Paris (1898) ang naglipat ng kontrol sa Pilipinas mula Espanya tungo sa US."
+          "label": "A",
+          "text": "Oo, siya ang unang pangulo ng Katipunan"
         },
         {
-            "id": "ame_10_2",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging unang Pangulo ng Unang Republikang Pilipino?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Emilio Aguinaldo"
-                },
-                {
-                    "label": "B",
-                    "text": "Manuel Quezon"
-                },
-                {
-                    "label": "C",
-                    "text": "Andres Bonifacio"
-                },
-                {
-                    "label": "D",
-                    "text": "Apolinario Mabini"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Naging unang Pangulo ng Unang Republikang Pilipino si Emilio Aguinaldo."
+          "label": "B",
+          "text": "Oo, siya ang sumulat ng Kartilya"
         },
         {
-            "id": "ame_10_3",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa mga gurong Amerikanong ipinadala upang magturo sa Pilipinas?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Thomasites"
-                },
-                {
-                    "label": "B",
-                    "text": "Pensionados"
-                },
-                {
-                    "label": "C",
-                    "text": "Ilustrados"
-                },
-                {
-                    "label": "D",
-                    "text": "Katipuneros"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang mga Thomasites ay mga gurong Amerikano na dumating upang magturo sa Pilipinas."
+          "label": "C",
+          "text": "Hindi, kalaban niya ang lahat ng kilusang makabayan"
         },
         {
-            "id": "ame_10_4",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pambansang unibersidad ang itinatag noong 1908?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "University of the Philippines"
-                },
-                {
-                    "label": "B",
-                    "text": "Ateneo de Manila"
-                },
-                {
-                    "label": "C",
-                    "text": "University of Santo Tomas"
-                },
-                {
-                    "label": "D",
-                    "text": "De La Salle University"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Itinatag ang University of the Philippines noong 1908."
-        },
-        {
-            "id": "ame_10_5",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas noong 1934 ang nagtatag ng Commonwealth of the Philippines?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Tydings-McDuffie Act"
-                },
-                {
-                    "label": "B",
-                    "text": "Hare-Hawes-Cutting Act"
-                },
-                {
-                    "label": "C",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "D",
-                    "text": "Batas Sedition"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Tydings-McDuffie Act (1934) ang nagtatag ng Commonwealth of the Philippines."
-        },
-        {
-            "id": "ame_10_6",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino ang naging unang Pangulo ng Commonwealth of the Philippines?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Manuel L. Quezon"
-                },
-                {
-                    "label": "B",
-                    "text": "Sergio Osmena"
-                },
-                {
-                    "label": "C",
-                    "text": "Emilio Aguinaldo"
-                },
-                {
-                    "label": "D",
-                    "text": "Manuel Roxas"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Si Manuel L. Quezon ang naging unang Pangulo ng Commonwealth of the Philippines."
-        },
-        {
-            "id": "ame_10_7",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong wika ang itinatag na batayan ng Wikang Pambansa noong panahon ng Commonwealth?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Tagalog"
-                },
-                {
-                    "label": "B",
-                    "text": "Ingles"
-                },
-                {
-                    "label": "C",
-                    "text": "Espanyol"
-                },
-                {
-                    "label": "D",
-                    "text": "Cebuano"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Tagalog ang pinili bilang batayan ng Wikang Pambansa."
-        },
-        {
-            "id": "ame_10_8",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod na palakasan ang ipinakilala ng mga Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Basketball"
-                },
-                {
-                    "label": "B",
-                    "text": "Sipa"
-                },
-                {
-                    "label": "C",
-                    "text": "Arnis"
-                },
-                {
-                    "label": "D",
-                    "text": "Sabong"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinakilala ng mga Amerikano ang basketball sa Pilipinas."
-        },
-        {
-            "id": "ame_10_9",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Saan nahuli si Emilio Aguinaldo ng mga Amerikano noong 1901?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Palanan, Isabela"
-                },
-                {
-                    "label": "B",
-                    "text": "Malolos, Bulacan"
-                },
-                {
-                    "label": "C",
-                    "text": "Cavite"
-                },
-                {
-                    "label": "D",
-                    "text": "Bataan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nahuli si Aguinaldo sa Palanan, Isabela noong 1901."
-        },
-        {
-            "id": "ame_10_10",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong taon inaasahang bibigyan ng ganap na kalayaan ang Pilipinas ayon sa Tydings-McDuffie Act?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1946"
-                },
-                {
-                    "label": "B",
-                    "text": "1935"
-                },
-                {
-                    "label": "C",
-                    "text": "1941"
-                },
-                {
-                    "label": "D",
-                    "text": "1902"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ayon sa batas, dapat sanang makamit ang kalayaan noong 1946."
-        },
-        {
-            "id": "ame_10_11",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong digmaan ang naganap sa pagitan ng mga Pilipino at Amerikano matapos ang Kasunduan sa Paris?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Digmaang Pilipino-Amerikano"
-                },
-                {
-                    "label": "B",
-                    "text": "Ikalawang Digmaang Pandaigdig"
-                },
-                {
-                    "label": "C",
-                    "text": "Digmaan sa Mactan"
-                },
-                {
-                    "label": "D",
-                    "text": "Rebolusyong Pilipino"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Digmaang Pilipino-Amerikano ay sumiklab matapos hindi kilalanin ng Amerika ang kalayaan ng Unang Republika."
-        },
-        {
-            "id": "ame_10_12",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong estratehiya ng pakikidigma ang ginamit ng mga Pilipino laban sa mas malakas na hukbong Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Gerilyang pakikidigma"
-                },
-                {
-                    "label": "B",
-                    "text": "Direktang labanan sa bukas na patlang"
-                },
-                {
-                    "label": "C",
-                    "text": "Pananalakay sa dagat lamang"
-                },
-                {
-                    "label": "D",
-                    "text": "Diplomasya lamang"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Gumamit ang mga Pilipino ng gerilyang taktika dahil mas mahina ang kanilang armas."
-        },
-        {
-            "id": "ame_10_13",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa programang nagpapadala ng mga batang Pilipino upang mag-aral sa Estados Unidos?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pensionado Program"
-                },
-                {
-                    "label": "B",
-                    "text": "Thomasite Program"
-                },
-                {
-                    "label": "C",
-                    "text": "Katipunan Program"
-                },
-                {
-                    "label": "D",
-                    "text": "Propaganda Movement"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Pensionado Program ay nagpadala ng mga estudyanteng Pilipino upang mag-aral sa Amerika."
-        },
-        {
-            "id": "ame_10_14",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong uri ng patakarang pangkalakalan ang ipinatupad sa pagitan ng Pilipinas at Estados Unidos?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Free Trade"
-                },
-                {
-                    "label": "B",
-                    "text": "Barter system"
-                },
-                {
-                    "label": "C",
-                    "text": "Bandala"
-                },
-                {
-                    "label": "D",
-                    "text": "Walang kalakalan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ipinatupad ang free trade sa pagitan ng Pilipinas at Estados Unidos."
-        },
-        {
-            "id": "ame_10_15",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong batas ang nangako ng kalayaan ng Pilipinas mula sa Estados Unidos noong 1916?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Jones Law"
-                },
-                {
-                    "label": "B",
-                    "text": "Tydings-McDuffie Act"
-                },
-                {
-                    "label": "C",
-                    "text": "Batas Sedition"
-                },
-                {
-                    "label": "D",
-                    "text": "Hare-Hawes-Cutting Act"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Jones Law (1916) ang unang batas na nangako ng kalayaan sa Pilipinas."
-        },
-        {
-            "id": "ame_10_16",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Sino sa mga sumusunod ang mga lider ng Nacionalista Party?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Manuel Quezon at Sergio Osmena"
-                },
-                {
-                    "label": "B",
-                    "text": "Andres Bonifacio at Emilio Jacinto"
-                },
-                {
-                    "label": "C",
-                    "text": "Jose Rizal at Marcelo del Pilar"
-                },
-                {
-                    "label": "D",
-                    "text": "Lapu-Lapu at Sikatuna"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Sina Quezon at Osmena ang naging mga pangunahing lider ng Nacionalista Party."
-        },
-        {
-            "id": "ame_10_17",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong Saligang Batas ang pinagtibay noong 1935 para gabayan ang Commonwealth?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "1935 Constitution"
-                },
-                {
-                    "label": "B",
-                    "text": "1987 Constitution"
-                },
-                {
-                    "label": "C",
-                    "text": "Malolos Constitution"
-                },
-                {
-                    "label": "D",
-                    "text": "1973 Constitution"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Pinagtibay ang 1935 Constitution bilang batayang batas ng Commonwealth."
-        },
-        {
-            "id": "ame_10_18",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang tawag sa proseso ng pagbibigay ng mas maraming posisyon sa gobyerno sa mga Pilipino?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Filipinization"
-                },
-                {
-                    "label": "B",
-                    "text": "Americanization"
-                },
-                {
-                    "label": "C",
-                    "text": "Reduccion"
-                },
-                {
-                    "label": "D",
-                    "text": "Colonization"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang Filipinization ay ang unti-unting pagbibigay ng higit pang tungkulin sa gobyerno sa mga Pilipino."
-        },
-        {
-            "id": "ame_10_19",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang positibong naiwang epekto ng panahon ng Amerikano?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Malawakang sistema ng pampublikong edukasyon"
-                },
-                {
-                    "label": "B",
-                    "text": "Kabuuang pagkasira ng ekonomiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Pagbabawal sa lahat ng wika ng Pilipino"
-                },
-                {
-                    "label": "D",
-                    "text": "Kawalan ng anumang imprastraktura"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang malawakang sistema ng pampublikong edukasyon ay isa sa mga pinakamalaking positibong naiwan."
-        },
-        {
-            "id": "ame_10_20",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Alin sa mga sumusunod ang isang hamon na dulot ng free trade sa Amerika?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Naging umasa ang ekonomiya ng Pilipinas sa Estados Unidos"
-                },
-                {
-                    "label": "B",
-                    "text": "Naging ganap na malaya ang ekonomiya"
-                },
-                {
-                    "label": "C",
-                    "text": "Wala itong idinulot na epekto"
-                },
-                {
-                    "label": "D",
-                    "text": "Bumagsak ang Estados Unidos"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Ang free trade policy ay lumikha ng malaking dependensiya ng ekonomiya ng Pilipinas sa Estados Unidos."
-        },
-        {
-            "id": "ame_10_21",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Ano ang naganap sa hukbong Pilipino habang paghahanda tungo sa kalayaan?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Itinatag ang Philippine Army sa ilalim ni Heneral Douglas MacArthur bilang tagapayo"
-                },
-                {
-                    "label": "B",
-                    "text": "Ganap na natigil ang hukbo"
-                },
-                {
-                    "label": "C",
-                    "text": "Nawalan ng militar ang bansa"
-                },
-                {
-                    "label": "D",
-                    "text": "Naipasa agad ang kalayaan"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Nagtatag ng pambansang hukbo sa ilalim ng Commonwealth, kasama si Heneral Douglas MacArthur bilang tagapayo."
-        },
-        {
-            "id": "ame_10_22",
-            "era": "american",
-            "subTopic": "",
-            "gradeLevel": "grade6",
-            "level": 10,
-            "difficulty": "medium",
-            "questionType": "multiple_choice",
-            "questionText": "Anong pangyayari ang biglang naganap noong 1941 na nakaabala sa balak na kalayaan ng Pilipinas noong 1946?",
-            "options": [
-                {
-                    "label": "A",
-                    "text": "Pananalakay ng Hapon sa Pilipinas"
-                },
-                {
-                    "label": "B",
-                    "text": "Pagbagsak ng ekonomiya ng US"
-                },
-                {
-                    "label": "C",
-                    "text": "Bagong rebolusyon ng mga Pilipino"
-                },
-                {
-                    "label": "D",
-                    "text": "Pagbabalik ng mga Kastila"
-                }
-            ],
-            "correctAnswer": "A",
-            "explanation": "Sinalakay ng Hapon ang Pilipinas noong 1941, na nagpaantala sa plano ng kalayaan."
+          "label": "D",
+          "text": "Hindi siya kasapi, ngunit ginamit ng Katipunan ang kanyang pangalan bilang pandangal na pangulo"
         }
-    ]
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hindi kasapi si Rizal at hindi niya sinang-ayunan ang agarang armadong himagsikan, bagaman iginagalang siya ng mga Katipunero."
+    }
+  ],
+  "2": [
+    {
+      "id": "ame_2_1",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Anong pangyayari noong Agosto 1896 ang nagpilit sa mga Katipunero na magsimula ng himagsikan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Napatay si Rizal sa Bagumbayan"
+        },
+        {
+          "label": "B",
+          "text": "Natalo ang Espanya sa Maynila"
+        },
+        {
+          "label": "C",
+          "text": "Inalis ang mga buwis sa mga Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Natuklasan ng mga Espanyol ang Katipunan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Nang ibunyag ni Teodoro Patiño ang samahan, nagsimulang magsiyasat at manghuli ang mga Espanyol."
+    },
+    {
+      "id": "ame_2_2",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang ginawa ng mga Katipunero sa Pugad Lawin (o Balintawak) nang magkaisa sila noong Agosto 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagsunog sila ng mga simbahan"
+        },
+        {
+          "label": "B",
+          "text": "Pumirma sila ng kasunduang pangkapayapaan"
+        },
+        {
+          "label": "C",
+          "text": "Pinunit nila ang kanilang mga sedula bilang tanda ng paglaban"
+        },
+        {
+          "label": "D",
+          "text": "Nagbayad sila ng buwis sa gobernador"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang pagpunit ng sedula (katibayan ng pagiging sakop) ang sagisag ng pagsisimula ng himagsikan."
+    },
+    {
+      "id": "ame_2_3",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling labanan ang unang malaking pag-atake ng mga Katipunero sa pamumuno ni Bonifacio noong Agosto 30, 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Labanan sa Tirad Pass"
+        },
+        {
+          "label": "B",
+          "text": "Labanan sa San Juan del Monte"
+        },
+        {
+          "label": "C",
+          "text": "Labanan sa Imus"
+        },
+        {
+          "label": "D",
+          "text": "Labanan sa Mactan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Sinalakay ng mga Katipunero ang polvorin (imbakan ng pulbura) sa San Juan del Monte ngunit napaurong sila."
+    },
+    {
+      "id": "ame_2_4",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang idineklara ni Gobernador-Heneral Ramon Blanco sa walong lalawigan noong Agosto 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Batas Militar"
+        },
+        {
+          "label": "B",
+          "text": "Kalayaan"
+        },
+        {
+          "label": "C",
+          "text": "Amnestiya"
+        },
+        {
+          "label": "D",
+          "text": "Republika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Isinailalim sa batas militar ang Maynila, Bulacan, Pampanga, Tarlac, Nueva Ecija, Laguna, Cavite at Batangas, kaya naging simbolo ang walong sinag ng araw sa watawat."
+    },
+    {
+      "id": "ame_2_5",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namuno sa mga rebolusyonaryo ng Cavite sa tagumpay nila sa Imus noong Setyembre 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregorio del Pilar"
+        },
+        {
+          "label": "B",
+          "text": "Antonio Luna"
+        },
+        {
+          "label": "C",
+          "text": "Miguel Malvar"
+        },
+        {
+          "label": "D",
+          "text": "Emilio Aguinaldo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang tagumpay ni Aguinaldo sa Imus at sa iba pang labanan sa Cavite ang nagpatanyag sa kanya bilang pinuno."
+    },
+    {
+      "id": "ame_2_6",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan binitay si Dr. Jose Rizal sa Bagumbayan (ngayon ay Luneta)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Agosto 26, 1896"
+        },
+        {
+          "label": "B",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "C",
+          "text": "Disyembre 30, 1896"
+        },
+        {
+          "label": "D",
+          "text": "Enero 23, 1899"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang pagbitay kay Rizal sa gitna ng himagsikan ay lalong nagpaalab sa damdaming makabayan."
+    },
+    {
+      "id": "ame_2_7",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang pinakatamang paliwanag kung bakit mabilis na lumaganap ang himagsikan sa Cavite?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang sundalong Espanyol sa Cavite"
+        },
+        {
+          "label": "B",
+          "text": "May mga lokal na pinunong may malakas na suporta ng mamamayan at may sariling hukbo"
+        },
+        {
+          "label": "C",
+          "text": "Mas mayaman ang Cavite kaysa Maynila kaya mas marami silang armas na binili"
+        },
+        {
+          "label": "D",
+          "text": "Ipinag-utos ito ng Hari ng Espanya"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Magdalo at Magdiwang ay may sariling pinuno at tagasunod, kaya mabilis ang paglago ng himagsikan doon."
+    },
+    {
+      "id": "ame_2_8",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang paraan ng pakikipaglaban na madalas gamitin ng mga Pilipinong rebolusyonaryo laban sa mas mahusay na sandata ng Espanyol?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pakikidigmang gerilya at pagtatayo ng mga kuta at trinsera"
+        },
+        {
+          "label": "B",
+          "text": "Paglusob gamit ang mga barkong pandigma"
+        },
+        {
+          "label": "C",
+          "text": "Paggamit ng mga eroplano"
+        },
+        {
+          "label": "D",
+          "text": "Pagpapadala ng mga tank"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dahil kulang sa armas, umasa sila sa lakas ng loob, kaalaman sa lupain at mga kutang yari sa lupa at kawayan."
+    },
+    {
+      "id": "ame_2_9",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang titulong ginamit para kay Andres Bonifacio bilang pinuno ng Katipunan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Lakan"
+        },
+        {
+          "label": "B",
+          "text": "Heneralisimo"
+        },
+        {
+          "label": "C",
+          "text": "Gobernadorcillo"
+        },
+        {
+          "label": "D",
+          "text": "Supremo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Bonifacio ang Supremo ng Katipunan mula 1895."
+    },
+    {
+      "id": "ame_2_10",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang aklat tungkol sa himagsikan, nakasulat na \"sedula\" ang pinunit sa Pugad Lawin. Ano ang sedula?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Titulo ng lupa"
+        },
+        {
+          "label": "B",
+          "text": "Sertipiko ng binyag"
+        },
+        {
+          "label": "C",
+          "text": "Katibayan ng pagkakakilanlan at pagbabayad ng buwis sa ilalim ng Espanya"
+        },
+        {
+          "label": "D",
+          "text": "Lisensya sa pangangaso"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Sagisag ng pagkasakop ang sedula, kaya ang pagpunit nito ay pagtanggi sa kapangyarihan ng Espanya."
+    }
+  ],
+  "3": [
+    {
+      "id": "ame_3_1",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging dahilan ng pagkakaroon ng pagpupulong sa Tejeros noong Marso 1897?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Upang makipagkasundo sa Espanya"
+        },
+        {
+          "label": "B",
+          "text": "Upang pumili ng bagong hari ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Upang pagkaisahin ang Magdalo at Magdiwang sa isang rebolusyonaryong pamahalaan"
+        },
+        {
+          "label": "D",
+          "text": "Upang magtayo ng simbahan"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Naghalal ang kombensiyon ng mga opisyal ng bagong rebolusyonaryong pamahalaan."
+    },
+    {
+      "id": "ame_3_2",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang nahalal na Pangulo sa Kombensiyon sa Tejeros?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Andres Bonifacio"
+        },
+        {
+          "label": "B",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "C",
+          "text": "Mariano Alvarez"
+        },
+        {
+          "label": "D",
+          "text": "Artemio Ricarte"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Nanalo si Aguinaldo bilang pangulo, samantalang si Bonifacio ay nahalal na Direktor ng Interyor."
+    },
+    {
+      "id": "ame_3_3",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit hindi tinanggap ni Bonifacio ang resulta ng halalan sa Tejeros?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil sinabi ni Daniel Tirona na hindi siya karapat-dapat sa posisyon"
+        },
+        {
+          "label": "B",
+          "text": "Dahil wala siyang interes sa himagsikan"
+        },
+        {
+          "label": "C",
+          "text": "Dahil nais niyang bumalik sa Maynila para magtrabaho"
+        },
+        {
+          "label": "D",
+          "text": "Dahil ipinagbawal ng mga Espanyol ang halalan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Nasaktan si Bonifacio sa pagtutol ni Tirona kaya binatikos niya ang kombensiyon at ang resulta nito."
+    },
+    {
+      "id": "ame_3_4",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang nangyari kay Andres Bonifacio noong Mayo 1897?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Napatay siya sa labanan laban sa mga Espanyol"
+        },
+        {
+          "label": "B",
+          "text": "Naging gobernador ng Maynila"
+        },
+        {
+          "label": "C",
+          "text": "Ipinatapon siya sa Guam"
+        },
+        {
+          "label": "D",
+          "text": "Hinatulan at pinatay ng mga tauhan ng pamahalaang Aguinaldo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Dinakip, nilitis at pinatay si Bonifacio sa bundok ng Maragondon, isang masakit na bahagi ng kasaysayan."
+    },
+    {
+      "id": "ame_3_5",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Kasunduan sa Biak-na-Bato (Disyembre 1897)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kasunduang nagbigay ng kalayaan sa Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Kasunduang nagbenta ng Pilipinas sa Amerika"
+        },
+        {
+          "label": "C",
+          "text": "Kasunduan ng Espanya at ni Aguinaldo na magtigil ng labanan kapalit ng salapi at pagpapatapon"
+        },
+        {
+          "label": "D",
+          "text": "Kasunduan ng Katipunan at ng mga prayle"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Pumayag si Aguinaldo at ang mga kasama niya na manirahan sa Hong Kong at tumanggap ng bayad mula sa Espanya."
+    },
+    {
+      "id": "ame_3_6",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namagitan sa pagitan ng Espanya at ni Aguinaldo para sa Kasunduan sa Biak-na-Bato?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Pedro Paterno"
+        },
+        {
+          "label": "C",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "D",
+          "text": "Gregorio del Pilar"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Pedro Paterno, isang ilustrado, ang tagapamagitan sa pag-uusap."
+    },
+    {
+      "id": "ame_3_7",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Saan nanirahan sa pagpapatapon si Aguinaldo at ang mga kasama niya matapos ang Biak-na-Bato?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hong Kong"
+        },
+        {
+          "label": "B",
+          "text": "Guam"
+        },
+        {
+          "label": "C",
+          "text": "Madrid"
+        },
+        {
+          "label": "D",
+          "text": "Singapore"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Pumunta sila sa Hong Kong at doon nagtatag ng Hong Kong Junta."
+    },
+    {
+      "id": "ame_3_8",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang isa sa mahalagang bunga ng Himagsikan ng 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nawala ang lahat ng prayle sa Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Naging malaya agad ang buong bansa"
+        },
+        {
+          "label": "C",
+          "text": "Napalitan ang wika sa lahat ng paaralan"
+        },
+        {
+          "label": "D",
+          "text": "Lalong lumakas ang kamalayang makabansa ng mga Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kahit hindi pa ganap na nagtagumpay, pinagkaisa ng Himagsikan ang mga Pilipino at pinatibay ang pagnanais ng kalayaan."
+    },
+    {
+      "id": "ame_3_9",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging kahinaan ng rebolusyonaryong kilusan matapos ang Tejeros?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naubos ang mga Espanyol sa Cavite"
+        },
+        {
+          "label": "B",
+          "text": "Wala nang gustong sumapi"
+        },
+        {
+          "label": "C",
+          "text": "Nagkaroon ng pagkakahati-hati sa pamunuan"
+        },
+        {
+          "label": "D",
+          "text": "Nagkaisa ang lahat ng pinuno sa isang plano"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang alitan ng mga pangkat ay nagpahina sa kilusan at nagdulot ng kabiguan para sa ilan."
+    },
+    {
+      "id": "ame_3_10",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang debate, sinabi ng isang mag-aaral na \"Walang naidulot ang himagsikan dahil bumalik ang mga Espanyol\". Alin ang pinakamatibay na sagot?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Wala itong naidulot dahil natalo ang mga Katipunero"
+        },
+        {
+          "label": "B",
+          "text": "Nag-iwan ito ng pamana ng pagkakaisa at paghahangad ng kalayaan na nagpatuloy sa 1898"
+        },
+        {
+          "label": "C",
+          "text": "Nawala ang interes ng mga Pilipino sa kalayaan"
+        },
+        {
+          "label": "D",
+          "text": "Nagpasya ang Espanya na iwan ang Pilipinas dahil sa mga pagtatalo sa Cavite"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang himagsikan ay naghanda sa muling pag-aalsa at sa pagdeklara ng kasarinlan noong 1898."
+    }
+  ],
+  "4": [
+    {
+      "id": "ame_4_1",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan ipinahayag ang kasarinlan ng Pilipinas sa Kawit, Cavite?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hulyo 4, 1946"
+        },
+        {
+          "label": "B",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "C",
+          "text": "Enero 23, 1899"
+        },
+        {
+          "label": "D",
+          "text": "Disyembre 10, 1898"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ipinahayag ang kasarinlan noong Hunyo 12, 1898 sa bahay ni Aguinaldo sa Kawit."
+    },
+    {
+      "id": "ame_4_2",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang bumasa ng Acta ng Deklarasyon ng Kasarinlan ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ambrosio Rianzares Bautista"
+        },
+        {
+          "label": "B",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "C",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "D",
+          "text": "Felipe Agoncillo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Ambrosio Rianzares Bautista ang sumulat at bumasa ng Acta."
+    },
+    {
+      "id": "ame_4_3",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang gumawa ng musika ng Marcha Nacional Filipina na unang tinugtog sa deklarasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Jose Palma"
+        },
+        {
+          "label": "B",
+          "text": "Nicanor Abelardo"
+        },
+        {
+          "label": "C",
+          "text": "Francisco Santiago"
+        },
+        {
+          "label": "D",
+          "text": "Julian Felipe"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Julian Felipe ang kompositor ng pambansang awit; si Jose Palma ang sumulat ng tula na kalaunan ay naging liriko."
+    },
+    {
+      "id": "ame_4_4",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang nagtahi ng unang pambansang watawat sa Hong Kong?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregoria de Jesus at Melchora Aquino"
+        },
+        {
+          "label": "B",
+          "text": "Trinidad Tecson at Teresa Magbanua"
+        },
+        {
+          "label": "C",
+          "text": "Marcela Agoncillo, Lorenza Agoncillo at Delfina Herbosa de Natividad"
+        },
+        {
+          "label": "D",
+          "text": "Josefa Rizal at Narcisa Rizal"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Tinahi ng tatlo ang watawat sa Hong Kong at dinala ito sa Pilipinas."
+    },
+    {
+      "id": "ame_4_5",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Saan ginanap ang Kongreso ng Malolos na bumuo ng Saligang Batas ng Unang Republika?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Simbahan ng Quiapo, Maynila"
+        },
+        {
+          "label": "B",
+          "text": "Simbahan ng Barasoain, Malolos, Bulacan"
+        },
+        {
+          "label": "C",
+          "text": "Simbahan ng San Agustin, Intramuros"
+        },
+        {
+          "label": "D",
+          "text": "Katedral ng Cebu"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Doon nagpulong ang mga kinatawan noong Setyembre 1898 at doon nabuo ang Saligang Batas."
+    },
+    {
+      "id": "ame_4_6",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan pinasinayaan ang Unang Republika ng Pilipinas sa Malolos?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Enero 23, 1899"
+        },
+        {
+          "label": "B",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "C",
+          "text": "Pebrero 4, 1899"
+        },
+        {
+          "label": "D",
+          "text": "Marso 23, 1901"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Pinasinayaan ang Republika at nanumpa si Aguinaldo bilang pangulo noong Enero 23, 1899."
+    },
+    {
+      "id": "ame_4_7",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tinaguriang \"Dakilang Lumpo\" at \"Utak ng Himagsikan\" na naging punong tagapayo ni Aguinaldo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Emilio Jacinto"
+        },
+        {
+          "label": "B",
+          "text": "Felipe Calderon"
+        },
+        {
+          "label": "C",
+          "text": "Pedro Paterno"
+        },
+        {
+          "label": "D",
+          "text": "Apolinario Mabini"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Mabini ang nagsilbing tagapayo at unang punong ministro ng Republika kahit paralisado ang kanyang mga paa."
+    },
+    {
+      "id": "ame_4_8",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang pangunahing sumulat ng Saligang Batas ng Malolos?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "B",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "C",
+          "text": "Felipe Calderon"
+        },
+        {
+          "label": "D",
+          "text": "Antonio Luna"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Si Felipe Calderon ang nagbalangkas ng Saligang Batas na inaprubahan ng Kongreso ng Malolos noong Enero 1899."
+    },
+    {
+      "id": "ame_4_9",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling pangyayari ang nagbigay-daan sa pagbalik ni Aguinaldo mula sa Hong Kong noong Mayo 1898?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagbitay kay Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Pagkatalo ng Espanya sa Labanan sa Look ng Maynila laban sa mga Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Pagkamatay ni Bonifacio"
+        },
+        {
+          "label": "D",
+          "text": "Paglagda ng Kasunduan sa Paris"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Natalo ni Commodore George Dewey ang mga barko ng Espanya noong Mayo 1, 1898, kaya muling nakabalik si Aguinaldo."
+    },
+    {
+      "id": "ame_4_10",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang pinakatamang paglalarawan sa Unang Republika ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Unang republika sa Asya na itinatag ng mga mamamayan, ngunit hindi kinilala ng ibang bansa"
+        },
+        {
+          "label": "B",
+          "text": "Kolonya ng Estados Unidos"
+        },
+        {
+          "label": "C",
+          "text": "Pamahalaang itinatag ng mga prayle"
+        },
+        {
+          "label": "D",
+          "text": "Pamahalaang kinilala ng Espanya at Amerika"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Hindi ito kinilala ng Amerika at iba pang bansa, kaya hindi naging ganap ang kasarinlan."
+    }
+  ],
+  "5": [
+    {
+      "id": "ame_5_1",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tinaguriang \"Tandang Sora\" at \"Ina ng Katipunan\"?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Melchora Aquino"
+        },
+        {
+          "label": "B",
+          "text": "Gregoria de Jesus"
+        },
+        {
+          "label": "C",
+          "text": "Teresa Magbanua"
+        },
+        {
+          "label": "D",
+          "text": "Trinidad Tecson"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Pinatuloy at tinulungan ni Melchora Aquino ang mga sugatang Katipunero; ipinatapon siya sa Guam."
+    },
+    {
+      "id": "ame_5_2",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang naging gampanin ni Gregoria de Jesus sa Katipunan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Heneral ng hukbo"
+        },
+        {
+          "label": "B",
+          "text": "Tagapagbalita ng pahayagang Kalayaan"
+        },
+        {
+          "label": "C",
+          "text": "Tagapayo ng Hari ng Espanya"
+        },
+        {
+          "label": "D",
+          "text": "Tagapag-ingat ng mga dokumento at lihim na papeles ng samahan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Siya ang tinawag na Lakambini at pangunahing tagapag-ingat ng mga lihim na dokumento."
+    },
+    {
+      "id": "ame_5_3",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tinaguriang \"Joan of Arc ng Visayas\" dahil sa pamumuno niya sa labanan sa Iloilo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Agueda Kahabagan"
+        },
+        {
+          "label": "B",
+          "text": "Patrocinio Gamboa"
+        },
+        {
+          "label": "C",
+          "text": "Teresa Magbanua"
+        },
+        {
+          "label": "D",
+          "text": "Marina Dizon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Si Teresa Magbanua ay lumaban nang may baril at espada laban sa mga Espanyol at kalaunan laban sa mga Amerikano."
+    },
+    {
+      "id": "ame_5_4",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang kilala bilang \"Ina ng Biak-na-Bato\" dahil sa pag-aalaga sa mga sugatan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Melchora Aquino"
+        },
+        {
+          "label": "B",
+          "text": "Trinidad Tecson"
+        },
+        {
+          "label": "C",
+          "text": "Hilaria Aguinaldo"
+        },
+        {
+          "label": "D",
+          "text": "Josefa Llanes Escoda"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Trinidad Tecson ay nagsilbi sa Red Cross ng himagsikan at nag-alaga sa mga sugatan."
+    },
+    {
+      "id": "ame_5_5",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang babaeng heneral na namuno ng mga tropa sa Laguna?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Agueda Kahabagan"
+        },
+        {
+          "label": "B",
+          "text": "Gregoria de Jesus"
+        },
+        {
+          "label": "C",
+          "text": "Teresa Magbanua"
+        },
+        {
+          "label": "D",
+          "text": "Hilaria Aguinaldo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Agueda Kahabagan, na tinawag na Henerala Agueda, ay namuno ng mga kawal sa Laguna."
+    },
+    {
+      "id": "ame_5_6",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin sa mga ito ang naging ambag ng kababaihan sa himagsikan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapataw ng buwis sa mga rebolusyonaryo"
+        },
+        {
+          "label": "B",
+          "text": "Pagsuko ng mga sandata sa mga Espanyol"
+        },
+        {
+          "label": "C",
+          "text": "Pagtataguyod ng Batas Militar"
+        },
+        {
+          "label": "D",
+          "text": "Pag-aalaga sa mga sugatan, pagtatago ng mga kasapi, at paglaban sa digmaan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Gumanap ang kababaihan bilang nars, mensahero, tagapagtanggol at ilan ay mandirigma."
+    },
+    {
+      "id": "ame_5_7",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit mahalaga ang papel ng kababaihan sa pagtatago ng mga lihim ng Katipunan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil bawal sa mga lalaki ang pumasok sa mga bahay"
+        },
+        {
+          "label": "B",
+          "text": "Dahil walang alam ang kalalakihan tungkol sa samahan"
+        },
+        {
+          "label": "C",
+          "text": "Mas kaunti ang pinaghihinalaan ng mga Espanyol sa kanila"
+        },
+        {
+          "label": "D",
+          "text": "Dahil inutusan ng Hari ang mga babae"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Dahil hindi sila agad pinaghihinalaan, madali silang nakapagdala ng mensahe at nakapagtago ng mga kasapi."
+    },
+    {
+      "id": "ame_5_8",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang mga babaeng sumama sa pagtahi ng unang watawat ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregoria de Jesus at Josefa Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Marcela at Lorenza Agoncillo at Delfina Herbosa de Natividad"
+        },
+        {
+          "label": "C",
+          "text": "Melchora Aquino at Trinidad Tecson"
+        },
+        {
+          "label": "D",
+          "text": "Teresa Magbanua at Agueda Kahabagan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang watawat ay tinahi sa Hong Kong at ipinakita sa Kawit noong Hunyo 12, 1898."
+    },
+    {
+      "id": "ame_5_9",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nang kausapin si Tandang Sora ng mga Espanyol at tanungin kung nasaan ang mga Katipunero, ano ang ipinakita niyang katangian?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Katapangan at katapatan sa bayan sa kabila ng pananakot"
+        },
+        {
+          "label": "B",
+          "text": "Takot at pagsuko"
+        },
+        {
+          "label": "C",
+          "text": "Pagpapahalaga sa kayamanan"
+        },
+        {
+          "label": "D",
+          "text": "Pagtataksil sa kapwa"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Hindi niya ibinunyag ang mga Katipunero at pinili niyang tumanggap ng parusa kaysa magtaksil."
+    },
+    {
+      "id": "ame_5_10",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang aral na makukuha sa pakikilahok ng kababaihan sa Himagsikan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang mga lalaki lamang ang may kakayahang lumaban"
+        },
+        {
+          "label": "B",
+          "text": "Ang mga babae ay dapat manatili sa bahay lamang"
+        },
+        {
+          "label": "C",
+          "text": "Hindi kailangan ng kababaihan sa isang himagsikan"
+        },
+        {
+          "label": "D",
+          "text": "Ang pagmamahal sa bayan ay maipapakita ng lahat, anuman ang kasarian"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ipinakita ng kababaihan na kayang maglingkod sa bayan sa iba't ibang paraan."
+    }
+  ],
+  "6": [
+    {
+      "id": "ame_6_1",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang imperyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang pagbibigay ng kalayaan sa mga kolonya"
+        },
+        {
+          "label": "B",
+          "text": "Ang pagtutulungan ng mga bansa nang pantay-pantay"
+        },
+        {
+          "label": "C",
+          "text": "Ang pagbebenta ng produkto sa sariling bansa lamang"
+        },
+        {
+          "label": "D",
+          "text": "Ang pagpapalawak ng kapangyarihan ng isang bansa sa pamamagitan ng pagkontrol sa ibang bansa o teritoryo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kontrol sa pulitika, ekonomiya at kultura ng ibang bansa ang saligang katangian ng imperyalismo."
+    },
+    {
+      "id": "ame_6_2",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang isang pangunahing dahilan ng imperyalismo noong ika-19 na siglo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapalaganap ng pantay na kalakalan sa lahat"
+        },
+        {
+          "label": "B",
+          "text": "Pagtulong sa mahihirap na bansa nang walang kapalit"
+        },
+        {
+          "label": "C",
+          "text": "Paghahanap ng hilaw na materyales at pamilihan"
+        },
+        {
+          "label": "D",
+          "text": "Pagpapatupad ng demokrasya sa lahat ng bansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Kailangan ng mga industriyalisadong bansa ang hilaw na materyales at mga mamimili para sa kanilang produkto."
+    },
+    {
+      "id": "ame_6_3",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"Manifest Destiny\" na ginamit na katwiran ng mga Amerikano sa pagpapalawak?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang kasunduang pangkalakalan"
+        },
+        {
+          "label": "B",
+          "text": "Paniniwalang itinakda ng Diyos sa Amerika ang pagpapalawak ng teritoryo nito"
+        },
+        {
+          "label": "C",
+          "text": "Isang batas laban sa pananakop"
+        },
+        {
+          "label": "D",
+          "text": "Isang pangalan ng barkong pandigma"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ginamit ito upang bigyang-katwiran ang pagpapalawak ng kapangyarihan ng Estados Unidos."
+    },
+    {
+      "id": "ame_6_4",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tatlong \"G\" na madalas iugnay sa dahilan ng imperyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "God, Gold, Glory"
+        },
+        {
+          "label": "B",
+          "text": "Government, Growth, Gain"
+        },
+        {
+          "label": "C",
+          "text": "Guns, Gas, Gold"
+        },
+        {
+          "label": "D",
+          "text": "Gold, Gems, Grain"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Paglaganap ng relihiyon, paghahanap ng kayamanan, at paghahangad ng dangal at kapangyarihan ang kilalang motibo."
+    },
+    {
+      "id": "ame_6_5",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"White Man's Burden\"?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang batas sa pagbubuwis"
+        },
+        {
+          "label": "B",
+          "text": "Isang kasunduang pangkapayapaan"
+        },
+        {
+          "label": "C",
+          "text": "Isang sikat na aklat tungkol sa mga bayani"
+        },
+        {
+          "label": "D",
+          "text": "Paniniwala ng ilang mga Kanluranin na tungkulin nilang \"palaganapin ang sibilisasyon\" sa mga katutubo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ginamit ito upang bigyang-katwiran ang pananakop, bagaman itinuturing ng marami na mapanlinlang."
+    },
+    {
+      "id": "ame_6_6",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin sa mga sumusunod ang halimbawa ng imperyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pakikipagkalakalan ng Pilipinas sa Hapon bilang magkapantay"
+        },
+        {
+          "label": "B",
+          "text": "Pagtutulungan ng mga bansa sa ASEAN"
+        },
+        {
+          "label": "C",
+          "text": "Pananakop ng Britanya sa India"
+        },
+        {
+          "label": "D",
+          "text": "Palitan ng mag-aaral sa pagitan ng dalawang bansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang India ay nasakop ng Britanya at pinamahalaan bilang kolonya."
+    },
+    {
+      "id": "ame_6_7",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang pagkakaiba ng imperyalismo sa kolonyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang pagkakaiba ang dalawa"
+        },
+        {
+          "label": "B",
+          "text": "Ang imperyalismo ay patakarang pagpapalawak ng kapangyarihan, ang kolonyalismo ay ang aktuwal na pamamahala sa isang kolonya"
+        },
+        {
+          "label": "C",
+          "text": "Ang kolonyalismo ay mapayapang pagbibigay ng tulong"
+        },
+        {
+          "label": "D",
+          "text": "Ang imperyalismo ay nangyayari lamang sa Africa"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang kolonyalismo ay isa sa mga paraan ng pagsasagawa ng imperyalismo."
+    },
+    {
+      "id": "ame_6_8",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang epekto ng imperyalismo sa mga nasakop na bansa?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagkawala ng kalayaan at pagkontrol sa kanilang ekonomiya"
+        },
+        {
+          "label": "B",
+          "text": "Pagtaas ng sariling kapangyarihan ng bansa"
+        },
+        {
+          "label": "C",
+          "text": "Pagkakaroon ng pantay na karapatan sa mananakop"
+        },
+        {
+          "label": "D",
+          "text": "Pagtanggi sa lahat ng kalakalan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Madalas na ginamit ng mananakop ang likas na yaman at lakas-paggawa ng kolonya para sa sariling kapakinabangan."
+    },
+    {
+      "id": "ame_6_9",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa mapa, nakita mong may mga bansang kontrolado ng iisang makapangyarihang bansa sa iba't ibang kontinente. Anong konsepto ang inilalarawan nito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Republika"
+        },
+        {
+          "label": "B",
+          "text": "Lupong tagapagpaganap"
+        },
+        {
+          "label": "C",
+          "text": "Pederasyon ng mga lungsod"
+        },
+        {
+          "label": "D",
+          "text": "Imperyo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang imperyo ay binubuo ng maraming teritoryo na pinamamahalaan ng iisang makapangyarihang bansa."
+    },
+    {
+      "id": "ame_6_10",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling bansa ang naging bagong mananakop ng Pilipinas pagkatapos ng Espanya noong 1898?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Britanya"
+        },
+        {
+          "label": "B",
+          "text": "Hapon"
+        },
+        {
+          "label": "C",
+          "text": "Estados Unidos"
+        },
+        {
+          "label": "D",
+          "text": "Alemanya"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Pagkatapos ng Digmaang Espanyol-Amerikano, naging bagong mananakop ng Pilipinas ang Estados Unidos."
+    }
+  ],
+  "7": [
+    {
+      "id": "ame_7_1",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan nagsimula ang Digmaang Pilipino-Amerikano?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "B",
+          "text": "Disyembre 10, 1898"
+        },
+        {
+          "label": "C",
+          "text": "Pebrero 4, 1899"
+        },
+        {
+          "label": "D",
+          "text": "Marso 23, 1901"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nagsimula ito nang magkaroon ng putukan sa pagitan ng mga sundalong Amerikano at Pilipino sa Sta. Mesa, Maynila."
+    },
+    {
+      "id": "ame_7_2",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang nilalaman ng Kasunduan sa Paris na nilagdaan noong Disyembre 10, 1898?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Kinilala ang kalayaan ng Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Ibinigay ng Espanya ang Pilipinas sa Estados Unidos kapalit ng 20 milyong dolyar"
+        },
+        {
+          "label": "C",
+          "text": "Nagpatuloy ang pamamahala ng Espanya sa Pilipinas"
+        },
+        {
+          "label": "D",
+          "text": "Naging bahagi ng Britanya ang Pilipinas"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Hindi isinama ang mga Pilipino sa usapan, at ito ang nagbunsod ng digmaan."
+    },
+    {
+      "id": "ame_7_3",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang heneral na nagtanggol sa Tirad Pass at namatay dito noong Disyembre 1899?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregorio del Pilar"
+        },
+        {
+          "label": "B",
+          "text": "Antonio Luna"
+        },
+        {
+          "label": "C",
+          "text": "Miguel Malvar"
+        },
+        {
+          "label": "D",
+          "text": "Macario Sakay"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si \"Goyo\" del Pilar, ang pinakabatang heneral, ay namatay sa pagtatanggol sa pagtakas ni Aguinaldo."
+    },
+    {
+      "id": "ame_7_4",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang matapang na heneral at pinuno ng digmaan na pinaslang sa Cabanatuan noong Hunyo 1899?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregorio del Pilar"
+        },
+        {
+          "label": "B",
+          "text": "Mariano Trias"
+        },
+        {
+          "label": "C",
+          "text": "Artemio Ricarte"
+        },
+        {
+          "label": "D",
+          "text": "Antonio Luna"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Heneral Antonio Luna ay pinaslang sa Cabanatuan, Nueva Ecija, na lalong nagpahina sa hukbong Pilipino."
+    },
+    {
+      "id": "ame_7_5",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan nahuli si Aguinaldo ng mga Amerikano sa Palanan, Isabela?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "B",
+          "text": "Enero 23, 1899"
+        },
+        {
+          "label": "C",
+          "text": "Marso 23, 1901"
+        },
+        {
+          "label": "D",
+          "text": "Hulyo 4, 1902"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nahuli siya sa tulong ng mga Macabebe at ni Frederick Funston, at nanumpa ng katapatan sa Estados Unidos."
+    },
+    {
+      "id": "ame_7_6",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang nangyari sa Balangiga, Samar noong Setyembre 28, 1901?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nilagdaan ang kasunduang pangkapayapaan"
+        },
+        {
+          "label": "B",
+          "text": "Sinalakay ng mga taga-Balangiga ang kampo ng mga Amerikano"
+        },
+        {
+          "label": "C",
+          "text": "Itinatag ang Pamahalaang Komonwelt"
+        },
+        {
+          "label": "D",
+          "text": "Natapos ang Digmaang Espanyol-Amerikano"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Mahigit 40 Amerikano ang napatay at gumanti ang mga Amerikano nang marahas sa Samar."
+    },
+    {
+      "id": "ame_7_7",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang heneral na sumuko noong Abril 1902 matapos ang matinding paglaban sa Batangas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Miguel Malvar"
+        },
+        {
+          "label": "B",
+          "text": "Macario Sakay"
+        },
+        {
+          "label": "C",
+          "text": "Vicente Lukban"
+        },
+        {
+          "label": "D",
+          "text": "Artemio Ricarte"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Heneral Miguel Malvar ang isa sa mga huling heneral na sumuko sa pamahalaang Amerikano."
+    },
+    {
+      "id": "ame_7_8",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang nagpatuloy sa paglaban sa pamamagitan ng Republika ng Katagalugan kahit idineklarang tapos na ang digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Emilio Aguinaldo"
+        },
+        {
+          "label": "B",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "C",
+          "text": "Gregorio del Pilar"
+        },
+        {
+          "label": "D",
+          "text": "Macario Sakay"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Macario Sakay ay itinuring na tulisan ng mga Amerikano ngunit bayani ng maraming Pilipino; binitay siya noong 1907."
+    },
+    {
+      "id": "ame_7_9",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan idineklara ni Pangulong Theodore Roosevelt ang pagtatapos ng digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pebrero 4, 1899"
+        },
+        {
+          "label": "B",
+          "text": "Marso 23, 1901"
+        },
+        {
+          "label": "C",
+          "text": "Hulyo 4, 1902"
+        },
+        {
+          "label": "D",
+          "text": "Hunyo 12, 1898"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Idineklarang tapos na ang digmaan noong Hulyo 4, 1902, bagaman nagpatuloy ang paglaban sa ilang lugar, lalo na sa Mindanao."
+    },
+    {
+      "id": "ame_7_10",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin ang isang pangunahing dahilan ng pagkatalo ng mga Pilipino sa digmaan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Wala silang pagnanais na lumaban"
+        },
+        {
+          "label": "B",
+          "text": "Mas moderno at mas maraming armas ng mga Amerikano at kawalan ng pagkakaisa ng mga pinuno"
+        },
+        {
+          "label": "C",
+          "text": "Sumuko agad ang lahat ng heneral"
+        },
+        {
+          "label": "D",
+          "text": "Tumulong ang Espanya sa mga Amerikano"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Kulang sa armas at pagkakaisa ang mga Pilipino habang mas mahusay ang sandata ng Amerikano."
+    }
+  ],
+  "8": [
+    {
+      "id": "ame_8_1",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang \"Benevolent Assimilation\" na ipinahayag ni Pangulong McKinley?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang kasunduan ng pantay na kalakalan"
+        },
+        {
+          "label": "B",
+          "text": "Patakarang ipinakilala ang pananakop bilang mabuting pagtulong sa mga Pilipino"
+        },
+        {
+          "label": "C",
+          "text": "Isang batas laban sa pananakop"
+        },
+        {
+          "label": "D",
+          "text": "Isang pagbebenta ng lupa sa mga Pilipino"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang mapagkandiling asimilasyon ay paraan ng pagbibigay-katwiran sa pananakop bilang pagtulong."
+    },
+    {
+      "id": "ame_8_2",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang kauna-unahang gobernador-sibil ng Pilipinas sa ilalim ng mga Amerikano?",
+      "options": [
+        {
+          "label": "A",
+          "text": "William Howard Taft"
+        },
+        {
+          "label": "B",
+          "text": "Douglas MacArthur"
+        },
+        {
+          "label": "C",
+          "text": "Theodore Roosevelt"
+        },
+        {
+          "label": "D",
+          "text": "Francis Harrison"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si William H. Taft ang unang gobernador-sibil noong 1901."
+    },
+    {
+      "id": "ame_8_3",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tawag sa mga gurong Amerikano na dumating noong 1901 sakay ng barkong USS Thomas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pensionados"
+        },
+        {
+          "label": "B",
+          "text": "Katipunero"
+        },
+        {
+          "label": "C",
+          "text": "Benevolenteros"
+        },
+        {
+          "label": "D",
+          "text": "Thomasites"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang mga Thomasites ay nagturo ng wikang Ingles at nagtayo ng mga pampublikong paaralan."
+    },
+    {
+      "id": "ame_8_4",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Aling wika ang ginawang midyum ng pagtuturo sa mga paaralan sa ilalim ng mga Amerikano?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Espanyol"
+        },
+        {
+          "label": "B",
+          "text": "Tagalog"
+        },
+        {
+          "label": "C",
+          "text": "Ingles"
+        },
+        {
+          "label": "D",
+          "text": "Hapon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang Ingles ang naging wikang panturo, kaya naging bahagi ito ng pang-araw-araw na buhay."
+    },
+    {
+      "id": "ame_8_5",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang ipinagbawal ng Batas Sedisyon ng 1901?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang paggamit ng wikang Ingles"
+        },
+        {
+          "label": "B",
+          "text": "Ang pagtataguyod ng kalayaan ng Pilipinas"
+        },
+        {
+          "label": "C",
+          "text": "Ang pagbebenta ng lupa"
+        },
+        {
+          "label": "D",
+          "text": "Ang pagtatayo ng paaralan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ipinagbawal ang pagsasalita, paglilimbag at pagpapakita ng mga adhikaing laban sa pamahalaang Amerikano."
+    },
+    {
+      "id": "ame_8_6",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang ipinagbawal ng Batas sa Watawat (Flag Law) ng 1907?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang paglalantad ng watawat ng Pilipinas"
+        },
+        {
+          "label": "B",
+          "text": "Ang pagsasalita ng Tagalog"
+        },
+        {
+          "label": "C",
+          "text": "Ang pag-aaral sa ibang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Ang pagbibigay ng buwis"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ipinagbawal ang paglabas ng watawat at sagisag ng Katipunan upang pigilan ang damdaming makabayan."
+    },
+    {
+      "id": "ame_8_7",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang layunin ng Pensionado Program?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magpadala ng mga sundalo sa Amerika"
+        },
+        {
+          "label": "B",
+          "text": "Magbigay ng pensiyon sa matatanda"
+        },
+        {
+          "label": "C",
+          "text": "Magpatayo ng mga paaralan sa Amerika"
+        },
+        {
+          "label": "D",
+          "text": "Magpadala ng piling Pilipino sa Amerika upang mag-aral at ibalik ang kaalaman"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang mga pensionado ay piling iskolar na pinag-aral sa Amerika, na kalaunan ay naging mga pinuno sa gobyerno."
+    },
+    {
+      "id": "ame_8_8",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang Philippine Assembly na itinatag noong 1907?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pamahalaan ng mga prayle"
+        },
+        {
+          "label": "B",
+          "text": "Hukbong pandagat ng Amerika"
+        },
+        {
+          "label": "C",
+          "text": "Unang halal na mababang kapulungan ng mga Pilipino"
+        },
+        {
+          "label": "D",
+          "text": "Ahensiya ng edukasyon"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ito ang kauna-unahang halal na lehislatura ng mga Pilipino, na may Sergio Osmeña bilang Speaker."
+    },
+    {
+      "id": "ame_8_9",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Paano pinalawak ng Estados Unidos ang kalakalan sa pagitan ng dalawang bansa ayon sa Payne-Aldrich Tariff Act ng 1909?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ipinagbawal ang pagluluwas ng asukal"
+        },
+        {
+          "label": "B",
+          "text": "Pinahintulutan ang malayang kalakalan ng mga produkto sa pagitan ng dalawang bansa"
+        },
+        {
+          "label": "C",
+          "text": "Pinataw ang mataas na buwis sa lahat ng produkto"
+        },
+        {
+          "label": "D",
+          "text": "Inalis ang kalakalan sa Pilipinas"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Napaboran nito ang mga produkto ng Amerika at ginawang nakadepende ang ekonomiya ng Pilipinas sa kalakalang iyon."
+    },
+    {
+      "id": "ame_8_10",
+      "era": "american",
+      "subTopic": "Mga imperyalistang pamamaraan ng mga Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin sa mga sumusunod ang halimbawa ng \"malambot na imperyalismo\" o pananakop sa pamamagitan ng kultura at edukasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapalaganap ng wikang Ingles at kulturang Amerikano sa mga paaralan"
+        },
+        {
+          "label": "B",
+          "text": "Pagpapadala ng mga barkong pandigma"
+        },
+        {
+          "label": "C",
+          "text": "Pag-aresto sa mga lider"
+        },
+        {
+          "label": "D",
+          "text": "Pagsunog ng mga baryo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang edukasyon at kultura ay ginamit upang makuha ang loob ng mga Pilipino at mapanatili ang kontrol."
+    },
+    {
+      "id": "ame_8_11",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kailan itinatag ang Kataastaasan, Kagalang-galangang Katipunan ng mga Anak ng Bayan (KKK)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hulyo 7, 1892"
+        },
+        {
+          "label": "B",
+          "text": "Hunyo 12, 1898"
+        },
+        {
+          "label": "C",
+          "text": "Disyembre 30, 1896"
+        },
+        {
+          "label": "D",
+          "text": "Agosto 1, 1896"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Itinatag ang Katipunan noong Hulyo 7, 1892 sa Tondo, Maynila, ilang oras matapos ipatapon si Rizal sa Dapitan."
+    },
+    {
+      "id": "ame_8_12",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang ginawa ng mga Katipunero sa Pugad Lawin (o Balintawak) nang magkaisa sila noong Agosto 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagsunog sila ng mga simbahan"
+        },
+        {
+          "label": "B",
+          "text": "Pumirma sila ng kasunduang pangkapayapaan"
+        },
+        {
+          "label": "C",
+          "text": "Pinunit nila ang kanilang mga sedula bilang tanda ng paglaban"
+        },
+        {
+          "label": "D",
+          "text": "Nagbayad sila ng buwis sa gobernador"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang pagpunit ng sedula (katibayan ng pagiging sakop) ang sagisag ng pagsisimula ng himagsikan."
+    },
+    {
+      "id": "ame_8_13",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit hindi tinanggap ni Bonifacio ang resulta ng halalan sa Tejeros?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil sinabi ni Daniel Tirona na hindi siya karapat-dapat sa posisyon"
+        },
+        {
+          "label": "B",
+          "text": "Dahil wala siyang interes sa himagsikan"
+        },
+        {
+          "label": "C",
+          "text": "Dahil nais niyang bumalik sa Maynila para magtrabaho"
+        },
+        {
+          "label": "D",
+          "text": "Dahil ipinagbawal ng mga Espanyol ang halalan"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Nasaktan si Bonifacio sa pagtutol ni Tirona kaya binatikos niya ang kombensiyon at ang resulta nito."
+    },
+    {
+      "id": "ame_8_14",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang nagtahi ng unang pambansang watawat sa Hong Kong?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregoria de Jesus at Melchora Aquino"
+        },
+        {
+          "label": "B",
+          "text": "Trinidad Tecson at Teresa Magbanua"
+        },
+        {
+          "label": "C",
+          "text": "Marcela Agoncillo, Lorenza Agoncillo at Delfina Herbosa de Natividad"
+        },
+        {
+          "label": "D",
+          "text": "Josefa Rizal at Narcisa Rizal"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Tinahi ng tatlo ang watawat sa Hong Kong at dinala ito sa Pilipinas."
+    },
+    {
+      "id": "ame_8_15",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang babaeng heneral na namuno ng mga tropa sa Laguna?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Agueda Kahabagan"
+        },
+        {
+          "label": "B",
+          "text": "Gregoria de Jesus"
+        },
+        {
+          "label": "C",
+          "text": "Teresa Magbanua"
+        },
+        {
+          "label": "D",
+          "text": "Hilaria Aguinaldo"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Agueda Kahabagan, na tinawag na Henerala Agueda, ay namuno ng mga kawal sa Laguna."
+    },
+    {
+      "id": "ame_8_16",
+      "era": "american",
+      "subTopic": "Ang konsepto ng imperyalismo",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Alin sa mga sumusunod ang halimbawa ng imperyalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pakikipagkalakalan ng Pilipinas sa Hapon bilang magkapantay"
+        },
+        {
+          "label": "B",
+          "text": "Pagtutulungan ng mga bansa sa ASEAN"
+        },
+        {
+          "label": "C",
+          "text": "Pananakop ng Britanya sa India"
+        },
+        {
+          "label": "D",
+          "text": "Palitan ng mag-aaral sa pagitan ng dalawang bansa"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang India ay nasakop ng Britanya at pinamahalaan bilang kolonya."
+    },
+    {
+      "id": "ame_8_17",
+      "era": "american",
+      "subTopic": "Ang Digmaang Pilipino-Amerikano",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang heneral na sumuko noong Abril 1902 matapos ang matinding paglaban sa Batangas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Miguel Malvar"
+        },
+        {
+          "label": "B",
+          "text": "Macario Sakay"
+        },
+        {
+          "label": "C",
+          "text": "Vicente Lukban"
+        },
+        {
+          "label": "D",
+          "text": "Artemio Ricarte"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Si Heneral Miguel Malvar ang isa sa mga huling heneral na sumuko sa pamahalaang Amerikano."
+    },
+    {
+      "id": "ame_8_18",
+      "era": "american",
+      "subTopic": "Ang Katipunan: pagkakatatag, layunin, aral at paglaganap",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ano ang tawag sa pahayagan ng Katipunan na pinamatnugutan ni Emilio Jacinto?",
+      "options": [
+        {
+          "label": "A",
+          "text": "La Solidaridad"
+        },
+        {
+          "label": "B",
+          "text": "Kalayaan"
+        },
+        {
+          "label": "C",
+          "text": "Diariong Tagalog"
+        },
+        {
+          "label": "D",
+          "text": "El Filibusterismo"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Kalayaan ang opisyal na pahayagan ng Katipunan, na inilimbag noong 1896."
+    },
+    {
+      "id": "ame_8_19",
+      "era": "american",
+      "subTopic": "Mga pangyayari sa Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namuno sa mga rebolusyonaryo ng Cavite sa tagumpay nila sa Imus noong Setyembre 1896?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregorio del Pilar"
+        },
+        {
+          "label": "B",
+          "text": "Antonio Luna"
+        },
+        {
+          "label": "C",
+          "text": "Miguel Malvar"
+        },
+        {
+          "label": "D",
+          "text": "Emilio Aguinaldo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang tagumpay ni Aguinaldo sa Imus at sa iba pang labanan sa Cavite ang nagpatanyag sa kanya bilang pinuno."
+    },
+    {
+      "id": "ame_8_20",
+      "era": "american",
+      "subTopic": "Mga bunga ng Himagsikang Pilipino (1892-1896)",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang namagitan sa pagitan ng Espanya at ni Aguinaldo para sa Kasunduan sa Biak-na-Bato?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Jose Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Pedro Paterno"
+        },
+        {
+          "label": "C",
+          "text": "Apolinario Mabini"
+        },
+        {
+          "label": "D",
+          "text": "Gregorio del Pilar"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Pedro Paterno, isang ilustrado, ang tagapamagitan sa pag-uusap."
+    },
+    {
+      "id": "ame_8_21",
+      "era": "american",
+      "subTopic": "Deklarasyon ng Kasarinlan at ang Unang Republika",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang tinaguriang \"Dakilang Lumpo\" at \"Utak ng Himagsikan\" na naging punong tagapayo ni Aguinaldo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Emilio Jacinto"
+        },
+        {
+          "label": "B",
+          "text": "Felipe Calderon"
+        },
+        {
+          "label": "C",
+          "text": "Pedro Paterno"
+        },
+        {
+          "label": "D",
+          "text": "Apolinario Mabini"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Si Mabini ang nagsilbing tagapayo at unang punong ministro ng Republika kahit paralisado ang kanyang mga paa."
+    },
+    {
+      "id": "ame_8_22",
+      "era": "american",
+      "subTopic": "Ang kababaihan sa Himagsikang Pilipino",
+      "gradeLevel": "grade6",
+      "level": 8,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sino ang mga babaeng sumama sa pagtahi ng unang watawat ng Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gregoria de Jesus at Josefa Rizal"
+        },
+        {
+          "label": "B",
+          "text": "Marcela at Lorenza Agoncillo at Delfina Herbosa de Natividad"
+        },
+        {
+          "label": "C",
+          "text": "Melchora Aquino at Trinidad Tecson"
+        },
+        {
+          "label": "D",
+          "text": "Teresa Magbanua at Agueda Kahabagan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang watawat ay tinahi sa Hong Kong at ipinakita sa Kawit noong Hunyo 12, 1898."
+    }
+  ]
 }
