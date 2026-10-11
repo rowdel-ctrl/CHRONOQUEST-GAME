@@ -399,3 +399,45 @@ test('the parity fixture is up to date', () => {
   const { fixture, FILE } = require('../parity');
   assert.deepStrictEqual(JSON.parse(fs.readFileSync(FILE, 'utf8')), JSON.parse(JSON.stringify(fixture())));
 });
+
+// ── boss arenas ─────────────────────────────────────────────────────────────
+const arenas = require('../arenas');
+
+test('every era has a boss arena that passes the checks', () => {
+  for (const era of eras) {
+    const level = arenas.buildArena(era.id);
+    assert.deepStrictEqual(arenas.validateArena(level), [], era.id);
+  }
+});
+
+test('the arena maps on disk are what arenas.js makes today', () => {
+  for (const era of eras) {
+    const onDisk = fs.readFileSync(arenas.fileFor(era.id), 'utf8');
+    assert.strictEqual(onDisk, tmx.write(arenas.buildArena(era.id)), `${path.basename(arenas.fileFor(era.id))} is stale: run tools/levelgen/arenas.js`);
+  }
+});
+
+test('an arena is the same on both sides, with a wall at each end', () => {
+  for (const era of eras) {
+    const level = tmx.read(fs.readFileSync(arenas.fileFor(era.id), 'utf8'));
+    assert.strictEqual(level.H.length, arenas.COLS);
+    for (let c = 0; c < arenas.COLS; c++) assert.strictEqual(level.H[c], level.H[arenas.COLS - 1 - c], `${era.id} column ${c}`);
+    for (const c of [0, 1, arenas.COLS - 2, arenas.COLS - 1]) assert.strictEqual(level.H[c], arenas.WALL);
+    assert.ok(level.arena.boss && level.arena.minions.length >= 4);
+    assert.strictEqual(level.gates.length, 0);
+  }
+});
+
+test('the arena check catches a platform nobody can reach, a trap and a minion spot over a pit', () => {
+  const level = arenas.buildArena('spanish');
+  // A platform far above any jump
+  const high = { ...level, platforms: [...level.platforms, { x: 700, y: 300, width: 96 }] };
+  assert.ok(arenas.validateArena(high).some((p) => /cannot be reached/.test(p)));
+  // A pit in the middle of the floor with no way back
+  const pit = { ...level, H: Int8Array.from(level.H) };
+  for (let c = 20; c < 30; c++) pit.H[c] = -1;
+  assert.ok(arenas.validateArena(pit).length > 0);
+  // A minion spot on ground that is not flat
+  const bad = { ...level, arena: { ...level.arena, minions: [...level.arena.minions, { x: 12 * 24, y: 660 }] } };
+  assert.ok(arenas.validateArena(bad).some((p) => /flat ground/.test(p)));
+});

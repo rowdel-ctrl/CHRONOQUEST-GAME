@@ -13,6 +13,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -73,5 +74,8 @@ void main() {
 }
 
 /// The levels the generator wrote, from the manifest the game itself reads.
-Iterable<(int, int)> generatedLevelNames() => LevelLoader.authored;
+/// The levels with a start and an end to run between: every authored level but
+/// the boss arenas, which are one room with no gate (see boss_arena_test.dart).
+Iterable<(int, int)> generatedLevelNames() => LevelLoader.authored
+    .where((l) => l.$2 < allEras[l.$1 - 1].levels.length);
 

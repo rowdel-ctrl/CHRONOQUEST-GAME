@@ -6,6 +6,7 @@ import '../chrono_game.dart';
 import '../quiz_handler.dart';
 import '../../core/constants.dart';
 import '../../models/question.dart';
+import '../level_loader.dart';
 import 'enemy_component.dart';
 
 /// Boss component — displays actual images for idle, attack, and defeated states.
@@ -36,7 +37,12 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   double _pause = 0;
   VoidCallback? _afterPause;
 
-  BossComponent({required this.eraId});
+  /// The boss arena this fight happens in, or null for the old open-ground
+  /// fight. In an arena the boss is already standing where the map put it and
+  /// the camera does not follow the player out of the room.
+  final LoadedLevel? arena;
+
+  BossComponent({required this.eraId, this.arena});
 
   @override
   Future<void> onLoad() async {
@@ -47,7 +53,15 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
     sprite = idleSprite;
     size = Vector2(120, 140);
-    position = Vector2(game.cameraRightEdgeX + 20, game.groundY - size.y);
+    final room = arena?.boss;
+    if (room != null) {
+      // Standing in place, the question coming after a moment to take the room in.
+      position = Vector2(room.x - size.x / 2, room.y - size.y);
+      reachedCenter = true;
+      _after(1.8, _showBossQuestion);
+    } else {
+      position = Vector2(game.cameraRightEdgeX + 20, game.groundY - size.y);
+    }
     game.audioService.playBossAppear();
   }
 
@@ -68,8 +82,9 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
         _showBossQuestion();
       }
     } else {
-      // Stay locked at screen-center as the world advances underneath.
-      position.x = centerX;
+      // Stay locked at screen-center as the world advances underneath. In an
+      // arena the boss keeps the place the map gave it.
+      if (arena == null) position.x = centerX;
       _updateFight(dt);
     }
   }
@@ -94,6 +109,35 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
       _waveActive = false;
       _after(0.5, _showBossQuestion);
     }
+  }
+
+  /// Where the [count] minions of a wave stand (left x, and the surface they
+  /// stand on, or null for the base ground).
+  ///
+  /// In an arena they come from the map's spots, the ones furthest from the
+  /// player first and alternating sides, so a wave is spread across the room
+  /// and never lands on the student. With no arena they stand just past the
+  /// right edge of the screen, as before.
+  List<({double x, double? surfaceY})> _spotsForWave(int count) {
+    final spots = arena?.minionSpawns ?? const [];
+    if (spots.isEmpty) {
+      final firstX = game.cameraRightEdgeX + 40;
+      return [for (var i = 0; i < count; i++) (x: firstX + i * 130, surfaceY: null)];
+    }
+    final playerX = game.player.worldX + game.player.size.x / 2;
+    final byDistance = [...spots]
+      ..sort((a, b) => (b.x - playerX).abs().compareTo((a.x - playerX).abs()));
+    final out = <({double x, double? surfaceY})>[];
+    for (var i = 0; i < count; i++) {
+      final s = byDistance[i % byDistance.length];
+      // Two minions never share a spot: the next one is nudged along.
+      final nudge = (i ~/ byDistance.length) * 90.0;
+      out.add((
+        x: s.x - EnemyComponent.spriteWidth / 2 + nudge,
+        surfaceY: s.y < game.groundY - 1 ? s.y : null,
+      ));
+    }
+    return out;
   }
 
   void _after(double seconds, VoidCallback what) {
@@ -126,13 +170,12 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   void _spawnWave() {
     final count = minionsInWave(_wave++);
-    // Just past the right edge, so they walk into view and the student has to
-    // go and meet them.
-    final firstX = game.cameraRightEdgeX + 40;
+    final spots = _spotsForWave(count);
     for (var i = 0; i < count; i++) {
       final minion = EnemyComponent(
         eraId: eraId,
-        worldX: firstX + i * 130,
+        worldX: spots[i].x,
+        surfaceY: spots[i].surfaceY,
         onDefeated: () {
           game.grantCharges(1);
           game.audioService.playPowerup();

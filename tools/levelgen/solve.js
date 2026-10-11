@@ -136,7 +136,10 @@ function landingHolds(world, land, margin) {
 function solve(level, { phys = careful, wantPath = false, margin = 0 } = {}) {
   const world = new World(level.H, level.platforms);
   const mark = interestingColumns(level);
-  const goalX = (level.gates[0] ?? level.exitX) - 150;
+  // A boss arena has no end to reach: the test there is that every spot can get back to the start
+  // (nothing is a trap), and the caller checks which spots were reached.
+  const arena = !!level.arena;
+  const goalX = arena ? Infinity : (level.gates[0] ?? level.exitX) - 150;
   const startTop = world.blocks.find((b) => level.spawnX >= b.start && level.spawnX < b.end).top;
   const start = standingAt(level.spawnX, startTop);
 
@@ -171,6 +174,8 @@ function solve(level, { phys = careful, wantPath = false, margin = 0 } = {}) {
     }
   }
 
+  if (arena) goals.add(key(start.x, startTop));
+
   // Nodes that can reach the end: walk the edges backwards from the goals.
   const back = new Map();
   for (const [from, tos] of out) for (const to of tos) {
@@ -203,7 +208,7 @@ function solve(level, { phys = careful, wantPath = false, margin = 0 } = {}) {
       e.run(frames);
     }
   }
-  return { reachable, traps, nodes: nodes.size, frames, furthest: Math.max(...[...nodes.values()].map((n) => n.x)) };
+  return { reachable, traps, nodes: nodes.size, frames, spots: [...nodes.values()], furthest: Math.max(...[...nodes.values()].map((n) => n.x)) };
 }
 
 // [[h, jump], ...] as [[h, jump, count], ...] for a run of identical frames.

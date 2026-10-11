@@ -1,6 +1,7 @@
 // The boss fight, end to end in a mounted game: a question, then a wave of
 // minions, then the next question; six right answers beat the boss; a wrong
 // answer or a timeout costs the boss nothing; minions pay out Kaalaman.
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:chronoquest/data/question_pool.dart';
@@ -9,6 +10,7 @@ import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/boss_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/level_loader.dart';
 import 'package:chronoquest/game/quiz_handler.dart';
 import 'package:chronoquest/models/question.dart';
 import 'package:flame/components.dart';
@@ -59,8 +61,9 @@ class _BossGame extends ChronoGame {
   }
 }
 
-Future<(_BossGame, BossComponent)> _start(WidgetTester tester) async {
+Future<(_BossGame, BossComponent)> _start(WidgetTester tester, {LoadedLevel? arena}) async {
   final game = _BossGame();
+  game.tiledLevel = arena;
   await tester.pumpWidget(MaterialApp(
     home: GameWidget(
       game: game,
@@ -72,7 +75,7 @@ Future<(_BossGame, BossComponent)> _start(WidgetTester tester) async {
   ));
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 16));
-  final boss = BossComponent(eraId: 'spanish');
+  final boss = BossComponent(eraId: 'spanish', arena: arena);
   game.boss = boss;
   game.world.add(boss);
   for (var i = 0; i < 10; i++) {
@@ -110,6 +113,8 @@ void _run(_BossGame game, double seconds) {
 List<EnemyComponent> _minions(_BossGame game) => game.world.children.whereType<EnemyComponent>().toList();
 
 void main() {
+  arenaTests();
+
   testWidgets('the boss walks in and asks the first question', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
@@ -218,5 +223,85 @@ void main() {
     await _settle(tester);
     expect(_minions(game), isNotEmpty);
     await _flush(tester);
+  });
+}
+
+LoadedLevel _arena(String file) =>
+    LevelLoader.parse(File('assets/tiles/levels/$file.tmx').readAsStringSync());
+
+void arenaTests() {
+  group('in a boss arena', () {
+    testWidgets('the boss is already standing where the map put it, and stays', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      final spot = level.boss!;
+      expect(boss.position.x, spot.x - 60);
+      expect(boss.position.y, spot.y - 140);
+      expect(boss.reachedCenter, isTrue);
+
+      game.player.position.x = 1500; // the student walks across the room
+      _run(game, 3);
+      expect(boss.position.x, spot.x - 60, reason: 'an arena boss does not follow the camera');
+      await _flush(tester);
+    });
+
+    testWidgets('the first question comes after a moment to look around', (tester) async {
+      final (game, _) = await _start(tester, arena: _arena('era2_5'));
+      _run(game, 1);
+      expect(game.questionShowing, isFalse);
+      _run(game, 2);
+      expect(game.questionShowing, isTrue);
+      await _flush(tester);
+    });
+
+    testWidgets('a wave stands on the map spots, far from the student', (tester) async {
+      final level = _arena('era2_5');
+      final (game, _) = await _start(tester, arena: level);
+      game.player.position.x = level.spawnX; // at the left end
+      _run(game, 3);
+      game.handleAnswer(_right(game));
+      _run(game, 1.2);
+      await _settle(tester);
+
+      final minions = _minions(game);
+      expect(minions, hasLength(minionsInWave(0)));
+      final spots = level.minionSpawns.map((s) => s.x - 45).toSet();
+      for (final m in minions) {
+        // (a minion has already taken a step or two by now)
+        expect(spots.any((x) => (x - m.position.x).abs() < 40), isTrue,
+            reason: 'a minion stands on a spot the map gave');
+        expect(m.position.x - game.player.position.x, greaterThan(400), reason: 'not on top of the student');
+      }
+      expect(minions.map((m) => (m.position.x / 100).round()).toSet(), hasLength(minions.length), reason: 'no two share a spot');
+      await _flush(tester);
+    });
+
+    testWidgets('on a raised floor the minions stand on it', (tester) async {
+      final level = _arena('era6_5'); // the palace steps: the dais is 72 up
+      final (game, _) = await _start(tester, arena: level);
+      _run(game, 3);
+      game.handleAnswer(_right(game));
+      _run(game, 1.2);
+      await _settle(tester);
+      for (final m in _minions(game)) {
+        expect(m.position.y + m.size.y, 660 - 72);
+      }
+      await _flush(tester);
+    });
+
+    testWidgets('the camera follows the student inside the room and stops at the walls', (tester) async {
+      final level = _arena('era2_5');
+      final (game, _) = await _start(tester, arena: level);
+      final room = level.mapWidth - game.size.x;
+      expect(room, greaterThan(0), reason: 'the arena is wider than the screen');
+
+      game.player.position.x = 0;
+      expect(game.cameraLeftEdgeX, 0);
+      game.player.position.x = level.mapWidth;
+      expect(game.cameraLeftEdgeX, room);
+      game.player.position.x = level.mapWidth / 2;
+      expect(game.cameraLeftEdgeX, closeTo(level.mapWidth / 2 - 220, 0.01));
+      await _flush(tester);
+    });
   });
 }

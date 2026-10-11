@@ -314,12 +314,17 @@ List<String> lintLevel(String xml, {required int eraNumber, required int levelIn
   return problems;
 }
 
-List<File> _levelFiles() => Directory('assets/tiles/levels')
+List<File> _allLevelFiles() => Directory('assets/tiles/levels')
     .listSync()
     .whereType<File>()
     .where((f) => _fileName.hasMatch(f.path))
     .toList()
   ..sort((a, b) => a.path.compareTo(b.path));
+
+/// The ordinary levels. A boss arena has no gate, artifacts or distance to
+/// cover, so it has its own checks (boss_arena_test.dart).
+List<File> _levelFiles() =>
+    _allLevelFiles().where((f) => !f.readAsStringSync().contains('type="boss"')).toList();
 
 void main() {
   group('every level file passes the lint', () {
@@ -341,7 +346,7 @@ void main() {
 
   test('the manifest lists exactly the files on disk', () {
     final onDisk = {
-      for (final f in _levelFiles())
+      for (final f in _allLevelFiles())
         (
           int.parse(_fileName.firstMatch(f.path)!.group(1)!),
           int.parse(_fileName.firstMatch(f.path)!.group(2)!),
@@ -352,13 +357,12 @@ void main() {
             'manifest but not on disk crashes the level');
   });
 
-  test('no level is a boss level', () {
-    // Bosses are Phase 5 and keep the procedural fallback until then; a
-    // boss .tmx would route through a fight that does not exist yet.
-    for (final (eraNumber, levelIndex) in LevelLoader.authored) {
-      final era = allEras[eraNumber - 1];
-      expect(levelIndex, lessThan(era.levelWeeks.length),
-          reason: 'era$eraNumber level $levelIndex is the boss');
+  test('a boss level is an arena and an ordinary level is not', () {
+    for (final f in _allLevelFiles()) {
+      final m = _fileName.firstMatch(f.path)!;
+      final era = allEras[int.parse(m.group(1)!) - 1];
+      final isBossLevel = int.parse(m.group(2)!) == era.levelWeeks.length;
+      expect(f.readAsStringSync().contains('type="boss"'), isBossLevel, reason: f.path);
     }
   });
 

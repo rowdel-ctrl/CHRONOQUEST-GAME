@@ -81,7 +81,15 @@ class ChronoGame extends FlameGame
   /// World x-coordinate of the camera's visible left edge — the player's
   /// worldX offset by the fixed screen position they render at (see
   /// `updateCamera()` in game_camera.dart).
-  double get cameraLeftEdgeX => player.worldX - GameConstants.playerX;
+  double get cameraLeftEdgeX {
+    final follow = player.worldX - GameConstants.playerX;
+    final level = tiledLevel;
+    if (level == null || !level.isArena) return follow;
+    // A boss arena is one fixed room: the camera follows the player inside it
+    // and stops at the walls, and a screen wider than the room centres it.
+    final room = level.mapWidth - size.x;
+    return room <= 0 ? room / 2 : follow.clamp(0.0, room);
+  }
 
   /// World x-coordinate just past the camera's visible right edge — where
   /// enemies/obstacles/ground should spawn so they enter from off-screen.
@@ -366,10 +374,19 @@ class ChronoGame extends FlameGame
     // movement, not last frame's (avoids a one-frame lag).
     updateCamera();
 
+    // A boss arena starts the fight as soon as the level is up: the boss is
+    // already in the room.
+    if (!bossPhase && !levelEnded && (tiledLevel?.isArena ?? false)) {
+      startBossFight();
+    }
+
     if (!questionShowing && !bossPhase) {
       updateKaalamanRegen(dt);
       updateSpawning(dt);
       checkLevelEnd();
+    } else if (!questionShowing) {
+      // In the boss fight a student at 0 still earns a charge back slowly.
+      updateKaalamanRegen(dt);
     }
   }
 
@@ -461,7 +478,14 @@ class ChronoGame extends FlameGame
 
   void startBossFight() {
     bossPhase = true;
-    boss = BossComponent(eraId: currentEra);
+    final level = tiledLevel;
+    if (level != null && level.isArena && kaalaman < CombatConstants.bossStartCharges) {
+      kaalaman = CombatConstants.bossStartCharges;
+    }
+    boss = BossComponent(
+      eraId: currentEra,
+      arena: level != null && level.isArena ? level : null,
+    );
     world.add(boss!);
     overlays.add('BossHealthOverlay');
   }

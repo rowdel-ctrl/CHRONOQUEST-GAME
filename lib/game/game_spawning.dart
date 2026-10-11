@@ -75,7 +75,13 @@ extension GameSpawning on ChronoGame {
     tiledLevel = level;
     artifactsTotal = level.entities.where((e) => e.type == 'artifact').length;
 
-    player.position = Vector2(level.spawnX, groundY - player.size.y);
+    // On the ground under the start: the base ground for an ordinary level, but
+    // a boss arena may start the student on a terrace.
+    player.position = Vector2(
+      level.spawnX,
+      (level.blockAt(level.spawnX + player.size.x / 2)?.topY ?? groundY) -
+          player.size.y,
+    );
     // Seed the fall-respawn anchor, so falling into a gap before ever
     // touching ground still returns the player somewhere they can stand.
     player.respawnAnchorX = level.spawnX;

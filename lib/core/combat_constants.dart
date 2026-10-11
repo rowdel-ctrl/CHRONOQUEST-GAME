@@ -29,6 +29,11 @@ class CombatConstants {
   static const int kaalamanTutorialLevels = 2;
   static const int kaalamanTutorialStart = 1;
 
+  /// A boss arena has no artifacts to collect on the way in, so the fight opens
+  /// with enough charges to beat the first wave of minions (two walkers, or a
+  /// heavy that takes two hits). After that the minions pay for the next wave.
+  static const int bossStartCharges = 4;
+
   // ─── Attack hitbox (Section 3: "a short forward hitbox... ~0.25s") ─────
   /// 64 until 2026-10-06, then 80: walking went from 210 to 250 units/s, so the
   /// same box left less time to hit an enemy before touching it.

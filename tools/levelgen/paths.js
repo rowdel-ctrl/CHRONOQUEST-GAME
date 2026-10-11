@@ -26,6 +26,7 @@ function build() {
   });
   for (const f of files) {
     const level = tmx.read(fs.readFileSync(path.join(DIR, f), 'utf8'));
+    if (level.arena) continue; // a boss arena has no end to run to; arenas.js checks those
     // The widest margin that still leaves a winning run.
     let r = null;
     for (const margin of [8, 5, 3, 0]) {

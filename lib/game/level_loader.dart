@@ -127,6 +127,20 @@ class LoadedLevel {
   /// Starting Kaalaman charges, if the map overrides the global default.
   final int? kaalamanStart;
 
+  /// The map's whole width in world units.
+  final double mapWidth;
+
+  /// Set on a boss arena: where the boss stands (its centre x, and the surface
+  /// under it). A map with a boss is a fixed room; one without is an ordinary level.
+  final ({double x, double y})? boss;
+
+  /// The spots a boss arena's minions may come from, as (centre x, surface y)
+  /// pairs, left to right.
+  final List<({double x, double y})> minionSpawns;
+
+  /// Whether this map is a boss arena.
+  bool get isArena => boss != null;
+
   const LoadedLevel({
     required this.spawnX,
     required this.exitX,
@@ -136,6 +150,9 @@ class LoadedLevel {
     this.terrain,
     this.curriculum,
     this.kaalamanStart,
+    this.mapWidth = 0,
+    this.boss,
+    this.minionSpawns = const [],
   });
 
   /// True when [worldX] sits over a gap rather than solid ground. Used by
@@ -317,8 +334,26 @@ class LevelLoader {
       entities: _readEntities(map),
       curriculum: _readCurriculum(map),
       kaalamanStart: map.properties.getValue<int>('kaalamanStart'),
+      mapWidth: map.width * tileWidth,
+      boss: _firstSpot(map, 'boss'),
+      minionSpawns: _spots(map, 'minion_spawn'),
     );
   }
+
+  /// The (x, y) of every object of [type], left to right.
+  static List<({double x, double y})> _spots(TiledMap map, String type) {
+    final out = <({double x, double y})>[];
+    for (final layer in map.layers.whereType<ObjectGroup>()) {
+      for (final o in layer.objects) {
+        if (o.type == type) out.add((x: o.x, y: o.y));
+      }
+    }
+    out.sort((a, b) => a.x.compareTo(b.x));
+    return out;
+  }
+
+  static ({double x, double y})? _firstSpot(TiledMap map, String type) =>
+      _spots(map, type).firstOrNull;
 
   /// Reads the ground tile layer into spans, blocks and the grid to draw.
   ///
@@ -410,7 +445,14 @@ class LevelLoader {
       // Tiled 1.9 renamed "type" to "class"; `class_` is an alias for the
       // same field in this package, so reading `type` covers both.
       final type = o.type;
-      if (type.isEmpty || type == 'spawn' || type == 'exit') continue;
+      // The boss and its minion spots are read separately (see LoadedLevel.boss).
+      if (type.isEmpty ||
+          type == 'spawn' ||
+          type == 'exit' ||
+          type == 'boss' ||
+          type == 'minion_spawn') {
+        continue;
+      }
 
       out.add(
         LevelEntity(

@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:flame/components.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronoquest/core/combat_constants.dart';
+import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/level_loader.dart';
 
@@ -67,11 +68,17 @@ void main() {
     test('does not claim levels that have no .tmx yet', () {
       // The generator adds entries here as it writes files; until then the
       // game must fall back to the spawner rather than try to load a file
-      // that is not there. The bosses are never generated (Phase 5), so they
-      // stay unclaimed however many other levels get a map.
-      expect(LevelLoader.exists(6, 5), isFalse);
-      expect(LevelLoader.exists(2, 5), isFalse);
-      expect(LevelLoader.exists(1, 10), isFalse);
+      // that is not there. A level past the last of its era is not one.
+      expect(LevelLoader.exists(6, 6), isFalse);
+      expect(LevelLoader.exists(2, 6), isFalse);
+      expect(LevelLoader.exists(1, 11), isFalse);
+    });
+
+    test('every boss level has an arena', () {
+      for (var e = 1; e <= allEras.length; e++) {
+        expect(LevelLoader.exists(e, allEras[e - 1].levels.length), isTrue,
+            reason: 'era $e has no boss arena');
+      }
     });
 
     test('every authored entry has a real file on disk', () {
