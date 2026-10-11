@@ -24,7 +24,9 @@ class QuestionPool {
   QuestionPool({
     required List<Question> questions,
     Random? random,
+    Set<String> picks = const {},
   })  : _all = List<Question>.unmodifiable(questions),
+        _picks = picks,
         _random = random ?? Random();
 
   /// Builds a pool from the bundled content for [era]/[level].
@@ -32,10 +34,15 @@ class QuestionPool {
       QuestionPool(
         questions: QuestionBank.poolFor(era, level),
         random: random,
+        picks: QuestionBank.picksFor(era, level),
       );
 
   final List<Question> _all;
   final Random _random;
+
+  /// Ids the teacher chose to always ask. They are served before any other
+  /// question; once every one has been served, the rest fill in at random.
+  final Set<String> _picks;
 
   /// Ids already served this attempt. Cleared only when every question has
   /// been used and the pool recycles.
@@ -84,6 +91,11 @@ class QuestionPool {
       // satisfy "serve something different". Serving it again beats
       // blocking the player at a gate forever.
       if (candidates.isEmpty) candidates = List<Question>.from(_all);
+    }
+
+    if (_picks.isNotEmpty) {
+      final chosen = candidates.where((q) => _picks.contains(q.id)).toList();
+      if (chosen.isNotEmpty) candidates = chosen;
     }
 
     final picked = candidates[_random.nextInt(candidates.length)];

@@ -4,6 +4,7 @@
 import 'dart:io';
 
 import 'package:chronoquest/data/question_bank.dart';
+import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/services/question_sync.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -211,6 +212,69 @@ void main() {
         return {};
       });
       expect(called, isFalse);
+    });
+  });
+
+  group('picked questions', () {
+    test('a level serves the picked questions first, then the others', () {
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}}, picks: {'spanish': {'1': ['c_3', 'c_7', 'c_9']}});
+      expect(QuestionBank.picksFor('spanish', 1), {'c_3', 'c_7', 'c_9'});
+      final pool = QuestionPool.forLevel('spanish', 1);
+      final first = {for (var i = 0; i < 3; i++) pool.draw()!.id};
+      expect(first, {'c_3', 'c_7', 'c_9'});
+      expect(pool.draw()!.id, isNot(anyOf('c_3', 'c_7', 'c_9')));
+    });
+
+    test('a pick that is not in the level, a repeat, or a level that did not download is ignored', () {
+      QuestionBank.applySynced(
+        {'spanish': {'1': _qs(12)}},
+        picks: {
+          'spanish': {'1': ['nope', 'c_2', 'c_2'], '2': ['c_1']},
+          'ww2': 'bad',
+        },
+      );
+      expect(QuestionBank.picksFor('spanish', 1), {'c_2'});
+      expect(QuestionBank.picksFor('spanish', 2), isEmpty);
+    });
+
+    test('no more picks are kept than the level asks for', () {
+      QuestionBank.applySynced(
+        {'spanish': {'1': _qs(15)}},
+        picks: {'spanish': {'1': [for (var i = 0; i < 15; i++) 'c_$i']}},
+      );
+      expect(QuestionBank.picksFor('spanish', 1), hasLength(10));
+    });
+
+    test('with no picks the level is random as before', () {
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}});
+      expect(QuestionBank.picksFor('spanish', 1), isEmpty);
+    });
+
+    test('a retry never repeats the question just missed, even a pick', () {
+      QuestionBank.applySynced({'spanish': {'1': _qs(12)}}, picks: {'spanish': {'1': ['c_1', 'c_2']}});
+      final pool = QuestionPool.forLevel('spanish', 1);
+      final a = pool.draw()!;
+      expect(pool.draw(exclude: a)!.id, isNot(a.id));
+    });
+
+    test('picks are saved with the download and come back offline', () async {
+      final reply = {
+        'tag': 'bank:2',
+        'levels': {'spanish': {'1': _qs(12)}},
+        'picks': {'spanish': {'1': ['c_5']}},
+      };
+      expect(await QuestionSync.sync('ABC', fetch: (_) async => reply), isTrue);
+      QuestionBank.clearSynced();
+      expect(QuestionBank.picksFor('spanish', 1), isEmpty);
+      QuestionSync.restore('ABC');
+      expect(QuestionBank.picksFor('spanish', 1), {'c_5'});
+    });
+
+    test('an older reply with no picks field still works', () async {
+      final reply = {'tag': 'bank:1', 'levels': {'spanish': {'1': _qs(12)}}};
+      expect(await QuestionSync.sync('ABC', fetch: (_) async => reply), isTrue);
+      expect(QuestionBank.picksFor('spanish', 1), isEmpty);
+      expect(_ids('spanish', 1), hasLength(12));
     });
   });
 }

@@ -21,7 +21,9 @@ class QuestionSync {
     final cache = StorageService.getQuestionCache();
     if (cache == null || cache['classCode'] != classCode) return;
     final levels = cache['levels'];
-    if (levels is Map) QuestionBank.applySynced(Map<String, dynamic>.from(levels));
+    if (levels is Map) {
+      QuestionBank.applySynced(Map<String, dynamic>.from(levels), picks: cache['picks']);
+    }
   }
 
   /// Downloads the teacher's published questions if they changed since the
@@ -47,10 +49,14 @@ class QuestionSync {
       if (newTag is! String || levels is! Map) return false;
 
       final downloaded = Map<String, dynamic>.from(levels);
-      QuestionBank.applySynced(downloaded);
-      await StorageService.saveQuestionCache(
-        {'classCode': classCode, 'tag': newTag, 'levels': downloaded},
-      );
+      final picks = data['picks'];
+      QuestionBank.applySynced(downloaded, picks: picks);
+      await StorageService.saveQuestionCache({
+        'classCode': classCode,
+        'tag': newTag,
+        'levels': downloaded,
+        if (picks is Map) 'picks': picks,
+      });
       return true;
     } catch (_) {
       // Offline or a bad reply: keep playing with what the phone has.

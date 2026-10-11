@@ -22,6 +22,10 @@ class QuestionBank {
   /// plays exactly as before.
   static final Map<String, Map<int, List<Question>>> _synced = {};
 
+  /// Questions a teacher chose to always ask in a level (`{era: {level: [id]}}`).
+  /// Used only together with a downloaded level; see [picksFor].
+  static final Map<String, Map<int, List<String>>> _picks = {};
+
   static List<Question>? _poolOf(String era, int level) =>
       _synced[era]?[level] ?? _bank[era]?[level];
 
@@ -73,8 +77,9 @@ class QuestionBank {
   /// question that cannot be played is dropped, and a level left with fewer
   /// questions than shipped (or than the game asks, if that is fewer) keeps the
   /// bundled ones, so a download can never leave a level thinner than it was.
-  static int applySynced(Map<String, dynamic> levels) {
+  static int applySynced(Map<String, dynamic> levels, {Object? picks}) {
     _synced.clear();
+    _picks.clear();
     var used = 0;
     levels.forEach((era, byLevel) {
       if (!_eraIds.contains(era) || byLevel is! Map) return;
@@ -93,11 +98,42 @@ class QuestionBank {
         used++;
       });
     });
+    _applyPicks(picks);
     return used;
   }
 
+  /// Reads the teacher's chosen questions (`{era: {level: [id]}}`). A pick is kept
+  /// only for a level that took the download and only if the question is in
+  /// it, and at most as many as the level asks. Anything else is ignored.
+  static void _applyPicks(Object? raw) {
+    if (raw is! Map) return;
+    raw.forEach((era, byLevel) {
+      if (byLevel is! Map) return;
+      byLevel.forEach((levelKey, ids) {
+        final level = int.tryParse('$levelKey');
+        final pool = level == null ? null : _synced[era]?[level];
+        if (level == null || pool == null || ids is! List) return;
+        final inPool = pool.map((q) => q.id).toSet();
+        final chosen = <String>[];
+        for (final id in ids) {
+          if (id is String && inPool.contains(id) && !chosen.contains(id)) chosen.add(id);
+        }
+        if (chosen.isEmpty) return;
+        (_picks[era as String] ??= {})[level] =
+            chosen.take(_targetCount(era, level)).toList();
+      });
+    });
+  }
+
+  /// The ids the teacher wants asked in this level, or none.
+  static Set<String> picksFor(String era, int level) =>
+      (_picks[era]?[level] ?? const <String>[]).toSet();
+
   /// Goes back to the bundled questions only (on logout).
-  static void clearSynced() => _synced.clear();
+  static void clearSynced() {
+    _synced.clear();
+    _picks.clear();
+  }
 
   /// The levels currently using downloaded questions, as `era/level` keys.
   @visibleForTesting
@@ -111,6 +147,7 @@ class QuestionBank {
   static void resetForTest() {
     _bank.clear();
     _synced.clear();
+    _picks.clear();
     _loaded = false;
   }
 
