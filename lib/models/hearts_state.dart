@@ -51,6 +51,15 @@ class HeartsState {
     );
   }
 
+  /// One more heart (bought): the countdown carries on as it was, and stops
+  /// once the pool is full.
+  HeartsState withHeart() {
+    if (count >= GameConstants.maxHearts) return this;
+    final next = count + 1;
+    if (next >= GameConstants.maxHearts) return const HeartsState(count: GameConstants.maxHearts);
+    return HeartsState(count: next, regenStartMs: regenStartMs);
+  }
+
   /// Convenience for a level-failed event: applies any pending regen first,
   /// then spends one heart — keeps that ordering from being duplicated (or
   /// forgotten) at call sites.

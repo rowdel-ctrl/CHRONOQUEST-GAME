@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/constants.dart';
-import '../providers/auth_provider.dart';
 import '../providers/game_provider.dart';
 import 'game_ui.dart';
 
@@ -163,10 +162,8 @@ class _PlusButton extends StatelessWidget {
 /// The buy-a-heart dialog opened by the plus button.
 ///
 /// Three states: the pool is already full (nothing to buy), the student
-/// cannot afford it, or they can. Buying is **not wired yet** — coins are
-/// currently only a server-side total with no local spend path — so the
-/// affordable state says so rather than offering a button that pretends to
-/// work. See GAMEPLAY-V2.md Section 14, Phase 6.
+/// cannot afford it, or they can and BILHIN spends the coins and adds a heart.
+/// The coins are the wallet's (`GameNotifier.buyHeart`), kept on the phone.
 Future<void> showBuyHeartDialog(BuildContext context) {
   return showDialog<void>(
     context: context,
@@ -180,7 +177,7 @@ class _BuyHeartDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hearts = ref.watch(gameProvider).hearts;
-    final coins = ref.watch(authProvider).student?.coins ?? 0;
+    final coins = ref.watch(gameProvider).coins;
     const price = GameConstants.heartPriceCoins;
     final isFull = hearts.count >= GameConstants.maxHearts;
     final canAfford = coins >= price;
@@ -274,7 +271,7 @@ class _BuyHeartDialog extends ConsumerWidget {
                     )
                   else
                     Text(
-                      'Malapit na! Hindi pa magagamit ang pagbili.',
+                      'Ibabawas ang $price coins sa iyong ipon.',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -296,12 +293,14 @@ class _BuyHeartDialog extends ConsumerWidget {
                     ),
                     if (!isFull) ...[
                       const SizedBox(width: 10),
-                      const Expanded(
+                      Expanded(
                         child: GameButton(
                           label: 'BILHIN',
                           fontSize: 8,
                           minHeight: 44,
-                          onPressed: null,
+                          onPressed: canAfford
+                              ? () => ref.read(gameProvider.notifier).buyHeart()
+                              : null,
                         ),
                       ),
                     ],

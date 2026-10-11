@@ -221,6 +221,25 @@ class StorageService {
     }
   }
 
+  // ─── WALLET (coins, power-ups, bought characters; one per student) ───────
+  static String _walletKey(String studentId) => 'wallet_$studentId';
+
+  /// What this student has earned and bought on this phone:
+  /// {coins, fiftyFifty, timeFreeze, shield, unlocked: [characterId]}, or null.
+  static Map<String, dynamic>? getWallet(String studentId) {
+    final raw = appBox.get(_walletKey(studentId)) as String?;
+    if (raw == null) return null;
+    try {
+      return Map<String, dynamic>.from(jsonDecode(raw) as Map);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> saveWallet(String studentId, Map<String, dynamic> wallet) async {
+    await appBox.put(_walletKey(studentId), jsonEncode(wallet));
+  }
+
   // ─── DOWNLOADED QUESTIONS (teacher question bank) ────────────────────────
   static const _questionCacheKey = 'question_bank_cache';
 

@@ -20,9 +20,32 @@ import 'package:hive/hive.dart';
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
   _FakeGame()
-      : super(GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
+      : super(GameState(
+          coins: 85,
+          powerUps: PowerUps(fiftyFifty: 2, shield: 1),
+          hearts: const HeartsState(count: 3, regenStartMs: null),
+        ));
   @override
   Duration? get heartCountdown => null;
+
+  final bought = <PowerUpKind>[];
+
+  @override
+  bool buyPowerUp(PowerUpKind kind) {
+    if (state.coins < kind.priceCoins) return false;
+    bought.add(kind);
+    final p = state.powerUps;
+    switch (kind) {
+      case PowerUpKind.fiftyFifty:
+        p.fiftyFifty++;
+      case PowerUpKind.shield:
+        p.shield++;
+      case PowerUpKind.timeFreeze:
+        p.timeFreeze++;
+    }
+    state = state.copyWith(coins: state.coins - kind.priceCoins, powerUps: p);
+    return true;
+  }
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -80,13 +103,16 @@ class _FakeUnlock extends StateNotifier<bool> implements UnlockAllNotifier {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+late _FakeGame _game;
+
 Future<void> _pump(WidgetTester tester, Size size, {bool unlockAll = false}) async {
+  _game = _FakeGame();
   await tester.binding.setSurfaceSize(size);
   addTearDown(() => tester.binding.setSurfaceSize(null));
   tester.view.devicePixelRatio = 1.0;
   await tester.pumpWidget(ProviderScope(
     overrides: [
-      gameProvider.overrideWith((ref) => _FakeGame()),
+      gameProvider.overrideWith((ref) => _game),
       authProvider.overrideWith((ref) => _FakeAuth()),
       progressProvider.overrideWith((ref) => _FakeProgress()),
       unlockAllProvider.overrideWith((ref) => _FakeUnlock(unlockAll)),
@@ -132,9 +158,55 @@ void main() {
     expect(find.text('EDG5A1'), findsOneWidget);
     expect(find.text('Rizal Elementary School'), findsOneWidget);
     expect(find.text('1,240'), findsOneWidget);
-    expect(find.text('85'), findsOneWidget);
-    expect(find.text('×2'), findsOneWidget, reason: '50/50 powerups');
-    expect(find.text('×1'), findsOneWidget, reason: 'shields');
+    // The coins show on the card and in the shop; both come from the wallet.
+    expect(find.text('85'), findsNWidgets(2));
+    expect(find.text('50/50  ×2'), findsOneWidget);
+    expect(find.text('Shield  ×1'), findsOneWidget);
+    expect(find.text('Time Freeze  ×0'), findsOneWidget);
+  });
+
+  group('the shop', () {
+    testWidgets('lists the three power-ups with their prices', (tester) async {
+      await _pump(tester, const Size(812, 375));
+      await tester.ensureVisible(find.byKey(const ValueKey('shop_coins')));
+
+      for (final kind in PowerUpKind.values) {
+        final button = find.byKey(ValueKey('buy_${kind.name}'));
+        expect(button, findsOneWidget);
+        expect(find.descendant(of: button, matching: find.text('${kind.priceCoins}')), findsOneWidget);
+      }
+    });
+
+    testWidgets('a purchase takes the coins and adds one to what is carried', (tester) async {
+      await _pump(tester, const Size(812, 375));
+      final buy = find.byKey(const ValueKey('buy_timeFreeze'));
+      await tester.ensureVisible(buy);
+      await tester.tap(buy);
+      await tester.pump();
+
+      expect(_game.bought, [PowerUpKind.timeFreeze]);
+      expect(find.text('Time Freeze  ×1'), findsOneWidget);
+      expect(find.text('${85 - GameConstants.timeFreezePriceCoins}'), findsNWidgets(2));
+    });
+
+    testWidgets('what the coins no longer cover cannot be bought', (tester) async {
+      await _pump(tester, const Size(812, 375));
+      final freeze = find.byKey(const ValueKey('buy_timeFreeze'));
+      await tester.ensureVisible(freeze);
+      await tester.tap(freeze);
+      await tester.pump();
+      await tester.tap(freeze);
+      await tester.pump();
+      // 25 left: a Time Freeze (30) is out of reach, a Shield (25) is not.
+      await tester.tap(freeze, warnIfMissed: false);
+      await tester.pump();
+      expect(_game.bought, [PowerUpKind.timeFreeze, PowerUpKind.timeFreeze]);
+
+      await tester.tap(find.byKey(const ValueKey('buy_shield')));
+      await tester.pump();
+      expect(_game.bought.last, PowerUpKind.shield);
+      expect(_game.state.coins, 0);
+    });
   });
 
   testWidgets('each era counts against its own number of levels', (tester) async {

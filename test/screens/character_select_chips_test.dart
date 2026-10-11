@@ -17,6 +17,9 @@ class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
   Duration? get heartCountdown => null;
 
   @override
+  bool isCharacterUnlocked(String characterId) => true;
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

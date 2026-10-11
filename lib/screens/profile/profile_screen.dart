@@ -45,7 +45,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final student = ref.watch(authProvider).student;
-    final characterId = ref.watch(gameProvider).selectedCharacterId;
+    final game = ref.watch(gameProvider);
+    final characterId = game.selectedCharacterId;
 
     return Scaffold(
       body: GameBackdrop(
@@ -77,12 +78,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       classCode: student?.classCode ?? '',
                       school: student?.schoolName ?? '',
                       score: student?.score ?? 0,
-                      coins: student?.coins ?? 0,
+                      coins: game.coins,
                     );
                     final journey = _Journey(
                       gradeLevel: student?.gradeLevel ?? 'grade5',
-                      fiftyFifty: student?.powerUps.fiftyFifty ?? 0,
-                      shield: student?.powerUps.shield ?? 0,
                     );
                     if (box.maxWidth >= ProfileScreen.twoColumnMinWidth) {
                       return Row(
@@ -264,14 +263,8 @@ class _Total extends StatelessWidget {
 /// The six eras with their progress, then the powerups and the Kodeks.
 class _Journey extends ConsumerWidget {
   final String gradeLevel;
-  final int fiftyFifty;
-  final int shield;
 
-  const _Journey({
-    required this.gradeLevel,
-    required this.fiftyFifty,
-    required this.shield,
-  });
+  const _Journey({required this.gradeLevel});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -321,19 +314,9 @@ class _Journey extends ConsumerWidget {
           ),
         ],
         const SizedBox(height: 8),
-        // Same height for both, so the Kodeks matches the powerups panel.
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: _Powerups(fiftyFifty: fiftyFifty, shield: shield),
-              ),
-              const SizedBox(width: 8),
-              const Expanded(child: _Kodeks()),
-            ],
-          ),
-        ),
+        const _Shop(),
+        const SizedBox(height: 8),
+        const _Kodeks(),
       ],
     );
   }
@@ -438,79 +421,135 @@ class _EraTile extends StatelessWidget {
   }
 }
 
-class _Powerups extends StatelessWidget {
-  final int fiftyFifty;
-  final int shield;
+/// The shop: what the student carries, and one tap to buy more with coins. The
+/// coins and the power-ups are the phone's own wallet (GameNotifier), so a
+/// purchase shows at once.
+class _Shop extends ConsumerWidget {
+  const _Shop();
 
-  const _Powerups({required this.fiftyFifty, required this.shield});
+  static Key buyKey(PowerUpKind kind) => ValueKey('buy_${kind.name}');
 
-  Widget _item(Widget glyph, int count) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              border: Border.all(color: AppColors.primaryDark, width: 2),
-            ),
-            child: glyph,
-          ),
-          const SizedBox(width: 5),
-          Text(
-            '×$count',
+  Widget _glyph(PowerUpKind kind) {
+    switch (kind) {
+      case PowerUpKind.fiftyFifty:
+        return Text('½',
             style: GoogleFonts.poppins(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ],
-      );
+                fontSize: 15, height: 1, fontWeight: FontWeight.bold, color: AppColors.accent));
+      case PowerUpKind.shield:
+        return const PixelIcon(PixelGlyph.shield, size: 16, color: AppColors.accent);
+      case PowerUpKind.timeFreeze:
+        return const Icon(Icons.ac_unit, size: 16, color: AppColors.accent);
+    }
+  }
+
+  static const _names = {
+    PowerUpKind.fiftyFifty: ('50/50', 'Tinatanggal ang dalawang maling sagot.'),
+    PowerUpKind.shield: ('Shield', 'Sumasalo sa isang maling sagot.'),
+    PowerUpKind.timeFreeze: ('Time Freeze', 'Pinahihinto ang oras sa tanong ng boss.'),
+  };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(gameProvider);
+    final notifier = ref.read(gameProvider.notifier);
+    int owned(PowerUpKind k) => switch (k) {
+          PowerUpKind.fiftyFifty => game.powerUps.fiftyFifty,
+          PowerUpKind.shield => game.powerUps.shield,
+          PowerUpKind.timeFreeze => game.powerUps.timeFreeze,
+        };
+
     return GamePanel(
       color: AppColors.surface,
       borderWidth: 2,
       shadowOffset: 3,
       borderRadius: 4,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'POWERUPS',
-            style: GoogleFonts.poppins(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.4,
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Wrap(
-            spacing: 14,
-            runSpacing: 4,
+          Row(
             children: [
-              _item(
-                Text('½',
-                    style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        height: 1,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.accent)),
-                fiftyFifty,
+              Text(
+                'TINDAHAN',
+                style: GoogleFonts.poppins(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.4,
+                  color: AppColors.primary,
+                ),
               ),
-              _item(
-                const PixelIcon(PixelGlyph.shield,
-                    size: 14, color: AppColors.accent),
-                shield,
+              const Spacer(),
+              Image.asset('assets/collectibles/coin.png', width: 14, height: 14),
+              const SizedBox(width: 4),
+              Text(
+                _grouped(game.coins),
+                key: const ValueKey('shop_coins'),
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
+          const SizedBox(height: 6),
+          for (final kind in PowerUpKind.values) ...[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                children: [
+                  Container(
+                    width: 26,
+                    height: 26,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      border: Border.all(color: AppColors.primaryDark, width: 2),
+                    ),
+                    child: _glyph(kind),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${_names[kind]!.$1}  ×${owned(kind)}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            height: 1.2,
+                          ),
+                        ),
+                        Text(
+                          _names[kind]!.$2,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            color: AppColors.textSecondary,
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  GameButton(
+                    key: buyKey(kind),
+                    label: '${kind.priceCoins}',
+                    leading: Image.asset('assets/collectibles/coin.png', width: 14, height: 14),
+                    fontSize: 9,
+                    minHeight: 36,
+                    horizontalPadding: 10,
+                    onPressed: game.coins >= kind.priceCoins ? () => notifier.buyPowerUp(kind) : null,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );

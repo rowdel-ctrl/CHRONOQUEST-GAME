@@ -1,9 +1,7 @@
 // The menu hearts pill: one heart, a count, a plus that opens the buy dialog.
-// Buying is not wired yet, so these pin what the UI promises and nothing more.
+// BILHIN spends the wallet's coins and adds a heart.
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/hearts_state.dart';
-import 'package:chronoquest/models/student.dart';
-import 'package:chronoquest/providers/auth_provider.dart';
 import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/widgets/hearts_pill.dart';
 import 'package:flutter/material.dart';
@@ -14,39 +12,45 @@ import 'package:google_fonts/google_fonts.dart';
 /// Stands in for GameNotifier, whose constructor starts a Hive write that
 /// never completes inside a widget test (see tutorial_screen_test.dart).
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
-  _FakeGame(int hearts)
-      : super(GameState(hearts: HeartsState(count: hearts, regenStartMs: null)));
+  _FakeGame(int hearts, int coins)
+      : super(GameState(
+          coins: coins,
+          hearts: HeartsState(count: hearts, regenStartMs: null),
+        ));
+
+  int bought = 0;
 
   @override
   Duration? get heartCountdown => null;
 
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
-  _FakeAuth(int coins)
-      : super(AuthState(
-          student: Student.fromJson({
-            'id': 's',
-            'name': 'Test',
-            'coins': coins,
-          }),
-          isLoggedIn: true,
-        ));
+  bool buyHeart() {
+    if (state.hearts.count >= GameConstants.maxHearts ||
+        state.coins < GameConstants.heartPriceCoins) {
+      return false;
+    }
+    bought++;
+    state = state.copyWith(
+      coins: state.coins - GameConstants.heartPriceCoins,
+      hearts: state.hearts.withHeart(),
+    );
+    return true;
+  }
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+late _FakeGame _game;
+
 Future<void> _pump(WidgetTester tester, {required int hearts, required int coins}) async {
+  _game = _FakeGame(hearts, coins);
   await tester.binding.setSurfaceSize(const Size(800, 360));
   addTearDown(() => tester.binding.setSurfaceSize(null));
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
-        gameProvider.overrideWith((ref) => _FakeGame(hearts)),
-        authProvider.overrideWith((ref) => _FakeAuth(coins)),
+        gameProvider.overrideWith((ref) => _game),
       ],
       child: const MaterialApp(
         home: Scaffold(body: Center(child: HeartsPill())),
@@ -82,6 +86,33 @@ void main() {
     expect(find.text('${GameConstants.heartPriceCoins}'), findsOneWidget);
     expect(find.textContaining('3/5', findRichText: true), findsWidgets);
     expect(find.textContaining('4/5', findRichText: true), findsOneWidget);
+  });
+
+  testWidgets('BILHIN spends the coins and adds the heart', (tester) async {
+    await _pump(tester, hearts: 3, coins: 50);
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('BILHIN'));
+    await tester.pumpAndSettle();
+
+    expect(_game.bought, 1);
+    expect(_game.state.hearts.count, 4);
+    expect(_game.state.coins, 50 - GameConstants.heartPriceCoins);
+    // The dialog is still open and now shows the new count.
+    expect(find.text('Bumili ng Puso'), findsOneWidget);
+    expect(find.textContaining('4/5', findRichText: true), findsWidgets);
+  });
+
+  testWidgets('BILHIN is off when the coins do not cover it', (tester) async {
+    await _pump(tester, hearts: 3, coins: 19);
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('BILHIN'), warnIfMissed: false);
+    await tester.pumpAndSettle();
+
+    expect(_game.bought, 0);
   });
 
   testWidgets('too few coins says so', (tester) async {

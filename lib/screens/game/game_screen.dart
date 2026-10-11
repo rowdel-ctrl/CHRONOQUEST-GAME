@@ -33,6 +33,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   // Kept so the post-result refresh still works after this screen is gone.
   late final AuthNotifier _auth = ref.read(authProvider.notifier);
 
+  /// The coins picked up in this attempt go into the wallet once, when the
+  /// level ends either way. Quitting from the pause menu leaves them behind.
+  bool _coinsBanked = false;
+  void _bankCoins() {
+    if (_coinsBanked) return;
+    _coinsBanked = true;
+    _hearts.addCoins(game.playerCoins);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +76,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     // Set callbacks for navigation
     game.onLevelComplete = (score, correct, total, answers) {
+      _bankCoins();
       // Save level completion
       final percentage = total > 0 ? (correct / total * 100).round() : 0;
       final stars = percentage >= 90
@@ -99,6 +109,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     game.onResultSubmitted = () => _auth.refreshProfile();
 
     game.onLevelFailed = () {
+      _bankCoins();
       // The pool is already at 0 by the time this fires — every hit that
       // got here already went through onHeartLost above.
       context.go('/level-failed/${widget.eraId}/${widget.level}');
@@ -143,6 +154,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     Future<void>.microtask(audio.stopBgm);
     // The hearts clock starts again; also deferred, for the same reason.
     Future<void>.microtask(_hearts.exitLevel);
+    // Power-ups used in the level were changed in place; keep what is left.
+    Future<void>.microtask(_hearts.saveWallet);
     super.dispose();
   }
 

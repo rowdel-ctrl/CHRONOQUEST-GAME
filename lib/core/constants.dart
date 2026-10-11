@@ -129,8 +129,14 @@ class GameConstants {
   static const Duration heartRegenInterval = Duration(minutes: 1);
 
   /// Coins to buy one heart. A placeholder chosen by the user on 2026-10-03
-  /// ("for now we use 20 coins"); the purchase itself is not wired yet.
+  /// ("for now we use 20 coins"), now spent through [GameNotifier.buyHeart].
   static const int heartPriceCoins = 20;
+
+  /// Coins for one of each power-up, bought on the Profile screen. Placeholders
+  /// to tune once students have played with coins: a level pays roughly 30 to 60.
+  static const int fiftyFiftyPriceCoins = 15;
+  static const int shieldPriceCoins = 25;
+  static const int timeFreezePriceCoins = 30;
 
   static const int questionsPerLevel = 10; // levels 1-9
   // The size of a boss level's question pool (own lesson + reused ones).

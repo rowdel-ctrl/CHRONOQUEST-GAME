@@ -44,6 +44,9 @@ class _CharacterSelectionScreenState
   @override
   Widget build(BuildContext context) {
     final char = allCharacters[_selectedIndex];
+    ref.watch(gameProvider); // redraw when a character is bought
+    final notifier = ref.read(gameProvider.notifier);
+    bool unlocked(String id) => notifier.isCharacterUnlocked(id);
 
     return Scaffold(
       body: Stack(
@@ -97,6 +100,7 @@ class _CharacterSelectionScreenState
                             char: c,
                             isSelected: isSelected,
                             charColor: _getCharColor(c.id),
+                            locked: !unlocked(c.id),
                           );
                         },
                       ),
@@ -162,18 +166,25 @@ class _CharacterSelectionScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GameButton(
-                            label: 'PILIIN SI ${char.name.toUpperCase()}!',
-                            fontSize: 11,
-                            icon: Icons.arrow_forward_rounded,
-                            onPressed: () {
-                              ref
-                                  .read(gameProvider.notifier)
-                                  .selectCharacter(
-                                      allCharacters[_selectedIndex].id);
-                              context.go('/era-selection');
-                            },
-                          ),
+                          if (unlocked(char.id))
+                            GameButton(
+                              label: 'PILIIN SI ${char.name.toUpperCase()}!',
+                              fontSize: 11,
+                              icon: Icons.arrow_forward_rounded,
+                              onPressed: () {
+                                notifier.selectCharacter(char.id);
+                                context.go('/era-selection');
+                              },
+                            )
+                          else
+                            GameButton(
+                              key: const ValueKey('unlock_character'),
+                              label: 'I-UNLOCK SI ${char.name.toUpperCase()}',
+                              fontSize: 11,
+                              leading: Image.asset('assets/collectibles/coin.png',
+                                  width: 16, height: 16),
+                              onPressed: () => showUnlockCharacterDialog(context, char),
+                            ),
                         ],
                       ),
                     ],
@@ -316,10 +327,14 @@ class _CharCard extends StatelessWidget {
   final bool isSelected;
   final Color charColor;
 
+  /// Not bought yet: shown dimmed, with its price.
+  final bool locked;
+
   const _CharCard({
     required this.char,
     required this.isSelected,
     required this.charColor,
+    this.locked = false,
   });
 
   @override
@@ -363,7 +378,10 @@ class _CharCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Sprite with colored glow
-              _IdleAvatar(charId: char.id, color: charColor),
+              Opacity(
+                opacity: locked ? 0.35 : 1,
+                child: _IdleAvatar(charId: char.id, color: charColor),
+              ),
               const SizedBox(height: 16),
 
               // Name
@@ -406,6 +424,28 @@ class _CharCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+
+              if (locked) ...[
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.lock, size: 14, color: Colors.white70),
+                    const SizedBox(width: 6),
+                    Image.asset('assets/collectibles/coin.png', width: 14, height: 14),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${char.unlockCost}',
+                      key: const ValueKey('character_price'),
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
 
               // Description
               Container(
@@ -534,6 +574,117 @@ class _IdleAvatarState extends State<_IdleAvatar>
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Asks before spending coins on a locked character. Shows the price and the
+/// student's coins, and only offers BILHIN when they can pay.
+Future<void> showUnlockCharacterDialog(BuildContext context, CharacterData char) {
+  return showDialog<void>(
+    context: context,
+    builder: (_) => _UnlockCharacterDialog(char: char),
+  );
+}
+
+class _UnlockCharacterDialog extends ConsumerWidget {
+  final CharacterData char;
+  const _UnlockCharacterDialog({required this.char});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final coins = ref.watch(gameProvider).coins;
+    final canAfford = coins >= char.unlockCost;
+    final style = GoogleFonts.poppins(fontSize: 13, height: 1.5, color: AppColors.textSecondary);
+
+    Widget coinLine(String label, int n) => Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, style: style),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/collectibles/coin.png', width: 16, height: 16),
+                  const SizedBox(width: 4),
+                  Text('$n',
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                ],
+              ),
+            ],
+          ),
+        );
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 340),
+        child: GamePanel(
+          color: AppColors.surface,
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'I-unlock si ${char.name}',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text('Magagamit mo na siya sa lahat ng level.', style: style),
+                const SizedBox(height: 10),
+                coinLine('Presyo', char.unlockCost),
+                coinLine('Iyong coins', coins),
+                if (!canAfford)
+                  Text(
+                    'Kulang ang coins. Mangolekta pa sa mga level.',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.danger,
+                    ),
+                  ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GameButton(
+                        label: 'KANSELAHIN',
+                        color: AppColors.surfaceAlt,
+                        fontSize: 8,
+                        minHeight: 44,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: GameButton(
+                        key: const ValueKey('confirm_unlock'),
+                        label: 'BILHIN',
+                        fontSize: 8,
+                        minHeight: 44,
+                        onPressed: canAfford
+                            ? () {
+                                ref.read(gameProvider.notifier).unlockCharacter(char.id);
+                                Navigator.of(context).pop();
+                              }
+                            : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

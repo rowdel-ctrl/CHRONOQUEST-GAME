@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/constants.dart';
 import '../models/hearts_state.dart';
 import '../models/student.dart';
 import '../services/server_clock.dart';
+import 'auth_provider.dart';
 import '../services/storage_service.dart';
 
 class GameState {
@@ -12,6 +14,9 @@ class GameState {
   final int coins;
   final HeartsState hearts;
 
+  /// Characters this student has bought (the free ones are not listed).
+  final Set<String> unlockedCharacters;
+
   GameState({
     this.selectedCharacterId = 'rizal',
     this.currentEraId = 'pre-colonial',
@@ -19,6 +24,7 @@ class GameState {
     PowerUps? powerUps,
     this.coins = 0,
     HeartsState? hearts,
+    this.unlockedCharacters = const {},
   })  : powerUps = powerUps ?? PowerUps(),
         hearts = hearts ?? HeartsState.initial();
 
@@ -29,6 +35,7 @@ class GameState {
     PowerUps? powerUps,
     int? coins,
     HeartsState? hearts,
+    Set<String>? unlockedCharacters,
   }) {
     return GameState(
       selectedCharacterId:
@@ -38,8 +45,19 @@ class GameState {
       powerUps: powerUps ?? this.powerUps,
       coins: coins ?? this.coins,
       hearts: hearts ?? this.hearts,
+      unlockedCharacters: unlockedCharacters ?? this.unlockedCharacters,
     );
   }
+}
+
+/// What can be bought with coins besides a heart.
+enum PowerUpKind {
+  fiftyFifty(GameConstants.fiftyFiftyPriceCoins),
+  shield(GameConstants.shieldPriceCoins),
+  timeFreeze(GameConstants.timeFreezePriceCoins);
+
+  const PowerUpKind(this.priceCoins);
+  final int priceCoins;
 }
 
 class GameNotifier extends StateNotifier<GameState> {
@@ -157,9 +175,114 @@ class GameNotifier extends StateNotifier<GameState> {
     _store(hearts);
   }
 
+  /// Whose wallet is loaded, or null with nobody logged in.
+  String? _walletOwner;
+
+  /// Loads [studentId]'s coins, power-ups and bought characters from this phone
+  /// (a student with none starts empty), or empties them when nobody is logged
+  /// in. A shared phone keeps one wallet per student.
+  ///
+  /// Spending is kept on the phone: the server has no coins to keep. A reinstall
+  /// starts the wallet again.
+  void loadWallet(String? studentId) {
+    if (studentId == _walletOwner) return;
+    _walletOwner = studentId;
+    final saved = studentId == null ? null : StorageService.getWallet(studentId);
+    final powerUps = PowerUps(
+      fiftyFifty: (saved?['fiftyFifty'] as num?)?.toInt() ?? 0,
+      timeFreeze: (saved?['timeFreeze'] as num?)?.toInt() ?? 0,
+      shield: (saved?['shield'] as num?)?.toInt() ?? 0,
+    );
+    final unlocked = {
+      for (final id in (saved?['unlocked'] as List?) ?? const []) '$id',
+    };
+    var character = state.selectedCharacterId;
+    final keptCharacter = _isUnlocked(character, unlocked);
+    if (!keptCharacter) character = _firstFree.id;
+    state = state.copyWith(
+      coins: (saved?['coins'] as num?)?.toInt() ?? 0,
+      powerUps: powerUps,
+      unlockedCharacters: unlocked,
+      selectedCharacterId: character,
+    );
+    if (!keptCharacter) StorageService.saveCharacter(character);
+  }
+
+  /// Writes the wallet to the phone. Call after anything that changes it,
+  /// including a level where power-ups were used (they are changed in place).
+  void saveWallet() {
+    final id = _walletOwner;
+    if (id == null) return;
+    StorageService.saveWallet(id, {
+      'coins': state.coins,
+      'fiftyFifty': state.powerUps.fiftyFifty,
+      'timeFreeze': state.powerUps.timeFreeze,
+      'shield': state.powerUps.shield,
+      'unlocked': state.unlockedCharacters.toList()..sort(),
+    });
+  }
+
+  static CharacterData get _firstFree => allCharacters.firstWhere((c) => c.unlockCost == 0);
+
+  /// The testing switch that opens every era also opens every character.
+  bool _isUnlocked(String characterId, Set<String> bought) {
+    final c = allCharacters.where((c) => c.id == characterId).firstOrNull;
+    if (c == null) return false;
+    return c.unlockCost == 0 || bought.contains(characterId) || StorageService.getUnlockAll();
+  }
+
+  bool isCharacterUnlocked(String characterId) =>
+      _isUnlocked(characterId, state.unlockedCharacters);
+
+  /// Picks a character. A locked one is refused: it has to be bought first.
   void selectCharacter(String characterId) {
+    if (!isCharacterUnlocked(characterId)) return;
     StorageService.saveCharacter(characterId);
     state = state.copyWith(selectedCharacterId: characterId);
+  }
+
+  /// Pays for a locked character. False, with nothing changed, if it is free
+  /// already, unknown, or the student cannot afford it.
+  bool unlockCharacter(String characterId) {
+    final c = allCharacters.where((c) => c.id == characterId).firstOrNull;
+    if (c == null || isCharacterUnlocked(characterId) || state.coins < c.unlockCost) {
+      return false;
+    }
+    state = state.copyWith(
+      coins: state.coins - c.unlockCost,
+      unlockedCharacters: {...state.unlockedCharacters, characterId},
+    );
+    saveWallet();
+    return true;
+  }
+
+  /// Pays [GameConstants.heartPriceCoins] for one heart. False, with nothing
+  /// changed, if the pool is full or the student cannot afford it.
+  bool buyHeart() {
+    if (state.hearts.count >= GameConstants.maxHearts) return false;
+    if (state.coins < GameConstants.heartPriceCoins) return false;
+    state = state.copyWith(coins: state.coins - GameConstants.heartPriceCoins);
+    _store(state.hearts.withHeart());
+    saveWallet();
+    return true;
+  }
+
+  /// Pays for one power-up. False, with nothing changed, if the student cannot
+  /// afford it.
+  bool buyPowerUp(PowerUpKind kind) {
+    if (state.coins < kind.priceCoins) return false;
+    final p = state.powerUps;
+    switch (kind) {
+      case PowerUpKind.fiftyFifty:
+        p.fiftyFifty++;
+      case PowerUpKind.shield:
+        p.shield++;
+      case PowerUpKind.timeFreeze:
+        p.timeFreeze++;
+    }
+    state = state.copyWith(coins: state.coins - kind.priceCoins, powerUps: p);
+    saveWallet();
+    return true;
   }
 
   void setEra(String eraId) {
@@ -174,8 +297,11 @@ class GameNotifier extends StateNotifier<GameState> {
     state = state.copyWith(powerUps: powerUps);
   }
 
+  /// Adds coins picked up in a level to the wallet.
   void addCoins(int amount) {
+    if (amount <= 0) return;
     state = state.copyWith(coins: state.coins + amount);
+    saveWallet();
   }
 
   void useFiftyFifty() {
@@ -210,8 +336,17 @@ class GameNotifier extends StateNotifier<GameState> {
       state.powerUps.shield++;
     }
     state = state.copyWith(powerUps: state.powerUps);
+    saveWallet();
   }
 }
 
-final gameProvider =
-    StateNotifierProvider<GameNotifier, GameState>((ref) => GameNotifier());
+final gameProvider = StateNotifierProvider<GameNotifier, GameState>((ref) {
+  final notifier = GameNotifier();
+  // The wallet follows whoever is logged in.
+  ref.listen<String?>(
+    authProvider.select((s) => s.student?.id),
+    (_, id) => notifier.loadWallet(id),
+    fireImmediately: true,
+  );
+  return notifier;
+});
