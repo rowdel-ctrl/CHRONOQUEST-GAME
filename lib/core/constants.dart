@@ -133,9 +133,20 @@ class GameConstants {
   static const int heartPriceCoins = 20;
 
   static const int questionsPerLevel = 10; // levels 1-9
-  static const int bossWarmupQuestions = 10; // level 10, phase 1
-  static const int bossFightQuestions = 12; // level 10, phase 2
-  static const int bossHealth = 12; // one hit per boss-phase question
+  // The size of a boss level's question pool (own lesson + reused ones).
+  static const int bossWarmupQuestions = 10;
+  static const int bossFightQuestions = 12;
+
+  // The boss fight (GAMEPLAY-V2.md Section 7, the simple version): six right
+  // answers beat the boss, each question has a countdown, and a few minions
+  // come between questions.
+  static const int bossQuestionsToWin = 6;
+  static const int bossHealth = bossQuestionsToWin;
+  static const double bossAnswerSeconds = 15;
+
+  /// If the minions of a wave are not all beaten after this long, the next
+  /// question comes anyway, so a stuck minion can never trap the student.
+  static const double bossWaveTimeoutSeconds = 40;
 
   /// Widest width:height ratio the game canvas is allowed to render at
   /// before GameScreen pillarboxes it. Backgrounds use Flame's

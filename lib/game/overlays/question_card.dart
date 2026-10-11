@@ -25,8 +25,17 @@ class QuestionCard extends StatelessWidget {
   /// Option labels hidden by the 50/50 power-up.
   final List<String> hiddenOptions;
 
-  /// False during the boss fight, which has no power-ups.
+  /// False during the boss fight, which shows only Time Freeze instead.
   final bool showPowerups;
+
+  /// Set during the boss fight: the share of the countdown left (1 to 0), the
+  /// whole seconds left, and whether Time Freeze is holding it. Null means an
+  /// ordinary question, with the count-up chip.
+  final double? countdownFraction;
+  final int countdownSeconds;
+  final bool countdownFrozen;
+  final int timeFreezeCount;
+  final VoidCallback? onTimeFreeze;
   final int fiftyFiftyCount;
   final int shieldCount;
   final bool shieldActive;
@@ -51,7 +60,14 @@ class QuestionCard extends StatelessWidget {
     required this.onContinue,
     required this.onFiftyFifty,
     required this.onShield,
+    this.countdownFraction,
+    this.countdownSeconds = 0,
+    this.countdownFrozen = false,
+    this.timeFreezeCount = 0,
+    this.onTimeFreeze,
   });
+
+  bool get _boss => countdownFraction != null;
 
   bool get _wrongAnswerShowing =>
       answered && selectedAnswer != question.correctAnswer;
@@ -124,6 +140,8 @@ class QuestionCard extends StatelessWidget {
               onContinue: onContinue,
               layout: layout,
             )
+          else if (_boss)
+            _bossPowerups(layout)
           else if (showPowerups)
             _powerups(layout),
         ],
@@ -156,7 +174,14 @@ class QuestionCard extends StatelessWidget {
                 ),
               ),
             ),
-            TimerChip(seconds: secondsElapsed),
+            if (_boss)
+              CountdownBar(
+                fraction: countdownFraction!,
+                secondsLeft: countdownSeconds,
+                frozen: countdownFrozen,
+              )
+            else
+              TimerChip(seconds: secondsElapsed),
           ],
         ),
         if (answered)
@@ -197,6 +222,22 @@ class QuestionCard extends StatelessWidget {
           onTap: () => onAnswer(option.label),
         );
       }).toList(),
+    );
+  }
+
+  Widget _bossPowerups(QuestionLayout layout) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        PowerupButton(
+          icon: Icons.ac_unit,
+          label: 'Time Freeze',
+          count: timeFreezeCount,
+          onTap: onTimeFreeze ?? () {},
+          enabled: !answered && !countdownFrozen,
+          layout: layout,
+        ),
+      ],
     );
   }
 

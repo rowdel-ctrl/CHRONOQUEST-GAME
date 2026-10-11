@@ -1,5 +1,6 @@
 import 'dart:async' as async;
 import 'package:flutter/material.dart';
+import '../boss_countdown.dart';
 import '../chrono_game.dart';
 import 'question_card.dart';
 
@@ -25,6 +26,10 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   String? selectedAnswer;
   int secondsElapsed = 0;
   late async.Timer timer;
+  async.Timer? _clock;
+
+  /// The boss question's 15 seconds; null on every other question.
+  BossCountdown? _countdown;
   late AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
 
@@ -44,6 +49,17 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       }
     });
 
+    if (widget.game.bossPhase) {
+      _countdown = BossCountdown();
+      const step = Duration(milliseconds: 100);
+      _clock = async.Timer.periodic(step, (_) {
+        final countdown = _countdown;
+        if (!mounted || answered || countdown == null) return;
+        setState(() => countdown.tick(step.inMilliseconds / 1000));
+        if (countdown.expired) _timeUp();
+      });
+    }
+
     _slideController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
@@ -61,6 +77,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   @override
   void dispose() {
     timer.cancel();
+    _clock?.cancel();
     _slideController.dispose();
     super.dispose();
   }
@@ -89,6 +106,25 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       // for the player to tap "Susunod" — don't force-pace text they
       // can't control by auto-advancing.
     }
+  }
+
+  /// The boss countdown ran out: the same as a wrong answer, with the right
+  /// one shown. Answered with '' so nothing is chosen.
+  void _timeUp() {
+    setState(() {
+      answered = true;
+      selectedAnswer = '';
+    });
+    widget.game.audioService.playWrong();
+  }
+
+  void _useTimeFreeze() {
+    final countdown = _countdown;
+    if (countdown == null || countdown.frozen || answered) return;
+    if (widget.game.playerPowerUps.timeFreeze <= 0) return;
+    widget.game.playerPowerUps.timeFreeze--;
+    widget.game.audioService.playPowerup();
+    setState(countdown.freeze);
   }
 
   void _continueAfterWrongAnswer() {
@@ -144,6 +180,11 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
               selectedAnswer: selectedAnswer,
               hiddenOptions: hiddenOptions,
               showPowerups: !widget.game.bossPhase,
+              countdownFraction: _countdown?.fraction,
+              countdownSeconds: _countdown?.secondsLeft.ceil() ?? 0,
+              countdownFrozen: _countdown?.frozen ?? false,
+              timeFreezeCount: widget.game.playerPowerUps.timeFreeze,
+              onTimeFreeze: _useTimeFreeze,
               fiftyFiftyCount: widget.game.playerPowerUps.fiftyFifty,
               shieldCount: widget.game.playerPowerUps.shield,
               shieldActive: widget.game.shieldActive,

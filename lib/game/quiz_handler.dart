@@ -53,6 +53,7 @@ extension QuizHandler on ChronoGame {
         shieldActive = false;
         questionShowing = false;
         resumeEngine();
+        boss?.missed();
         return;
       }
 
@@ -61,6 +62,7 @@ extension QuizHandler on ChronoGame {
       overlays.remove('QuestionOverlay');
       questionShowing = false;
       resumeEngine();
+      boss?.missed();
     }
   }
 }

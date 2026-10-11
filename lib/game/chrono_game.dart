@@ -247,7 +247,6 @@ class ChronoGame extends FlameGame
   Question? drawQuestion({Question? exclude}) =>
       questionPool?.draw(exclude: exclude);
   List<QuestionSnapshot> answers = [];
-  List<Question> bossQuestions = [];
 
   // Powerups
   PowerUps playerPowerUps = PowerUps();

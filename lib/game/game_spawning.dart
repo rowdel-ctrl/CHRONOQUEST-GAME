@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart' show debugPrint;
 
 import '../core/combat_constants.dart';
 import '../core/constants.dart';
-import '../data/question_bank.dart';
 import '../data/question_pool.dart';
 import 'chrono_game.dart';
 import 'components/artifact_component.dart';
@@ -84,15 +83,6 @@ extension GameSpawning on ChronoGame {
     if (level.kaalamanStart != null) {
       kaalaman = level.kaalamanStart!;
     }
-
-    // Boss levels still draw their question list up front — the boss asks a
-    // fixed sequence, a different shape from the pool's serve-one-at-a-time.
-    // Section 15 defers the boss rework to Phase 5.
-    if (isBossLevel) {
-      bossQuestions = QuestionBank.getQuestions(currentEra, currentLevel)
-          .skip(GameConstants.bossWarmupQuestions)
-          .toList();
-    }
   }
 
   /// The pre-Phase-4 path: procedural ground and runtime spawners.
@@ -102,14 +92,7 @@ extension GameSpawning on ChronoGame {
     groundSpawner = ground;
     spawner = EnemySpawner(game: this);
 
-    if (isBossLevel) {
-      // Boss levels keep the old batch draw: the boss asks a fixed list of
-      // questions in sequence, which is a different shape from the pool's
-      // serve-one-at-a-time. Section 15 defers the boss rework to Phase 5.
-      bossQuestions = QuestionBank.getQuestions(currentEra, currentLevel)
-          .skip(GameConstants.bossWarmupQuestions)
-          .toList();
-    } else {
+    if (!isBossLevel) {
       // Artifacts and gates are laid out for the whole level up front
       // rather than spawned on a distance timer like enemies. Section 6
       // asks for an exact count of each ("3 gates in every level"), which a

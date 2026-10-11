@@ -79,12 +79,17 @@ class EnemyComponent extends SpriteAnimationComponent
   /// between the platform's edges and turns round there (see [_isSupportedAt]).
   final double? surfaceY;
 
+  /// Called once when this enemy is beaten. The boss fight uses it to pay out
+  /// a Kaalaman charge for each minion.
+  final VoidCallback? onDefeated;
+
   EnemyComponent({
     required this.eraId,
     this.enemyTypeOverride,
     this.worldX,
     this.patrolRangeOverride,
     this.surfaceY,
+    this.onDefeated,
   });
 
   /// Effective patrol range: the authored override when there is one, else
@@ -253,6 +258,7 @@ class EnemyComponent extends SpriteAnimationComponent
     // contact damage while it fades out.
     defeated = true;
     game.audioService.playEnemyDefeat();
+    onDefeated?.call();
 
     final away = _awayFromPlayer();
     _deathSpot = position.clone();

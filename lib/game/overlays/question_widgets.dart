@@ -48,6 +48,62 @@ class TimerChip extends StatelessWidget {
   }
 }
 
+/// The boss question's clock: a bar that empties, the seconds left, and a
+/// snowflake while Time Freeze holds it. Red in the last five seconds.
+class CountdownBar extends StatelessWidget {
+  static const barKey = ValueKey('countdown-bar');
+
+  final double fraction;
+  final int secondsLeft;
+  final bool frozen;
+  const CountdownBar({
+    super.key,
+    required this.fraction,
+    required this.secondsLeft,
+    required this.frozen,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final low = !frozen && secondsLeft <= 5;
+    final color = frozen
+        ? AppColors.accent
+        : low
+            ? AppColors.danger
+            : AppColors.success;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(frozen ? Icons.ac_unit : Icons.timer_outlined, size: 14, color: color),
+        const SizedBox(width: 6),
+        SizedBox(
+          width: 110,
+          height: 10,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: AppColors.surfaceAlt,
+              border: Border.all(color: AppColors.primaryDark, width: 2),
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: FractionallySizedBox(
+                key: barKey,
+                widthFactor: fraction.clamp(0.0, 1.0),
+                child: ColoredBox(color: color),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          '${secondsLeft}s',
+          style: GoogleFonts.poppins(fontSize: 10, height: 1.4, color: color),
+        ),
+      ],
+    );
+  }
+}
+
 /// One option in the question overlay's 2×2 answer grid.
 class AnswerButton extends StatelessWidget {
   final QuestionOption option;
