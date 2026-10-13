@@ -20,6 +20,8 @@ void main() {
   });
 
   tearDownAll(() async {
+    // A new notifier saves the hearts without anyone waiting for it.
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     await Hive.close();
     try {
       Directory(dir).deleteSync(recursive: true);

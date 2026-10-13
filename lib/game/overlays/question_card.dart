@@ -28,9 +28,10 @@ class QuestionCard extends StatelessWidget {
   /// False during the boss fight, which shows only Time Freeze instead.
   final bool showPowerups;
 
-  /// Set during the boss fight: the share of the countdown left (1 to 0), the
+  /// Set when the question has a countdown (the boss fight, or a level where
+  /// the teacher set a timer): the share of the countdown left (1 to 0), the
   /// whole seconds left, and whether Time Freeze is holding it. Null means an
-  /// ordinary question, with the count-up chip.
+  /// untimed question, with the count-up chip.
   final double? countdownFraction;
   final int countdownSeconds;
   final bool countdownFrozen;
@@ -67,7 +68,8 @@ class QuestionCard extends StatelessWidget {
     this.onTimeFreeze,
   });
 
-  bool get _boss => countdownFraction != null;
+  /// Whether the question has a countdown.
+  bool get _timed => countdownFraction != null;
 
   bool get _wrongAnswerShowing =>
       answered && selectedAnswer != question.correctAnswer;
@@ -140,10 +142,10 @@ class QuestionCard extends StatelessWidget {
               onContinue: onContinue,
               layout: layout,
             )
-          else if (_boss)
-            _bossPowerups(layout)
           else if (showPowerups)
-            _powerups(layout),
+            _powerups(layout)
+          else if (_timed)
+            _bossPowerups(layout),
         ],
       ),
     );
@@ -174,7 +176,7 @@ class QuestionCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (_boss)
+            if (_timed)
               CountdownBar(
                 fraction: countdownFraction!,
                 secondsLeft: countdownSeconds,

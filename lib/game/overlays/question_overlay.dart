@@ -1,5 +1,6 @@
 import 'dart:async' as async;
 import 'package:flutter/material.dart';
+import '../../data/question_bank.dart';
 import '../boss_countdown.dart';
 import '../chrono_game.dart';
 import 'question_card.dart';
@@ -28,7 +29,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   late async.Timer timer;
   async.Timer? _clock;
 
-  /// The boss question's 15 seconds; null on every other question.
+  /// The clock on this question: the boss's 15 seconds, or the teacher's time
+  /// for the level. Null on a question with no timer.
   BossCountdown? _countdown;
   late AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
@@ -49,8 +51,17 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       }
     });
 
+    // The boss question always has its 15 seconds. Any other question is timed
+    // only when the student's teacher set a timer for this level.
+    final seconds = widget.game.bossPhase
+        ? 0
+        : QuestionBank.timerSecondsFor(widget.game.currentEra, widget.game.currentLevel);
     if (widget.game.bossPhase) {
       _countdown = BossCountdown();
+    } else if (seconds > 0) {
+      _countdown = BossCountdown(seconds: seconds.toDouble());
+    }
+    if (_countdown != null) {
       const step = Duration(milliseconds: 100);
       _clock = async.Timer.periodic(step, (_) {
         final countdown = _countdown;

@@ -24,6 +24,7 @@ class QuestionSync {
     if (levels is Map) {
       QuestionBank.applySynced(Map<String, dynamic>.from(levels), picks: cache['picks']);
     }
+    QuestionBank.applyTimer(cache['timer']);
   }
 
   /// Downloads the teacher's published questions if they changed since the
@@ -50,12 +51,15 @@ class QuestionSync {
 
       final downloaded = Map<String, dynamic>.from(levels);
       final picks = data['picks'];
+      final timer = data['timer'];
       QuestionBank.applySynced(downloaded, picks: picks);
+      QuestionBank.applyTimer(timer);
       await StorageService.saveQuestionCache({
         'classCode': classCode,
         'tag': newTag,
         'levels': downloaded,
         if (picks is Map) 'picks': picks,
+        if (timer is Map) 'timer': timer,
       });
       return true;
     } catch (_) {

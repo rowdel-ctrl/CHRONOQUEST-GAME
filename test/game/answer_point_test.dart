@@ -5,10 +5,14 @@
 // pattern: their sprite, size and hitbox are all set in onLoad(), and the
 // claim/crumble effects only tick once genuinely mounted (see
 // enemy_death_test.dart's header for why a bare ChronoGame cannot).
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
 import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/game/chrono_game.dart';
@@ -293,6 +297,120 @@ void main() {
       game.handleAnswerPointAnswer('definitely-wrong');
       expect(game.artifactsAnswered, 1,
           reason: 'same artifact, second answer: still one');
+    });
+  });
+
+  // The teacher's question timer: when it runs out the overlay answers with
+  // '' and the student loses a heart (a wrong answer never does).
+  group('a question that ran out of time', () {
+    // Sounds and settings read the phone's storage.
+    final storageDir = Directory.systemTemp.createTempSync('chronoquest_timeout_test_').path;
+    setUpAll(() async {
+      Hive.init(storageDir);
+      await Hive.openBox('chronoquest');
+    });
+
+    // Losing a heart plays the hurt reaction, and this harness never loads the
+    // hero's animations, so give it blank ones (as contact_damage_test does).
+    Future<SpriteAnimation> blankAnim() async {
+      final recorder = ui.PictureRecorder();
+      ui.Canvas(recorder, const ui.Rect.fromLTWH(0, 0, 1, 1));
+      final image = await recorder.endRecording().toImage(1, 1);
+      return SpriteAnimation.spriteList([Sprite(image)], stepTime: 1.0);
+    }
+
+    Future<_PointGame> mountWithQuestions(WidgetTester tester) async {
+      final game = _PointGame();
+      await tester.pumpWidget(MaterialApp(
+        home: GameWidget(
+          game: game,
+          overlayBuilderMap: {
+            'QuestionOverlay': (_, __) => const SizedBox.shrink(),
+          },
+        ),
+      ));
+      await tester.pump();
+      for (var i = 0; i < 10; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)),
+        );
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+      game.questionPool = QuestionPool(questions: [
+        for (final id in ['q1', 'q2'])
+          Question(
+            id: id,
+            era: 'spanish',
+            questionText: 'Sample $id?',
+            options: [
+              const QuestionOption(label: 'A', text: 'right'),
+              const QuestionOption(label: 'B', text: 'wrong'),
+            ],
+            correctAnswer: 'A',
+          ),
+      ]);
+      final walk = await tester.runAsync(blankAnim);
+      final jump = await tester.runAsync(blankAnim);
+      final hurt = await tester.runAsync(blankAnim);
+      game.player
+        ..walkAnimation = walk!
+        ..jumpAnim = jump!
+        ..hurtAnim = hurt!
+        ..game = game;
+      return game;
+    }
+
+    testWidgets('costs a heart, and a wrong answer does not', (tester) async {
+      final game = await mountWithQuestions(tester);
+      var lost = 0;
+      game.onHeartLost = () => lost++;
+      final artifact =
+          game.world.children.whereType<ArtifactComponent>().first;
+      final start = game.hearts;
+
+      game.showArtifactQuestion(artifact);
+      game.handleAnswerPointAnswer('B');
+      expect(game.hearts, start, reason: 'a wrong answer is free');
+
+      game.showArtifactQuestion(artifact);
+      game.handleAnswerPointAnswer('');
+      expect(game.hearts, start - 1);
+      expect(lost, 1, reason: 'the saved heart count hears about it too');
+      expect(game.answers.last.studentAnswer, '');
+      expect(game.answers.last.isCorrect, isFalse);
+      expect(game.questionShowing, isFalse);
+      await tester.pump(const Duration(seconds: 1)); // lets the hurt pose and effects finish
+    });
+
+    testWidgets('a Shield absorbs the lost heart', (tester) async {
+      final game = await mountWithQuestions(tester);
+      final artifact =
+          game.world.children.whereType<ArtifactComponent>().first;
+      final start = game.hearts;
+
+      game.showArtifactQuestion(artifact);
+      game.shieldActive = true;
+      game.handleAnswerPointAnswer('');
+      expect(game.hearts, start);
+      expect(game.shieldActive, isFalse, reason: 'the Shield is used up');
+      await tester.pump(const Duration(seconds: 1));
+    });
+
+    testWidgets('on the last heart it fails the level and leaves the game stopped',
+        (tester) async {
+      final game = await mountWithQuestions(tester);
+      var failed = 0;
+      game.onLevelFailed = () => failed++;
+      final artifact =
+          game.world.children.whereType<ArtifactComponent>().first;
+      game.hearts = 1;
+
+      game.showArtifactQuestion(artifact);
+      game.handleAnswerPointAnswer('');
+      expect(game.hearts, 0);
+      expect(failed, 1);
+      expect(game.paused, isTrue, reason: 'resuming would undo the stop');
+      await tester.pump(const Duration(seconds: 1));
     });
   });
 }

@@ -61,6 +61,8 @@ extension AnswerPointHandler on ChronoGame {
     if (question == null) return;
 
     final isCorrect = answer == question.correctAnswer;
+    // The overlay answers with '' when the teacher's timer for the level ran out.
+    final timedOut = answer.isEmpty;
 
     answers.add(QuestionSnapshot(
       questionId: question.id,
@@ -72,6 +74,7 @@ extension AnswerPointHandler on ChronoGame {
     ));
 
     final artifact = activeArtifact;
+    var levelFailed = false;
 
     // Counted once per artifact, on its first answer, right or wrong — the end
     // gate requires engagement, not perfection (see `artifactsAnswered`). Its
@@ -99,7 +102,7 @@ extension AnswerPointHandler on ChronoGame {
         artifactsClaimed++;
       }
     } else {
-      // No HP is lost — Section 6 is explicit. A Shield absorbs the
+      // A wrong answer loses no HP — Section 6 is explicit. A Shield absorbs the
       // consequence entirely: no inert penalty, so the reward stays full.
       final absorbed = shieldActive;
       if (absorbed) shieldActive = false;
@@ -107,13 +110,17 @@ extension AnswerPointHandler on ChronoGame {
       if (artifact != null && !absorbed) {
         artifact.goInert();
       }
+      // Running out of time costs a heart, which a wrong answer does not. A
+      // Shield absorbs it, the same as it absorbs everything else here.
+      if (timedOut && !absorbed) levelFailed = loseLife();
     }
 
     activeArtifact = null;
     currentQuestion = null;
     overlays.remove('QuestionOverlay');
     questionShowing = false;
-    resumeEngine();
+    // The last heart failed the level, which has already stopped the game.
+    if (!levelFailed) resumeEngine();
     notifyState();
   }
 

@@ -105,6 +105,37 @@ void main() {
     expect(GameConstants.bossHealth, 6);
   });
 
+  // A level where the teacher set a timer: an ordinary question with a clock.
+  group('a timed question in an ordinary level', () {
+    Widget timedCard({double fraction = 0.5, int seconds = 22}) => QuestionCard(
+          question: _question(),
+          secondsElapsed: 0,
+          answered: false,
+          selectedAnswer: null,
+          hiddenOptions: const [],
+          showPowerups: true,
+          fiftyFiftyCount: 1,
+          shieldCount: 1,
+          shieldActive: false,
+          onAnswer: (_) {},
+          onContinue: () {},
+          onFiftyFifty: () {},
+          onShield: () {},
+          countdownFraction: fraction,
+          countdownSeconds: seconds,
+        );
+
+    testWidgets('shows the clock and still offers 50/50 and Shield, but not Time Freeze', (tester) async {
+      await _pump(tester, const Size(812, 375), timedCard());
+      expect(find.byType(CountdownBar), findsOneWidget);
+      expect(find.byType(TimerChip), findsNothing);
+      expect(find.text('22s'), findsOneWidget);
+      expect(find.textContaining('50/50'), findsOneWidget);
+      expect(find.textContaining('Shield'), findsOneWidget);
+      expect(find.textContaining('Time Freeze'), findsNothing);
+    });
+  });
+
   group('the boss card', () {
     testWidgets('shows the bar instead of the count-up chip', (tester) async {
       await _pump(tester, const Size(812, 375), _bossCard(fraction: 0.6, seconds: 9));

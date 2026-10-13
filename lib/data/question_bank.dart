@@ -129,10 +129,42 @@ class QuestionBank {
   static Set<String> picksFor(String era, int level) =>
       (_picks[era]?[level] ?? const <String>[]).toSet();
 
+  /// Seconds the student's teacher gives for each question in a level
+  /// (`{era: {level: seconds}}`). A level that is missing has no timer. Boss
+  /// levels never appear: the boss fight has its own clock.
+  static final Map<String, Map<int, int>> _timer = {};
+
+  static const int timerMinSeconds = 15;
+  static const int timerMaxSeconds = 120;
+
+  /// Uses the timer a teacher published ([raw] is the download's `timer`:
+  /// `{era: {level: seconds}}`, or null when the teacher has no timer on).
+  /// Anything that is not a whole number of seconds from 15 to 120 is ignored,
+  /// so a damaged or old download can never trap a student behind a clock that
+  /// is too short to read the question.
+  static void applyTimer(Object? raw) {
+    _timer.clear();
+    if (raw is! Map) return;
+    raw.forEach((era, byLevel) {
+      if (!_eraIds.contains(era) || byLevel is! Map) return;
+      byLevel.forEach((levelKey, seconds) {
+        final level = int.tryParse('$levelKey');
+        if (level == null || seconds is! num || seconds != seconds.toInt()) return;
+        final s = seconds.toInt();
+        if (s < timerMinSeconds || s > timerMaxSeconds) return;
+        (_timer[era as String] ??= {})[level] = s;
+      });
+    });
+  }
+
+  /// How long a student has for each question in this level, or 0 for no timer.
+  static int timerSecondsFor(String era, int level) => _timer[era]?[level] ?? 0;
+
   /// Goes back to the bundled questions only (on logout).
   static void clearSynced() {
     _synced.clear();
     _picks.clear();
+    _timer.clear();
   }
 
   /// The levels currently using downloaded questions, as `era/level` keys.
