@@ -2,8 +2,10 @@
 // hero the player picked.
 import 'dart:io';
 
+import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/screens/game/background_history_screen.dart';
 import 'package:chronoquest/services/storage_service.dart';
+import 'package:chronoquest/widgets/game_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -72,12 +74,57 @@ void main() {
   testWidgets('the guide speaks as the chosen hero, not the era mentor',
       (tester) async {
     await open(tester);
-    await tester.drag(find.byType(SingleChildScrollView).first, const Offset(0, -2000));
-    await tester.pump();
 
     expect(StorageService.getCharacter(), 'lapu');
     expect(find.textContaining('Ako si '), findsOneWidget);
     expect(find.textContaining('gagabayan ni'), findsNothing,
         reason: 'the era mentor must not speak over a Lapu-Lapu player');
+  });
+
+  testWidgets('the story is cut into events and a timeline', (tester) async {
+    await open(tester);
+    expect(find.text('PANAHON 2 NG 6'), findsOneWidget);
+    expect(find.text('Pananakop ng Espanya'), findsOneWidget);
+    expect(find.text('1565'), findsWidgets);
+    expect(find.text('Intramuros'), findsOneWidget, reason: 'a timeline node');
+  });
+
+  testWidgets('HANDA NA AKO opens only after every term is read', (tester) async {
+    await open(tester);
+    GameButton ready() => tester
+        .widget<GameButton>(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+
+    expect(ready().onPressed, isNull);
+    expect(find.text('0 NG 3 TERMINO'), findsOneWidget);
+
+    for (var i = 0; i < 3; i++) {
+      final card = find.byKey(BackgroundHistoryScreen.termKey(i));
+      await tester.ensureVisible(card);
+      await tester.tap(card);
+      await tester.pump();
+      expect(ready().onPressed, i < 2 ? isNull : isNotNull);
+    }
+    expect(find.text('3 NG 3 TERMINO'), findsOneWidget);
+    expect(find.text('Sistema ng pagbibigay ng lupain sa mga Espanyol'),
+        findsOneWidget);
+  });
+
+  testWidgets('every era fits a small landscape phone', (tester) async {
+    addTearDown(() {
+      tester.binding.setSurfaceSize(null);
+      tester.view.resetDevicePixelRatio();
+      tester.view.resetPhysicalSize();
+    });
+    for (final size in const [Size(640, 360), Size(732, 320)]) {
+      for (final era in allEras) {
+        await tester.binding.setSurfaceSize(size);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.physicalSize = size;
+        await tester.pumpWidget(
+            MaterialApp(home: BackgroundHistoryScreen(eraId: era.id)));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(tester.takeException(), isNull, reason: '${era.id} at $size');
+      }
+    }
   });
 }

@@ -2,59 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../data/era_story.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/menu_chip.dart';
 import '../../widgets/pixel_icon.dart';
 
+/// The era's background before its levels: a short story cut into events, a
+/// timeline, and three key terms to tap open. The levels unlock for the next
+/// step ("HANDA NA AKO!") once every term has been read.
 class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
   const BackgroundHistoryScreen({super.key, required this.eraId});
 
   static const Key backButtonKey = Key('background_back_button');
+  static const Key readyButtonKey = Key('background_ready_button');
+  static Key termKey(int i) => ValueKey('background_term_$i');
 
   @override
   State<BackgroundHistoryScreen> createState() =>
       _BackgroundHistoryScreenState();
 }
 
-class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
-    with SingleTickerProviderStateMixin {
-  final ScrollController _scrollController = ScrollController();
-  bool _hasReachedBottom = false;
-  late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-    _fadeAnimation = CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeIn,
-    );
-    _fadeController.forward();
-  }
-
-  void _onScroll() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent - 20) {
-      if (!_hasReachedBottom) {
-        setState(() => _hasReachedBottom = true);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _fadeController.dispose();
-    super.dispose();
-  }
+class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
+  final Set<int> _opened = {};
 
   /// Back to the era list. The screen is reached with `go`, so there is no
   /// page under it for the phone's own back button to return to.
@@ -63,8 +34,13 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
   @override
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
-    final eraColor = _getEraColor(widget.eraId);
-    final selectedChar = StorageService.getCharacter();
+    final eraColor = eraColorFor(widget.eraId);
+    final terms = keyTermsFor(widget.eraId);
+    final story = eraStories[widget.eraId];
+    final character = getCharacterById(StorageService.getCharacter());
+    final eraNumber = allEras.indexWhere((e) => e.id == era.id) + 1;
+    final left = terms.length - _opened.length;
+    final ready = left <= 0;
 
     return PopScope(
       canPop: false,
@@ -72,729 +48,652 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen>
         if (!didPop) _back();
       },
       child: Scaffold(
-      body: Stack(
-        children: [
-          // ── Bookshelf background image ────────────────────────────────────
-          Positioned.fill(
-            child: Image.asset(
-              'assets/backgrounds/bookshelf_bg.png',
-              fit: BoxFit.cover,
+        backgroundColor: AppColors.background,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF140E1F), Color(0xFF2A1A3A), Color(0xFF3A2433)],
+              stops: [0.0, 0.6, 1.0],
             ),
           ),
-
-          // ── Era-tinted dark overlay ───────────────────────────────────────
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    eraColor.withValues(alpha: 0.88),
-                    eraColor.withValues(alpha: 0.75),
-                    Colors.black.withValues(alpha: 0.90),
-                  ],
-                  stops: const [0.0, 0.5, 1.0],
+          child: SafeArea(
+            child: Row(
+              children: [
+                _Sidebar(
+                  era: era,
+                  eraColor: eraColor,
+                  eraNumber: eraNumber,
+                  characterId: character.id,
+                  line: ready
+                      ? 'Magaling! Handa ka na ba?'
+                      : 'Ako si ${character.name}. Samahan mo ako!',
+                  onBack: _back,
                 ),
-              ),
-            ),
-          ),
-
-          // ── Main content ─────────────────────────────────────────────────
-          SafeArea(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  // ── Era identity header ─────────────────────────────────
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  child: Stack(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 8),
-                        child: MenuChip(
-                          key: BackgroundHistoryScreen.backButtonKey,
-                          icon: PixelGlyph.back,
-                          tooltip: 'Bumalik',
-                          onTap: _back,
-                        ),
-                      ),
-                      Expanded(child: _EraHeader(era: era, eraColor: eraColor)),
-                    ],
-                  ),
-
-                  // ── Scrollable content ──────────────────────────────────
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
                         children: [
-                          // Historical text card
-                          _HistoricalTextCard(
-                              era: era, eraColor: eraColor),
-                          const SizedBox(height: 24),
-
-                          // Key terms section
-                          _SectionLabel(
-                            icon: Icons.menu_book_rounded,
-                            label: 'Mga Mahahalagang Termino',
-                            color: eraColor,
+                          _Progress(done: _opened.length, total: terms.length),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.fromLTRB(14, 4, 14, 96),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (story != null) ...[
+                                    for (final beat in story.beats) ...[
+                                      _BeatCard(beat: beat),
+                                      const SizedBox(height: 8),
+                                    ],
+                                    const SizedBox(height: 4),
+                                    _Timeline(nodes: story.timeline),
+                                    const SizedBox(height: 16),
+                                  ] else ...[
+                                    _BeatCard(
+                                        beat:
+                                            StoryBeat('', era.historicalText)),
+                                    const SizedBox(height: 16),
+                                  ],
+                                  Text(
+                                    'MGA MAHAHALAGANG TERMINO  ·  itapik ang kard',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.8,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      for (var i = 0;
+                                          i < terms.length;
+                                          i++) ...[
+                                        if (i > 0) const SizedBox(width: 8),
+                                        Expanded(
+                                          child: _TermCard(
+                                            key:
+                                                BackgroundHistoryScreen.termKey(
+                                                    i),
+                                            term: terms[i],
+                                            open: _opened.contains(i),
+                                            onTap: () =>
+                                                setState(() => _opened.add(i)),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 12),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: _getKeyTerms(widget.eraId)
-                                .map((term) => _KeyTermChip(
-                                    term: term, eraColor: eraColor))
-                                .toList(),
-                          ),
-                          const SizedBox(height: 28),
-
-                          // Guide character companion panel
-                          _GuidePanel(
-                            era: era,
-                            eraColor: eraColor,
-                            characterId: selectedChar,
-                          ),
-
-                          // Extra scroll room so the button doesn't cover content
-                          const SizedBox(height: 80),
                         ],
                       ),
-                    ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: _BottomBar(
+                          ready: ready,
+                          left: left,
+                          onTap: () =>
+                              context.go('/level-select/${widget.eraId}'),
+                        ),
+                      ),
+                    ],
                   ),
-
-                  // ── Bottom CTA ──────────────────────────────────────────
-                  _BottomCta(
-                    hasReachedBottom: _hasReachedBottom,
-                    eraColor: eraColor,
-                    onTap: () =>
-                        context.go('/level-select/${widget.eraId}'),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
-    ));
-  }
-
-  Color _getEraColor(String id) {
-    switch (id) {
-      case 'pre-colonial':
-        return const Color(0xFF1B5E20);
-      case 'spanish':
-        return const Color(0xFF4E342E);
-      case 'nationalism':
-        return const Color(0xFF4E342E);
-      case 'american':
-        return const Color(0xFF0D47A1);
-      case 'ww2':
-        return const Color(0xFF37474F);
-      case 'modern':
-        return const Color(0xFF1A237E);
-      default:
-        return const Color(0xFF4E342E);
-    }
-  }
-
-  List<Map<String, String>> _getKeyTerms(String eraId) {
-    switch (eraId) {
-      case 'pre-colonial':
-        return [
-          {
-            'term': 'Barangay',
-            'icon': '🏘️',
-            'def': 'Maliit na komunidad na pinamumunuan ng datu'
-          },
-          {
-            'term': 'Baybayin',
-            'icon': '✍️',
-            'def': 'Sistema ng pagsulat ng sinaunang Pilipino'
-          },
-          {'term': 'Datu', 'icon': '👑', 'def': 'Pinuno ng barangay'},
-        ];
-      case 'spanish':
-        return [
-          {
-            'term': 'Encomienda',
-            'icon': '🏰',
-            'def': 'Sistema ng pagbibigay ng lupain sa mga Espanyol'
-          },
-          {
-            'term': 'Katipunan',
-            'icon': '⚔️',
-            'def': 'Lihim na samahan laban sa Espanya'
-          },
-          {
-            'term': 'Himagsikan',
-            'icon': '🔥',
-            'def': 'Rebolusyon ng mga Pilipino'
-          },
-        ];
-      case 'nationalism':
-        return [
-          {
-            'term': 'Propaganda Movement',
-            'icon': '📰',
-            'def': 'Kampanya ng mga ilustrado para sa reporma sa Espanya'
-          },
-          {
-            'term': 'La Liga Filipina',
-            'icon': '🤝',
-            'def': 'Samahang itinatag ni Rizal noong 1892'
-          },
-          {
-            'term': 'GOMBURZA',
-            'icon': '✝️',
-            'def': 'Tatlong paring pinatay noong 1872, sagisag ng paglaban'
-          },
-        ];
-      case 'american':
-        return [
-          {
-            'term': 'Thomasites',
-            'icon': '📚',
-            'def': 'Mga gurong Amerikano na dumating sa Pilipinas'
-          },
-          {
-            'term': 'Commonwealth',
-            'icon': '🏛️',
-            'def': 'Pamahalaan bago ang ganap na kalayaan'
-          },
-          {
-            'term': 'Malolos',
-            'icon': '📜',
-            'def': 'Lugar kung saan itinatag ang unang republika'
-          },
-        ];
-      case 'ww2':
-        return [
-          {
-            'term': 'Bataan Death March',
-            'icon': '⚠️',
-            'def': 'Malupit na martsa ng mga bihag ng Hapon'
-          },
-          {
-            'term': 'Gerilya',
-            'icon': '🌿',
-            'def': 'Mga lihim na mandirigma laban sa Hapon'
-          },
-          {
-            'term': 'Liberation',
-            'icon': '🕊️',
-            'def': 'Pagpapalaya ng Pilipinas'
-          },
-        ];
-      case 'modern':
-        return [
-          {
-            'term': 'EDSA Revolution',
-            'icon': '✊',
-            'def': 'People Power na nagpabagsak sa diktadura'
-          },
-          {
-            'term': 'Martial Law',
-            'icon': '⛓️',
-            'def': 'Batas militar na idineklara ni Marcos'
-          },
-          {
-            'term': 'Demokrasya',
-            'icon': '🗳️',
-            'def': 'Pamahalaan ng mamamayan'
-          },
-        ];
-      default:
-        return [];
-    }
+    );
   }
 }
 
-// ── Era Identity Header ────────────────────────────────────────────────────────
-class _EraHeader extends StatelessWidget {
+/// `**bold**` markers in the story text become bold spans.
+List<TextSpan> _spans(String text, TextStyle base, Color boldColor) {
+  final parts = text.split('**');
+  return [
+    for (var i = 0; i < parts.length; i++)
+      if (parts[i].isNotEmpty)
+        TextSpan(
+          text: parts[i],
+          style: i.isOdd
+              ? base.copyWith(fontWeight: FontWeight.w700, color: boldColor)
+              : base,
+        ),
+  ];
+}
+
+// ── Left column: the era's name, and the hero speaking ───────────────────────
+class _Sidebar extends StatelessWidget {
   final EraData era;
   final Color eraColor;
-  const _EraHeader({required this.era, required this.eraColor});
+  final int eraNumber;
+  final String characterId;
+  final String line;
+  final VoidCallback onBack;
+  const _Sidebar({
+    required this.era,
+    required this.eraColor,
+    required this.eraNumber,
+    required this.characterId,
+    required this.line,
+    required this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final width = (MediaQuery.sizeOf(context).width * 0.28).clamp(190.0, 250.0);
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+      width: width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.black.withValues(alpha: 0.5),
-            Colors.transparent,
-          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
+          colors: [eraColor, Color.lerp(eraColor, Colors.black, 0.6)!],
+        ),
+        border: const Border(
+          right: BorderSide(color: AppColors.primaryDark, width: 3),
         ),
       ),
+      padding: const EdgeInsets.fromLTRB(8, 6, 10, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Breadcrumb subtitle
-          Text(
-            era.subtitle.toUpperCase(),
-            style: GoogleFonts.poppins(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: AppColors.accent.withValues(alpha: 0.8),
-              letterSpacing: 2.5,
-            ),
+          MenuChip(
+            key: BackgroundHistoryScreen.backButtonKey,
+            icon: PixelGlyph.back,
+            tooltip: 'Bumalik',
+            onTap: onBack,
           ),
-          const SizedBox(height: 4),
-          // Main era title
-          Text(
-            era.name,
-            style: GoogleFonts.poppins(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: AppColors.accent,
-              height: 1.1,
-            ),
-          ),
-          const SizedBox(height: 12),
-          // Decorative divider
-          Row(
-            children: [
-              Container(
-                height: 2,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.accent,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(Icons.auto_stories_rounded,
-                  color: AppColors.accent.withValues(alpha: 0.7), size: 16),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Container(
-                  height: 1,
-                  color: AppColors.accent.withValues(alpha: 0.2),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Historical Text Card ───────────────────────────────────────────────────────
-class _HistoricalTextCard extends StatelessWidget {
-  final EraData era;
-  final Color eraColor;
-  const _HistoricalTextCard({required this.era, required this.eraColor});
-
-  @override
-  Widget build(BuildContext context) {
-    // Split into two paragraphs at midpoint for readability
-    final text = era.historicalText;
-    final mid = text.indexOf('.', text.length ~/ 2) + 1;
-    final para1 = text.substring(0, mid).trim();
-    final para2 = mid < text.length ? text.substring(mid).trim() : '';
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.55),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.accent.withValues(alpha: 0.25),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Parchment label
-          Row(
-            children: [
-              Icon(Icons.history_edu,
-                  color: AppColors.accent.withValues(alpha: 0.6), size: 16),
-              const SizedBox(width: 6),
-              Text(
-                'Kasaysayan',
-                style: GoogleFonts.poppins(
-                  color: AppColors.accent.withValues(alpha: 0.7),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.5,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-
-          // First paragraph
-          Text(
-            para1,
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              color: Colors.white.withValues(alpha: 0.92),
-              height: 1.75,
-            ),
-          ),
-
-          // Ornamental divider between paragraphs
-          if (para2.isNotEmpty) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(left: 4, top: 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      height: 1,
-                      width: 40,
-                      color: AppColors.accent.withValues(alpha: 0.2)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('✦',
-                        style: TextStyle(
-                            color: AppColors.accent.withValues(alpha: 0.4),
-                            fontSize: 12)),
+                  Text(
+                    'PANAHON $eraNumber NG ${allEras.length}',
+                    style: GoogleFonts.poppins(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                      color: const Color(0xFFE9D3A3),
+                    ),
                   ),
-                  Container(
-                      height: 1,
-                      width: 40,
-                      color: AppColors.accent.withValues(alpha: 0.2)),
+                  const SizedBox(height: 4),
+                  Text(
+                    era.name,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      height: 1.25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    era.subtitle,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      height: 1.3,
+                      color: const Color(0xFFE9D3A3),
+                    ),
+                  ),
                 ],
               ),
             ),
-            Text(
-              para2,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                color: Colors.white.withValues(alpha: 0.92),
-                height: 1.75,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Image.asset(
+                'assets/characters/${characterId}_walk_1.png',
+                width: 48,
+                height: 48,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.none,
+                errorBuilder: (_, __, ___) =>
+                    const SizedBox(width: 48, height: 48),
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              Expanded(
+                child: GamePanel(
+                  color: AppColors.surface,
+                  borderWidth: 2,
+                  shadowOffset: 0,
+                  borderRadius: 4,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                  child: Text(
+                    line,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11,
+                      height: 1.3,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-// ── Section Label ──────────────────────────────────────────────────────────────
-class _SectionLabel extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  const _SectionLabel(
-      {required this.icon, required this.label, required this.color});
+// ── Progress: one segment per key term opened ────────────────────────────────
+class _Progress extends StatelessWidget {
+  final int done;
+  final int total;
+  const _Progress({required this.done, required this.total});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, color: AppColors.accent, size: 18),
-        const SizedBox(width: 8),
-        Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.accent,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
+      child: Row(
+        children: [
+          for (var i = 0; i < total; i++) ...[
+            if (i > 0) const SizedBox(width: 4),
+            Expanded(
+              child: Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  color: i < done ? AppColors.success : Colors.black45,
+                  border: Border.all(color: AppColors.primaryDark, width: 2),
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(width: 10),
+          Text(
+            '$done NG $total TERMINO',
+            style: GoogleFonts.poppins(
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.6,
+              color: Colors.white70,
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── One event of the story ───────────────────────────────────────────────────
+class _BeatCard extends StatelessWidget {
+  final StoryBeat beat;
+  const _BeatCard({required this.beat});
+
+  @override
+  Widget build(BuildContext context) {
+    final body = GoogleFonts.poppins(
+        fontSize: 13, height: 1.35, color: AppColors.textPrimary);
+    return GamePanel(
+      color: AppColors.surface,
+      borderWidth: 2,
+      shadowOffset: 3,
+      borderRadius: 4,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (beat.label.isNotEmpty)
+            SizedBox(
+              width: 72,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2, right: 8),
+                child: Text(
+                  beat.label,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    height: 1.25,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: _spans(beat.text, body, const Color(0xFF8A3B12)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Timeline: a gold square per event on one wooden line ─────────────────────
+class _Timeline extends StatelessWidget {
+  final List<TimelineNode> nodes;
+  const _Timeline({required this.nodes});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          left: 24,
+          right: 24,
+          top: 7,
+          child: Container(
+            height: 4,
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              border: Border.all(color: AppColors.primaryDark, width: 1),
+            ),
+          ),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (final n in nodes)
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: n.top.isEmpty
+                            ? AppColors.surfaceAlt
+                            : AppColors.accent,
+                        border:
+                            Border.all(color: AppColors.primaryDark, width: 3),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    SizedBox(
+                      height: 14,
+                      child: Text(
+                        n.top,
+                        style: GoogleFonts.poppins(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          height: 1.2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      n.name,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11,
+                        height: 1.2,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
       ],
     );
   }
 }
 
-// ── Key Term Chip ──────────────────────────────────────────────────────────────
-class _KeyTermChip extends StatelessWidget {
+// ── A key term: closed until tapped ──────────────────────────────────────────
+class _TermCard extends StatelessWidget {
   final Map<String, String> term;
-  final Color eraColor;
-  const _KeyTermChip({required this.term, required this.eraColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A1A2E),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.4), width: 1.5),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${term['icon']} ${term['term']}',
-                    style: GoogleFonts.poppins(
-                      color: AppColors.accent,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    term['def']!,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        color: Colors.white70, fontSize: 14, height: 1.5),
-                  ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Sarado',
-                        style: GoogleFonts.poppins(
-                            color: AppColors.accent,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.4),
-          borderRadius: BorderRadius.circular(24),
-          border:
-              Border.all(color: AppColors.accent.withValues(alpha: 0.45), width: 1.5),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(term['icon']!, style: const TextStyle(fontSize: 14)),
-            const SizedBox(width: 6),
-            Text(
-              term['term']!,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Icon(Icons.touch_app_rounded,
-                size: 12, color: AppColors.accent.withValues(alpha: 0.5)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Guide Character Panel ──────────────────────────────────────────────────────
-class _GuidePanel extends StatelessWidget {
-  final EraData era;
-  final Color eraColor;
-  final String characterId;
-  const _GuidePanel({
-    required this.era,
-    required this.eraColor,
-    required this.characterId,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // The avatar below is always the PLAYER'S chosen hero
-    // (assets/characters/${characterId}_walk_1.png), so the name shown next
-    // to it must describe that same hero — not era.guide, which is a fixed
-    // lore mentor per era (e.g. pre-colonial's is always "Datu Lapu-Lapu")
-    // and was never tied to what the player picked. Displaying era.guide
-    // here made it look like character selection wasn't saving.
-    final character = getCharacterById(characterId);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-            color: eraColor.withValues(alpha: 0.5), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: eraColor.withValues(alpha: 0.2),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Character sprite / avatar
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.accent, width: 2.5),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.accent.withValues(alpha: 0.3),
-                  blurRadius: 14,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: CircleAvatar(
-              radius: 32,
-              backgroundColor: eraColor.withValues(alpha: 0.6),
-              backgroundImage: AssetImage(
-                  'assets/characters/${characterId}_walk_1.png'),
-              onBackgroundImageError: (_, __) {},
-              child: Text(
-                character.name[0],
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
-
-          // Speech bubble content
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Companion label
-                Text(
-                  'IYONG BAYANI',
-                  style: GoogleFonts.poppins(
-                    color: AppColors.accent.withValues(alpha: 0.7),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  character.name,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: eraColor.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: eraColor.withValues(alpha: 0.4), width: 1),
-                  ),
-                  child: Text(
-                    // The speaker is the hero the player picked, the same one
-                    // as the avatar and name above. It used to name the era's
-                    // fixed mentor (era.guide), so a Lapu-Lapu player read
-                    // "gagabayan ni Rizal" under Lapu-Lapu's own picture.
-                    '"Ako si ${character.name}. Samahan mo ako sa '
-                    'paglalakbay na ito!"',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Bottom CTA ─────────────────────────────────────────────────────────────────
-class _BottomCta extends StatelessWidget {
-  final bool hasReachedBottom;
-  final Color eraColor;
+  final bool open;
   final VoidCallback onTap;
-  const _BottomCta({
-    required this.hasReachedBottom,
-    required this.eraColor,
+  const _TermCard({
+    super.key,
+    required this.term,
+    required this.open,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    return Semantics(
+      button: !open,
+      label: open
+          ? '${term['term']}: ${term['def']}'
+          : 'Buksan ang ${term['term']}',
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: open ? null : onTap,
+        child: GamePanel(
+          color: open ? AppColors.surface : AppColors.surfaceAlt,
+          borderWidth: 2,
+          shadowOffset: 3,
+          borderRadius: 4,
+          padding: const EdgeInsets.all(9),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 70),
+            child: Column(
+              crossAxisAlignment:
+                  open ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  term['term']!,
+                  textAlign: open ? TextAlign.start : TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                    color: AppColors.primaryDark,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  open ? term['def']! : 'Itapik para mabasa',
+                  textAlign: open ? TextAlign.start : TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: open ? 12 : 11,
+                    height: 1.3,
+                    color:
+                        open ? AppColors.textPrimary : AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Bottom bar: what is left, and the button ─────────────────────────────────
+class _BottomBar extends StatelessWidget {
+  final bool ready;
+  final int left;
+  final VoidCallback onTap;
+  const _BottomBar(
+      {required this.ready, required this.left, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(14, 22, 14, 10),
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            Colors.black.withValues(alpha: 0.8),
-          ],
+          colors: [Color(0x00140E1F), Color(0xEE140E1F)],
+          stops: [0.0, 0.4],
         ),
       ),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        child: hasReachedBottom
-            ? Row(
-                key: const ValueKey('ready'),
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GameButton(
-                    label: 'HANDA NA AKO!',
-                    fontSize: 12,
-                    icon: Icons.play_arrow_rounded,
-                    onPressed: onTap,
-                  ),
-                ],
-              )
-            : SizedBox(
-                key: const ValueKey('scroll'),
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: null,
-                  icon: Icon(Icons.keyboard_arrow_down_rounded,
-                      color: Colors.white38, size: 20),
-                  label: Text(
-                    'Mag-scroll pababa para magpatuloy',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white38,
-                      fontSize: 13,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    side: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 11,
+            child: Text(
+              ready
+                  ? 'Nabasa mo na ang lahat ng termino.'
+                  : left == 1
+                      ? 'Isa pang termino ang kailangang basahin.'
+                      : '$left termino pa ang kailangang basahin.',
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                height: 1.3,
+                color: Colors.white70,
               ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 10,
+            child: GameButton(
+              key: BackgroundHistoryScreen.readyButtonKey,
+              label: 'HANDA NA AKO!',
+              color: AppColors.success,
+              textColor: Colors.white,
+              fontSize: 11,
+              minHeight: 46,
+              onPressed: ready ? onTap : null,
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+// ── Era data ─────────────────────────────────────────────────────────────────
+Color eraColorFor(String id) {
+  switch (id) {
+    case 'pre-colonial':
+      return const Color(0xFF1B5E20);
+    case 'spanish':
+      return const Color(0xFF4E342E);
+    case 'nationalism':
+      return const Color(0xFF4E342E);
+    case 'american':
+      return const Color(0xFF0D47A1);
+    case 'ww2':
+      return const Color(0xFF37474F);
+    case 'modern':
+      return const Color(0xFF1A237E);
+    default:
+      return const Color(0xFF4E342E);
+  }
+}
+
+List<Map<String, String>> keyTermsFor(String eraId) {
+  switch (eraId) {
+    case 'pre-colonial':
+      return [
+        {
+          'term': 'Barangay',
+          'icon': '🏘️',
+          'def': 'Maliit na komunidad na pinamumunuan ng datu'
+        },
+        {
+          'term': 'Baybayin',
+          'icon': '✍️',
+          'def': 'Sistema ng pagsulat ng sinaunang Pilipino'
+        },
+        {'term': 'Datu', 'icon': '👑', 'def': 'Pinuno ng barangay'},
+      ];
+    case 'spanish':
+      return [
+        {
+          'term': 'Encomienda',
+          'icon': '🏰',
+          'def': 'Sistema ng pagbibigay ng lupain sa mga Espanyol'
+        },
+        {
+          'term': 'Katipunan',
+          'icon': '⚔️',
+          'def': 'Lihim na samahan laban sa Espanya'
+        },
+        {
+          'term': 'Himagsikan',
+          'icon': '🔥',
+          'def': 'Rebolusyon ng mga Pilipino'
+        },
+      ];
+    case 'nationalism':
+      return [
+        {
+          'term': 'Propaganda Movement',
+          'icon': '📰',
+          'def': 'Kampanya ng mga ilustrado para sa reporma sa Espanya'
+        },
+        {
+          'term': 'La Liga Filipina',
+          'icon': '🤝',
+          'def': 'Samahang itinatag ni Rizal noong 1892'
+        },
+        {
+          'term': 'GOMBURZA',
+          'icon': '✝️',
+          'def': 'Tatlong paring pinatay noong 1872, sagisag ng paglaban'
+        },
+      ];
+    case 'american':
+      return [
+        {
+          'term': 'Thomasites',
+          'icon': '📚',
+          'def': 'Mga gurong Amerikano na dumating sa Pilipinas'
+        },
+        {
+          'term': 'Commonwealth',
+          'icon': '🏛️',
+          'def': 'Pamahalaan bago ang ganap na kalayaan'
+        },
+        {
+          'term': 'Malolos',
+          'icon': '📜',
+          'def': 'Lugar kung saan itinatag ang unang republika'
+        },
+      ];
+    case 'ww2':
+      return [
+        {
+          'term': 'Bataan Death March',
+          'icon': '⚠️',
+          'def': 'Malupit na martsa ng mga bihag ng Hapon'
+        },
+        {
+          'term': 'Gerilya',
+          'icon': '🌿',
+          'def': 'Mga lihim na mandirigma laban sa Hapon'
+        },
+        {
+          'term': 'Liberation',
+          'icon': '🕊️',
+          'def': 'Pagpapalaya ng Pilipinas'
+        },
+      ];
+    case 'modern':
+      return [
+        {
+          'term': 'EDSA Revolution',
+          'icon': '✊',
+          'def': 'People Power na nagpabagsak sa diktadura'
+        },
+        {
+          'term': 'Martial Law',
+          'icon': '⛓️',
+          'def': 'Batas militar na idineklara ni Marcos'
+        },
+        {'term': 'Demokrasya', 'icon': '🗳️', 'def': 'Pamahalaan ng mamamayan'},
+      ];
+    default:
+      return [];
   }
 }

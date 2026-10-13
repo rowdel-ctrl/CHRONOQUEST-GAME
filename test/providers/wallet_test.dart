@@ -101,6 +101,24 @@ void main() {
       expect(n.state.coins, 100);
     });
 
+    test('filling the pool takes the price of every missing heart, all or nothing', () async {
+      await StorageService.saveHeartsState(
+        HeartsState(count: 2, regenStartMs: server.millisecondsSinceEpoch),
+      );
+      final short = fresh('h5', coins: GameConstants.heartPriceCoins * 3 - 1);
+      expect(short.buyAllHearts(), isFalse);
+      expect(short.state.hearts.count, 2);
+      expect(short.state.coins, GameConstants.heartPriceCoins * 3 - 1);
+
+      final n = fresh('h6', coins: GameConstants.heartPriceCoins * 3 + 4);
+      expect(n.buyAllHearts(), isTrue);
+      expect(n.state.hearts.count, GameConstants.maxHearts);
+      expect(n.state.hearts.regenStartMs, isNull);
+      expect(n.state.coins, 4);
+      expect(StorageService.getHeartsState().count, GameConstants.maxHearts);
+      expect(n.buyAllHearts(), isFalse, reason: 'nothing left to fill');
+    });
+
     test('is refused when the coins fall short', () async {
       await StorageService.saveHeartsState(
         HeartsState(count: 1, regenStartMs: server.millisecondsSinceEpoch),

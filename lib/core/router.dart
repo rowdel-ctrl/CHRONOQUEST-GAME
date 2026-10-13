@@ -18,6 +18,7 @@ import '../screens/game/level_complete_screen.dart';
 import '../screens/game/level_failed_screen.dart';
 import '../screens/game/era_complete_screen.dart';
 import '../screens/profile/profile_screen.dart';
+import '../screens/shop/shop_screen.dart';
 import '../screens/profile/leaderboard_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -122,6 +123,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/leaderboard',
       builder: (context, state) => const LeaderboardScreen(),
+    ),
+    GoRoute(
+      path: '/shop',
+      builder: (context, state) => const ShopScreen(),
     ),
     GoRoute(
       path: '/profile',

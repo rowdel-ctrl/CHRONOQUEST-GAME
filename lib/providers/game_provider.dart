@@ -267,6 +267,22 @@ class GameNotifier extends StateNotifier<GameState> {
     return true;
   }
 
+  /// Fills the heart pool in one go: all or nothing, so a student never pays
+  /// for some of the hearts and is left short of the rest.
+  bool buyAllHearts() {
+    final missing = GameConstants.maxHearts - state.hearts.count;
+    final cost = missing * GameConstants.heartPriceCoins;
+    if (missing <= 0 || state.coins < cost) return false;
+    var hearts = state.hearts;
+    for (var i = 0; i < missing; i++) {
+      hearts = hearts.withHeart();
+    }
+    state = state.copyWith(coins: state.coins - cost);
+    _store(hearts);
+    saveWallet();
+    return true;
+  }
+
   /// Pays for one power-up. False, with nothing changed, if the student cannot
   /// afford it.
   bool buyPowerUp(PowerUpKind kind) {

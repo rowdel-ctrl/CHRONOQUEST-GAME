@@ -166,6 +166,20 @@ class LevelFailedScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 10),
 
+                      // Out of hearts, or short of a power-up: the shop.
+                      GameButton(
+                        label: 'TINDAHAN',
+                        leading: const PixelIcon(PixelGlyph.cart,
+                            size: 20, color: AppColors.primaryDark),
+                        color: hasHearts ? AppColors.surfaceAlt : AppColors.accent,
+                        textColor: hasHearts
+                            ? AppColors.textSecondary
+                            : AppColors.primaryDark,
+                        width: double.infinity,
+                        onPressed: () => context.push('/shop'),
+                      ),
+                      const SizedBox(height: 10),
+
                       // Back to level select
                       GameButton(
                         label: 'BUMALIK',

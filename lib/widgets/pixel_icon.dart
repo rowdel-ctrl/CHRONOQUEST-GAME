@@ -19,6 +19,7 @@ enum PixelGlyph {
   note,
   speakerLow,
   speakerOff,
+  cart,
 }
 
 /// One string per row, `#` for a filled square. Kept as text so a glyph can be
@@ -219,6 +220,20 @@ const Map<PixelGlyph, List<String>> pixelGlyphRows = {
     '....#.......',
     '............',
     '............',
+  ],
+  PixelGlyph.cart: [
+    '............',
+    '##..........',
+    '.#..........',
+    '.#.########.',
+    '.#.########.',
+    '.#..######..',
+    '.#..######..',
+    '.#...####...',
+    '.##########.',
+    '............',
+    '..##....##..',
+    '..##....##..',
   ],
 };
 

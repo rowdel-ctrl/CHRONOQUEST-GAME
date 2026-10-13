@@ -421,42 +421,22 @@ class _EraTile extends StatelessWidget {
   }
 }
 
-/// The shop: what the student carries, and one tap to buy more with coins. The
-/// coins and the power-ups are the phone's own wallet (GameNotifier), so a
-/// purchase shows at once.
+/// What the student carries, and the way to the shop. The coins and the
+/// power-ups are the phone's own wallet (GameNotifier); buying happens on the
+/// TINDAHAN screen.
 class _Shop extends ConsumerWidget {
   const _Shop();
 
-  static Key buyKey(PowerUpKind kind) => ValueKey('buy_${kind.name}');
-
-  Widget _glyph(PowerUpKind kind) {
-    switch (kind) {
-      case PowerUpKind.fiftyFifty:
-        return Text('½',
-            style: GoogleFonts.poppins(
-                fontSize: 15, height: 1, fontWeight: FontWeight.bold, color: AppColors.accent));
-      case PowerUpKind.shield:
-        return const PixelIcon(PixelGlyph.shield, size: 16, color: AppColors.accent);
-      case PowerUpKind.timeFreeze:
-        return const Icon(Icons.ac_unit, size: 16, color: AppColors.accent);
-    }
-  }
-
-  static const _names = {
-    PowerUpKind.fiftyFifty: ('50/50', 'Tinatanggal ang dalawang maling sagot.'),
-    PowerUpKind.shield: ('Shield', 'Sumasalo sa isang maling sagot.'),
-    PowerUpKind.timeFreeze: ('Time Freeze', 'Pinahihinto ang oras sa tanong ng boss.'),
-  };
+  static const Key openKey = Key('profile_open_shop');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final game = ref.watch(gameProvider);
-    final notifier = ref.read(gameProvider.notifier);
-    int owned(PowerUpKind k) => switch (k) {
-          PowerUpKind.fiftyFifty => game.powerUps.fiftyFifty,
-          PowerUpKind.shield => game.powerUps.shield,
-          PowerUpKind.timeFreeze => game.powerUps.timeFreeze,
-        };
+    final line = GoogleFonts.poppins(
+      fontSize: 11,
+      height: 1.3,
+      color: AppColors.textSecondary,
+    );
 
     return GamePanel(
       color: AppColors.surface,
@@ -471,7 +451,7 @@ class _Shop extends ConsumerWidget {
           Row(
             children: [
               Text(
-                'TINDAHAN',
+                'MGA GAMIT',
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -494,62 +474,19 @@ class _Shop extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 6),
-          for (final kind in PowerUpKind.values) ...[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: Row(
-                children: [
-                  Container(
-                    width: 26,
-                    height: 26,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      border: Border.all(color: AppColors.primaryDark, width: 2),
-                    ),
-                    child: _glyph(kind),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${_names[kind]!.$1}  ×${owned(kind)}',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                            height: 1.2,
-                          ),
-                        ),
-                        Text(
-                          _names[kind]!.$2,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            color: AppColors.textSecondary,
-                            height: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  GameButton(
-                    key: buyKey(kind),
-                    label: '${kind.priceCoins}',
-                    leading: Image.asset('assets/collectibles/coin.png', width: 14, height: 14),
-                    fontSize: 9,
-                    minHeight: 36,
-                    horizontalPadding: 10,
-                    onPressed: game.coins >= kind.priceCoins ? () => notifier.buyPowerUp(kind) : null,
-                  ),
-                ],
-              ),
-            ),
-          ],
+          Text('50/50  ×${game.powerUps.fiftyFifty}', style: line),
+          Text('Shield  ×${game.powerUps.shield}', style: line),
+          Text('Time Freeze  ×${game.powerUps.timeFreeze}', style: line),
+          const SizedBox(height: 8),
+          GameButton(
+            key: openKey,
+            label: 'TINDAHAN',
+            leading: const PixelIcon(PixelGlyph.cart,
+                size: 18, color: AppColors.primaryDark),
+            fontSize: 9,
+            minHeight: 38,
+            onPressed: () => context.push('/shop'),
+          ),
         ],
       ),
     );

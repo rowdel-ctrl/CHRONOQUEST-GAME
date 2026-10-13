@@ -177,16 +177,26 @@ class ApiService {
   }
 
   // ─── LEADERBOARD ──────────────────────────────────────────────────────────
-  Future<List<Map<String, dynamic>>> getLeaderboard(String scope) async {
+  Future<List<Map<String, dynamic>>> getLeaderboard(String scope) async =>
+      (await getLeaderboardBoard(scope)).leaders;
+
+  /// The top list plus where the asking student stands: `myRank` is null when
+  /// they are not in the top 20, `myScore` is their own score either way.
+  Future<LeaderboardBoard> getLeaderboardBoard(String scope) async {
     try {
       final response = await _dio.get(
         '/student/leaderboard',
         queryParameters: {'scope': scope},
       );
       final envelope = response.data as Map<String, dynamic>;
-      final data = envelope['data']['leaders'];
-      final List<dynamic> list = data is List ? data : [];
-      return list.cast<Map<String, dynamic>>();
+      final data = envelope['data'] as Map<String, dynamic>;
+      final leaders = data['leaders'];
+      final List<dynamic> list = leaders is List ? leaders : [];
+      return LeaderboardBoard(
+        leaders: list.cast<Map<String, dynamic>>(),
+        myRank: (data['myRank'] as num?)?.toInt(),
+        myScore: (data['myScore'] as num?)?.toInt(),
+      );
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -210,4 +220,12 @@ class ApiService {
     }
     return 'Hindi makakonekta sa server. Subukan muli.';
   }
+}
+
+/// The reply of `GET /student/leaderboard`.
+class LeaderboardBoard {
+  final List<Map<String, dynamic>> leaders;
+  final int? myRank;
+  final int? myScore;
+  const LeaderboardBoard({required this.leaders, this.myRank, this.myScore});
 }

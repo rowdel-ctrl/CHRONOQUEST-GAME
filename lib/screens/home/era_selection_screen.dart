@@ -78,6 +78,11 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                 onBack: () => context.go('/character-selection'),
                 actions: [
                   MenuChip(
+                    icon: PixelGlyph.cart,
+                    tooltip: 'Tindahan',
+                    onTap: () => context.push('/shop'),
+                  ),
+                  MenuChip(
                     icon: PixelGlyph.profile,
                     tooltip: 'Profile',
                     onTap: () => context.push('/profile'),

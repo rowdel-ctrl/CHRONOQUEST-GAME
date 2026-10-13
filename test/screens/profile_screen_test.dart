@@ -165,48 +165,13 @@ void main() {
     expect(find.text('Time Freeze  ×0'), findsOneWidget);
   });
 
-  group('the shop', () {
-    testWidgets('lists the three power-ups with their prices', (tester) async {
-      await _pump(tester, const Size(812, 375));
-      await tester.ensureVisible(find.byKey(const ValueKey('shop_coins')));
+  testWidgets('has a way into the shop, which is where things are bought', (tester) async {
+    await _pump(tester, const Size(812, 375));
+    await tester.ensureVisible(find.byKey(const ValueKey('profile_open_shop')));
 
-      for (final kind in PowerUpKind.values) {
-        final button = find.byKey(ValueKey('buy_${kind.name}'));
-        expect(button, findsOneWidget);
-        expect(find.descendant(of: button, matching: find.text('${kind.priceCoins}')), findsOneWidget);
-      }
-    });
-
-    testWidgets('a purchase takes the coins and adds one to what is carried', (tester) async {
-      await _pump(tester, const Size(812, 375));
-      final buy = find.byKey(const ValueKey('buy_timeFreeze'));
-      await tester.ensureVisible(buy);
-      await tester.tap(buy);
-      await tester.pump();
-
-      expect(_game.bought, [PowerUpKind.timeFreeze]);
-      expect(find.text('Time Freeze  ×1'), findsOneWidget);
-      expect(find.text('${85 - GameConstants.timeFreezePriceCoins}'), findsNWidgets(2));
-    });
-
-    testWidgets('what the coins no longer cover cannot be bought', (tester) async {
-      await _pump(tester, const Size(812, 375));
-      final freeze = find.byKey(const ValueKey('buy_timeFreeze'));
-      await tester.ensureVisible(freeze);
-      await tester.tap(freeze);
-      await tester.pump();
-      await tester.tap(freeze);
-      await tester.pump();
-      // 25 left: a Time Freeze (30) is out of reach, a Shield (25) is not.
-      await tester.tap(freeze, warnIfMissed: false);
-      await tester.pump();
-      expect(_game.bought, [PowerUpKind.timeFreeze, PowerUpKind.timeFreeze]);
-
-      await tester.tap(find.byKey(const ValueKey('buy_shield')));
-      await tester.pump();
-      expect(_game.bought.last, PowerUpKind.shield);
-      expect(_game.state.coins, 0);
-    });
+    expect(find.byKey(const ValueKey('profile_open_shop')), findsOneWidget);
+    expect(find.byKey(const ValueKey('buy_timeFreeze')), findsNothing,
+        reason: 'purchases moved to the TINDAHAN screen');
   });
 
   testWidgets('each era counts against its own number of levels', (tester) async {
