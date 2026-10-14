@@ -145,4 +145,70 @@ void main() {
       }
     });
   });
+
+  group('which question a message is about', () {
+    test('every message loginErrorMessage can produce maps to the right question', () {
+      for (final joining in [true, false]) {
+        expect(loginErrorField(loginErrorMessage(_reply(404, 'Invalid class code.'), joining: joining)),
+            LoginField.classCode);
+        expect(loginErrorField(loginErrorMessage(_reply(400, 'Class code and username are required.'), joining: joining)),
+            LoginField.classCode);
+      }
+      expect(
+          loginErrorField(loginErrorMessage(_reply(401, 'Incorrect password.'), joining: true)),
+          LoginField.username,
+          reason: 'on Bago, a wrong password really means the username is taken');
+      expect(
+          loginErrorField(loginErrorMessage(_reply(401, 'Incorrect password.'), joining: false)),
+          LoginField.password);
+      expect(
+          loginErrorField(loginErrorMessage(_reply(400, 'Real name is required for first-time join.'), joining: false)),
+          LoginField.username,
+          reason: 'a username the server does not know');
+      expect(
+          loginErrorField(loginErrorMessage(_reply(400, 'Real name is required for first-time join.'), joining: true)),
+          LoginField.name);
+      expect(
+          loginErrorField(loginErrorMessage(_reply(400, 'Password must be at least 6 characters.'), joining: true)),
+          LoginField.password);
+    });
+
+    test('a problem that is not about anything typed is about no question', () {
+      expect(loginErrorField(loginErrorMessage(_reply(429, 'Too many requests.'), joining: true)), isNull);
+      expect(loginErrorField(loginErrorMessage(_reply(500, 'boom'), joining: true)), isNull);
+      expect(loginErrorField(loginErrorMessage(_of(DioExceptionType.connectionError), joining: true)), isNull);
+      expect(loginErrorField(loginErrorMessage(_of(DioExceptionType.receiveTimeout), joining: true)), isNull);
+    });
+  });
+
+  group('saving a new password', () {
+    test('says what happened, in Filipino', () {
+      expect(changePasswordErrorMessage(_reply(400, 'New password must be at least 6 characters.')),
+          contains('6 na characters'));
+      expect(changePasswordErrorMessage(_reply(401, 'Not authorised')), contains('Mag-login ulit'));
+      expect(changePasswordErrorMessage(_reply(429, 'Too many requests.')), contains('Masyadong maraming subok'));
+      expect(changePasswordErrorMessage(_reply(500, 'boom')), contains('May problema sa server'));
+      expect(changePasswordErrorMessage(_reply(418, 'teapot')), 'Hindi ma-save ang password. Subukan muli.');
+    });
+
+    test('no internet reads as an internet problem', () {
+      for (final type in [
+        DioExceptionType.connectionTimeout,
+        DioExceptionType.sendTimeout,
+        DioExceptionType.receiveTimeout,
+        DioExceptionType.connectionError,
+        DioExceptionType.unknown,
+      ]) {
+        expect(changePasswordErrorMessage(_of(type)), contains('internet'), reason: '$type');
+      }
+    });
+
+    test('never shows English from the server or a developer note', () {
+      final english = RegExp(r'(please|invalid|incorrect|required|backend|api)', caseSensitive: false);
+      for (final status in [400, 401, 429, 500, 418]) {
+        expect(changePasswordErrorMessage(_reply(status, 'New password must be at least 6 characters.')),
+            isNot(matches(english)));
+      }
+    });
+  });
 }

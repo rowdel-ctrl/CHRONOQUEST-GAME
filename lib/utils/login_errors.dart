@@ -64,3 +64,49 @@ String loginErrorMessage(DioException e, {required bool joining}) {
           : 'Hindi makapag-login. Subukan muli.';
   }
 }
+
+/// What a failed login complains about, so the screen can go back to that question.
+enum LoginField { classCode, name, username, password }
+
+/// Which question a message from [loginErrorMessage] is about, or null when it is
+/// about nothing the student typed (no internet, too many tries, a server fault).
+LoginField? loginErrorField(String message) {
+  if (message.startsWith('Mali ang class code') ||
+      message.startsWith('Punan ang class code')) {
+    return LoginField.classCode;
+  }
+  if (message.contains('username')) return LoginField.username;
+  if (message.contains('pangalan')) return LoginField.name;
+  if (message.contains('password')) return LoginField.password;
+  return null;
+}
+
+/// The message a student sees when saving a new password fails. The server's own
+/// answer is English, so it is not shown.
+String changePasswordErrorMessage(DioException e) {
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+    case DioExceptionType.sendTimeout:
+    case DioExceptionType.receiveTimeout:
+      return 'Mabagal o walang internet. Subukan muli.';
+    case DioExceptionType.connectionError:
+      return 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+    default:
+      break;
+  }
+  switch (e.response?.statusCode) {
+    case 400:
+      return 'Hindi bababa sa 6 na characters ang password.';
+    case 401:
+      return 'Tapos na ang login mo. Mag-login ulit.';
+    case 429:
+      return 'Masyadong maraming subok. Maghintay sandali bago subukan muli.';
+    case null:
+      return 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+    default:
+      final code = e.response!.statusCode!;
+      return code >= 500
+          ? 'May problema sa server. Subukan muli mamaya.'
+          : 'Hindi ma-save ang password. Subukan muli.';
+  }
+}

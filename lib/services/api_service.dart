@@ -21,7 +21,7 @@ class ApiService {
       await _dio
           .post('/student/change-password', data: {'newPassword': newPassword});
     } on DioException catch (e) {
-      throw _handleError(e);
+      throw changePasswordErrorMessage(e);
     }
   }
 
