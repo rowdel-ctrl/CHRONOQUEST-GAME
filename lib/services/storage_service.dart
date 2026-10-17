@@ -240,6 +240,43 @@ class StorageService {
     }
   }
 
+  // ─── HEARTS PER STUDENT ───────────────────────────────────────────────────
+  // Hearts belong to the student, like the wallet: they survive logout and a
+  // restart, and a student sharing the phone has their own. (They used to be one
+  // set for the whole phone, which logout wiped, so logging out and restarting the
+  // app gave a full set of hearts.)
+  static const _heartsPerStudentPrefix = 'student_hearts_';
+  static String _heartsKey(String studentId) => '$_heartsPerStudentPrefix$studentId';
+
+  static bool hasHeartsFor(String studentId) =>
+      appBox.get(_heartsKey(studentId)) is Map;
+
+  /// This student's hearts. A student with none saved yet takes what the phone
+  /// kept the old way (one set per phone), or a full set if there is none.
+  static HeartsState getHeartsStateFor(String studentId) {
+    final raw = appBox.get(_heartsKey(studentId));
+    if (raw is Map) {
+      return HeartsState(
+        count: (raw['count'] as num).toInt(),
+        regenStartMs: (raw['regenStartMs'] as num?)?.toInt(),
+      );
+    }
+    return getHeartsState();
+  }
+
+  static Future<void> saveHeartsStateFor(String studentId, HeartsState hearts) =>
+      appBox.put(_heartsKey(studentId), {
+        'count': hearts.count,
+        'regenStartMs': hearts.regenStartMs,
+      });
+
+  /// Forgets the old one-set-per-phone hearts, once a student has taken them, so
+  /// the next student on the phone starts with a full set of their own.
+  static Future<void> dropPerPhoneHearts() async {
+    await appBox.delete(_heartsCountKey);
+    await appBox.delete(_heartsRegenStartKey);
+  }
+
   // ─── WALLET (coins, power-ups, bought characters; one per student) ───────
   static String _walletKey(String studentId) => 'wallet_$studentId';
 
@@ -278,17 +315,20 @@ class StorageService {
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   /// What logout does NOT wipe:
-  ///  - each student's wallet (coins, power-ups, bought characters). It is saved
-  ///    under that student's id, so a shared phone keeps one per student and the
-  ///    next student never sees it;
+  ///  - each student's wallet (coins, power-ups, bought characters) and hearts.
+  ///    They are saved under that student's id, so a shared phone keeps one set
+  ///    per student and the next student never sees them;
   ///  - the last sign-in, so the next one only asks for the password;
   ///  - settings that belong to the phone, not the student: sound, controls, the
   ///    tutorial flag and the tester's Test Mode switch.
   /// Everything else is per phone and is wiped, so the next student starts clean:
-  /// the student, level progress, hearts, the codex, the queued results and the
+  /// the student, level progress, the codex, the queued results and the
   /// downloaded questions.
   static bool _survivesLogout(Object? key) =>
-      key is String && (key.startsWith('wallet_') || _keptAcrossLogout.contains(key));
+      key is String &&
+      (key.startsWith('wallet_') ||
+          key.startsWith(_heartsPerStudentPrefix) ||
+          _keptAcrossLogout.contains(key));
 
   static const _keptAcrossLogout = {
     _lastClassCodeKey,

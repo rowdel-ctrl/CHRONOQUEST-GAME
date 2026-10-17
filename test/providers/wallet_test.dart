@@ -79,8 +79,8 @@ void main() {
       expect(n.state.coins, 50 - GameConstants.heartPriceCoins);
       expect(n.state.hearts.regenStartMs, server.millisecondsSinceEpoch - 5000,
           reason: 'the next free heart is still on its way');
-      // Kept on the phone.
-      expect(StorageService.getHeartsState().count, 3);
+      // Kept on the phone, for this student.
+      expect(StorageService.getHeartsStateFor('h1').count, 3);
       expect(StorageService.getWallet('h1')!['coins'], 30);
     });
 
@@ -105,6 +105,11 @@ void main() {
       await StorageService.saveHeartsState(
         HeartsState(count: 2, regenStartMs: server.millisecondsSinceEpoch),
       );
+      // Hearts are the student's own; h6 gets the same start as h5 had.
+      await StorageService.saveHeartsStateFor(
+        'h6',
+        HeartsState(count: 2, regenStartMs: server.millisecondsSinceEpoch),
+      );
       final short = fresh('h5', coins: GameConstants.heartPriceCoins * 3 - 1);
       expect(short.buyAllHearts(), isFalse);
       expect(short.state.hearts.count, 2);
@@ -115,7 +120,7 @@ void main() {
       expect(n.state.hearts.count, GameConstants.maxHearts);
       expect(n.state.hearts.regenStartMs, isNull);
       expect(n.state.coins, 4);
-      expect(StorageService.getHeartsState().count, GameConstants.maxHearts);
+      expect(StorageService.getHeartsStateFor('h6').count, GameConstants.maxHearts);
       expect(n.buyAllHearts(), isFalse, reason: 'nothing left to fill');
     });
 

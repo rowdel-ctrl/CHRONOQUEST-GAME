@@ -97,8 +97,28 @@ class GameNotifier extends StateNotifier<GameState> {
   void _store(HeartsState hearts) {
     final before = state.hearts;
     if (hearts.count != before.count || hearts.regenStartMs != before.regenStartMs) {
-      StorageService.saveHeartsState(hearts);
+      final id = _walletOwner;
+      if (id == null) {
+        StorageService.saveHeartsState(hearts); // nobody logged in (a test, or a dev run)
+      } else {
+        StorageService.saveHeartsStateFor(id, hearts);
+      }
     }
+    state = state.copyWith(hearts: hearts);
+  }
+
+  /// Loads [studentId]'s hearts, or a full set with nobody logged in (nothing is
+  /// played then, and nothing is saved). Hearts follow the student, like the wallet.
+  void _loadHeartsFor(String? studentId) {
+    if (studentId == null) {
+      state = state.copyWith(hearts: HeartsState.initial());
+      return;
+    }
+    final hadOwn = StorageService.hasHeartsFor(studentId);
+    final hearts = _settled(StorageService.getHeartsStateFor(studentId));
+    StorageService.saveHeartsStateFor(studentId, hearts);
+    // The first student to log in after the update takes the old per-phone hearts.
+    if (!hadOwn) StorageService.dropPerPhoneHearts();
     state = state.copyWith(hearts: hearts);
   }
 
@@ -183,9 +203,9 @@ class GameNotifier extends StateNotifier<GameState> {
   /// Whose wallet is loaded, or null with nobody logged in.
   String? _walletOwner;
 
-  /// Loads [studentId]'s coins, power-ups and bought characters from this phone
-  /// (a student with none starts empty), or empties them when nobody is logged
-  /// in. A shared phone keeps one wallet per student.
+  /// Loads [studentId]'s coins, power-ups, bought characters and hearts from this
+  /// phone (a student with none starts empty, with full hearts), or empties them
+  /// when nobody is logged in. A shared phone keeps one set per student.
   ///
   /// Spending is kept on the phone: the server has no coins to keep. A reinstall
   /// starts the wallet again.
@@ -211,6 +231,7 @@ class GameNotifier extends StateNotifier<GameState> {
       selectedCharacterId: character,
     );
     if (!keptCharacter) StorageService.saveCharacter(character);
+    _loadHeartsFor(studentId);
   }
 
   /// Writes the wallet to the phone. Call after anything that changes it,

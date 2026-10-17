@@ -70,6 +70,17 @@ void main() {
   });
 
   group('logout and the rest of the phone', () {
+    test('keeps every student\'s hearts, so logging out is no way to refill them', () async {
+      await StorageService.saveHeartsStateFor('s1', const HeartsState(count: 1, regenStartMs: 99));
+      await StorageService.saveHeartsStateFor('s2', const HeartsState(count: 4));
+
+      await StorageService.clearAll();
+
+      expect(StorageService.getHeartsStateFor('s1').count, 1);
+      expect(StorageService.getHeartsStateFor('s1').regenStartMs, 99);
+      expect(StorageService.getHeartsStateFor('s2').count, 4);
+    });
+
     test('keeps every student\'s wallet, so coins survive a logout', () async {
       await StorageService.saveWallet('s1', {'coins': 340, 'unlocked': ['luna']});
       await StorageService.saveWallet('s2', {'coins': 15});
