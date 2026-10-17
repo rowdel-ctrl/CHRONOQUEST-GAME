@@ -67,7 +67,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _error =
-            e is String ? e : 'Hindi ma-save ang password. Subukan muli.');
+            e is String ? e : 'Hindi ma-save ang password. Subukan ulit.');
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -94,7 +94,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         AuthField(
           key: ChangePasswordScreen.newKey,
           controller: _new,
-          hint: 'Hindi bababa sa 6',
+          hint: '6 o higit pa',
           password: true,
           autofocus: true,
           height: 52,
@@ -125,9 +125,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         if (_error != null)
           AuthError(_error!)
         else if (_ready)
-          const AuthHelp('✓ 6 o higit pang character   ✓ Magkatugma', good: true)
+          const AuthHelp('✓ 6 o higit pang character   ✓ Pareho na', good: true)
         else if (_confirm.text.isNotEmpty && !_matches && _longEnough)
-          const AuthHelp('Hindi magkatugma ang dalawa.', good: false)
+          const AuthHelp('Hindi pareho ang dalawa.', good: false)
         else
           AuthHelp(_longEnough
               ? '✓ 6 o higit pang character'

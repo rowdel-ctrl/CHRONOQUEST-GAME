@@ -13,6 +13,7 @@ Future<void> _show(
   int level = 2,
   int correct = 10,
   int total = 10,
+  int coins = 35,
 }) async {
   tester.view.devicePixelRatio = 1.0;
   tester.view.physicalSize = size;
@@ -21,7 +22,8 @@ Future<void> _show(
     home: LevelCompleteScreen(
       eraId: eraId,
       level: level,
-      result: LevelCompleteResult(score: 535, correct: correct, total: total),
+      result: LevelCompleteResult(
+          score: 535, correct: correct, total: total, coins: coins),
     ),
   ));
   await tester.pump(const Duration(seconds: 2)); // stars and pop-in
@@ -94,6 +96,26 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('SUSUNOD'), findsOneWidget);
     expect(find.text('Nakakuha ng 50/50!'), findsOneWidget);
+  });
+
+  testWidgets('shows the coins earned in this attempt', (tester) async {
+    await _show(tester, size: const Size(800, 360), coins: 35);
+
+    expect(find.byKey(LevelCompleteScreen.coinsKey), findsOneWidget);
+    expect(find.text('+35 COINS'), findsOneWidget);
+    expect(find.text('+535 PUNTOS'), findsOneWidget,
+        reason: 'the points are still there');
+  });
+
+  testWidgets('no coins line when none were picked up', (tester) async {
+    await _show(tester, size: const Size(800, 360), coins: 0);
+
+    expect(find.byKey(LevelCompleteScreen.coinsKey), findsNothing);
+    expect(find.textContaining('COINS'), findsNothing);
+  });
+
+  test('a result made without coins (an old deep link) shows none', () {
+    expect(LevelCompleteResult.empty.coins, 0);
   });
 
   testWidgets('stars follow the share right', (tester) async {

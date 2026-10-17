@@ -43,6 +43,7 @@ Future<_FakeScheme> _pumpApp(
   WidgetTester tester, {
   ControlScheme initial = ControlScheme.joystick,
   _FakeUnlockAll? unlockAll,
+  bool testBuild = true,
 }) async {
   await tester.binding.setSurfaceSize(const Size(800, 360));
   addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -76,6 +77,7 @@ Future<_FakeScheme> _pumpApp(
       overrides: [
         controlSchemeProvider.overrideWith((ref) => fake),
         unlockAllProvider.overrideWith((ref) => unlock),
+        testBuildProvider.overrideWithValue(testBuild),
       ],
       child: MaterialApp.router(routerConfig: router),
     ),
@@ -108,6 +110,16 @@ void main() {
       await tester.tap(toggle);
       await tester.pumpAndSettle();
       expect(unlock.state, isTrue);
+    });
+
+    testWidgets('the student build has no Test Mode, only logout', (tester) async {
+      await _pumpApp(tester, testBuild: false);
+      await tester.tap(find.text('OPEN_SETTINGS'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('I-LOGOUT'), findsOneWidget);
+      expect(find.byKey(const Key('unlock_all_switch')), findsNothing);
+      expect(find.text('Test Mode'), findsNothing);
     });
 
     testWidgets('the switch says hearts are not lost while it is on', (tester) async {

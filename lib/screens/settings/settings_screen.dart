@@ -16,7 +16,7 @@ import 'settings_header.dart';
 /// Settings: one list of rows, each leading to its own screen. Opened from the
 /// main menu's gear and from the pause menu, and it is the same screen either
 /// way. Kontrol and Tunog are the rows today; further settings become more rows.
-/// Below them sit Test Mode and the logout button.
+/// Below them sit Test Mode (tester build only) and the logout button.
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
@@ -64,8 +64,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             },
                           ),
                           const SizedBox(height: 14),
-                          const _UnlockAllSwitch(),
-                          const SizedBox(height: 10),
+                          // Only the tester build has Test Mode.
+                          if (ref.watch(testBuildProvider)) ...const [
+                            _UnlockAllSwitch(),
+                            SizedBox(height: 10),
+                          ],
                           const _LogoutButton(),
                         ],
                       ),
@@ -81,7 +84,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 }
 
-/// Test Mode (temporary): opens every era and level, and while it is on
+/// Test Mode (tester build only): opens every era and level, and while it is on
 /// hearts are not spent, so the whole game can be played without waiting.
 class _UnlockAllSwitch extends ConsumerWidget {
   const _UnlockAllSwitch();

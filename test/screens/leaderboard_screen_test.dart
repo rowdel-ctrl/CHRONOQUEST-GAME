@@ -124,7 +124,7 @@ void main() {
     expect(find.text('HINDI MA-LOAD'), findsOneWidget);
     expect(find.text('Ana'), findsNothing, reason: 'no made-up names');
 
-    await tester.tap(find.text('SUBUKAN MULI'));
+    await tester.tap(find.text('SUBUKAN ULIT'));
     await tester.pump();
     await tester.pump();
     await tester.pump();

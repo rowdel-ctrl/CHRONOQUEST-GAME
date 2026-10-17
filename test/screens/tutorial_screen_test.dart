@@ -139,7 +139,7 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    expect(find.text('ANG IYONG BAYANI'), findsOneWidget);
+    expect(find.text('ANG BAYANI MO'), findsOneWidget);
     expect(find.byKey(TutorialScreen.nextButtonKey), findsOneWidget);
     expect(find.byKey(TutorialScreen.doneButtonKey), findsNothing);
   });

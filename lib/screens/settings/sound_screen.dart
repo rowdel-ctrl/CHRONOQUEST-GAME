@@ -73,7 +73,7 @@ class _SoundScreenState extends State<SoundScreen> {
                           ),
                           const SizedBox(height: 14),
                           Text(
-                            'Naka-save sa device na ito.',
+                            'Saved na sa device na ito.',
                             style: GoogleFonts.poppins(
                               fontSize: 11,
                               color: Colors.white54,

@@ -100,6 +100,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             score: score,
             correct: correct,
             total: total,
+            coins: game.playerCoins,
           ),
         );
       }

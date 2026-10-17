@@ -38,7 +38,7 @@ void main() {
           _reply(400, 'Real name is required for first-time join.'),
           joining: false);
       expect(msg, contains('Walang account na may ganitong username'));
-      expect(msg, contains("'Bago'"), reason: 'it points at the other tab');
+      expect(msg, contains("'BAGO AKO'"), reason: 'it points at the other button');
       expect(msg.toLowerCase(), isNot(contains('pangalan')));
     });
 
@@ -46,14 +46,14 @@ void main() {
       final msg = loginErrorMessage(
           _reply(400, 'Password must be at least 6 characters.'),
           joining: false);
-      expect(msg, 'Mali ang password. Subukan muli.');
+      expect(msg, 'Mali ang password. Subukan ulit.');
     });
 
     test('a wrong password says so', () {
       final msg = loginErrorMessage(
           _reply(401, 'Incorrect password. Please try again.'),
           joining: false);
-      expect(msg, 'Mali ang password. Subukan muli.');
+      expect(msg, 'Mali ang password. Subukan ulit.');
     });
   });
 
@@ -64,7 +64,7 @@ void main() {
           _reply(401, 'Incorrect password. Please try again.'),
           joining: true);
       expect(msg, contains('May gumagamit na ng username na ito'));
-      expect(msg, contains("'Babalik'"));
+      expect(msg, contains("'BALIK NA AKO'"));
       expect(msg, isNot(contains('Mali ang password')));
     });
 
@@ -79,7 +79,7 @@ void main() {
       final msg = loginErrorMessage(
           _reply(400, 'Password must be at least 6 characters.'),
           joining: true);
-      expect(msg, contains('6 na characters'));
+      expect(msg, contains('6 characters o higit pa'));
     });
   });
 
@@ -88,13 +88,13 @@ void main() {
       expect(
         loginErrorMessage(_reply(400, 'Class code and username are required.'),
             joining: false),
-        'Punan ang class code at username.',
+        'I-type ang class code at username.',
       );
     });
 
     test('too many tries', () {
       expect(loginErrorMessage(_reply(429, 'Too many requests. Try again later.'), joining: false),
-          contains('Masyadong maraming subok'));
+          contains('Masyadong maraming try'));
     });
 
     test('a server fault', () {
@@ -104,7 +104,7 @@ void main() {
 
     test('an unexpected status still reads as a plain sentence', () {
       expect(loginErrorMessage(_reply(418, 'teapot'), joining: false),
-          'Hindi makapag-login. Subukan muli.');
+          'Hindi maka-login. Subukan ulit.');
     });
 
     test('no internet reads as an internet problem, not a developer note', () {
@@ -123,7 +123,7 @@ void main() {
 
     test('no reply at all', () {
       expect(loginErrorMessage(_of(DioExceptionType.unknown), joining: false),
-          contains('Hindi makakonekta'));
+          contains('Hindi maka-connect'));
     });
 
     test('no message is ever raw English from the server', () {
@@ -181,14 +181,54 @@ void main() {
     });
   });
 
+  group('asking the teacher for a new password', () {
+    test('no internet reads as an internet problem', () {
+      for (final type in [
+        DioExceptionType.connectionTimeout,
+        DioExceptionType.sendTimeout,
+        DioExceptionType.receiveTimeout,
+      ]) {
+        expect(resetRequestErrorMessage(_of(type)), 'Mabagal o walang internet. Subukan ulit.');
+      }
+      expect(resetRequestErrorMessage(_of(DioExceptionType.connectionError)),
+          'Walang internet. Subukan ulit.');
+    });
+
+    test('too many tries says to wait', () {
+      expect(resetRequestErrorMessage(_reply(429, 'Too many requests')),
+          'Masyadong maraming send. Subukan ulit mamaya.');
+    });
+
+    test('anything else tells the student to say it to the teacher', () {
+      // 404 is the dashboard not having the route yet; the rest is a fault on its side.
+      for (final e in [
+        _reply(404, 'Not found'),
+        _reply(400, 'Class code and username are required.'),
+        _reply(500, 'Internal Server Error'),
+        _of(DioExceptionType.unknown),
+        _of(DioExceptionType.cancel),
+      ]) {
+        expect(resetRequestErrorMessage(e), resetRequestCannotSend);
+      }
+      expect(resetRequestCannotSend, contains('teacher'));
+      expect(resetRequestCannotSend, contains('class code'));
+    });
+
+    test('never shows English from the server', () {
+      final msg = resetRequestErrorMessage(_reply(500, 'Internal Server Error'));
+      expect(msg, isNot(contains('Internal')));
+      expect(msg, isNot(contains('Server Error')));
+    });
+  });
+
   group('saving a new password', () {
     test('says what happened, in Filipino', () {
       expect(changePasswordErrorMessage(_reply(400, 'New password must be at least 6 characters.')),
-          contains('6 na characters'));
+          contains('6 characters o higit pa'));
       expect(changePasswordErrorMessage(_reply(401, 'Not authorised')), contains('Mag-login ulit'));
-      expect(changePasswordErrorMessage(_reply(429, 'Too many requests.')), contains('Masyadong maraming subok'));
+      expect(changePasswordErrorMessage(_reply(429, 'Too many requests.')), contains('Masyadong maraming try'));
       expect(changePasswordErrorMessage(_reply(500, 'boom')), contains('May problema sa server'));
-      expect(changePasswordErrorMessage(_reply(418, 'teapot')), 'Hindi ma-save ang password. Subukan muli.');
+      expect(changePasswordErrorMessage(_reply(418, 'teapot')), 'Hindi ma-save ang password. Subukan ulit.');
     });
 
     test('no internet reads as an internet problem', () {

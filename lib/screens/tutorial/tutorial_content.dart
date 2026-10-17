@@ -20,7 +20,7 @@ class TutorialStep {
 /// student's selected character, shown on the first page.
 List<TutorialStep> tutorialSteps(String charId) => [
       TutorialStep(
-        title: 'ANG IYONG BAYANI',
+        title: 'ANG BAYANI MO',
         body: 'Gamitin ang joystick o ang mga arrow para gumalaw, ang JUMP '
             'para tumalon, at ang ATK para umatake sa mga kaaway.',
         illustration: _SpriteIllustration(
@@ -28,9 +28,9 @@ List<TutorialStep> tutorialSteps(String charId) => [
         ),
       ),
       const TutorialStep(
-        title: 'IWASAN ANG BALAKID',
-        body: 'Tumalon sa mga butas at iwasan ang mga kaaway sa daan. Ang '
-            'pagbangga sa kanila o pagkahulog ay nawawalan ka ng buhay.',
+        title: 'TUMALON AT MAG-IWAS',
+        body: 'Tumalon sa mga butas at iwasan ang mga kalaban sa daan. Kapag '
+            'nabangga mo sila o nahulog ka, mawawalan ka ng puso.',
         illustration: _SpriteIllustration(
           paths: [
             'assets/enemies/spanish_soldier_1.png',
@@ -39,18 +39,18 @@ List<TutorialStep> tutorialSteps(String charId) => [
         ),
       ),
       const TutorialStep(
-        title: 'KOLEKTAHIN ANG BARYA',
-        body: 'Mangolekta ng barya habang tumatakbo para dumagdag ang iyong '
-            'puntos.',
+        title: 'KUNIN ANG COINS',
+        body: 'Kunin ang coins habang tumatakbo para dumami ang '
+            'puntos mo.',
         illustration: _SpriteIllustration(
           paths: ['assets/collectibles/coin.png'],
         ),
       ),
       const TutorialStep(
-        title: 'ARTIFACT AT TARANGKAHAN',
-        body: 'Lapitan ang bawat artifact para sumagot ng tanong. Bubukas '
-            'ang tarangkahan sa dulo kapag nasagot mo na ang lahat ng '
-            'artifact. Sa itaas, makikita mo kung ilan na ang nasagot mo.',
+        title: 'ARTIFACT AT GATE',
+        body: 'Lapitan ang bawat artifact para sumagot ng tanong. Magbubukas '
+            'ang gate sa dulo kapag nasagot mo na lahat. Sa '
+            'itaas, makikita kung ilan na ang nasagot mo.',
         illustration: _SpriteIllustration(
           paths: [
             'assets/collectibles/artifact_1.png',
@@ -65,10 +65,10 @@ List<TutorialStep> tutorialSteps(String charId) => [
         illustration: _AnswerIconsIllustration(),
       ),
       const TutorialStep(
-        title: 'KAALAMAN ANG IYONG LAKAS',
-        body: 'Ang asul na bar ay ang iyong Kaalaman. Nababawasan ito kapag '
-            'tumama ang atake mo sa kaaway. Kapag naubos, may bumabalik na '
-            'isa pagkaraan ng ilang segundo.',
+        title: 'KAALAMAN ANG LAKAS MO',
+        body: 'Ang asul na bar ay ang Kaalaman mo. Nababawasan ito kapag '
+            'tumama ang atake mo sa kalaban. Kapag naubos, may bumabalik na '
+            'isa pagkatapos ng ilang segundo.',
         illustration: _SegmentBarIllustration(
           segments: CombatConstants.kaalamanDisplayMax,
           filled: 4,
@@ -77,9 +77,9 @@ List<TutorialStep> tutorialSteps(String charId) => [
       ),
       const TutorialStep(
         title: 'ALAGAAN ANG PUSO',
-        body: 'Ang pulang bar ay ang iyong puso. May ${GameConstants.maxHearts} '
-            'kang dala sa buong laro, hindi lang sa isang antas. Kapag '
-            'naubos, maghintay ng isang minuto bago ka makapagsimula ulit.',
+        body: 'Ang pulang bar ay ang puso mo. May ${GameConstants.maxHearts} '
+            'ka sa buong laro, hindi lang sa isang level. Kapag '
+            'naubos, maghintay ng isang minuto bago ka makapaglaro ulit.',
         illustration: _SegmentBarIllustration(
           segments: GameConstants.maxHearts,
           filled: 4,
@@ -89,7 +89,7 @@ List<TutorialStep> tutorialSteps(String charId) => [
       ),
       const TutorialStep(
         title: 'GAMITIN ANG POWER-UP',
-        body: 'Makakakuha ka ng power-up sa ilang antas. Gamitin ang mga ito '
+        body: 'Makakakuha ka ng power-up sa ilang level. Gamitin ang mga ito '
             'kapag mahirap na ang tanong.',
         illustration: _SpriteIllustration(
           paths: [

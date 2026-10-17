@@ -30,13 +30,14 @@ void main() {
   tearDown(() => Future<void>.delayed(const Duration(milliseconds: 50)));
 
   Future<GameNotifier> notifier(
-      {required bool switchOn, required int hearts}) async {
+      {required bool switchOn, required int hearts, bool testBuild = true}) async {
     await StorageService.setUnlockAll(switchOn);
     await StorageService.saveHeartsState(HeartsState(
       count: hearts,
       regenStartMs: DateTime.now().millisecondsSinceEpoch,
     ));
-    return GameNotifier(clock: ServerClock.fixed(DateTime.now()));
+    return GameNotifier(
+        clock: ServerClock.fixed(DateTime.now()), testBuild: testBuild);
   }
 
   test('with the switch on, a hit does not cost a heart', () async {
@@ -62,5 +63,20 @@ void main() {
   test('with the switch off, no hearts means no level', () async {
     final n = await notifier(switchOn: false, hearts: 0);
     expect(n.canStartLevel, isFalse);
+  });
+
+  group('the student build ignores a switch left on the phone', () {
+    test('a hit still costs a heart', () async {
+      final n = await notifier(
+          switchOn: true, hearts: GameConstants.maxHearts, testBuild: false);
+      n.enterLevel();
+      n.loseHeart();
+      expect(n.state.hearts.count, GameConstants.maxHearts - 1);
+    });
+
+    test('no hearts still means no level', () async {
+      final n = await notifier(switchOn: true, hearts: 0, testBuild: false);
+      expect(n.canStartLevel, isFalse);
+    });
   });
 }

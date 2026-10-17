@@ -84,7 +84,7 @@ void main() {
     await _pump(tester);
     await _type(tester, first: 'abcdef', second: 'abcde');
 
-    expect(find.text('Hindi magkatugma ang dalawa.'), findsOneWidget);
+    expect(find.text('Hindi pareho ang dalawa.'), findsOneWidget);
     expect(find.text('Halos tama na! Dapat pareho ang dalawa.'), findsOneWidget);
     expect(_saveEnabled(tester), isFalse);
   });
@@ -102,7 +102,7 @@ void main() {
     await _type(tester, first: 'secret1', second: 'secret1');
 
     expect(find.text('Ayos! Handa ka na.'), findsOneWidget);
-    expect(find.text('✓ 6 o higit pang character   ✓ Magkatugma'), findsOneWidget);
+    expect(find.text('✓ 6 o higit pang character   ✓ Pareho na'), findsOneWidget);
     expect(_saveEnabled(tester), isTrue);
 
     await tester.tap(find.byKey(ChangePasswordScreen.saveKey));
@@ -115,7 +115,7 @@ void main() {
   testWidgets('a failed save says so in Filipino, stays, and clears when typing',
       (tester) async {
     await _pump(tester);
-    _failWith = 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+    _failWith = 'Hindi ma-save ang password. I-check ang internet at subukan ulit.';
     await _type(tester, first: 'secret1', second: 'secret1');
     await tester.tap(find.byKey(ChangePasswordScreen.saveKey));
     await tester.pumpAndSettle();
@@ -137,7 +137,7 @@ void main() {
     await tester.tap(find.byKey(ChangePasswordScreen.saveKey));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hindi ma-save ang password. Subukan muli.'), findsOneWidget);
+    expect(find.text('Hindi ma-save ang password. Subukan ulit.'), findsOneWidget);
   });
 
   testWidgets('the eye shows what was typed', (tester) async {
@@ -171,7 +171,7 @@ void main() {
       expect(tester.takeException(), isNull);
       await _type(tester, first: 'secret1', second: 'secret2');
       expect(tester.takeException(), isNull);
-      _failWith = 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+      _failWith = 'Hindi ma-save ang password. I-check ang internet at subukan ulit.';
       await _type(tester, first: 'secret1', second: 'secret1');
       await tester.tap(find.byKey(ChangePasswordScreen.saveKey));
       await tester.pumpAndSettle();

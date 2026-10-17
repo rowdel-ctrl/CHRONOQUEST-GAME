@@ -138,7 +138,7 @@ class PauseOverlayWidget extends StatelessWidget {
           ),
         ),
         content: Text(
-          'Mawawala ang iyong progress sa level na ito kung aalis ka ngayon.',
+          'Mawawala ang progress mo sa level na ito kung aalis ka ngayon.',
           style: GoogleFonts.poppins(
             fontSize: 14,
             color: AppColors.textSecondary,

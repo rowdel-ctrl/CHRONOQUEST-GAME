@@ -4,6 +4,7 @@ import '../models/hearts_state.dart';
 import '../models/student.dart';
 import '../services/server_clock.dart';
 import 'auth_provider.dart';
+import 'unlock_all_provider.dart';
 import '../services/storage_service.dart';
 
 class GameState {
@@ -63,7 +64,7 @@ enum PowerUpKind {
 class GameNotifier extends StateNotifier<GameState> {
   /// Hearts are counted in the server's time ([ServerClock]), never the phone's:
   /// the phone's clock is the student's to change.
-  GameNotifier({ServerClock? clock})
+  GameNotifier({ServerClock? clock, this.testBuild = true})
       : _clock = clock ?? ServerClock.instance,
         super(GameState()) {
     _loadCharacter();
@@ -74,6 +75,10 @@ class GameNotifier extends StateNotifier<GameState> {
   }
 
   final ServerClock _clock;
+
+  /// Whether this is the tester build. Only then does the saved Test Mode switch
+  /// count; the student build never frees hearts or opens characters with it.
+  final bool testBuild;
 
   void _loadCharacter() {
     final char = StorageService.getCharacter();
@@ -150,7 +155,7 @@ class GameNotifier extends StateNotifier<GameState> {
   /// Whether hearts are not spent: the testing switch that opens every era
   /// (`unlock_all_provider.dart`) is on, so a tester can play on without
   /// waiting for hearts. Read from storage so it needs no provider.
-  bool get heartsAreFree => StorageService.getUnlockAll();
+  bool get heartsAreFree => testBuild && StorageService.getUnlockAll();
 
   bool get canStartLevel => heartsAreFree || state.hearts.count > 0;
 
@@ -228,7 +233,7 @@ class GameNotifier extends StateNotifier<GameState> {
   bool _isUnlocked(String characterId, Set<String> bought) {
     final c = allCharacters.where((c) => c.id == characterId).firstOrNull;
     if (c == null) return false;
-    return c.unlockCost == 0 || bought.contains(characterId) || StorageService.getUnlockAll();
+    return c.unlockCost == 0 || bought.contains(characterId) || (testBuild && StorageService.getUnlockAll());
   }
 
   bool isCharacterUnlocked(String characterId) =>
@@ -357,7 +362,7 @@ class GameNotifier extends StateNotifier<GameState> {
 }
 
 final gameProvider = StateNotifierProvider<GameNotifier, GameState>((ref) {
-  final notifier = GameNotifier();
+  final notifier = GameNotifier(testBuild: ref.watch(testBuildProvider));
   // The wallet follows whoever is logged in.
   ref.listen<String?>(
     authProvider.select((s) => s.student?.id),

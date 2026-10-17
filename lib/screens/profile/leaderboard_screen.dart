@@ -119,7 +119,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: _Segments(
-                          labels: const ['AKING KLASE', 'AMING PAARALAN'],
+                          labels: const ['KLASE KO', 'AMING PAARALAN'],
                           selected: _tab,
                           onSelect: (i) => setState(() => _tab = i),
                         ),
@@ -139,7 +139,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                         ? _Message(
                             title: 'HINDI MA-LOAD',
                             body: 'Walang internet o hindi maabot ang server.',
-                            button: 'SUBUKAN MULI',
+                            button: 'SUBUKAN ULIT',
                             onButton: _load,
                           )
                         : board.leaders.isEmpty

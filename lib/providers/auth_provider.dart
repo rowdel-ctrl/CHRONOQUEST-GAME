@@ -82,7 +82,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         isLoading: false,
         // The API layer throws a ready-to-show message. Anything else is a
         // bug or a bad reply, and its raw text means nothing to a student.
-        error: e is String ? e : 'May nangyaring problema. Subukan muli.',
+        error: e is String ? e : 'May problema. Subukan ulit.',
       );
       return {'success': false};
     }

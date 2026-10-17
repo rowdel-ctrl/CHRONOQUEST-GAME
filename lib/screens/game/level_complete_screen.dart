@@ -16,10 +16,14 @@ class LevelCompleteResult {
   final int correct;
   final int total;
 
+  /// The coins picked up in this attempt, now in the wallet. Zero hides the line.
+  final int coins;
+
   const LevelCompleteResult({
     required this.score,
     required this.correct,
     required this.total,
+    this.coins = 0,
   });
 
   /// Used when this screen is reached without a result payload — a deep link
@@ -30,6 +34,7 @@ class LevelCompleteResult {
 
 class LevelCompleteScreen extends StatefulWidget {
   static const Key dotsKey = Key('level_complete_dots');
+  static const Key coinsKey = Key('level_complete_coins');
 
   final String eraId;
   final int level;
@@ -243,6 +248,21 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
           textColor: Colors.white,
           fontSize: 10,
         ),
+        if (widget.result.coins > 0) ...[
+          SizedBox(height: compact ? 6 : 8),
+          GameBadge(
+            key: LevelCompleteScreen.coinsKey,
+            text: '+${widget.result.coins} COINS',
+            leading: Image.asset(
+              'assets/collectibles/coin.png',
+              width: 16,
+              height: 16,
+              filterQuality: FilterQuality.none,
+              errorBuilder: (_, __, ___) => const SizedBox(width: 16, height: 16),
+            ),
+            fontSize: 10,
+          ),
+        ],
         SizedBox(height: compact ? 6 : 10),
         Text(
           era.name,

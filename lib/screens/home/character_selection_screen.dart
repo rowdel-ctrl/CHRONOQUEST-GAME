@@ -270,7 +270,7 @@ class _CharHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'PILIIN ANG IYONG',
+            'PILIIN ANG',
             style: GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -280,7 +280,7 @@ class _CharHeader extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            'BAYANI',
+            'BAYANI MO',
             style: GoogleFonts.poppins(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -645,10 +645,10 @@ class _UnlockCharacterDialog extends ConsumerWidget {
                 Text('Magagamit mo na siya sa lahat ng level.', style: style),
                 const SizedBox(height: 10),
                 coinLine('Presyo', char.unlockCost),
-                coinLine('Iyong coins', coins),
+                coinLine('Coins mo', coins),
                 if (!canAfford)
                   Text(
-                    'Kulang ang coins. Mangolekta pa sa mga level.',
+                    'Kulang ang coins. Kumuha pa ng coins sa mga level.',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

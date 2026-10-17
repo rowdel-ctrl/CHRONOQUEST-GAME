@@ -502,7 +502,7 @@ class _Kodeks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Buksan ang Kodeks',
+      label: 'Buksan ang Codex',
       child: GestureDetector(
         key: ProfileScreen.codexKey,
         behavior: HitTestBehavior.opaque,

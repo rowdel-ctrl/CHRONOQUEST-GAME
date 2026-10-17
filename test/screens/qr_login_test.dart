@@ -44,7 +44,7 @@ void main() {
     testWidgets('starts with the camera off', (tester) async {
       await _pump(tester, QrScanPanel(onCode: (_) {}, scannerBuilder: _fakeCamera()));
 
-      expect(find.text('I-scan ang QR ng titser'), findsOneWidget);
+      expect(find.text('I-scan ang QR ng teacher'), findsOneWidget);
       expect(find.text('see-good'), findsNothing, reason: 'no camera until tapped');
     });
 
@@ -54,7 +54,7 @@ void main() {
       await tester.pump();
 
       expect(find.text('see-good'), findsOneWidget);
-      expect(find.text('Itapat sa QR code ng titser'), findsOneWidget);
+      expect(find.text('Itutok sa QR code ng teacher'), findsOneWidget);
     });
 
     testWidgets('a good scan reports the code and shows it', (tester) async {
@@ -99,7 +99,7 @@ void main() {
       await tester.tap(find.text('deny'));
       await tester.pump();
 
-      expect(find.text('Walang pahintulot sa camera'), findsOneWidget);
+      expect(find.text('Walang permission sa camera'), findsOneWidget);
       expect(find.textContaining('Pwede pa ring i-type'), findsOneWidget);
 
       await tester.tap(find.text('Subukan ulit'));
@@ -114,7 +114,7 @@ void main() {
       await tester.tap(find.text('Isara'));
       await tester.pump();
 
-      expect(find.text('I-scan ang QR ng titser'), findsOneWidget);
+      expect(find.text('I-scan ang QR ng teacher'), findsOneWidget);
       expect(find.text('see-good'), findsNothing);
     });
 
@@ -271,7 +271,7 @@ void main() {
       await tester.tap(find.text('deny'));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Walang pahintulot sa camera'), findsOneWidget);
+      expect(find.textContaining('Walang permission sa camera'), findsOneWidget);
       expect(find.byType(BackButton).evaluate().isNotEmpty || find.byType(CloseButton).evaluate().isNotEmpty, isTrue);
     });
   });

@@ -17,16 +17,16 @@ String loginErrorMessage(DioException e, {required bool joining}) {
     case DioExceptionType.connectionTimeout:
     case DioExceptionType.sendTimeout:
     case DioExceptionType.receiveTimeout:
-      return 'Mabagal o walang internet. Subukan muli.';
+      return 'Mabagal o walang internet. Subukan ulit.';
     case DioExceptionType.connectionError:
-      return 'Hindi makakonekta sa server. Tingnan ang internet at subukan muli.';
+      return 'Hindi maka-connect sa server. I-check ang internet at subukan ulit.';
     default:
       break;
   }
 
   final response = e.response;
   if (response == null) {
-    return 'Hindi makakonekta sa server. Subukan muli.';
+    return 'Hindi maka-connect sa server. Subukan ulit.';
   }
 
   final data = response.data;
@@ -38,30 +38,30 @@ String loginErrorMessage(DioException e, {required bool joining}) {
     case 400:
       if (server.contains('real name')) {
         return joining
-            ? 'Ilagay ang tunay mong pangalan para kay titser.'
+            ? 'I-type ang tunay mong pangalan para sa teacher mo.'
             : 'Walang account na may ganitong username sa class code na ito. '
-                "Tingnan ang username, o piliin ang 'Bago' para sumali.";
+                "I-check ang username, o piliin ang 'BAGO AKO' para sumali.";
       }
       if (server.contains('password')) {
         return joining
-            ? 'Ang password ay hindi bababa sa 6 na characters.'
-            : 'Mali ang password. Subukan muli.';
+            ? 'Dapat 6 characters o higit pa ang password.'
+            : 'Mali ang password. Subukan ulit.';
       }
-      return 'Punan ang class code at username.';
+      return 'I-type ang class code at username.';
     case 401:
       return joining
-          ? 'May gumagamit na ng username na ito sa klase. Kung ikaw iyon, '
-              "piliin ang 'Babalik'. Kung hindi, gumamit ng ibang username."
-          : 'Mali ang password. Subukan muli.';
+          ? "May gumagamit na ng username na ito sa klase. Kung ikaw 'yan, "
+              "piliin ang 'BALIK NA AKO'. Kung hindi, gumamit ng ibang username."
+          : 'Mali ang password. Subukan ulit.';
     case 404:
-      return 'Mali ang class code. Itanong sa titser ang tamang code.';
+      return 'Mali ang class code. Itanong sa teacher mo ang tamang code.';
     case 429:
-      return 'Masyadong maraming subok. Maghintay sandali bago subukan muli.';
+      return 'Masyadong maraming try. Maghintay sandali bago subukan ulit.';
     default:
       final code = response.statusCode ?? 0;
       return code >= 500
-          ? 'May problema sa server. Subukan muli mamaya.'
-          : 'Hindi makapag-login. Subukan muli.';
+          ? 'May problema sa server. Subukan ulit mamaya.'
+          : 'Hindi maka-login. Subukan ulit.';
   }
 }
 
@@ -72,13 +72,38 @@ enum LoginField { classCode, name, username, password }
 /// about nothing the student typed (no internet, too many tries, a server fault).
 LoginField? loginErrorField(String message) {
   if (message.startsWith('Mali ang class code') ||
-      message.startsWith('Punan ang class code')) {
+      message.startsWith('I-type ang class code')) {
     return LoginField.classCode;
   }
   if (message.contains('username')) return LoginField.username;
   if (message.contains('pangalan')) return LoginField.name;
   if (message.contains('password')) return LoginField.password;
   return null;
+}
+
+/// Shown when the request to the teacher cannot be sent for any reason but the
+/// internet or too many tries (the server has no such route yet, or it is down).
+/// The student is told to say the class code and username to the teacher
+/// instead, which the screen is already showing.
+const String resetRequestCannotSend =
+    'Hindi ma-send ngayon. Sabihin na lang sa teacher mo ang class code at username mo.';
+
+/// The message a student sees when asking the teacher for a new password fails.
+String resetRequestErrorMessage(DioException e) {
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+    case DioExceptionType.sendTimeout:
+    case DioExceptionType.receiveTimeout:
+      return 'Mabagal o walang internet. Subukan ulit.';
+    case DioExceptionType.connectionError:
+      return 'Walang internet. Subukan ulit.';
+    default:
+      break;
+  }
+  if (e.response?.statusCode == 429) {
+    return 'Masyadong maraming send. Subukan ulit mamaya.';
+  }
+  return resetRequestCannotSend;
 }
 
 /// The message a student sees when saving a new password fails. The server's own
@@ -88,25 +113,25 @@ String changePasswordErrorMessage(DioException e) {
     case DioExceptionType.connectionTimeout:
     case DioExceptionType.sendTimeout:
     case DioExceptionType.receiveTimeout:
-      return 'Mabagal o walang internet. Subukan muli.';
+      return 'Mabagal o walang internet. Subukan ulit.';
     case DioExceptionType.connectionError:
-      return 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+      return 'Hindi ma-save ang password. I-check ang internet at subukan ulit.';
     default:
       break;
   }
   switch (e.response?.statusCode) {
     case 400:
-      return 'Hindi bababa sa 6 na characters ang password.';
+      return 'Dapat 6 characters o higit pa ang password.';
     case 401:
       return 'Tapos na ang login mo. Mag-login ulit.';
     case 429:
-      return 'Masyadong maraming subok. Maghintay sandali bago subukan muli.';
+      return 'Masyadong maraming try. Maghintay sandali bago subukan ulit.';
     case null:
-      return 'Hindi ma-save ang password. Tingnan ang internet at subukan muli.';
+      return 'Hindi ma-save ang password. I-check ang internet at subukan ulit.';
     default:
       final code = e.response!.statusCode!;
       return code >= 500
-          ? 'May problema sa server. Subukan muli mamaya.'
-          : 'Hindi ma-save ang password. Subukan muli.';
+          ? 'May problema sa server. Subukan ulit mamaya.'
+          : 'Hindi ma-save ang password. Subukan ulit.';
   }
 }

@@ -178,6 +178,58 @@ class _AuthFieldState extends State<AuthField> {
   }
 }
 
+/// A box that shows a value to read out, such as the class code to tell the
+/// teacher. Looks like an answer box, but there is nothing to type.
+class AuthReadout extends StatelessWidget {
+  final String label;
+  final String value;
+  const AuthReadout({super.key, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 7, 14, 9),
+      decoration: BoxDecoration(
+        color: _fieldFill,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.primaryDark, width: 3),
+        boxShadow: const [BoxShadow(color: AppColors.primaryDark, offset: Offset(0, 4))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.9,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          // A long username shrinks instead of running off the box.
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              maxLines: 1,
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                height: 1.25,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// A round green tick for a box that is right.
 class AuthTick extends StatelessWidget {
   const AuthTick({super.key});

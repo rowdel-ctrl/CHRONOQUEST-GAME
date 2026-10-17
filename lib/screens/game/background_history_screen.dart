@@ -98,7 +98,7 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
                                     const SizedBox(height: 16),
                                   ],
                                   Text(
-                                    'MGA MAHAHALAGANG TERMINO  ·  itapik ang kard',
+                                    'MGA MAHALAGANG TERMINO  ·  i-tap ang card',
                                     style: GoogleFonts.poppins(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
@@ -497,7 +497,7 @@ class _TermCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  open ? term['def']! : 'Itapik para mabasa',
+                  open ? term['def']! : 'I-tap para mabasa',
                   textAlign: open ? TextAlign.start : TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: open ? 12 : 11,
@@ -543,8 +543,8 @@ class _BottomBar extends StatelessWidget {
               ready
                   ? 'Nabasa mo na ang lahat ng termino.'
                   : left == 1
-                      ? 'Isa pang termino ang kailangang basahin.'
-                      : '$left termino pa ang kailangang basahin.',
+                      ? 'May isa pang termino na babasahin.'
+                      : 'May $left termino pa na babasahin.',
               style: GoogleFonts.poppins(
                 fontSize: 12,
                 height: 1.3,

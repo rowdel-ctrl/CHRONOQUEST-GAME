@@ -170,8 +170,8 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                                 const SizedBox(height: 12),
                                 Text(
                                   hasError
-                                      ? 'Hindi ma-load ang iyong mga score ngayon. Subukang buksan muli ang page na ito.'
-                                      : 'Kulang pa ang datos para makita ang iyong Learning Gain.',
+                                      ? 'Hindi ma-load ang scores mo ngayon. Buksan ulit ang page na ito.'
+                                      : 'Kulang pa ang data para makita ang Learning Gain mo.',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.poppins(
                                     color: AppColors.textSecondary,

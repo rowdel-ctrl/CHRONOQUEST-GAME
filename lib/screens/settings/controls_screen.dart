@@ -60,7 +60,7 @@ class ControlsScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 18),
                           Text(
-                            'Naka-save sa device na ito.',
+                            'Saved na sa device na ito.',
                             style: GoogleFonts.poppins(
                               fontSize: 11,
                               color: Colors.white54,

@@ -5,12 +5,27 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/storage_service.dart';
 import '../../utils/login_errors.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/menu_chip.dart';
 import '../../widgets/pixel_icon.dart';
 import '../../widgets/qr_scan_panel.dart';
 import 'auth_widgets.dart';
+import 'forgot_password_screen.dart';
+
+/// The class code and username of the last sign-in on this phone.
+typedef LastSignIn = ({String classCode, String username});
+
+/// Reads them from the phone: null when there are none, or when storage is not
+/// open (as in a widget test).
+LastSignIn? rememberedSignIn() {
+  try {
+    return StorageService.getLastSignIn();
+  } catch (_) {
+    return null;
+  }
+}
 
 /// One question at a time, in this order.
 enum LoginStep { classCode, name, username, password, confirm }
@@ -22,13 +37,23 @@ class LoginScreen extends ConsumerStatefulWidget {
   /// The camera view for QR scanning. Tests pass a fake; the app uses the camera.
   final ScannerViewBuilder scannerBuilder;
 
-  const LoginScreen({super.key, this.scannerBuilder = cameraScannerView});
+  /// Where "Balik na ako" finds the last sign-in. Tests pass a fake.
+  final LastSignIn? Function() lastSignIn;
+
+  const LoginScreen({
+    super.key,
+    this.scannerBuilder = cameraScannerView,
+    this.lastSignIn = rememberedSignIn,
+  });
 
   static const newKey = ValueKey('login_new');
   static const returningKey = ValueKey('login_returning');
   static const nextKey = ValueKey('login_next');
   static const backKey = ValueKey('login_back');
   static const stepsKey = ValueKey('login_steps');
+  static const forgotKey = ValueKey('login_forgot');
+  static const identityKey = ValueKey('login_identity');
+  static const changeKey = ValueKey('login_change');
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -55,6 +80,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   /// The question the server's complaint is about.
   LoginStep? _serverErrorAt;
+
+  /// True while the password question shows who is signing in (the class code and
+  /// username this phone remembered), with a way to change them.
+  bool _identityShown = false;
 
   @override
   void dispose() {
@@ -95,21 +124,55 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _choose(bool joining) {
     _clearErrors();
+    // "Balik na ako" on a phone that remembers the last sign-in goes straight to the
+    // password question. Not when the student has already typed something here.
+    final last = joining || _classCode.text.isNotEmpty || _username.text.isNotEmpty
+        ? null
+        : widget.lastSignIn();
     setState(() {
       _joining = joining;
-      _index = 0;
+      _identityShown = last != null;
+      if (last != null) {
+        _classCode.text = last.classCode;
+        _username.text = last.username;
+        _index = _steps.indexOf(LoginStep.password);
+      } else {
+        _index = 0;
+      }
     });
   }
 
   void _back() {
     _clearErrors();
     setState(() {
+      _identityShown = false;
       if (_index > 0) {
         _index--;
       } else {
         _joining = null;
       }
     });
+  }
+
+  /// "Hindi ikaw? Palitan": back to the first question, with the remembered
+  /// answers in the boxes to change.
+  void _changeIdentity() {
+    _clearErrors();
+    setState(() {
+      _identityShown = false;
+      _index = 0;
+    });
+  }
+
+  /// "Forgot password?": to the screen that asks the teacher for a new one.
+  void _forgot() {
+    context.push(
+      '/forgot-password',
+      extra: ForgotPasswordArgs(
+        classCode: _classCode.text.trim(),
+        username: _username.text.trim(),
+      ),
+    );
   }
 
   void _applyScannedCode(String code) {
@@ -128,20 +191,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final text = _controllerFor(s).text;
     switch (s) {
       case LoginStep.classCode:
-        return text.trim().isEmpty ? 'Kailangan ang class code' : null;
+        return text.trim().isEmpty ? 'I-type ang class code' : null;
       case LoginStep.name:
-        return text.trim().isEmpty ? 'Kailangan ang tunay na pangalan' : null;
+        return text.trim().isEmpty ? 'I-type ang pangalan mo' : null;
       case LoginStep.username:
-        return text.trim().isEmpty ? 'Kailangan ang username' : null;
+        return text.trim().isEmpty ? 'I-type ang username' : null;
       case LoginStep.password:
-        if (text.isEmpty) return 'Kailangan ang password';
+        if (text.isEmpty) return 'I-type ang password';
         // The length rule is for choosing a password. On "Balik na ako" a short
         // one is just a wrong one, and the server says so.
-        if (_joining == true && text.length < 6) return 'Hindi bababa sa 6 na characters';
+        if (_joining == true && text.length < 6) return 'Dapat 6 characters o higit pa';
         return null;
       case LoginStep.confirm:
-        if (text.isEmpty) return 'Kailangan kumpirmahin ang password';
-        if (text != _password.text) return 'Hindi magkatugma ang password';
+        if (text.isEmpty) return 'Ulitin ang password';
+        if (text != _password.text) return 'Hindi pareho ang password';
         return null;
     }
   }
@@ -195,6 +258,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final target = at != null && _steps.contains(at) ? at : _steps.last;
       _serverErrorAt = target;
       _index = _steps.indexOf(target);
+      // A problem with the class code or username means those are to be changed.
+      if (target != LoginStep.password) _identityShown = false;
     });
   }
 
@@ -306,7 +371,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         else
           AuthGuide(
             say: auth.isLoading
-                ? 'Sandali lang, sinusuri ko…'
+                ? 'Sandali lang, chine-check ko…'
                 : error != null
                     ? 'May kailangang ayusin. Subukan ulit!'
                     : _guideLine(_step),
@@ -316,14 +381,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   String _guideLine(LoginStep s) => switch (s) {
-        LoginStep.classCode => 'Nasa poster ni titser, o i-scan ang QR sa kaliwa.',
-        LoginStep.name => 'Para makilala ka ni titser.',
+        LoginStep.classCode => 'Nasa poster ng teacher mo, o i-scan ang QR sa kaliwa.',
+        LoginStep.name => 'Para makilala ka ng teacher mo.',
         LoginStep.username => _joining == true
             ? 'Ito ang gagamitin mo sa pag-login.'
             : 'Kumusta ulit!',
         LoginStep.password => _joining == true
             ? 'Sikreto mo ito, ha!'
-            : 'Maligayang pagbabalik!',
+            : 'Welcome back!',
         LoginStep.confirm => 'Konti na lang!',
       };
 
@@ -341,7 +406,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         LoginStep.classCode => 'EDG5A1',
         LoginStep.name => 'Buong pangalan',
         LoginStep.username => 'JuanNinja99',
-        LoginStep.password => _joining == true ? 'Hindi bababa sa 6' : 'Password',
+        LoginStep.password => _joining == true ? '6 o higit pa' : 'Password',
         LoginStep.confirm => 'Ulitin ang password',
       };
 
@@ -385,21 +450,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       help = AuthHelp(
         controller.text.length >= 6
             ? '✓ 6 o higit pang character'
-            : 'Hindi bababa sa 6 na character',
+            : 'Dapat 6 characters o higit pa',
         good: controller.text.length >= 6 ? true : null,
       );
     } else if (step == LoginStep.confirm && controller.text.isNotEmpty) {
       final match = controller.text == _password.text;
-      help = AuthHelp(match ? '✓ Magkatugma' : 'Hindi pa magkatugma', good: match);
+      help = AuthHelp(match ? '✓ Pareho na' : 'Hindi pa pareho', good: match);
     } else if (step == LoginStep.classCode && _codeIsScanned) {
-      help = const AuthHelp('Na-scan mula sa QR ni titser.', good: true);
+      help = const AuthHelp('Na-scan mula sa QR ng teacher.', good: true);
     } else if (step == LoginStep.classCode) {
       help = AuthHelp(wide
-          ? 'Nasa poster ni titser, o i-scan ang QR sa kaliwa.'
-          : 'Nasa poster ni titser, o pindutin ang scan.');
+          ? 'Nasa poster ng teacher mo, o i-scan ang QR sa kaliwa.'
+          : 'Nasa poster ng teacher mo, o pindutin ang scan.');
     } else if (!wide) {
       help = AuthHelp(_guideLine(step));
     }
+
+    // On "Balik na ako" the password question also says who is signing in, and has
+    // the way out for a student who forgot the password.
+    final returningPassword = _joining == false && step == LoginStep.password;
+    final serverError = error != null && error == auth.error;
+    final wrongPassword = serverError && loginErrorField(error) == LoginField.password;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -415,6 +486,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ),
         const SizedBox(height: 12),
+        if (returningPassword && _identityShown) ...[
+          _Identity(
+            key: LoginScreen.identityKey,
+            username: _username.text.trim(),
+            classCode: _classCode.text.trim(),
+            onChange: _changeIdentity,
+          ),
+          const SizedBox(height: 8),
+        ],
         AuthField(
           // A new box for each question, so the keyboard is up and the cursor in it.
           key: ValueKey(('answer', step)),
@@ -438,6 +518,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
         const SizedBox(height: 12),
         if (help != null) ...[help, const SizedBox(height: 12)],
+        if (returningPassword) ...[
+          _ForgotLink(key: LoginScreen.forgotKey, hot: wrongPassword, onTap: _forgot),
+          const SizedBox(height: 12),
+        ],
         auth.isLoading
             ? const AuthBusyButton(label: 'SANDALI LANG…')
             : GameButton(
@@ -450,6 +534,106 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: _next,
               ),
       ],
+    );
+  }
+}
+
+/// Who is signing in, as the phone remembers it, and a way to change it.
+class _Identity extends StatelessWidget {
+  final String username;
+  final String classCode;
+  final VoidCallback onChange;
+  const _Identity({
+    super.key,
+    required this.username,
+    required this.classCode,
+    required this.onChange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.account_circle, color: authSoftText, size: 20),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            '$username · $classCode',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: AppColors.surface,
+            ),
+          ),
+        ),
+        TextButton(
+          key: LoginScreen.changeKey,
+          onPressed: onChange,
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            minimumSize: const Size(0, 36),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            'Hindi ikaw? Palitan',
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AppColors.accent,
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.accent,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// "Forgot password?" under the password box. After a wrong password it becomes a
+/// bordered button across the width, so a stuck student cannot miss it.
+class _ForgotLink extends StatelessWidget {
+  final bool hot;
+  final VoidCallback onTap;
+  const _ForgotLink({super.key, required this.hot, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Text(
+      hot ? 'Forgot password? Tap dito.' : 'Forgot password?',
+      textAlign: TextAlign.center,
+      style: GoogleFonts.poppins(
+        fontSize: hot ? 14 : 13,
+        fontWeight: FontWeight.w600,
+        color: AppColors.accent,
+        decoration: hot ? null : TextDecoration.underline,
+        decorationColor: AppColors.accent,
+      ),
+    );
+    // The whole row can be tapped, not only the words.
+    return Semantics(
+      button: true,
+      label: 'Forgot password?',
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(4),
+        child: Container(
+          width: double.infinity,
+          alignment: hot ? Alignment.center : Alignment.centerRight,
+          padding: hot
+              ? const EdgeInsets.symmetric(horizontal: 14, vertical: 10)
+              : const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          decoration: hot
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: AppColors.accent, width: 2),
+                )
+              : null,
+          child: text,
+        ),
+      ),
     );
   }
 }
@@ -497,7 +681,7 @@ class _ChoiceView extends StatelessWidget {
         _ChoiceButton(
           key: LoginScreen.newKey,
           title: 'BAGO AKO',
-          subtitle: 'Sasali ako sa klase ni titser',
+          subtitle: 'Sasali ako sa klase ng teacher ko',
           color: AppColors.accent,
           onTap: () => onChoose(true),
         ),

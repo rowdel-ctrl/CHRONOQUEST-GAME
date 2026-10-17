@@ -33,7 +33,7 @@ class GateLockedOverlayWidget extends StatelessWidget {
                 Image.asset('assets/ui/lock_icon.png', width: 22, height: 22),
                 const SizedBox(width: 10),
                 Text(
-                  'NAKASARA ANG TARANGKAHAN',
+                  'LOCKED ANG GATE',
                   style: GoogleFonts.poppins(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,

@@ -277,11 +277,11 @@ const _names = {
   PowerUpKind.fiftyFifty: ('50/50', 'Tinatanggal ang dalawang maling sagot.'),
   PowerUpKind.shield: (
     'Shield',
-    'Sumasalo ng isang pagkakamali o pagkaubos ng oras.'
+    'Sinasalo ang isang mali, o kapag naubos ang oras.'
   ),
   PowerUpKind.timeFreeze: (
     'Time Freeze',
-    'Pinahihinto ang oras sa tanong ng boss.'
+    'Pinapahinto ang oras sa tanong ng boss.'
   ),
 };
 

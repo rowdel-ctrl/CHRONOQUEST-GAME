@@ -186,7 +186,7 @@ class _QrScannerState extends State<QrScanner> {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              'Itapat sa QR code ng titser',
+              'Itutok sa QR code ng teacher',
               maxLines: 1,
               style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12 * k),
             ),
@@ -350,7 +350,7 @@ class _QrScanPanelState extends State<QrScanPanel> {
         children: [
           Icon(Icons.qr_code_scanner, size: 40 * _s, color: AppColors.accent),
           SizedBox(height: 6 * _s),
-          _title('I-scan ang QR ng titser'),
+          _title('I-scan ang QR ng teacher'),
           SizedBox(height: 3 * _s),
           _sub('Hindi mo na kailangang i-type ang class code'),
           SizedBox(height: 8 * _s),
@@ -410,10 +410,10 @@ class _QrScanPanelState extends State<QrScanPanel> {
         Icon(Icons.no_photography, size: 46 * _s, color: const Color(0xFFC9A9A6)),
         SizedBox(height: 8 * _s),
         _title(
-            denied ? 'Walang pahintulot sa camera' : 'Hindi mabuksan ang camera'),
+            denied ? 'Walang permission sa camera' : 'Hindi mabuksan ang camera'),
         SizedBox(height: 4 * _s),
         _sub(denied
-            ? 'Payagan ang camera sa Settings ng phone. Pwede pa ring i-type ang class code.'
+            ? 'I-allow ang camera sa Settings ng phone. Pwede pa ring i-type ang class code.'
             : 'Pwede pa ring i-type ang class code.'),
         SizedBox(height: 8 * _s),
         _link('Subukan ulit', _start),
@@ -506,7 +506,7 @@ class _QrScanSheetState extends State<_QrScanSheet> {
                 padding: const EdgeInsets.all(24),
                 child: Text(
                   _failure == ScanFailure.denied
-                      ? 'Walang pahintulot sa camera. Payagan ito sa Settings ng phone, o i-type na lang ang class code.'
+                      ? 'Walang permission sa camera. I-allow ito sa Settings ng phone, o i-type na lang ang class code.'
                       : 'Hindi mabuksan ang camera. I-type na lang ang class code.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(

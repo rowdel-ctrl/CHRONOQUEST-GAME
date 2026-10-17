@@ -69,6 +69,14 @@ class DevFlags {
   );
 }
 
+// ─── BUILD FLAGS ────────────────────────────────────────────────────────────
+class AppFlags {
+  /// True only in the tester build, made with `--dart-define=TEST_MODE=true`.
+  /// The student build (no flag) has no Test Mode: the switch is not on the
+  /// Settings screen, and a value saved by an earlier tester install is ignored.
+  static const bool testBuild = bool.fromEnvironment('TEST_MODE');
+}
+
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────
 class GameConstants {
   /// The virtual height the whole game is designed at. `StretchToFillViewport`
@@ -262,7 +270,7 @@ const List<EraData> allEras = [
     guide: 'Datu Lapu-Lapu',
     enemyTypes: ['tribal_warrior', 'dark_spirit'],
     bossName: 'bakunawa',
-    bossDialogue: 'Patunayan mo ang iyong karunungan!',
+    bossDialogue: 'Patunayan mo ang galing mo!',
     groundColor: Color(0xFF5D4E37),
     historicalText:
         'Bago dumating ang mga mananakop, ang mga Pilipino ay nabuhay sa mga '
@@ -285,7 +293,7 @@ const List<EraData> allEras = [
     guide: 'Jose Rizal',
     enemyTypes: ['spanish_soldier', 'tax_collector'],
     bossName: 'governor',
-    bossDialogue: 'Kaya mo bang harapin ang kapangyarihan ng Espanya?',
+    bossDialogue: 'Kaya mo bang labanan ang Espanya?',
     groundColor: Color(0xFF808080),
     historicalText:
         'Noong 1565, nagsimula ang pananakop ng Espanya sa Pilipinas sa ilalim '
@@ -312,7 +320,7 @@ const List<EraData> allEras = [
     guide: 'Marcelo H. del Pilar',
     enemyTypes: ['spanish_soldier', 'tax_collector'],
     bossName: 'governor',
-    bossDialogue: 'Ang pluma ba ay mas matalas sa espada?',
+    bossDialogue: 'Mas malakas ba ang pen kaysa sa espada?',
     groundColor: Color(0xFF808080),
     historicalText:
         'Noong huling bahagi ng ika-19 na siglo, sumibol ang damdaming '
@@ -340,7 +348,7 @@ const List<EraData> allEras = [
     guide: 'Apolinario Mabini',
     enemyTypes: ['american_soldier', 'propaganda'],
     bossName: 'general',
-    bossDialogue: 'Ipakita mo na hindi ka mabibili ng pangako ng kalayaan!',
+    bossDialogue: 'Hindi ka mauuto ng pangako ng kalayaan, di ba? Patunayan mo!',
     groundColor: Color(0xFF8B6914),
     historicalText:
         'Noong 1898, pagkatapos ng Digmaang Espanyol-Amerikano, inilipat ang '
@@ -363,7 +371,7 @@ const List<EraData> allEras = [
     guide: 'Josefa Llanes Escoda',
     enemyTypes: ['japanese_soldier', 'tank'],
     bossName: 'commander',
-    bossDialogue: 'Ang kalayaan ay hindi ipinagkakaloob — kinukuha!',
+    bossDialogue: 'Hindi ibinibigay ang kalayaan — kinukuha ito!',
     groundColor: Color(0xFF4A4A3A),
     historicalText:
         'Noong Disyembre 8, 1941, sinalakay ng Hapon ang Pilipinas. Naganap ang '
@@ -385,7 +393,7 @@ const List<EraData> allEras = [
     guide: 'Corazon Aquino',
     enemyTypes: ['corruption_figure', 'misinfo_cloud'],
     bossName: 'corruption_boss',
-    bossDialogue: 'Ang katotohanan ang iyong sandata!',
+    bossDialogue: 'Ang katotohanan ang sandata mo!',
     groundColor: Color(0xFF555555),
     historicalText:
         'Noong Hulyo 4, 1946, opisyal na naging malaya ang Pilipinas. Sa mga '

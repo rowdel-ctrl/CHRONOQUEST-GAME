@@ -43,7 +43,7 @@ class CodexScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 Text(
-                  '$total na artifact ang nakalap',
+                  '$total artifact ang nakuha mo',
                   style: GoogleFonts.poppins(
                     color: AppColors.accent,
                     fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class CodexScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Bawat artifact ay may kasaysayang natutunan mo.',
+                  'Bawat artifact ay may history na natutunan mo.',
                   style: GoogleFonts.poppins(
                     color: Colors.white70,
                     fontSize: 11,
@@ -88,7 +88,7 @@ class _EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Wala ka pang nakalap na artifact',
+              'Wala ka pang nakukuhang artifact',
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 color: Colors.white,
@@ -98,8 +98,8 @@ class _EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Maglaro ng antas at sagutin nang tama ang mga tanong sa '
-              'artifact upang makalap ang mga ito.',
+              'Maglaro ng level at sagutin nang tama ang mga tanong sa '
+              'artifact para makuha ang mga ito.',
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 color: Colors.white70,

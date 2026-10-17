@@ -239,5 +239,13 @@ void main() {
       final n = fresh('c7');
       expect(n.isCharacterUnlocked(paid.id), isTrue);
     });
+
+    test('the student build ignores the switch: a locked character stays locked', () async {
+      await StorageService.setUnlockAll(true);
+      addTearDown(() => StorageService.setUnlockAll(false));
+      final n = GameNotifier(clock: ServerClock.fixed(server), testBuild: false)
+        ..loadWallet('c8');
+      expect(n.isCharacterUnlocked(paid.id), isFalse);
+    });
   });
 }

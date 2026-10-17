@@ -5,6 +5,7 @@ import '../services/storage_service.dart';
 import 'constants.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/change_password_screen.dart';
+import '../screens/auth/forgot_password_screen.dart';
 import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
 import '../screens/settings/controls_screen.dart';
@@ -32,10 +33,13 @@ final GoRouter appRouter = GoRouter(
 
     final hasToken = await StorageService.hasToken();
     final isLoginRoute = state.matchedLocation == '/login';
+    final isForgotRoute = state.matchedLocation == '/forgot-password';
     final isChangePwRoute = state.matchedLocation == '/change-password';
 
-    if (!hasToken && !isLoginRoute) return '/login';
-    if (hasToken && isLoginRoute) return '/character-selection';
+    // Forgetting a password happens before signing in, so it is open to everyone
+    // who is signed out.
+    if (!hasToken && !isLoginRoute && !isForgotRoute) return '/login';
+    if (hasToken && (isLoginRoute || isForgotRoute)) return '/character-selection';
     if (hasToken && !isChangePwRoute) {
       final student = StorageService.getStudent();
       if (student?.mustChangePassword == true) return '/change-password';
@@ -46,6 +50,20 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      // Opened from the sign-in screen with what was typed there. Reached any other
+      // way (a deep link, a restart) there is nothing to show, so back to sign in.
+      redirect: (context, state) =>
+          state.extra is ForgotPasswordArgs ? null : '/login',
+      builder: (context, state) {
+        final args = state.extra! as ForgotPasswordArgs;
+        return ForgotPasswordScreen(
+          classCode: args.classCode,
+          username: args.username,
+        );
+      },
     ),
     GoRoute(
       path: '/change-password',

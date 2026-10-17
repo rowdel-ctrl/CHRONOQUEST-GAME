@@ -69,7 +69,7 @@ class LevelFailedScreen extends ConsumerWidget {
 
                       // Title
                       Text(
-                        'SUBUKAN MULI!',
+                        'SUBUKAN ULIT!',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
@@ -80,7 +80,7 @@ class LevelFailedScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
 
                       Text(
-                        'Level $level — Naubusan ng puso',
+                        'Level $level — Naubos ang puso mo',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: AppColors.textMuted,
@@ -131,14 +131,14 @@ class LevelFailedScreen extends ConsumerWidget {
                             Expanded(
                               child: Text(
                                 hasHearts
-                                    ? 'Tip: Basahin muli ang kasaysayan bago '
-                                        'subukan ulit. Makakatulong ito sa '
+                                    ? 'Tip: Basahin ulit ang history bago '
+                                        'mag-try ulit. Makakatulong ito sa '
                                         'pagsagot!'
                                     : timeUntilNext != null
                                         ? 'Wala nang puso! Susunod na puso sa '
                                             '${_formatCountdown(timeUntilNext)}.'
                                         : 'Wala nang puso! Mag-online para '
-                                            'magsimulang bumalik ang mga puso.',
+                                            'bumalik ang mga puso.',
                                 style: GoogleFonts.poppins(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,

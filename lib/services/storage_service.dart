@@ -55,6 +55,25 @@ class StorageService {
     return Student.fromJson(Map<String, dynamic>.from(data as Map));
   }
 
+  // ─── LAST SIGN-IN ─────────────────────────────────────────────────────────
+  // So "Balik na ako" only has to ask for the password. Never the password.
+  static const _lastClassCodeKey = 'last_class_code';
+  static const _lastUsernameKey = 'last_username';
+
+  /// The class code and username of the last successful sign-in on this phone,
+  /// or null. It survives logout (see [clearAll]).
+  static ({String classCode, String username})? getLastSignIn() {
+    final code = appBox.get(_lastClassCodeKey) as String?;
+    final user = appBox.get(_lastUsernameKey) as String?;
+    if (code == null || code.isEmpty || user == null || user.isEmpty) return null;
+    return (classCode: code, username: user);
+  }
+
+  static Future<void> saveLastSignIn(String classCode, String username) async {
+    await appBox.put(_lastClassCodeKey, classCode);
+    await appBox.put(_lastUsernameKey, username);
+  }
+
   // ─── CHARACTER SELECTION ──────────────────────────────────────────────────
   static Future<void> saveCharacter(String characterId) async {
     await appBox.put(_characterKey, characterId);
@@ -259,7 +278,12 @@ class StorageService {
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   static Future<void> clearAll() async {
+    // The last sign-in is kept, so the next one only asks for the password.
+    final lastSignIn = getLastSignIn();
     await _storage.deleteAll();
     await appBox.clear();
+    if (lastSignIn != null) {
+      await saveLastSignIn(lastSignIn.classCode, lastSignIn.username);
+    }
   }
 }

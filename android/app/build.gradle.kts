@@ -19,6 +19,16 @@ fun gitCommitCount(): Int {
     }
 }
 
+// Two builds from the same code:
+//   student (the default, what goes on the landing page): no Test Mode.
+//   tester: has the Test Mode switch, its own app id and its own name, so it can
+//   sit on a phone next to the student app. Make it with
+//     flutter build apk --release --target-platform android-arm64 \
+//       --dart-define=TEST_MODE=true --android-project-arg=testBuild=true
+// Both flags go together: the define turns the switch on inside the game, the
+// project argument gives the app its own id, name and version suffix.
+val testBuild = project.findProperty("testBuild")?.toString() == "true"
+
 android {
     namespace = "com.chronoquest.chronoquest"
     compileSdk = 36
@@ -30,11 +40,12 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.chronoquest.chronoquest"
+        applicationId = if (testBuild) "com.chronoquest.chronoquest.test" else "com.chronoquest.chronoquest"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = gitCommitCount()
-        versionName = flutter.versionName
+        versionName = "${flutter.versionName}${if (testBuild) "-test" else ""}"
+        manifestPlaceholders["appLabel"] = if (testBuild) "ChronoQuest TEST" else "chronoquest"
     }
 
     buildTypes {

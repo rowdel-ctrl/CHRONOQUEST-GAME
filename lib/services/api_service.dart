@@ -49,11 +49,27 @@ class ApiService {
 
       final user = Student.fromJson(data['user'] as Map<String, dynamic>);
       await StorageService.saveStudent(user);
+      await StorageService.saveLastSignIn(classCode, username);
 
       return data;
     } on DioException catch (e) {
       // A name is only sent when joining ("Bago"); see loginErrorMessage.
       throw loginErrorMessage(e, joining: name != null && name.isNotEmpty);
+    }
+  }
+
+  /// Asks the student's teacher to reset the password. The server gives the same
+  /// answer whether or not that student exists, so nobody can use this to find
+  /// out who is in a class. Throws a message that is ready to show.
+  Future<void> requestPasswordReset({
+    required String classCode,
+    required String username,
+  }) async {
+    try {
+      await _dio.post('/student/password-reset-request',
+          data: {'classCode': classCode, 'username': username});
+    } on DioException catch (e) {
+      throw resetRequestErrorMessage(e);
     }
   }
 
@@ -206,10 +222,10 @@ class ApiService {
   String _handleError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.receiveTimeout) {
-      return 'Walang internet connection. Subukan muli.';
+      return 'Walang internet. Subukan ulit.';
     }
     if (e.type == DioExceptionType.connectionError) {
-      return 'Hindi maabot ang server. I-check kung tumatakbo ang backend at tama ang API URL.';
+      return 'Hindi maabot ang server. Subukan ulit mamaya.';
     }
     if (e.response != null) {
       final data = e.response?.data;
@@ -218,7 +234,7 @@ class ApiService {
       }
       return 'Error ${e.response?.statusCode}';
     }
-    return 'Hindi makakonekta sa server. Subukan muli.';
+    return 'Hindi maka-connect sa server. Subukan ulit.';
   }
 }
 

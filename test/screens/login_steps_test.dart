@@ -4,6 +4,7 @@
 import 'package:chronoquest/models/student.dart';
 import 'package:chronoquest/providers/auth_provider.dart';
 import 'package:chronoquest/screens/auth/auth_widgets.dart';
+import 'package:chronoquest/screens/auth/forgot_password_screen.dart';
 import 'package:chronoquest/screens/auth/login_screen.dart';
 import 'package:chronoquest/utils/login_errors.dart';
 import 'package:chronoquest/widgets/qr_scan_panel.dart';
@@ -71,6 +72,8 @@ Future<void> _pump(
   Size size = const Size(800, 360),
   String link = 'chronoquest://join?code=EDG5A1',
   List<String>? landedOn,
+  LastSignIn? last,
+  List<ForgotPasswordArgs>? forgotLog,
 }) async {
   _auth = _FakeAuth();
   await tester.binding.setSurfaceSize(size);
@@ -84,7 +87,16 @@ Future<void> _pump(
   final router = GoRouter(routes: [
     GoRoute(
       path: '/',
-      builder: (_, __) => LoginScreen(scannerBuilder: _camera(link)),
+      builder: (_, __) =>
+          LoginScreen(scannerBuilder: _camera(link), lastSignIn: () => last),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (_, state) {
+        final args = state.extra;
+        if (args is ForgotPasswordArgs) forgotLog?.add(args);
+        return const Scaffold(body: Text('forgot stand-in'));
+      },
     ),
     GoRoute(
       path: '/character-selection',
@@ -202,13 +214,13 @@ void main() {
       await tester.tap(find.byKey(LoginScreen.nextKey));
       await tester.pump();
 
-      expect(find.text('Kailangan ang class code'), findsOneWidget);
+      expect(find.text('I-type ang class code'), findsOneWidget);
       expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
 
       // Typing clears it.
       await tester.enterText(find.byType(TextField), 'E');
       await tester.pump();
-      expect(find.text('Kailangan ang class code'), findsNothing);
+      expect(find.text('I-type ang class code'), findsNothing);
     });
 
     testWidgets('a new password under 6 characters is refused, and the line says so',
@@ -220,11 +232,11 @@ void main() {
       await _answer(tester, 'juan1');
       await tester.enterText(find.byType(TextField), 'abc');
       await tester.pump();
-      expect(find.text('Hindi bababa sa 6 na character'), findsOneWidget);
+      expect(find.text('Dapat 6 characters o higit pa'), findsOneWidget);
       await tester.tap(find.byKey(LoginScreen.nextKey));
       await tester.pump();
 
-      expect(find.text('Hindi bababa sa 6 na characters'), findsOneWidget);
+      expect(find.text('Dapat 6 characters o higit pa'), findsOneWidget);
       expect(find.text('Gumawa ng password.'), findsOneWidget);
 
       await tester.enterText(find.byType(TextField), 'abcdef');
@@ -242,16 +254,16 @@ void main() {
 
       await tester.enterText(find.byType(TextField), 'secret2');
       await tester.pump();
-      expect(find.text('Hindi pa magkatugma'), findsOneWidget);
+      expect(find.text('Hindi pa pareho'), findsOneWidget);
       await tester.tap(find.byKey(LoginScreen.nextKey));
       await tester.pump();
 
-      expect(find.text('Hindi magkatugma ang password'), findsOneWidget);
+      expect(find.text('Hindi pareho ang password'), findsOneWidget);
       expect(_auth.calls, isEmpty);
 
       await tester.enterText(find.byType(TextField), 'secret1');
       await tester.pump();
-      expect(find.text('✓ Magkatugma'), findsOneWidget);
+      expect(find.text('✓ Pareho na'), findsOneWidget);
     });
 
     testWidgets('the back arrow goes to the last question and keeps the answer',
@@ -288,7 +300,7 @@ void main() {
       await _answer(tester, 'EDG5A1');
       expect(_scanCard, findsNothing);
       expect(find.byType(AuthGuide), findsOneWidget);
-      expect(find.text('Para makilala ka ni titser.'), findsOneWidget);
+      expect(find.text('Para makilala ka ng teacher mo.'), findsOneWidget);
     });
 
     testWidgets('scanning fills the class code box and marks it green', (tester) async {
@@ -301,7 +313,7 @@ void main() {
 
       expect(_typed(tester), 'EDG5A1');
       expect(find.byIcon(Icons.check_circle), findsWidgets);
-      expect(find.text('Na-scan mula sa QR ni titser.'), findsOneWidget);
+      expect(find.text('Na-scan mula sa QR ng teacher.'), findsOneWidget);
     });
 
     testWidgets('a scanned code stays editable, and the green mark goes when it changes',
@@ -317,7 +329,7 @@ void main() {
       await tester.pump();
 
       expect(_typed(tester), 'EDG5A2');
-      expect(find.text('Na-scan mula sa QR ni titser.'), findsNothing);
+      expect(find.text('Na-scan mula sa QR ng teacher.'), findsNothing);
     });
 
     testWidgets('a wrong QR leaves the box empty', (tester) async {
@@ -364,7 +376,7 @@ void main() {
     testWidgets('a taken username goes back to the username question, answers kept',
         (tester) async {
       await _pump(tester);
-      const taken = "May gumagamit na ng username na ito sa klase. Kung ikaw iyon, piliin ang 'Babalik'.";
+      const taken = "May gumagamit na ng username na ito sa klase. Kung ikaw 'yan, piliin ang 'BALIK NA AKO'.";
       _auth.failWith = taken;
       await joinAs(tester);
 
@@ -381,7 +393,7 @@ void main() {
 
     testWidgets('a wrong class code goes back to the first question', (tester) async {
       await _pump(tester);
-      _auth.failWith = 'Mali ang class code. Itanong sa titser ang tamang code.';
+      _auth.failWith = 'Mali ang class code. Itanong sa teacher mo ang tamang code.';
       await joinAs(tester);
 
       expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
@@ -391,7 +403,7 @@ void main() {
 
     testWidgets('a wrong password stays on the password question', (tester) async {
       await _pump(tester);
-      _auth.failWith = 'Mali ang password. Subukan muli.';
+      _auth.failWith = 'Mali ang password. Subukan ulit.';
       await _choose(tester, joining: false);
       await _answer(tester, 'EDG5A1');
       await _answer(tester, 'juan');
@@ -399,33 +411,33 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Ano ang password mo?'), findsOneWidget);
-      expect(find.text('Mali ang password. Subukan muli.'), findsOneWidget);
+      expect(find.text('Mali ang password. Subukan ulit.'), findsOneWidget);
     });
 
     testWidgets('no internet stays on the last question and says so', (tester) async {
       await _pump(tester);
-      _auth.failWith = 'Mabagal o walang internet. Subukan muli.';
+      _auth.failWith = 'Mabagal o walang internet. Subukan ulit.';
       await joinAs(tester);
 
       expect(find.text('Ulitin ang password.'), findsOneWidget);
-      expect(find.text('Mabagal o walang internet. Subukan muli.'), findsOneWidget);
+      expect(find.text('Mabagal o walang internet. Subukan ulit.'), findsOneWidget);
     });
 
     testWidgets('every real server message points at the right question', (tester) async {
       // The messages loginErrorMessage can produce, and the question each is about.
       const expected = {
-        'Mali ang class code. Itanong sa titser ang tamang code.': LoginField.classCode,
-        'Punan ang class code at username.': LoginField.classCode,
+        'Mali ang class code. Itanong sa teacher mo ang tamang code.': LoginField.classCode,
+        'I-type ang class code at username.': LoginField.classCode,
         'May gumagamit na ng username na ito sa klase.': LoginField.username,
-        "Walang account na may ganitong username sa class code na ito. Tingnan ang username, o piliin ang 'Bago' para sumali.":
+        "Walang account na may ganitong username sa class code na ito. I-check ang username, o piliin ang 'BAGO AKO' para sumali.":
             LoginField.username,
-        'Ilagay ang tunay mong pangalan para kay titser.': LoginField.name,
-        'Ang password ay hindi bababa sa 6 na characters.': LoginField.password,
-        'Mali ang password. Subukan muli.': LoginField.password,
-        'Mabagal o walang internet. Subukan muli.': null,
-        'Hindi makakonekta sa server. Subukan muli.': null,
-        'Masyadong maraming subok. Maghintay sandali bago subukan muli.': null,
-        'May problema sa server. Subukan muli mamaya.': null,
+        'I-type ang tunay mong pangalan para sa teacher mo.': LoginField.name,
+        'Dapat 6 characters o higit pa ang password.': LoginField.password,
+        'Mali ang password. Subukan ulit.': LoginField.password,
+        'Mabagal o walang internet. Subukan ulit.': null,
+        'Hindi maka-connect sa server. Subukan ulit.': null,
+        'Masyadong maraming try. Maghintay sandali bago subukan ulit.': null,
+        'May problema sa server. Subukan ulit mamaya.': null,
       };
       for (final e in expected.entries) {
         expect(loginErrorField(e.key), e.value, reason: e.key);
@@ -468,6 +480,181 @@ void main() {
     });
   });
 
+  group('"Forgot password?"', () {
+    Future<void> toPassword(WidgetTester tester) async {
+      await _choose(tester, joining: false);
+      await _answer(tester, 'edg5a1');
+      await _answer(tester, 'juan');
+    }
+
+    testWidgets('is under the password box of "Balik na ako", and nowhere else',
+        (tester) async {
+      await _pump(tester);
+      await _choose(tester, joining: false);
+      expect(find.byKey(LoginScreen.forgotKey), findsNothing, reason: 'class code question');
+      await _answer(tester, 'edg5a1');
+      expect(find.byKey(LoginScreen.forgotKey), findsNothing, reason: 'username question');
+      await _answer(tester, 'juan');
+      expect(find.byKey(LoginScreen.forgotKey), findsOneWidget);
+      expect(find.text('Forgot password?'), findsOneWidget);
+
+      // A new student is choosing a password, not forgetting one.
+      for (var i = 0; i < 3; i++) {
+        await tester.tap(find.byKey(LoginScreen.backKey));
+        await tester.pump();
+      }
+      await _choose(tester, joining: true);
+      await _answer(tester, 'edg5a1');
+      await _answer(tester, 'Juan');
+      await _answer(tester, 'juan1');
+      expect(find.text('Gumawa ng password.'), findsOneWidget);
+      expect(find.byKey(LoginScreen.forgotKey), findsNothing);
+    });
+
+    testWidgets('opens the forgot screen with the class code and username typed',
+        (tester) async {
+      final log = <ForgotPasswordArgs>[];
+      await _pump(tester, forgotLog: log);
+      await toPassword(tester);
+
+      await tester.tap(find.byKey(LoginScreen.forgotKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text('forgot stand-in'), findsOneWidget);
+      expect(log, hasLength(1));
+      expect((log.single.classCode, log.single.username), ('edg5a1', 'juan'));
+    });
+
+    testWidgets('becomes a bordered button after a wrong password', (tester) async {
+      await _pump(tester);
+      await toPassword(tester);
+      expect(find.text('Forgot password?'), findsOneWidget);
+      expect(find.text('Forgot password? Tap dito.'), findsNothing);
+
+      _auth.failWith = 'Mali ang password. Subukan ulit.';
+      await _answer(tester, 'nope');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Forgot password? Tap dito.'), findsOneWidget);
+      expect(find.byKey(LoginScreen.forgotKey), findsOneWidget);
+    });
+
+    testWidgets('stays a plain link when the problem is the internet, not the password',
+        (tester) async {
+      await _pump(tester);
+      await toPassword(tester);
+
+      _auth.failWith = 'Mabagal o walang internet. Subukan ulit.';
+      await _answer(tester, 'abc123');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Forgot password?'), findsOneWidget);
+      expect(find.text('Forgot password? Tap dito.'), findsNothing);
+    });
+  });
+
+  group('a phone that remembers the last sign-in', () {
+    const last = (classCode: 'EDG5A1', username: 'JuanNinja99');
+
+    testWidgets('"Balik na ako" goes straight to the password and says who it is',
+        (tester) async {
+      await _pump(tester, last: last);
+      await _choose(tester, joining: false);
+
+      expect(find.text('Ano ang password mo?'), findsOneWidget);
+      expect(find.byKey(LoginScreen.identityKey), findsOneWidget);
+      expect(find.text('JuanNinja99 · EDG5A1'), findsOneWidget);
+      expect(find.text('Balik na ako · Hakbang 3 ng 3'), findsOneWidget);
+      expect(_typed(tester), isEmpty, reason: 'the password box is empty');
+    });
+
+    testWidgets('signing in sends the remembered answers with the typed password',
+        (tester) async {
+      await _pump(tester, last: last);
+      await _choose(tester, joining: false);
+      await _answer(tester, 'secret');
+      await tester.pumpAndSettle();
+
+      expect(_auth.calls, hasLength(1));
+      final c = _auth.calls.single;
+      expect((c.classCode, c.username, c.password, c.name),
+          ('EDG5A1', 'JuanNinja99', 'secret', null));
+    });
+
+    testWidgets('"Hindi ikaw? Palitan" goes back to the first question, answers in the boxes',
+        (tester) async {
+      await _pump(tester, last: last);
+      await _choose(tester, joining: false);
+
+      await tester.tap(find.byKey(LoginScreen.changeKey));
+      await tester.pump();
+
+      expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
+      expect(find.byKey(LoginScreen.identityKey), findsNothing);
+      expect(_typed(tester), 'EDG5A1');
+      await tester.tap(find.byKey(LoginScreen.nextKey));
+      await tester.pump();
+      expect(find.text('Ano ang username mo?'), findsOneWidget);
+      expect(_typed(tester), 'JuanNinja99');
+    });
+
+    testWidgets('the back arrow goes to the username question and drops the line',
+        (tester) async {
+      await _pump(tester, last: last);
+      await _choose(tester, joining: false);
+
+      await tester.tap(find.byKey(LoginScreen.backKey));
+      await tester.pump();
+
+      expect(find.text('Ano ang username mo?'), findsOneWidget);
+      expect(_typed(tester), 'JuanNinja99');
+      expect(find.byKey(LoginScreen.identityKey), findsNothing);
+    });
+
+    testWidgets('"Bago ako" ignores it and starts empty', (tester) async {
+      await _pump(tester, last: last);
+      await _choose(tester, joining: true);
+
+      expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
+      expect(_typed(tester), isEmpty);
+      expect(find.byKey(LoginScreen.identityKey), findsNothing);
+    });
+
+    testWidgets('a phone that remembers nothing asks the three questions', (tester) async {
+      await _pump(tester, last: null);
+      await _choose(tester, joining: false);
+
+      expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
+      expect(find.byKey(LoginScreen.identityKey), findsNothing);
+    });
+
+    testWidgets('a username the server does not know sends the student to that question',
+        (tester) async {
+      await _pump(tester, last: last);
+      _auth.failWith =
+          "Walang account na may ganitong username sa class code na ito. I-check ang username, o piliin ang 'BAGO AKO' para sumali.";
+      await _choose(tester, joining: false);
+      await _answer(tester, 'secret');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Ano ang username mo?'), findsOneWidget);
+      expect(_typed(tester), 'JuanNinja99');
+      expect(find.byKey(LoginScreen.identityKey), findsNothing);
+    });
+
+    for (final size in const [Size(800, 360), Size(732, 320), Size(640, 360), Size(400, 700)]) {
+      testWidgets('fits at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
+        await _pump(tester, size: size, last: last);
+        await _choose(tester, joining: false);
+        expect(tester.takeException(), isNull, reason: 'the password question');
+
+        _auth.state = const AuthState(error: 'Mali ang password. Subukan ulit.');
+        await tester.pump();
+        expect(tester.takeException(), isNull, reason: 'with a wrong password');
+      });
+    }
+  });
+
   group('fits small phones', () {
     for (final size in const [
       Size(800, 360),
@@ -488,7 +675,7 @@ void main() {
 
         await _answer(tester, 'Juan Dela Cruz');
         _auth.state = const AuthState(
-            error: "May gumagamit na ng username na ito sa klase. Kung ikaw iyon, piliin ang 'Babalik'. Kung hindi, gumamit ng ibang username.");
+            error: "May gumagamit na ng username na ito sa klase. Kung ikaw 'yan, piliin ang 'BALIK NA AKO'. Kung hindi, gumamit ng ibang username.");
         await tester.pump();
         expect(tester.takeException(), isNull, reason: 'the longest message');
       });

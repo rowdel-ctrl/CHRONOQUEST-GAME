@@ -176,12 +176,16 @@ class GameBadge extends StatelessWidget {
   final Color textColor;
   final double fontSize;
 
+  /// A small picture before the text, such as a coin.
+  final Widget? leading;
+
   const GameBadge({
     super.key,
     required this.text,
     this.color = AppColors.accent,
     this.textColor = AppColors.primaryDark,
     this.fontSize = 10,
+    this.leading,
   });
 
   @override
@@ -193,14 +197,20 @@ class GameBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColors.primaryDark, width: 2),
       ),
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(
-          fontSize: fontSize + 2,
-          fontWeight: FontWeight.w600,
-          height: 1.4,
-          color: textColor,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (leading != null) ...[leading!, const SizedBox(width: 6)],
+          Text(
+            text,
+            style: GoogleFonts.poppins(
+              fontSize: fontSize + 2,
+              fontWeight: FontWeight.w600,
+              height: 1.4,
+              color: textColor,
+            ),
+          ),
+        ],
       ),
     );
   }
