@@ -2,7 +2,7 @@
 
 **Approved by the user and applied on 2026-10-17** (all 62 rows; the tests that check these words were updated). The "Now" column is what the game said before.
 
-Still formal and not on this list, so left alone: the leaderboard tab "AMING PAARALAN", and "Panghuling Pagsubok (Boss):" on the era-complete screen. Say so if you want those too.
+Two more were changed the same day, at the user's go: the leaderboard tab "AMING PAARALAN" is now "SCHOOL NATIN", and "Panghuling Pagsubok (Boss):" on the era-complete screen is now "Boss level:".
 
 The rule: everyday Taglish, the way students talk. English for app and game words (save, password, level, coins, gate, teacher), short Tagalog for the rest.
 

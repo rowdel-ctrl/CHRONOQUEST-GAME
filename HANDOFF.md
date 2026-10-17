@@ -3,6 +3,18 @@
 > **Chat nickname: GAME.** This file is for the game app only (`CHRONO-GAMEAPP`). The board that shows all three chats is `../HANDOFF.md`. Dashboard: `../CHRONO-DASHBOARD/HANDOFF.md`. Landing page: `../CHRONO-LANDING/HANDOFF.md`.
 > At the end of a session add a dated entry at the top (automatically, without asking). Keep the newest entry under one page. Keep this file under about 400 lines: when it grows past that, move the oldest entries in full to `docs/handoff-archive/` and leave a one-line pointer under "Older entries" at the bottom.
 
+**Date:** 2026-10-17 (last round: logout keeps the wallet, Poppins bundled, coins after a boss, two more formal lines; **not committed, no APK built**)
+**From:** Claude Code (Sonnet 5.5)
+- **Logout no longer wipes the coins.** `StorageService.clearAll()` keeps every `wallet_<studentId>` (coins, power-ups, bought characters), the last sign-in, and the settings that belong to the phone (sound, music, volumes, controls, tutorial flag, Test Mode). It still wipes what is per phone so the next student starts clean: the student, level progress, era-progress cache, hearts, character, codex, queued results, downloaded questions. Tests in `last_sign_in_test.dart`.
+- **Poppins is inside the app** (`assets/google_fonts/Poppins-{Regular,Medium,SemiBold,Bold,Black}.ttf` and `OFL-Poppins.txt`, declared in `pubspec.yaml`; google_fonts uses them before the internet). The profile class code used JetBrains Mono (variable font only in the Google repo), so it now uses the phone's own `monospace`. `test/core/fonts_bundled_test.dart` fails if the code asks for a weight with no file or for any other downloaded font. **Side effect on every widget test:** they now run with the real Poppins, not the very wide Ahem stand-in, so width checks are less strict and height checks are truer. That exposed a real 3 pixel overflow of the QR scan card on a 900 x 412 phone (the hint line shrinks less with Poppins); fixed in `qr_scan_panel.dart` (fixed line height, `4 * _s` more room kept back).
+- **Coins after a boss:** the era-complete screen takes `coins` (sent by `GameScreen` through the route's `extra`) and shows the new `CoinsBadge` (also used on the level-complete screen, `test/widgets/coins_badge_test.dart`).
+- **Two more formal lines:** "SCHOOL NATIN" (leaderboard tab) and "Boss level:" (era-complete).
+- **Tests:** 889 pass, `flutter analyze` clean.
+- **Found, not changed:** hearts are saved per phone (not per student) and logout wipes them, so after an app restart a student who logged out starts with full hearts. Fixing it means saving hearts per student id.
+- **Not done:** no APK, not tried on a phone, nothing committed or pushed since `919eeb6`.
+
+---
+
 **Date:** 2026-10-17 (later: test and student builds, "Forgot password?", last sign-in remembered, coins on the level-complete screen, three briefs; **not committed, no APK built**)
 **From:** Claude Code (Sonnet 5.5)
 - **Two builds, one code.** `AppFlags.testBuild` (`--dart-define=TEST_MODE=true`) and `testBuildProvider` (`unlock_all_provider.dart`). The student build (default) has no Test Mode: the Settings switch is gone, `UnlockAllNotifier` always reads off and `set` does nothing, and `GameNotifier(testBuild:)` ignores a saved switch for free hearts and open characters (a student whose phone kept the switch from 1.1.0 or 1.2.0 does not keep it). Tests build the tester by default. `android/app/build.gradle.kts` reads `-PtestBuild=true`: app id `com.chronoquest.chronoquest.test`, name "ChronoQuest TEST" (manifest label is now `${appLabel}`), version name suffix `-test`. **Commands** (raise pubspec to 1.3.0 first):
