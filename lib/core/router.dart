@@ -136,6 +136,10 @@ final GoRouter appRouter = GoRouter(
       path: '/era-complete/:eraId',
       builder: (context, state) => EraCompleteScreen(
         eraId: state.pathParameters['eraId']!,
+        // The boss fight's coins, when GameScreen sends the result along.
+        coins: state.extra is LevelCompleteResult
+            ? (state.extra! as LevelCompleteResult).coins
+            : 0,
       ),
     ),
     GoRoute(

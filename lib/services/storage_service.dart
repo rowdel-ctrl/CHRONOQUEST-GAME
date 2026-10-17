@@ -277,13 +277,38 @@ class StorageService {
       appBox.put(_questionCacheKey, jsonEncode(cache));
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
+  /// What logout does NOT wipe:
+  ///  - each student's wallet (coins, power-ups, bought characters). It is saved
+  ///    under that student's id, so a shared phone keeps one per student and the
+  ///    next student never sees it;
+  ///  - the last sign-in, so the next one only asks for the password;
+  ///  - settings that belong to the phone, not the student: sound, controls, the
+  ///    tutorial flag and the tester's Test Mode switch.
+  /// Everything else is per phone and is wiped, so the next student starts clean:
+  /// the student, level progress, hearts, the codex, the queued results and the
+  /// downloaded questions.
+  static bool _survivesLogout(Object? key) =>
+      key is String && (key.startsWith('wallet_') || _keptAcrossLogout.contains(key));
+
+  static const _keptAcrossLogout = {
+    _lastClassCodeKey,
+    _lastUsernameKey,
+    'sound_enabled',
+    'music_enabled',
+    'sound_volume',
+    'music_volume',
+    _controlSchemeKey,
+    _tutorialSeenKey,
+    _unlockAllKey,
+  };
+
   static Future<void> clearAll() async {
-    // The last sign-in is kept, so the next one only asks for the password.
-    final lastSignIn = getLastSignIn();
+    final kept = <String, dynamic>{
+      for (final key in appBox.keys)
+        if (_survivesLogout(key)) key as String: appBox.get(key),
+    };
     await _storage.deleteAll();
     await appBox.clear();
-    if (lastSignIn != null) {
-      await saveLastSignIn(lastSignIn.classCode, lastSignIn.username);
-    }
+    await appBox.putAll(kept);
   }
 }

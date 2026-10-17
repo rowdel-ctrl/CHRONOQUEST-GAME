@@ -167,7 +167,9 @@ class _IdentityCard extends StatelessWidget {
               ),
               child: Text(
                 classCode,
-                style: GoogleFonts.jetBrainsMono(
+                // The phone's own monospace face: no download, and still fixed width.
+                style: const TextStyle(
+                  fontFamily: 'monospace',
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,

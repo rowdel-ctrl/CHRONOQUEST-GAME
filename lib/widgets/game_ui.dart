@@ -216,6 +216,28 @@ class GameBadge extends StatelessWidget {
   }
 }
 
+/// "+35 COINS" with a coin before it: what a level or a boss fight paid.
+class CoinsBadge extends StatelessWidget {
+  final int coins;
+  final double fontSize;
+  const CoinsBadge({super.key, required this.coins, this.fontSize = 10});
+
+  @override
+  Widget build(BuildContext context) {
+    return GameBadge(
+      text: '+$coins COINS',
+      fontSize: fontSize,
+      leading: Image.asset(
+        'assets/collectibles/coin.png',
+        width: 16,
+        height: 16,
+        filterQuality: FilterQuality.none,
+        errorBuilder: (_, __, ___) => const SizedBox(width: 16, height: 16),
+      ),
+    );
+  }
+}
+
 /// Chunky segmented progress bar — quiz scores, boss health, learning
 /// gain — pixel-blocky fill instead of a smooth Material gradient.
 class GameProgressBar extends StatelessWidget {

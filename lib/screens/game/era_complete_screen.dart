@@ -8,7 +8,12 @@ import '../../widgets/game_ui.dart';
 
 class EraCompleteScreen extends StatefulWidget {
   final String eraId;
-  const EraCompleteScreen({super.key, required this.eraId});
+
+  /// The coins picked up in the boss fight, now in the wallet. Zero hides the line.
+  final int coins;
+  const EraCompleteScreen({super.key, required this.eraId, this.coins = 0});
+
+  static const coinsKey = Key('era_complete_coins');
 
   @override
   State<EraCompleteScreen> createState() => _EraCompleteScreenState();
@@ -153,6 +158,10 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                           fontSize: 16,
                         ),
                       ),
+                      if (widget.coins > 0) ...[
+                        const SizedBox(height: 12),
+                        CoinsBadge(key: EraCompleteScreen.coinsKey, coins: widget.coins),
+                      ],
                       const SizedBox(height: 20),
 
                       if (!hasCompleteData) ...[
@@ -203,7 +212,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen>
                               const SizedBox(height: 12),
                               // Boss level (post-test)
                               _ScoreRow(
-                                label: 'Panghuling Pagsubok (Boss):',
+                                label: 'Boss level:',
                                 percentage: postTestScore!,
                                 color: AppColors.success,
                               ),

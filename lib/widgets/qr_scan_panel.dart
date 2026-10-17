@@ -188,7 +188,10 @@ class _QrScannerState extends State<QrScanner> {
             child: Text(
               'Itutok sa QR code ng teacher',
               maxLines: 1,
-              style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12 * k),
+              // A fixed line height: left to the font, Poppins is taller than the
+              // room worked out for it and the card overflowed on a 900 x 412 phone.
+              style: GoogleFonts.poppins(
+                  color: Colors.white70, fontSize: 12 * k, height: 1.0),
             ),
           ),
         ),
@@ -298,7 +301,10 @@ class _QrScanPanelState extends State<QrScanPanel> {
       // short, so a phone can give the live view more than 136 (playtest,
       // 2026-10-06: "still too small"). 170 is everything else on the screen
       // while scanning: page padding, wordmark, card edge, hint and "Isara".
-      final room = math.min(width - 24 * _s, height - 170);
+      // The hint line is a little taller in the real font than in the test font,
+      // so a few pixels more are kept back as the screen grows (a 900 x 412 phone
+      // overflowed by 3 without them).
+      final room = math.min(width - 24 * _s, height - 170 - 4 * _s);
       _camera = math.max(136 * _s, math.min(room, 300.0));
       return _card(context);
     });

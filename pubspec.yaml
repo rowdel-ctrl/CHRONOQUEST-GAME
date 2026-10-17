@@ -54,3 +54,7 @@ flutter:
     - assets/sounds/
     - assets/animations/
     - assets/data/
+    # Poppins, the game's font, shipped with the app so text looks the same offline.
+    # google_fonts uses these files before it ever asks the internet. The names must
+    # be Poppins-<Weight>.ttf. Licence: assets/google_fonts/OFL-Poppins.txt.
+    - assets/google_fonts/

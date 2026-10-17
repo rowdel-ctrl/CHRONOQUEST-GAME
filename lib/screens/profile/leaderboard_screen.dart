@@ -119,7 +119,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: _Segments(
-                          labels: const ['KLASE KO', 'AMING PAARALAN'],
+                          labels: const ['KLASE KO', 'SCHOOL NATIN'],
                           selected: _tab,
                           onSelect: (i) => setState(() => _tab = i),
                         ),

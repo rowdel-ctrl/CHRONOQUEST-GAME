@@ -250,18 +250,7 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
         ),
         if (widget.result.coins > 0) ...[
           SizedBox(height: compact ? 6 : 8),
-          GameBadge(
-            key: LevelCompleteScreen.coinsKey,
-            text: '+${widget.result.coins} COINS',
-            leading: Image.asset(
-              'assets/collectibles/coin.png',
-              width: 16,
-              height: 16,
-              filterQuality: FilterQuality.none,
-              errorBuilder: (_, __, ___) => const SizedBox(width: 16, height: 16),
-            ),
-            fontSize: 10,
-          ),
+          CoinsBadge(key: LevelCompleteScreen.coinsKey, coins: widget.result.coins),
         ],
         SizedBox(height: compact ? 6 : 10),
         Text(

@@ -91,17 +91,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
       // Navigate, carrying the attempt's real result so the completion
       // screen reports what the player actually scored.
+      final result = LevelCompleteResult(
+        score: score,
+        correct: correct,
+        total: total,
+        coins: game.playerCoins,
+      );
       if (widget.level == getEraById(widget.eraId).levels.length) {
-        context.go('/era-complete/${widget.eraId}');
+        context.go('/era-complete/${widget.eraId}', extra: result);
       } else {
         context.go(
           '/level-complete/${widget.eraId}/${widget.level}',
-          extra: LevelCompleteResult(
-            score: score,
-            correct: correct,
-            total: total,
-            coins: game.playerCoins,
-          ),
+          extra: result,
         );
       }
     };
