@@ -39,6 +39,32 @@
 - **Finding for the dashboard chat (read only, not changed):** `resetStudentPassword` in `CBACK/src/controllers/teacher.controller.js` makes a temporary password but does not set `mustChangePassword`, so after a teacher reset the student is not asked to choose a new one (only `createStudent` sets it). One line. Added to the board's requests table.
 - **Tried and dropped:** building the missing character poses (idle, attack, fall, win, defeat) in code, first in the browser, then as a Python pipeline (cut-out rig, shaded limbs, effects for enemies and bosses). The user did not like the result and had all the files deleted; nothing of it is in the repo. Do not suggest it again unless asked; real drawn frames are the way.
 
+
+---
+
+**Date:** 2026-10-15 (done to the game from the LANDING PAGE chat; no game code changed)
+**From:** Claude Code (Sonnet 5.5), LANDING PAGE chat
+- **Handoff moved here.** The game handoff used to be the root `HANDOFF.md` (1,808 lines). It now lives here; entries before 2026-10-03 and the old checklist are in full under `docs/handoff-archive/`. Committed as 5d7e8bf and pushed.
+- **APK 1.2.0 built on request** (arm64 only, 36 MB) from commit 5d7e8bf, with Test Mode in it. The version bump (1.1.0+2 to 1.2.0+3) was committed as d02412a. That APK is on the landing page (https://chronoquest-five.vercel.app).
+- **Web build made for screenshots:** `flutter build web --profile --dart-define=DEV_SKIP_AUTH=true` (output in `build/web`, git-ignored), driven with `tool/cdp_shot.js` (one full page load per screen: `nav:about:blank;nav:URL`, because hash-only navigation does not re-route). Seven screenshots went to `CHRONO-LANDING/public/screens/` (welcome, eras, levels, run, history, shop, profile). Not captured: a quiz question (the game loop does not advance in a headless background tab) and the leaderboard (needs an account and the server).
+- **Art copied, not changed:** sprites and backgrounds from `assets/` were copied into `CHRONO-LANDING/public/art/`.
+- **Still wanted by the landing page:** a phone screenshot of a quiz question and of the leaderboard. The next student build (1.3.0) should replace the APK on the landing page.
+
+
+---
+
+**Date:** 2026-10-15 (done to the game from the LANDING PAGE chat; no game code changed)
+**From:** Claude Code (Sonnet 5.5), LANDING PAGE chat
+- **Handoff moved here.** The game handoff used to be the root  (1,808 lines). It now lives here; entries before 2026-10-03 and the old checklist are in full under . Committed as 5d7e8bf and pushed.
+- **APK 1.2.0 built on request** (arm64 only, 36 MB) from commit 5d7e8bf with Test Mode in it. The version bump (1.1.0+2 to 1.2.0+3) was committed by this chat as d02412a. That APK is on the landing page (https://chronoquest-five.vercel.app).
+- **Web build made for screenshots:** Compiling libmain.dart for the Web...                          
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 12200 bytes (99.3% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling libmain.dart for the Web...                            180.8s
+√ Built buildweb (output in , git-ignored), driven with  (full page load per screen: , because hash-only navigation does not re-route). Seven screenshots went to  (welcome, eras, levels, run, history, shop, profile). Not captured: a quiz question (the game loop does not advance in a headless background tab) and the leaderboard (needs an account and the server).
+- **Art copied, not changed:** sprites and backgrounds from  were copied into .
+- **Asked of this chat's owner:** a phone screenshot of a quiz question and of the leaderboard for the landing page. The next student build (1.3.0) should replace the APK on the landing page.
+
 ---
 
 **Date:** 2026-10-14 (new sign-in, sign-up and change-password screens; committed as dd9e9bb and pushed on `era-names-six-era-bow`)
