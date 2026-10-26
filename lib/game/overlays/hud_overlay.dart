@@ -98,7 +98,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
       listenable: game,
       builder: (context, _) {
         final boss = game.boss;
-        if (boss == null) return const SizedBox.shrink();
+        if (boss == null || boss.maxHealth <= 0) return const SizedBox.shrink();
 
         // Top middle, between the hearts on the left and the score and pause on the right.
         // Low on the screen it covered the boss's head and the student.
@@ -114,7 +114,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
                 width: barWidth,
                 child: GameProgressBar(
                   value: boss.health / boss.maxHealth,
-                  fillColor: boss.health > 2 ? AppColors.danger : Colors.orange,
+                  fillColor: boss.health > (boss.maxHealth * 0.2).ceil() ? AppColors.danger : Colors.orange,
                   backgroundColor: Colors.grey.shade800,
                   height: 18,
                   segments: boss.maxHealth,
@@ -122,7 +122,7 @@ class BossHealthOverlayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '${boss.health}/${boss.maxHealth}',
+                'Tamang sagot: ${boss.maxHealth - boss.health}/${boss.maxHealth}',
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 10,
@@ -131,11 +131,11 @@ class BossHealthOverlayWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                _getBossDialogue(game.currentEra),
+                boss.banner ?? _getBossDialogue(game.currentEra),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  color: Colors.yellowAccent,
-                  fontSize: 15,
+                  color: boss.banner != null ? Colors.orangeAccent : Colors.yellowAccent,
+                  fontSize: boss.banner != null ? 20 : 15,
                   fontWeight: FontWeight.bold,
                   shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
                 ),

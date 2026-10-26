@@ -2,8 +2,9 @@ import 'dart:math';
 
 import '../core/constants.dart';
 
-/// The clock on one boss question: [GameConstants.bossAnswerSeconds] to
-/// answer. Running out counts as a wrong answer. Time Freeze stops it for the
+/// The clock on one boss question: [GameConstants.bossAnswerSeconds] in the first phase and
+/// less in the next two (BossPlan.answerSeconds). Running out counts as a wrong answer. Time
+/// Freeze stops it for the
 /// rest of that question.
 ///
 /// Plain Dart, ticked by whoever shows the question, so it can be tested
@@ -33,6 +34,3 @@ class BossCountdown {
   void freeze() => _frozen = true;
 }
 
-/// How many minions come after answer number [wave] (0 is the first): two,
-/// then three from the third wave on.
-int minionsInWave(int wave) => min(3, 2 + wave ~/ 2);

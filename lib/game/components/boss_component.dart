@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart' show VoidCallback;
 import '../answer_point_handler.dart';
-import '../boss_countdown.dart';
+import '../boss_plan.dart';
 import '../chrono_game.dart';
 import '../quiz_handler.dart';
 import '../../core/constants.dart';
@@ -12,8 +12,10 @@ import 'enemy_component.dart';
 /// Boss component — displays actual images for idle, attack, and defeated states.
 class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   final String eraId;
-  int health = GameConstants.bossHealth;
-  int maxHealth = GameConstants.bossHealth;
+  /// Questions still to be answered right, out of [maxHealth] (every question of the level).
+  /// Both are 0 until the component has loaded and counted the questions.
+  int health = 0;
+  int maxHealth = 0;
   bool reachedCenter = false;
   static const double walkSpeed = 50.0;
   bool isDefeated = false;
@@ -25,10 +27,11 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   // Cached velocity
   final Vector2 _velocity = Vector2.zero();
 
-  // The fight: a question, then a wave of minions, then the next question.
-  Question? _lastQuestion;
+  // The fight: every question of the level once (BossQuestions), a wave of minions after every
+  // second one, a wrong answer asked again at the back. Three phases (BossPlan).
+  late final BossQuestions _questions;
+  Question? _current;
   final List<EnemyComponent> _minions = [];
-  int _wave = 0;
   bool _waveActive = false;
   double _waveTime = 0;
 
@@ -44,8 +47,17 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   BossComponent({required this.eraId, this.arena});
 
+  /// Seconds to answer the question being asked: shorter in each phase.
+  double get answerSeconds => BossPlan.answerSeconds[_questions.phase];
+
+  /// "PHASE 2" or "FINAL QUESTION" while it is announced, else null.
+  String? banner;
+
   @override
   Future<void> onLoad() async {
+    _questions = BossQuestions(game.questionPool?.all ?? const []);
+    health = maxHealth = _questions.total;
+    game.notifyState();
     final bossName = getEraById(eraId).bossName;
     idleSprite     = await game.loadSprite('bosses/${bossName}_idle.png');
     attackSprite   = await game.loadSprite('bosses/${bossName}_attack.png');
@@ -154,22 +166,34 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
       }
     });
 
+    _questions.solve();
     if (health <= 0) {
       defeat();
     } else {
-      _after(0.8, _spawnWave);
+      _afterAnswer();
     }
   }
 
-  /// A wrong answer, or the clock running out: the boss takes no damage, and
-  /// the minions come all the same.
+  /// After an answer: a wave of minions on every second question, else straight on.
+  void _afterAnswer() {
+    if (_questions.asked % BossPlan.questionsPerWave == 0) {
+      _after(0.8, _spawnWave);
+    } else {
+      _after(0.8, _showBossQuestion);
+    }
+  }
+
+  /// A wrong answer, or the clock running out: the boss takes no damage and the question goes
+  /// to the back of the line to be asked again.
   void missed() {
     if (isDefeated) return;
-    _after(0.8, _spawnWave);
+    final q = _current;
+    if (q != null) _questions.again(q);
+    _afterAnswer();
   }
 
   void _spawnWave() {
-    final count = minionsInWave(_wave++);
+    final count = BossPlan.minionsPerWave[_questions.phase];
     final spots = _spotsForWave(count);
     for (var i = 0; i < count; i++) {
       final minion = EnemyComponent(
@@ -200,13 +224,24 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   }
 
   void _showBossQuestion() {
-    // A different question each time; a wrong answer is never repeated at once.
-    final q = game.drawQuestion(exclude: _lastQuestion);
+    final q = _questions.next();
     if (q == null) {
       defeat(); // a boss with no questions cannot be fought
       return;
     }
-    _lastQuestion = q;
-    game.showBossQuestion(q, this);
+    _current = q;
+    final label = _questions.takeBanner();
+    if (label == null) {
+      game.showBossQuestion(q, this);
+      return;
+    }
+    // A new phase, or the last question: say so for a moment, then ask it.
+    banner = label;
+    game.notifyState();
+    _after(1.6, () {
+      banner = null;
+      game.notifyState();
+      game.showBossQuestion(q, this);
+    });
   }
 }

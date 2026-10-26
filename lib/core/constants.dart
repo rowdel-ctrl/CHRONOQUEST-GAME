@@ -151,16 +151,14 @@ class GameConstants {
   static const int bossWarmupQuestions = 10;
   static const int bossFightQuestions = 12;
 
-  // The boss fight (GAMEPLAY-V2.md Section 7, the simple version): six right
-  // answers beat the boss, each question has a countdown, and a few minions
-  // come between questions.
-  static const int bossQuestionsToWin = 6;
-  static const int bossHealth = bossQuestionsToWin;
+  // The boss fight (GAMEPLAY-V2.md Section 7): every question of the level's pool is asked
+  // once, each with a countdown, a few minions come after every second question, and a wrong
+  // answer is asked again. The phases are in game/boss_plan.dart.
   static const double bossAnswerSeconds = 15;
 
   /// If the minions of a wave are not all beaten after this long, the next
   /// question comes anyway, so a stuck minion can never trap the student.
-  static const double bossWaveTimeoutSeconds = 40;
+  static const double bossWaveTimeoutSeconds = 30;
 
   /// Widest width:height ratio the game canvas is allowed to render at
   /// before GameScreen pillarboxes it. Backgrounds use Flame's

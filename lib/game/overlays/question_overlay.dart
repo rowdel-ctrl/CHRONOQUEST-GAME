@@ -1,5 +1,6 @@
 import 'dart:async' as async;
 import 'package:flutter/material.dart';
+import '../../core/constants.dart';
 import '../../data/question_bank.dart';
 import '../boss_countdown.dart';
 import '../chrono_game.dart';
@@ -57,7 +58,9 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
         ? 0
         : QuestionBank.timerSecondsFor(widget.game.currentEra, widget.game.currentLevel);
     if (widget.game.bossPhase) {
-      _countdown = BossCountdown();
+      _countdown = BossCountdown(
+        seconds: widget.game.boss?.answerSeconds ?? GameConstants.bossAnswerSeconds,
+      );
     } else if (seconds > 0) {
       _countdown = BossCountdown(seconds: seconds.toDouble());
     }

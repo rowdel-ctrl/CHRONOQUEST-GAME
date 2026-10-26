@@ -1,11 +1,12 @@
-// The boss fight, end to end in a mounted game: a question, then a wave of
-// minions, then the next question; six right answers beat the boss; a wrong
-// answer or a timeout costs the boss nothing; minions pay out Kaalaman.
+// The boss fight, end to end in a mounted game: every question of the level once, a wave of
+// minions after every second one; a wrong answer or a timeout costs the boss nothing and the
+// question comes back at the end; the boss falls when all of them have been answered right;
+// three phases (shorter time, more minions); minions pay out Kaalaman.
 import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:chronoquest/data/question_pool.dart';
-import 'package:chronoquest/game/boss_countdown.dart';
+import 'package:chronoquest/game/boss_plan.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/boss_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
@@ -56,7 +57,7 @@ class _BossGame extends ChronoGame {
     player.game = this;
     currentEra = 'spanish';
     currentLevel = 5; // the Pananakop ng Espanya boss level
-    questionPool = QuestionPool(questions: [for (var i = 0; i < 12; i++) _q(i)]);
+    questionPool = QuestionPool(questions: [for (var i = 0; i < 22; i++) _q(i)]);
     bossPhase = true;
   }
 }
@@ -112,6 +113,36 @@ void _run(_BossGame game, double seconds) {
 
 List<EnemyComponent> _minions(_BossGame game) => game.world.children.whereType<EnemyComponent>().toList();
 
+/// Beats every minion of the wave that is up (each pays one Kaalaman charge).
+void _beatWave(_BossGame game) {
+  for (final m in _minions(game)) {
+    m.takeHit();
+    m.takeHit(); // a Heavy needs two
+  }
+}
+
+/// Answers the question that is up, right or wrong, beats the wave that follows (if there is
+/// one), and runs on until the next question is up.
+Future<void> _round(WidgetTester tester, _BossGame game, {bool right = true}) async {
+  expect(game.questionShowing, isTrue);
+  game.handleAnswer(right ? _right(game) : _wrong(game));
+  _run(game, 1.2);
+  await _settle(tester);
+  _beatWave(game);
+  _run(game, 4);
+}
+
+/// Answers two questions right, so the first wave has come ([_run] stops short of the next
+/// question: it is not asked until the wave is beaten).
+Future<void> _firstWave(WidgetTester tester, _BossGame game) async {
+  game.handleAnswer(_right(game));
+  _run(game, 1.2);
+  await _settle(tester);
+  game.handleAnswer(_right(game));
+  _run(game, 1.2);
+  await _settle(tester);
+}
+
 void main() {
   arenaTests();
 
@@ -121,47 +152,68 @@ void main() {
     expect(boss.reachedCenter, isTrue);
     expect(game.questionShowing, isTrue);
     expect(game.currentQuestion, isNotNull);
-    expect(boss.health, 6);
+    expect(boss.health, 22, reason: 'one point of health for every question of the level');
+    expect(boss.maxHealth, 22);
+    expect(boss.answerSeconds, 15);
     await _flush(tester);
   });
 
-  testWidgets('a right answer hurts the boss, then minions come, then a new question', (tester) async {
+  testWidgets('a right answer hurts the boss; a wave comes after every second question, not every one', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
     final first = game.currentQuestion!;
 
     game.handleAnswer(_right(game));
-    expect(boss.health, 5);
+    expect(boss.health, 21);
     expect(game.questionShowing, isFalse);
+    _run(game, 1.2);
+    expect(_minions(game), isEmpty, reason: 'no wave after the first question');
+    expect(game.questionShowing, isTrue);
+    final second = game.currentQuestion!;
+    expect(second.id, isNot(first.id));
 
+    game.handleAnswer(_right(game));
+    expect(boss.health, 20);
     _run(game, 1.2);
     await _settle(tester);
-    expect(_minions(game), hasLength(minionsInWave(0)));
+    expect(_minions(game), hasLength(BossPlan.minionsPerWave[0]));
     expect(game.questionShowing, isFalse, reason: 'the minions come before the next question');
 
     // Beat them: each pays one Kaalaman charge.
     final before = game.kaalaman;
-    for (final m in _minions(game)) {
-      m.takeHit();
-      m.takeHit(); // a Heavy needs two
-    }
-    expect(game.kaalaman, before + minionsInWave(0));
+    _beatWave(game);
+    expect(game.kaalaman, before + BossPlan.minionsPerWave[0]);
 
     _run(game, 2);
     expect(game.questionShowing, isTrue);
-    expect(game.currentQuestion!.id, isNot(first.id));
+    expect({first.id, second.id}, isNot(contains(game.currentQuestion!.id)));
     await _flush(tester);
   });
 
-  testWidgets('a wrong answer costs the boss nothing but the minions still come', (tester) async {
+  testWidgets('a wrong answer costs the boss nothing, and the question comes back at the end', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
+    final missed = game.currentQuestion!.id;
 
     game.handleAnswer(_wrong(game));
-    expect(boss.health, 6);
-    _run(game, 1.2);
-    await _settle(tester);
-    expect(_minions(game), isNotEmpty);
+    expect(boss.health, 22);
+    _run(game, 3);
+    expect(game.questionShowing, isTrue, reason: 'the fight goes straight on');
+
+    // The other 21 questions, each once; the missed one is the last.
+    final asked = <String>[];
+    for (var n = 0; n < 21; n++) {
+      asked.add(game.currentQuestion!.id);
+      await _round(tester, game);
+    }
+    expect(asked.toSet(), hasLength(21));
+    expect(asked, isNot(contains(missed)));
+    expect(game.currentQuestion!.id, missed, reason: 'asked again, last');
+    expect(boss.health, 1);
+    expect(boss.answerSeconds, 10, reason: 'a question asked again gets the last phase\'s clock');
+
+    game.handleAnswer(_right(game));
+    expect(boss.isDefeated, isTrue);
     await _flush(tester);
   });
 
@@ -170,7 +222,7 @@ void main() {
     _run(game, 20);
 
     game.handleAnswer(''); // what the overlay sends when the clock runs out
-    expect(boss.health, 6);
+    expect(boss.health, 22);
     expect(game.answers.last.isCorrect, isFalse);
     await _flush(tester);
   });
@@ -178,9 +230,7 @@ void main() {
   testWidgets('a wave nobody clears does not trap the student', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
-    game.handleAnswer(_right(game));
-    _run(game, 1.2);
-    await _settle(tester);
+    await _firstWave(tester, game);
     expect(_minions(game), isNotEmpty);
 
     _run(game, 45); // longer than the wave timeout, minions left alone
@@ -189,24 +239,90 @@ void main() {
     await _flush(tester);
   });
 
-  testWidgets('six right answers defeat the boss', (tester) async {
+  testWidgets('all 22 questions answered right defeat the boss', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
 
-    for (var n = 1; n <= 6; n++) {
+    for (var n = 1; n <= 22; n++) {
       expect(game.questionShowing, isTrue, reason: 'question $n');
-      game.handleAnswer(_right(game));
-      if (n < 6) {
-        _run(game, 1.2);
-    await _settle(tester);
-        for (final m in _minions(game)) {
-          m.takeHit();
-          m.takeHit();
-        }
-        _run(game, 2);
+      if (n < 22) {
+        await _round(tester, game);
+      } else {
+        game.handleAnswer(_right(game));
       }
     }
     expect(boss.health, 0);
+    expect(boss.isDefeated, isTrue);
+    expect(game.answers, hasLength(22));
+    expect(game.answers.map((a) => a.questionId).toSet(), hasLength(22), reason: 'every question exactly once');
+    await _flush(tester);
+  });
+
+  testWidgets('three phases: less time and more minions, announced, ending on the final question', (tester) async {
+    final (game, boss) = await _start(tester);
+    _run(game, 20);
+
+    // Phase 1: the first 10 questions, 15 seconds, waves of two.
+    for (var n = 1; n <= 9; n++) {
+      expect(boss.answerSeconds, 15, reason: 'question $n');
+      await _round(tester, game);
+    }
+    expect(boss.answerSeconds, 15);
+    game.handleAnswer(_right(game)); // the 10th
+    _run(game, 1.2);
+    await _settle(tester);
+    expect(_minions(game), hasLength(2));
+    _beatWave(game);
+    _run(game, 1.0);
+    expect(boss.banner, 'PHASE 2');
+    expect(game.questionShowing, isFalse, reason: 'announced before it is asked');
+    _run(game, 2);
+    expect(boss.banner, isNull);
+    expect(game.questionShowing, isTrue);
+
+    // Phase 2: questions 11 to 16, 12 seconds, waves of three.
+    expect(boss.answerSeconds, 12);
+    await _round(tester, game); // the 11th: no wave
+    expect(boss.answerSeconds, 12);
+    game.handleAnswer(_right(game)); // the 12th: a wave
+    _run(game, 1.2);
+    await _settle(tester);
+    expect(_minions(game), hasLength(3));
+    _beatWave(game);
+    _run(game, 4);
+    for (var n = 13; n <= 15; n++) {
+      await _round(tester, game);
+    }
+    game.handleAnswer(_right(game)); // the 16th
+    _run(game, 1.2);
+    await _settle(tester);
+    _beatWave(game);
+    _run(game, 1.0);
+    expect(boss.banner, 'PHASE 3');
+    _run(game, 2);
+
+    // Phase 3: questions 17 to 22, 10 seconds, waves of four.
+    expect(boss.answerSeconds, 10);
+    await _round(tester, game); // the 17th
+    game.handleAnswer(_right(game)); // the 18th
+    _run(game, 1.2);
+    await _settle(tester);
+    expect(_minions(game), hasLength(4));
+    _beatWave(game);
+    _run(game, 4);
+    for (var n = 19; n <= 20; n++) {
+      await _round(tester, game);
+    }
+    game.handleAnswer(_right(game)); // the 21st
+    _run(game, 1.2);
+    await _settle(tester);
+    _beatWave(game);
+    _run(game, 1.0);
+    // The 22nd is the last one left.
+    expect(boss.banner, 'FINAL QUESTION');
+    _run(game, 2);
+    expect(game.questionShowing, isTrue);
+    game.handleAnswer(_right(game));
     expect(boss.isDefeated, isTrue);
     await _flush(tester);
   });
@@ -218,10 +334,9 @@ void main() {
 
     game.handleAnswer(_wrong(game));
     expect(game.shieldActive, isFalse);
-    expect(boss.health, 6);
-    _run(game, 1.2);
-    await _settle(tester);
-    expect(_minions(game), isNotEmpty);
+    expect(boss.health, 22);
+    _run(game, 3);
+    expect(game.questionShowing, isTrue);
     await _flush(tester);
   });
 }
@@ -259,12 +374,10 @@ void arenaTests() {
       final (game, _) = await _start(tester, arena: level);
       game.player.position.x = level.spawnX; // at the left end
       _run(game, 3);
-      game.handleAnswer(_right(game));
-      _run(game, 1.2);
-      await _settle(tester);
+      await _firstWave(tester, game);
 
       final minions = _minions(game);
-      expect(minions, hasLength(minionsInWave(0)));
+      expect(minions, hasLength(BossPlan.minionsPerWave[0]));
       final spots = level.minionSpawns.map((s) => s.x - 45).toSet();
       for (final m in minions) {
         // (a minion has already taken a step or two by now)
@@ -280,9 +393,8 @@ void arenaTests() {
       final level = _arena('era6_5'); // the palace steps: the dais is 72 up
       final (game, _) = await _start(tester, arena: level);
       _run(game, 3);
-      game.handleAnswer(_right(game));
-      _run(game, 1.2);
-      await _settle(tester);
+      await _firstWave(tester, game);
+      expect(_minions(game), isNotEmpty);
       for (final m in _minions(game)) {
         expect(m.position.y + m.size.y, 660 - 72);
       }

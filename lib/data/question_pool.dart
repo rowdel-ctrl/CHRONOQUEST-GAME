@@ -59,6 +59,10 @@ class QuestionPool {
   /// Total authored questions backing this pool.
   int get size => _all.length;
 
+  /// Every question of the pool, in source order and with the options as authored. The boss
+  /// fight asks them all (BossQuestions).
+  List<Question> get all => _all;
+
   bool get isEmpty => _all.isEmpty;
 
   /// Questions not yet served in the current cycle.

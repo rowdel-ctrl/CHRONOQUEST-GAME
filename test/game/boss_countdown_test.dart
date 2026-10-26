@@ -96,15 +96,6 @@ void main() {
     });
   });
 
-  test('a wave has two minions, then three from the third wave on', () {
-    expect([for (var i = 0; i < 6; i++) minionsInWave(i)], [2, 2, 3, 3, 3, 3]);
-  });
-
-  test('six right answers beat the boss', () {
-    expect(GameConstants.bossQuestionsToWin, 6);
-    expect(GameConstants.bossHealth, 6);
-  });
-
   // A level where the teacher set a timer: an ordinary question with a clock.
   group('a timed question in an ordinary level', () {
     Widget timedCard({double fraction = 0.5, int seconds = 22}) => QuestionCard(
