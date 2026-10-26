@@ -111,13 +111,19 @@ extension PlayerGroundCollision on PlayerComponent {
     // the one being stood on.
     final feet = position.y + size.y;
     double? best;
-    for (final section in game.groundSections) {
-      if (footRight > section.position.x &&
-          footLeft < section.position.x + section.size.x &&
-          feet >= section.position.y &&
-          feet <= section.position.y + groundBand &&
-          (best == null || section.position.y < best)) {
-        best = section.position.y;
+    // Only while falling or resting, like a platform. A jump that is still rising
+    // is not snapped up onto the side of a step it is pressed against: that ate
+    // the jump (move and jump together at a step popped the student up onto it
+    // with no jump at all).
+    if (velocityY >= 0) {
+      for (final section in game.groundSections) {
+        if (footRight > section.position.x &&
+            footLeft < section.position.x + section.size.x &&
+            feet >= section.position.y &&
+            feet <= section.position.y + groundBand &&
+            (best == null || section.position.y < best)) {
+          best = section.position.y;
+        }
       }
     }
     if (best == null && velocityY >= 0) {

@@ -59,6 +59,23 @@ class CombatConstants {
   static const int heavyHp = 2;
 
   // ─── Contact damage / knockback / i-frames (Section 5) ──────────────────
+  /// The part of an enemy that hurts, as a fraction of its drawn box (the art has
+  /// transparent margins, so the whole box would hurt from a visible gap away).
+  static const double enemyHitWidthFraction = 0.55;
+  static const double enemyHitHeightFraction = 0.85;
+
+  /// The part of the player that an enemy can hurt: about the drawn body, not the
+  /// whole 96-wide sprite box (the art has 15 to 20 units of empty margin each
+  /// side, so enemies hurt from a visible gap away; playtest 2026-10-26: "the
+  /// enemy could not reach me but I lost a heart"). With the full box a jump
+  /// over a walker could not be done at all at full speed (0 frames of leeway); with
+  /// this one a take-off window of about 10 frames works.
+  static const double playerHurtWidthFraction = 0.6;
+
+  /// The hurt part stops this far above the feet, so a jump that only just clears
+  /// an enemy's head is not punished by a few units of foot.
+  static const double playerHurtFeetGrace = 12;
+
   /// How far a hit shoves the player, away from whatever was touched, in world
   /// units. Playtest (2026-10-04): the old 44-unit shove left the player inside
   /// the enemy's reach, and the 1.5s of invincibility that follows was long
@@ -72,7 +89,12 @@ class CombatConstants {
   /// takes the 180 pushed away plus about 146 to cross its hit area and the
   /// player's own width, so 326. It cannot be done before the invincibility
   /// ends. `contact_damage_test.dart` pins this arithmetic.
-  static const double knockbackDistance = 180;
+  ///
+  /// Raised to 210 on 2026-10-26, when the part of the player that can be hurt
+  /// shrank from the whole 96-wide box to 0.6 of it ([playerHurtWidthFraction]):
+  /// crossing the enemy is now 210 + 49.5 + 57.6 = 317 against the same 300 of
+  /// invincible walking.
+  static const double knockbackDistance = 210;
 
   /// Seconds the shove lasts, and so how long the player cannot steer: the
   /// student is "hit-stunned" for this long, so they cannot walk straight

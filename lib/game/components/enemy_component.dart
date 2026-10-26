@@ -132,7 +132,7 @@ class EnemyComponent extends SpriteAnimationComponent
     // damaging them without being touched.
     add(
       RectangleHitbox.relative(
-        Vector2(0.55, 0.85),
+        Vector2(CombatConstants.enemyHitWidthFraction, CombatConstants.enemyHitHeightFraction),
         parentSize: size,
         anchor: Anchor.center,
       ),

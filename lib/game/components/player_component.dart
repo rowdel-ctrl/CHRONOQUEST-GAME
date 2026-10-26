@@ -444,10 +444,31 @@ class PlayerComponent extends SpriteAnimationComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
     if (other is EnemyComponent && !other.defeated) {
+      // The sprite boxes touch; what hurts is the drawn body against the enemy's own
+      // hit area (CombatConstants.playerHurtWidthFraction).
+      if (!_hurtBy(other)) return;
       _takeContactDamage(
         knockbackDirection: worldX < other.position.x ? -1 : 1,
       );
     }
+  }
+
+  /// Whether the part of the player that can be hurt overlaps the part of [enemy] that hurts.
+  bool _hurtBy(EnemyComponent enemy) {
+    final hurtWidth = size.x * CombatConstants.playerHurtWidthFraction;
+    final hurtLeft = position.x + (size.x - hurtWidth) / 2;
+    final hurtTop = position.y;
+    final hurtBottom = position.y + size.y - CombatConstants.playerHurtFeetGrace;
+
+    final hitWidth = enemy.size.x * CombatConstants.enemyHitWidthFraction;
+    final hitHeight = enemy.size.y * CombatConstants.enemyHitHeightFraction;
+    final hitLeft = enemy.position.x + (enemy.size.x - hitWidth) / 2;
+    final hitTop = enemy.position.y + (enemy.size.y - hitHeight) / 2;
+
+    return hurtLeft < hitLeft + hitWidth &&
+        hurtLeft + hurtWidth > hitLeft &&
+        hurtTop < hitTop + hitHeight &&
+        hurtBottom > hitTop;
   }
 
   @override

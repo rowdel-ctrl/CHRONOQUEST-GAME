@@ -13,7 +13,7 @@
 // ground around the boss must be reachable, and nothing may be a place you can reach but not leave.
 const fs = require('fs');
 const path = require('path');
-const { physics, eras, eraNumber } = require('./rules');
+const { physics, rules, eras, eraNumber } = require('./rules');
 const T = require('./terrain');
 const tmx = require('./tmx');
 const { solve } = require('./solve');
@@ -78,10 +78,20 @@ function buildArena(eraId) {
   if (left.length !== COLS / 2) throw new Error(`${eraId}: the left half has ${left.length} columns, not ${COLS / 2}`);
   const H = Int8Array.from([...left, ...[...left].reverse()]);
 
+  // A platform is out of every minion's reach: a student standing on it is above the
+  // 99.9 a minion's hit area reaches from the highest ground beside it (playtest 2026-10-26:
+  // 'some platforms still reach you without jumping'; tiers 2 to 4 are 48 to 96 up). Anything
+  // lower is lifted to 104 above that ground, the same height the generated levels use.
+  const platformY = (col, cols, tiers) => {
+    let top = Infinity;
+    for (let c = Math.max(0, col - 4); c <= Math.min(COLS - 1, col + cols + 3); c++) top = Math.min(top, T.surfaceY(H[c]));
+    return Math.min(tier(tiers), top - rules.platformHeights[0]);
+  };
   const platforms = [];
   for (const [col, cols, tiers] of spec.platforms) {
-    platforms.push({ x: col * T.TILE, y: tier(tiers), width: cols * T.TILE });
-    platforms.push({ x: mirrorCol(col + cols - 1) * T.TILE, y: tier(tiers), width: cols * T.TILE });
+    const y = platformY(col, cols, tiers);
+    platforms.push({ x: col * T.TILE, y, width: cols * T.TILE });
+    platforms.push({ x: mirrorCol(col + cols - 1) * T.TILE, y, width: cols * T.TILE });
   }
   platforms.sort((a, b) => a.x - b.x);
 

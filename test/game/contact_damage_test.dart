@@ -56,7 +56,11 @@ Future<ChronoGame> _bareGameWithPlayer({double playerWorldX = 400}) async {
   return game;
 }
 
-/// An enemy positioned at [x] without running onLoad() — these tests only
+/// An enemy positioned at [x] without running onLoad(). The player stands at x 400 in
+/// these tests, so an enemy at 430 overlaps the part of the player that can be hurt
+/// (the drawn body, CombatConstants.playerHurtWidthFraction) and one at 370 does too.
+///
+/// Positioned at [x] — these tests only
 /// need it as a collision partner with a known position, and the contact
 /// damage decision lives entirely on the player's side (EnemyComponent
 /// never reacts to touching the player).
@@ -100,7 +104,7 @@ void main() {
     test('costs exactly one heart', () async {
       final game = await _bareGameWithPlayer();
       final startingHearts = game.hearts;
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       game.player.onCollision({}, enemy);
 
@@ -109,7 +113,7 @@ void main() {
 
     test('starts the invincibility window', () async {
       final game = await _bareGameWithPlayer();
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       expect(game.player.invincible, false);
       game.player.onCollision({}, enemy);
@@ -117,9 +121,39 @@ void main() {
       expect(game.player.invincible, true);
     });
 
+    test('an enemy beside the player but clear of the drawn body costs nothing', () async {
+      // The sprite boxes touch (Flame calls onCollision) but the empty margin of the
+      // player's box is all that overlaps: 'the enemy could not reach me but I lost a heart'.
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      final startingHearts = game.hearts;
+      final enemy = _enemyAt(game, 478); // its hit area starts at 498, the body ends at 477
+
+      game.player.onCollision({}, enemy);
+
+      expect(game.hearts, startingHearts);
+      expect(game.player.invincible, false);
+    });
+
+    test('a student whose feet clear the enemy head is not hurt, a few units lower is', () async {
+      final game = await _bareGameWithPlayer(playerWorldX: 400);
+      final startingHearts = game.hearts;
+      final enemy = _enemyAt(game, 430); // its hit area tops out 99.9 above the ground
+      final standingY = game.groundY - 120;
+
+      // Feet 100 above the ground, enemy head at 99.9: clear, with the feet grace to spare.
+      game.player.position.y = standingY - 100;
+      game.player.onCollision({}, enemy);
+      expect(game.hearts, startingHearts);
+
+      // Feet 100 - 14 above the ground: the hurt part (12 above the feet) is now below the head.
+      game.player.position.y = standingY - 80;
+      game.player.onCollision({}, enemy);
+      expect(game.hearts, startingHearts - 1);
+    });
+
     test('knocks the player away from an enemy on their right', () async {
       final game = await _bareGameWithPlayer(playerWorldX: 400);
-      final enemy = _enemyAt(game, 500); // to the player's right
+      final enemy = _enemyAt(game, 430); // to the player's right
       final startX = game.player.position.x;
 
       game.player.onCollision({}, enemy);
@@ -131,7 +165,7 @@ void main() {
 
     test('knocks the player away from an enemy on their left', () async {
       final game = await _bareGameWithPlayer(playerWorldX: 400);
-      final enemy = _enemyAt(game, 300); // to the player's left
+      final enemy = _enemyAt(game, 370); // to the player's left
       final startX = game.player.position.x;
 
       game.player.onCollision({}, enemy);
@@ -144,7 +178,7 @@ void main() {
     test('a defeated enemy deals no contact damage', () async {
       final game = await _bareGameWithPlayer();
       final startingHearts = game.hearts;
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
       // Set directly rather than via takeHit(): HP is resolved in onLoad(),
       // which _enemyAt deliberately skips, and what's under test here is the
       // player's guard against an already-defeated enemy, not how it got
@@ -161,14 +195,14 @@ void main() {
   group('invincibility window', () {
     test('a second enemy hit inside the window costs nothing', () async {
       final game = await _bareGameWithPlayer();
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       game.player.onCollision({}, enemy);
       final heartsAfterFirst = game.hearts;
 
       // Well inside CombatConstants.invincibilityDuration.
       game.player.update(0.1);
-      game.player.onCollision({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 430));
 
       expect(game.hearts, heartsAfterFirst,
           reason: 'chain-hits inside the i-frame window must be ignored');
@@ -194,13 +228,14 @@ void main() {
 
     test('expires after invincibilityDuration, allowing damage again', () async {
       final game = await _bareGameWithPlayer();
-      game.player.onCollision({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 430));
       final heartsAfterFirst = game.hearts;
 
       await _advancePastInvincibility(game);
       expect(game.player.invincible, false);
 
-      game.player.onCollision({}, _enemyAt(game, 500));
+      game.player.position.x = 400; // the shove took them away; back to where the enemy is
+      game.player.onCollision({}, _enemyAt(game, 430));
 
       expect(game.hearts, heartsAfterFirst - 1,
           reason: 'damage must work again once the window has expired');
@@ -213,7 +248,7 @@ void main() {
       // never "began" a second time. Holding still must not be safer than
       // moving.
       final game = await _bareGameWithPlayer();
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       game.player.onCollision({}, enemy);
       final afterFirst = game.hearts;
@@ -225,6 +260,7 @@ void main() {
               (CombatConstants.invincibilityDuration * 1000).round() + 120));
       while (DateTime.now().isBefore(deadline)) {
         game.player.update(1 / 60);
+        game.player.position.x = 400; // holds still inside it: the shove is ignored
         game.player.position.y = groundedY;
         game.player.velocityY = 0;
         game.player.onCollision({}, enemy);
@@ -242,7 +278,7 @@ void main() {
       // still invincible. Wall-clock time cannot be banked, so simulating a
       // pause (no update() calls at all) must still let it expire.
       final game = await _bareGameWithPlayer();
-      game.player.onCollision({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 430));
       expect(game.player.invincible, true);
 
       // Not a single update() call — exactly what a paused engine does.
@@ -259,7 +295,7 @@ void main() {
 
     test('leaves the sprite visible once the window ends', () async {
       final game = await _bareGameWithPlayer();
-      game.player.onCollision({}, _enemyAt(game, 500));
+      game.player.onCollision({}, _enemyAt(game, 430));
 
       await _advancePastInvincibility(game);
 
@@ -284,8 +320,10 @@ void main() {
               CombatConstants.knockbackDuration) *
           PlayerComponent.forwardSpeed;
       // Getting back through the enemy: the shove, plus its hit area (0.55 of
-      // 90 wide) and the player's own width.
-      const crossing = CombatConstants.knockbackDistance + 0.55 * 90 + 96;
+      // 90 wide) and the part of the player that can be hurt (0.6 of 96 wide).
+      const crossing = CombatConstants.knockbackDistance +
+          CombatConstants.enemyHitWidthFraction * 90 +
+          CombatConstants.playerHurtWidthFraction * 96;
       expect(walkable, lessThan(crossing),
           reason: 'the student could pass through the enemy before the '
               'invincibility ends');
@@ -293,7 +331,7 @@ void main() {
 
     test('a hit shoves the player back by the knockback distance', () async {
       final game = await _bareGameWithPlayer(playerWorldX: 400);
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
       final start = game.player.position.x;
 
       game.player.onCollision({}, enemy);
@@ -307,7 +345,7 @@ void main() {
     test('the player cannot steer back into the enemy during the shove',
         () async {
       final game = await _bareGameWithPlayer(playerWorldX: 400);
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
       final start = game.player.position.x;
 
       game.player.onCollision({}, enemy);
@@ -320,7 +358,7 @@ void main() {
 
     test('steering works again once the shove is over', () async {
       final game = await _bareGameWithPlayer(playerWorldX: 400);
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       game.player.onCollision({}, enemy);
       run(game, CombatConstants.knockbackDuration + 0.1);
@@ -341,7 +379,7 @@ void main() {
       )..size = Vector2(1700, 60);
       game.groundSections.add(ground);
       game.player.isOnGround = true;
-      final enemy = _enemyAt(game, 500);
+      final enemy = _enemyAt(game, 430);
 
       game.player.onCollision({}, enemy);
       run(game, CombatConstants.knockbackDuration + 0.05);
@@ -367,7 +405,8 @@ void main() {
       );
       game.player.position.y = surface - game.player.size.y;
       game.player.isOnGround = true;
-      final enemy = _enemyAt(game, 500);
+      // The enemy walks the platform too: one on the ground below could not reach them.
+      final enemy = _enemyAt(game, 430)..position.y = surface - 108;
 
       game.player.onCollision({}, enemy);
       run(game, CombatConstants.knockbackDuration + 0.05);

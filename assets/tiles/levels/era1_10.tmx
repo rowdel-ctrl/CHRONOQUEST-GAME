@@ -57,12 +57,12 @@
  </layer>
  <objectgroup id="2" name="entities">
   <object id="1" name="start" type="spawn" x="120" y="660"/>
-  <object id="2" type="platform" x="312" y="612" width="72" height="24"/>
-  <object id="3" type="platform" x="504" y="588" width="96" height="24"/>
+  <object id="2" type="platform" x="312" y="556" width="72" height="24"/>
+  <object id="3" type="platform" x="504" y="556" width="96" height="24"/>
   <object id="4" type="platform" x="624" y="516" width="96" height="24"/>
   <object id="5" type="platform" x="1104" y="516" width="96" height="24"/>
-  <object id="6" type="platform" x="1224" y="588" width="96" height="24"/>
-  <object id="7" type="platform" x="1440" y="612" width="72" height="24"/>
+  <object id="6" type="platform" x="1224" y="556" width="96" height="24"/>
+  <object id="7" type="platform" x="1440" y="556" width="72" height="24"/>
   <object id="8" name="boss" type="boss" x="912" y="660"/>
   <object id="9" type="minion_spawn" x="612" y="660"/>
   <object id="10" type="minion_spawn" x="780" y="660"/>

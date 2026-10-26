@@ -82,9 +82,13 @@ function resolveGround(w, s) {
   const centre = s.x + W / 2;
   const left = centre - FOOT_HALF, right = centre + FOOT_HALF;
   let best = null;
-  w.blocksOver(left, right, (b) => {
-    if (feet >= b.top && feet <= b.top + BAND && (best === null || b.top < best)) best = b.top;
-  });
+  // Only while falling or resting: a jump that is still rising is not snapped up onto the
+  // side of a step it is pressed against (that ate the jump).
+  if (s.vy >= 0) {
+    w.blocksOver(left, right, (b) => {
+      if (feet >= b.top && feet <= b.top + BAND && (best === null || b.top < best)) best = b.top;
+    });
+  }
   if (best === null && s.vy >= 0) {
     w.platformsOver(left, right, (p) => {
       if (feet >= p.top && feet <= p.top + BAND && (best === null || p.top < best)) best = p.top;

@@ -85,7 +85,17 @@ const scenarios = [
     H: strip([[40, 3], [40, 0]]), platforms: [], start: { x: 1100 }, frames: hold(-1, 80),
   },
   {
-    name: 'jumping from the base next to a three-tile wall pops up onto the ledge',
+    // Move and jump together against a step. The jump used to be eaten: the student was
+    // snapped up onto the step the instant the feet came within 28 of its top.
+    name: 'jumping against a one-tile step keeps the whole jump and lands on it',
+    H: strip([[40, 0], [60, 1]]), platforms: [], start: { x: 800 }, frames: [...hold(1, 90, true)],
+  },
+  {
+    name: 'jumping against a two-tile step keeps the whole jump and lands on it',
+    H: strip([[40, 0], [60, 2]]), platforms: [], start: { x: 800 }, frames: [...hold(1, 90, true)],
+  },
+  {
+    name: 'jumping from the base next to a three-tile wall keeps the whole jump and lands on the ledge',
     H: strip([[40, 0], [60, 3]]), platforms: [], start: { x: 800 }, frames: [...hold(1, 90, true)],
   },
 ];

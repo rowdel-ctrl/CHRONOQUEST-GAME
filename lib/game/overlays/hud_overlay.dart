@@ -100,30 +100,25 @@ class BossHealthOverlayWidget extends StatelessWidget {
         final boss = game.boss;
         if (boss == null) return const SizedBox.shrink();
 
+        // Top middle, between the hearts on the left and the score and pause on the right.
+        // Low on the screen it covered the boss's head and the student.
+        final screenWidth = MediaQuery.sizeOf(context).width;
+        final barWidth = (screenWidth - 2 * 215).clamp(200.0, 520.0);
         return Positioned(
-          bottom: 80,
+          top: 10,
           left: 40,
           right: 40,
           child: Column(
             children: [
-              Text(
-                _getBossDialogue(game.currentEra),
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  color: Colors.yellowAccent,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
+              SizedBox(
+                width: barWidth,
+                child: GameProgressBar(
+                  value: boss.health / boss.maxHealth,
+                  fillColor: boss.health > 2 ? AppColors.danger : Colors.orange,
+                  backgroundColor: Colors.grey.shade800,
+                  height: 18,
+                  segments: boss.maxHealth,
                 ),
-              ),
-              const SizedBox(height: 8),
-              // Health bar
-              GameProgressBar(
-                value: boss.health / boss.maxHealth,
-                fillColor: boss.health > 2 ? AppColors.danger : Colors.orange,
-                backgroundColor: Colors.grey.shade800,
-                height: 18,
-                segments: boss.maxHealth,
               ),
               const SizedBox(height: 4),
               Text(
@@ -132,6 +127,17 @@ class BossHealthOverlayWidget extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 10,
                   height: 1.4,
+                  shadows: const [Shadow(blurRadius: 3, color: Colors.black)],
+                ),
+              ),
+              Text(
+                _getBossDialogue(game.currentEra),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: Colors.yellowAccent,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
                 ),
               ),
             ],
