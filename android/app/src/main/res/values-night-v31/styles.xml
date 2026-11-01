@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12 and later always draw their own launch screen: an icon on a colour.
+         Ours is the CQ tile on the night colour, the same picture older phones get. -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowSplashScreenBackground">@color/launch_night</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/launch_tile</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">@color/launch_night</item>
+    </style>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The night colour of the game (AppColors.background). The phone's launch screen
+         and the window behind the game use it, so there is no white flash at start. -->
+    <color name="launch_night">#FF140E1F</color>
+    <color name="ic_launcher_background">#FF140E1F</color>
+</resources>

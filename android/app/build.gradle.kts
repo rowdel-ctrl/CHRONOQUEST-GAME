@@ -43,7 +43,10 @@ android {
         applicationId = if (testBuild) "com.chronoquest.chronoquest.test" else "com.chronoquest.chronoquest"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
-        versionCode = gitCommitCount()
+        // The 1.5.0 split (arm64-only) build went out as 2086 (2000 for arm64 plus
+        // 86 commits). A build for all chips has no such 2000, so it would look like a
+        // downgrade; the 2100 keeps every build above that.
+        versionCode = 2100 + gitCommitCount()
         versionName = "${flutter.versionName}${if (testBuild) "-test" else ""}"
         manifestPlaceholders["appLabel"] = if (testBuild) "ChronoQuest TEST" else "chronoquest"
     }
