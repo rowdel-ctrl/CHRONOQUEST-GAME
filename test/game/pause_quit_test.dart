@@ -56,6 +56,7 @@ void main() {
 
   testWidgets('confirming quit from the pause menu leaves the level',
       (tester) async {
+    _quiet(tester);
     final game = ChronoGame()..pauseEngine();
     await tester.pumpWidget(_app(game));
 
@@ -75,6 +76,7 @@ void main() {
   });
 
   testWidgets('cancelling quit keeps the player in the level', (tester) async {
+    _quiet(tester);
     final game = ChronoGame()..pauseEngine();
     await tester.pumpWidget(_app(game));
 
@@ -94,6 +96,7 @@ void main() {
   // build context rather than the screen's.
   testWidgets('quit works when the overlay is hosted by GameWidget',
       (tester) async {
+    _quiet(tester);
     final game = _NoAssetGame()..pauseEngine();
     final router = GoRouter(
       initialLocation: '/game',
@@ -140,6 +143,7 @@ void main() {
   // underneath the pause menu. Closest thing to the on-device arrangement.
   testWidgets('quit works with an async redirect and the HUD still active',
       (tester) async {
+    _quiet(tester);
     final game = _NoAssetGame()..pauseEngine();
     final router = GoRouter(
       initialLocation: '/game',
@@ -184,4 +188,13 @@ void main() {
 
     expect(find.text('LEVEL_SELECT'), findsOneWidget);
   });
+}
+
+/// The pause screen has slow rays and a breathing play button, which never
+/// settle; the phone's "remove animations" turns them off, as it would for a
+/// student who has chosen that.
+void _quiet(WidgetTester tester) {
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      const FakeAccessibilityFeatures(disableAnimations: true);
+  addTearDown(tester.platformDispatcher.clearAllTestValues);
 }

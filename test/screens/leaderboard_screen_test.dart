@@ -20,15 +20,16 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-Map<String, dynamic> _row(String id, String name, int score, {int level = 5, String code = 'RIZAL-A'}) =>
+// The server sends `levelReached` as an era id, never a number.
+Map<String, dynamic> _row(String id, String name, int score, {String level = 'spanish', String code = 'RIZAL-A'}) =>
     {'_id': id, 'name': name, 'score': score, 'levelReached': level, 'classCode': code};
 
 final _top = [
   _row('a', 'Ana', 1040),
   _row('m', 'Maria', 820),
   _row('j', 'Jose', 760),
-  _row('c', 'Carlo', 685, level: 15),
-  _row('r', 'Rodel', 650, level: 14),
+  _row('c', 'Carlo', 685, level: 'american'),
+  _row('r', 'Rodel', 650, level: 'nationalism'),
   _row('l', 'Lea', 610),
 ];
 
@@ -64,7 +65,7 @@ void main() {
     final me = find.byKey(LeaderboardScreen.meCardKey);
     expect(find.descendant(of: me, matching: find.text('#5', findRichText: true)), findsOneWidget);
     expect(find.descendant(of: me, matching: find.text('Rodel')), findsOneWidget);
-    expect(find.descendant(of: me, matching: find.text('Antas 14')), findsOneWidget);
+    expect(find.descendant(of: me, matching: find.text('Pag-usbong ng Nasyonalismo')), findsOneWidget);
     expect(
       find.descendant(of: me, matching: find.textContaining('35 puntos na lang para maabot si Carlo (#4)')),
       findsOneWidget,
@@ -102,11 +103,24 @@ void main() {
 
   testWidgets('the school tab also shows each class code', (tester) async {
     await _open(tester, loader: (_) async => LeaderboardBoard(leaders: _top, myRank: 5, myScore: 650));
-    expect(find.text('Antas 15 · RIZAL-A'), findsNothing);
+    const carlo = 'Himagsikan at Imperyalismong Amerikano';
+    expect(find.text('$carlo · RIZAL-A'), findsNothing);
 
     await tester.tap(find.byKey(LeaderboardScreen.tabKey(1)));
     await tester.pump();
-    expect(find.text('Antas 15 · RIZAL-A'), findsOneWidget);
+    expect(find.text('$carlo · RIZAL-A'), findsOneWidget);
+  });
+
+  testWidgets('a row with an era the game does not know, or no era, still shows', (tester) async {
+    final odd = [
+      _row('a', 'Ana', 900, level: 'atlantis'),
+      {'_id': 'b', 'name': 'Ben', 'score': 800, 'classCode': 'RIZAL-A'},
+      {'_id': 'c', 'name': 'Cara', 'score': 700, 'levelReached': 7, 'classCode': 'RIZAL-A'},
+    ];
+    await _open(tester, loader: (_) async => LeaderboardBoard(leaders: odd, myRank: null, myScore: 10));
+    expect(tester.takeException(), isNull);
+    expect(find.text('Ben'), findsOneWidget);
+    expect(find.text('Cara'), findsOneWidget);
   });
 
   testWidgets('says so when nobody has points', (tester) async {

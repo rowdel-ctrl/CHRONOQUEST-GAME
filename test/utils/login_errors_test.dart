@@ -81,6 +81,39 @@ void main() {
           joining: true);
       expect(msg, contains('6 characters o higit pa'));
     });
+
+    test('a name already in the class is a question, not a failure', () {
+      DioException named(int status, Map<String, dynamic> body) {
+        final options = RequestOptions(path: '/student/login');
+        return DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+          response: Response(requestOptions: options, statusCode: status, data: body),
+        );
+      }
+
+      expect(
+        loginErrorMessage(named(409, {'success': false, 'message': 'x', 'code': 'NAME_TAKEN'}), joining: true),
+        nameTakenMessage,
+      );
+      // Any other 409 (the server could not make a username) is not "the name is taken".
+      expect(loginErrorMessage(named(409, {'success': false, 'message': 'Could not make a username.'}), joining: true),
+          isNot(nameTakenMessage));
+      expect(loginErrorField(nameTakenMessage), isNull, reason: 'it belongs to no question');
+    });
+
+    test('a full class says so', () {
+      final msg = loginErrorMessage(_reply(400, 'This class is full. Ask your teacher.'), joining: true);
+      expect(msg, 'Puno na ang klase na ito. Itanong sa teacher mo.');
+      expect(loginErrorField(msg), LoginField.classCode);
+    });
+
+    test('a server that cannot make usernames yet does not blame the student', () {
+      // The old server answers a join without a username with this.
+      final msg = loginErrorMessage(_reply(400, 'Class code and username are required.'), joining: true);
+      expect(msg, 'May problema sa pag-sali. Subukan ulit mamaya.');
+      expect(loginErrorField(msg), isNull);
+    });
   });
 
   group('everything else', () {
@@ -151,9 +184,12 @@ void main() {
       for (final joining in [true, false]) {
         expect(loginErrorField(loginErrorMessage(_reply(404, 'Invalid class code.'), joining: joining)),
             LoginField.classCode);
-        expect(loginErrorField(loginErrorMessage(_reply(400, 'Class code and username are required.'), joining: joining)),
-            LoginField.classCode);
       }
+      expect(loginErrorField(loginErrorMessage(_reply(400, 'Class code and username are required.'), joining: false)),
+          LoginField.classCode);
+      expect(loginErrorField(loginErrorMessage(_reply(400, 'Class code and username are required.'), joining: true)),
+          isNull,
+          reason: 'a join sends no username, so nothing the student typed is missing');
       expect(
           loginErrorField(loginErrorMessage(_reply(401, 'Incorrect password.'), joining: true)),
           LoginField.username,

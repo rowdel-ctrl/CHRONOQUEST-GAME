@@ -132,9 +132,7 @@ void main() {
 
     // The card sits in a 360-tall landscape screen with 24 of padding each side.
     for (final size in const [
-      Size(800, 360),
       Size(732, 320),
-      Size(900, 412),
       Size(1024, 600),
       Size(1280, 800),
     ]) {

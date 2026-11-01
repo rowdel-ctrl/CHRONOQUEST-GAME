@@ -6,6 +6,7 @@ import '../models/quiz_result.dart';
 import '../models/era_progress.dart';
 import 'storage_service.dart';
 import '../utils/login_errors.dart';
+import 'guest_mode.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -25,20 +26,30 @@ class ApiService {
     }
   }
 
+  /// Signs in ("Balik na ako": [username] and [password]) or joins ("Bago ako":
+  /// [name] and [password], no username: the server makes it from the name and
+  /// sends it back). [allowSameName] goes on when a student with that name is
+  /// already in the class and the student says it is someone else.
   Future<Map<String, dynamic>> login({
     required String classCode,
-    required String username,
+    String? username,
     String? name,
     required String password,
+    bool allowSameName = false,
   }) async {
     try {
       final body = <String, dynamic>{
         'classCode': classCode,
-        'username': username,
         'password': password,
       };
+      if (username != null && username.isNotEmpty) {
+        body['username'] = username;
+      }
       if (name != null && name.isNotEmpty) {
         body['name'] = name;
+      }
+      if (allowSameName) {
+        body['allowSameName'] = true;
       }
 
       final response = await _dio.post('/student/login', data: body);
@@ -49,7 +60,12 @@ class ApiService {
 
       final user = Student.fromJson(data['user'] as Map<String, dynamic>);
       await StorageService.saveStudent(user);
-      await StorageService.saveLastSignIn(classCode, username);
+      // The username the server has on record: a new student never typed one.
+      final remembered =
+          user.username.isNotEmpty ? user.username : (username ?? '');
+      if (remembered.isNotEmpty) {
+        await StorageService.saveLastSignIn(classCode, remembered);
+      }
 
       return data;
     } on DioException catch (e) {
@@ -74,14 +90,19 @@ class ApiService {
   }
 
   // ─── PROFILE ──────────────────────────────────────────────────────────────
+  /// The profile as the server has it now. Throws when it cannot be reached, so
+  /// the caller knows what it holds is not the cached copy.
+  Future<Student> getFreshProfile() async {
+    final response = await _dio.get('/student/profile');
+    final envelope = response.data as Map<String, dynamic>;
+    final student = Student.fromJson(envelope['data'] as Map<String, dynamic>);
+    await StorageService.saveStudent(student);
+    return student;
+  }
+
   Future<Student> getProfile() async {
     try {
-      final response = await _dio.get('/student/profile');
-      final envelope = response.data as Map<String, dynamic>;
-      final student =
-          Student.fromJson(envelope['data'] as Map<String, dynamic>);
-      await StorageService.saveStudent(student);
-      return student;
+      return await getFreshProfile();
     } on DioException catch (e) {
       // Fallback to cached student
       final cached = StorageService.getStudent();
@@ -90,11 +111,26 @@ class ApiService {
     }
   }
 
+  /// Saves the wallet on the server so it follows the student to a new phone.
+  /// True when the server took it. Never throws: the phone keeps its own copy, so
+  /// a failure (offline, "saving too fast") only means "send it again later".
+  Future<bool> saveWallet(Map<String, dynamic> wallet) async {
+    // A guest has no account to save it to.
+    if (DevFlags.skipAuth || GuestMode.active) return true;
+    try {
+      await _dio.put('/student/wallet', data: wallet);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   // ─── RESULTS ──────────────────────────────────────────────────────────────
   Future<void> submitResult(QuizResult result) async {
     // Dev no-login mode: drop results instead of queueing them, otherwise
     // they'd be flushed to the next real account that logs in.
-    if (DevFlags.skipAuth) return;
+    // A guest's results are not the teacher's to see, and are never queued.
+    if (DevFlags.skipAuth || GuestMode.active) return;
     try {
       await _dio.post('/student/results', data: result.toJson());
     } on DioException catch (e) {
@@ -106,6 +142,7 @@ class ApiService {
   /// Call on app launch and after any successful network call to flush
   /// results that failed to submit while offline.
   Future<void> flushPendingResults() async {
+    if (GuestMode.active) return;
     final pending = StorageService.getPendingResults();
     if (pending.isEmpty) return;
 
@@ -129,6 +166,7 @@ class ApiService {
   }
 
   Future<List<QuizResult>> getResults() async {
+    if (GuestMode.active) return const [];
     try {
       final response = await _dio.get('/student/results');
       final data = (response.data as Map<String, dynamic>)['data'];
@@ -143,6 +181,7 @@ class ApiService {
 
   // ─── ERA PROGRESS ─────────────────────────────────────────────────────────
   Future<Map<String, EraProgress>> getEraProgress() async {
+    if (GuestMode.active) return const {};
     try {
       final response = await _dio.get('/student/era-progress');
       final data = (response.data as Map<String, dynamic>)['data']['progress'];

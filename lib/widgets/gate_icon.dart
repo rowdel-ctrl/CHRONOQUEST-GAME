@@ -31,10 +31,11 @@ class _GatePainter extends CustomPainter {
 
   static const Color _stone = Color(0xFFB9B5C7);
   static const Color _stoneShade = Color(0xFF8E8AA0);
-  static const Color _wood = Color(0xFF4A2E18);
   static const Color _iron = Color(0xFF9096A3);
   static const Color _gold = Color(0xFFFFC531);
-  static const Color _steel = Color(0xFFE6E6EE);
+  static const Color _light = Color(0xFFFFE9A0);
+  static const Color _wax = Color(0xFFD8584F);
+  static const Color _flame = Color(0xFFFF8A2A);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -50,56 +51,61 @@ class _GatePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     final edge = line(AppColors.primaryDark, 1.3);
 
-    // Towers and wall as one shape (battlements fused to the block), so the
-    // outline runs round the whole silhouette with no seam between them.
-    var gate = Path()
-      ..addRRect(RRect.fromLTRBR(1.5, 6, 18.5, 22.5, const Radius.circular(1.2)));
-    for (final x in const [1.5, 7.75, 14.0]) {
-      gate = Path.combine(
-        PathOperation.union,
-        gate,
-        Path()..addRect(Rect.fromLTRB(x, 2.5, x + 4.5, 7)),
-      );
-    }
-    canvas.drawPath(gate, fill(_stone));
-    // A darker plinth along the foot of the wall.
-    canvas.drawRect(const Rect.fromLTRB(2.1, 20.2, 17.9, 21.9), fill(_stoneShade));
-    canvas.drawPath(gate, edge);
-
-    // The arched door with its bars.
-    final door = Path()
-      ..moveTo(5.5, 22.5)
-      ..lineTo(5.5, 14)
-      ..quadraticBezierTo(10, 6.5, 14.5, 14)
-      ..lineTo(14.5, 22.5)
+    // The stepped stone front.
+    final front = Path()
+      ..moveTo(2, 22.5)
+      ..lineTo(2, 12)
+      ..lineTo(5, 12)
+      ..lineTo(5, 8.5)
+      ..lineTo(8, 8.5)
+      ..lineTo(8, 4)
+      ..lineTo(16, 4)
+      ..lineTo(16, 8.5)
+      ..lineTo(19, 8.5)
+      ..lineTo(19, 12)
+      ..lineTo(22, 12)
+      ..lineTo(22, 22.5)
       ..close();
-    canvas.drawPath(door, fill(_wood));
-    final bar = line(_iron, 1);
-    for (final x in const [8.0, 10.0, 12.0]) {
-      canvas.drawLine(Offset(x, 11.4), Offset(x, 22), bar);
+    canvas.drawPath(front, fill(_stone));
+    // A darker plinth along the foot.
+    canvas.drawRect(
+        const Rect.fromLTRB(2.6, 20.6, 21.4, 22), fill(_stoneShade));
+    canvas.drawPath(front, edge);
+
+    // The arched doorway: dark with a grille, or full of light once open.
+    final door = Path()
+      ..moveTo(8.2, 22.5)
+      ..lineTo(8.2, 14.5)
+      ..arcToPoint(const Offset(15.8, 14.5), radius: const Radius.circular(3.8))
+      ..lineTo(15.8, 22.5)
+      ..close();
+    canvas.drawPath(door, fill(unlocked ? _light : const Color(0xFF14100C)));
+    if (unlocked) {
+      // The grille is up: only its tips hang from the arch.
+      for (final x in const [9.6, 12.0, 14.4]) {
+        canvas.drawLine(Offset(x, 11.4), Offset(x, 13.6), line(_iron, 0.9));
+      }
+    } else {
+      for (final x in const [9.6, 12.0, 14.4]) {
+        canvas.drawLine(Offset(x, 11.4), Offset(x, 22), line(_iron, 0.9));
+      }
+      canvas.drawLine(
+          const Offset(8.4, 17.2), const Offset(15.6, 17.2), line(_iron, 0.9));
     }
     canvas.drawPath(door, edge);
 
-    // The padlock, bottom right, over the corner of the gate.
-    const lock = Rect.fromLTRB(13.4, 14.2, 23.2, 23);
-    final lockBody = RRect.fromRectAndRadius(lock, const Radius.circular(2.2));
-    final shackle = Path()
-      ..moveTo(15.8, 14.2)
-      ..lineTo(15.8, 11.4)
-      ..arcToPoint(
-        const Offset(20.8, 11.4),
-        radius: const Radius.circular(2.5),
-        clockwise: true,
-      );
-    if (!unlocked) shackle.lineTo(20.8, 14.2);
-    // A dark edge first so the shackle reads against the stone and the chip.
-    canvas.drawPath(shackle, line(AppColors.primaryDark, 3.3));
-    canvas.drawPath(shackle, line(_steel, 1.7));
-    canvas.drawRRect(lockBody, fill(unlocked ? AppColors.success : _gold));
-    canvas.drawRRect(lockBody, line(AppColors.primaryDark, 1.4));
-    final keyhole = fill(AppColors.primaryDark);
-    canvas.drawCircle(const Offset(18.3, 18.0), 1.3, keyhole);
-    canvas.drawRect(const Rect.fromLTWH(17.7, 18.4, 1.2, 2.5), keyhole);
+    // The wax seal on the keystone.
+    canvas.drawCircle(
+        const Offset(12, 7.3), 2.3, fill(unlocked ? _gold : _wax));
+    canvas.drawCircle(
+        const Offset(12, 7.3), 2.3, line(AppColors.primaryDark, 1));
+
+    // A torch on each pillar.
+    for (final x in const [4.6, 19.4]) {
+      canvas.drawCircle(Offset(x, 15.8), 1.25, fill(_flame));
+      canvas.drawLine(
+          Offset(x, 17), Offset(x, 19.4), line(AppColors.primaryDark, 1.1));
+    }
   }
 
   @override

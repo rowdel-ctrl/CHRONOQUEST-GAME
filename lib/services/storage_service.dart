@@ -65,7 +65,9 @@ class StorageService {
   static ({String classCode, String username})? getLastSignIn() {
     final code = appBox.get(_lastClassCodeKey) as String?;
     final user = appBox.get(_lastUsernameKey) as String?;
-    if (code == null || code.isEmpty || user == null || user.isEmpty) return null;
+    if (code == null || code.isEmpty || user == null || user.isEmpty) {
+      return null;
+    }
     return (classCode: code, username: user);
   }
 
@@ -149,23 +151,23 @@ class StorageService {
     final data = appBox.get(key);
     if (data == null) return {};
     final Map<dynamic, dynamic> raw = Map<dynamic, dynamic>.from(data as Map);
-    return raw.map(
-        (k, v) => MapEntry(int.parse(k.toString()), v as int));
+    return raw.map((k, v) => MapEntry(int.parse(k.toString()), v as int));
   }
 
   // ─── PENDING RESULTS (offline queue) ──────────────────────────────────────
   static const _pendingResultsKey = 'pending_results';
 
-  static Future<void> queuePendingResult(Map<String, dynamic> resultJson) async {
-    final List<dynamic> pending =
-        List<dynamic>.from(appBox.get(_pendingResultsKey, defaultValue: []) as List);
+  static Future<void> queuePendingResult(
+      Map<String, dynamic> resultJson) async {
+    final List<dynamic> pending = List<dynamic>.from(
+        appBox.get(_pendingResultsKey, defaultValue: []) as List);
     pending.add(resultJson);
     await appBox.put(_pendingResultsKey, pending);
   }
 
   static List<Map<String, dynamic>> getPendingResults() {
-    final List<dynamic> pending =
-        List<dynamic>.from(appBox.get(_pendingResultsKey, defaultValue: []) as List);
+    final List<dynamic> pending = List<dynamic>.from(
+        appBox.get(_pendingResultsKey, defaultValue: []) as List);
     return pending.map((e) => Map<String, dynamic>.from(e as Map)).toList();
   }
 
@@ -246,7 +248,8 @@ class StorageService {
   // set for the whole phone, which logout wiped, so logging out and restarting the
   // app gave a full set of hearts.)
   static const _heartsPerStudentPrefix = 'student_hearts_';
-  static String _heartsKey(String studentId) => '$_heartsPerStudentPrefix$studentId';
+  static String _heartsKey(String studentId) =>
+      '$_heartsPerStudentPrefix$studentId';
 
   static bool hasHeartsFor(String studentId) =>
       appBox.get(_heartsKey(studentId)) is Map;
@@ -264,7 +267,8 @@ class StorageService {
     return getHeartsState();
   }
 
-  static Future<void> saveHeartsStateFor(String studentId, HeartsState hearts) =>
+  static Future<void> saveHeartsStateFor(
+          String studentId, HeartsState hearts) =>
       appBox.put(_heartsKey(studentId), {
         'count': hearts.count,
         'regenStartMs': hearts.regenStartMs,
@@ -292,9 +296,60 @@ class StorageService {
     }
   }
 
-  static Future<void> saveWallet(String studentId, Map<String, dynamic> wallet) async {
+  static Future<void> saveWallet(
+      String studentId, Map<String, dynamic> wallet) async {
     await appBox.put(_walletKey(studentId), jsonEncode(wallet));
   }
+
+  /// Whether this phone has wallet changes the server has not taken yet. If so, at
+  /// the next sign-in the phone's wallet is the newer one and goes up.
+  static bool getWalletUnsynced(String studentId) =>
+      appBox.get('wallet_unsynced_$studentId') == true;
+
+  static Future<void> setWalletUnsynced(String studentId, bool value) async {
+    if (value) {
+      await appBox.put('wallet_unsynced_$studentId', true);
+    } else {
+      await appBox.delete('wallet_unsynced_$studentId');
+    }
+  }
+
+  /// Empties the guest's wallet and hearts, so every guest session starts fresh.
+  static Future<void> clearGuestData(String guestId) async {
+    await appBox.delete(_walletKey(guestId));
+    await appBox.delete('wallet_unsynced_$guestId');
+    await appBox.delete(_heartsKey(guestId));
+  }
+
+  // ─── BADGES (one record per student) ──────────────────────────────────────
+  static String _badgesKey(String studentId) => 'badges_$studentId';
+
+  /// What the badges are worked out from, and which are held, for this student
+  /// (see `BadgeFacts`), or null if they have none yet.
+  static Map<String, dynamic>? getBadges(String studentId) {
+    final raw = appBox.get(_badgesKey(studentId)) as String?;
+    if (raw == null) return null;
+    try {
+      return Map<String, dynamic>.from(jsonDecode(raw) as Map);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> saveBadges(
+          String studentId, Map<String, dynamic> badges) =>
+      appBox.put(_badgesKey(studentId), jsonEncode(badges));
+
+  // ─── UPDATE CARD ─────────────────────────────────────────────────────────
+  static const _updateDismissedKey = 'update_dismissed';
+
+  /// The newest version the student tapped "Later" on, or null. The card does not
+  /// come back for it; a newer one shows it again.
+  static String? getUpdateDismissed() =>
+      appBox.get(_updateDismissedKey) as String?;
+
+  static Future<void> setUpdateDismissed(String version) =>
+      appBox.put(_updateDismissedKey, version);
 
   // ─── DOWNLOADED QUESTIONS (teacher question bank) ────────────────────────
   static const _questionCacheKey = 'question_bank_cache';
@@ -315,8 +370,8 @@ class StorageService {
 
   // ─── CLEAR ALL ────────────────────────────────────────────────────────────
   /// What logout does NOT wipe:
-  ///  - each student's wallet (coins, power-ups, bought characters) and hearts.
-  ///    They are saved under that student's id, so a shared phone keeps one set
+  ///  - each student's wallet (coins, power-ups, bought characters), hearts and
+  ///    badges. They are saved under that student's id, so a shared phone keeps one set
   ///    per student and the next student never sees them;
   ///  - the last sign-in, so the next one only asks for the password;
   ///  - settings that belong to the phone, not the student: sound, controls, the
@@ -327,6 +382,7 @@ class StorageService {
   static bool _survivesLogout(Object? key) =>
       key is String &&
       (key.startsWith('wallet_') ||
+          key.startsWith('badges_') ||
           key.startsWith(_heartsPerStudentPrefix) ||
           _keptAcrossLogout.contains(key));
 
@@ -340,6 +396,7 @@ class StorageService {
     _controlSchemeKey,
     _tutorialSeenKey,
     _unlockAllKey,
+    _updateDismissedKey,
   };
 
   static Future<void> clearAll() async {

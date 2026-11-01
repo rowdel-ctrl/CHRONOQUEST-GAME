@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants.dart';
 import '../models/hearts_state.dart';
 import '../models/student.dart';
+import '../services/api_service.dart';
 import '../services/server_clock.dart';
 import 'auth_provider.dart';
 import 'unlock_all_provider.dart';
@@ -39,8 +42,7 @@ class GameState {
     Set<String>? unlockedCharacters,
   }) {
     return GameState(
-      selectedCharacterId:
-          selectedCharacterId ?? this.selectedCharacterId,
+      selectedCharacterId: selectedCharacterId ?? this.selectedCharacterId,
       currentEraId: currentEraId ?? this.currentEraId,
       currentLevel: currentLevel ?? this.currentLevel,
       powerUps: powerUps ?? this.powerUps,
@@ -64,8 +66,12 @@ enum PowerUpKind {
 class GameNotifier extends StateNotifier<GameState> {
   /// Hearts are counted in the server's time ([ServerClock]), never the phone's:
   /// the phone's clock is the student's to change.
-  GameNotifier({ServerClock? clock, this.testBuild = true})
-      : _clock = clock ?? ServerClock.instance,
+  GameNotifier({
+    ServerClock? clock,
+    this.testBuild = true,
+    this.uploadWallet,
+    this.uploadDelay = const Duration(seconds: 3),
+  })  : _clock = clock ?? ServerClock.instance,
         super(GameState()) {
     _loadCharacter();
     _loadHearts();
@@ -79,6 +85,26 @@ class GameNotifier extends StateNotifier<GameState> {
   /// Whether this is the tester build. Only then does the saved Test Mode switch
   /// count; the student build never frees hearts or opens characters with it.
   final bool testBuild;
+
+  /// Sends the wallet to the server (true when it took it), or null to keep the
+  /// wallet on the phone only, as the tests do.
+  final Future<bool> Function(Map<String, dynamic> wallet)? uploadWallet;
+
+  /// How long to wait after a change before sending. The server takes one save a
+  /// second, and a student picking up coins changes the wallet many times a second.
+  final Duration uploadDelay;
+
+  Timer? _uploadTimer;
+
+  /// Counts wallet changes, so a send that finishes after a newer change does not
+  /// mark the phone as caught up.
+  int _walletVersion = 0;
+
+  @override
+  void dispose() {
+    _uploadTimer?.cancel();
+    super.dispose();
+  }
 
   void _loadCharacter() {
     final char = StorageService.getCharacter();
@@ -96,10 +122,12 @@ class GameNotifier extends StateNotifier<GameState> {
 
   void _store(HeartsState hearts) {
     final before = state.hearts;
-    if (hearts.count != before.count || hearts.regenStartMs != before.regenStartMs) {
+    if (hearts.count != before.count ||
+        hearts.regenStartMs != before.regenStartMs) {
       final id = _walletOwner;
       if (id == null) {
-        StorageService.saveHeartsState(hearts); // nobody logged in (a test, or a dev run)
+        StorageService.saveHeartsState(
+            hearts); // nobody logged in (a test, or a dev run)
       } else {
         StorageService.saveHeartsStateFor(id, hearts);
       }
@@ -207,12 +235,17 @@ class GameNotifier extends StateNotifier<GameState> {
   /// phone (a student with none starts empty, with full hearts), or empties them
   /// when nobody is logged in. A shared phone keeps one set per student.
   ///
-  /// Spending is kept on the phone: the server has no coins to keep. A reinstall
-  /// starts the wallet again.
+  /// The phone's copy is the one played with; the server's copy is a backup that
+  /// comes back at sign-in on a new phone ([syncWithServer]).
   void loadWallet(String? studentId) {
     if (studentId == _walletOwner) return;
+    // A send waiting for the old student must not go out with the new one's token.
+    _uploadTimer?.cancel();
+    _uploadTimer = null;
+    _walletVersion++;
     _walletOwner = studentId;
-    final saved = studentId == null ? null : StorageService.getWallet(studentId);
+    final saved =
+        studentId == null ? null : StorageService.getWallet(studentId);
     final powerUps = PowerUps(
       fiftyFifty: (saved?['fiftyFifty'] as num?)?.toInt() ?? 0,
       timeFreeze: (saved?['timeFreeze'] as num?)?.toInt() ?? 0,
@@ -239,6 +272,11 @@ class GameNotifier extends StateNotifier<GameState> {
   void saveWallet() {
     final id = _walletOwner;
     if (id == null) return;
+    _writeWallet(id);
+    _queueUpload(id);
+  }
+
+  void _writeWallet(String id) {
     StorageService.saveWallet(id, {
       'coins': state.coins,
       'fiftyFifty': state.powerUps.fiftyFifty,
@@ -248,13 +286,94 @@ class GameNotifier extends StateNotifier<GameState> {
     });
   }
 
-  static CharacterData get _firstFree => allCharacters.firstWhere((c) => c.unlockCost == 0);
+  /// Notes that the server is behind and sends the wallet a moment later. Changes
+  /// in that moment ride along in the same send.
+  void _queueUpload(String id) {
+    if (uploadWallet == null) return;
+    StorageService.setWalletUnsynced(id, true);
+    _walletVersion++;
+    _uploadTimer ??= Timer(uploadDelay, _upload);
+  }
+
+  Future<void> _upload() async {
+    _uploadTimer = null;
+    final id = _walletOwner;
+    final send = uploadWallet;
+    if (id == null || send == null) return;
+    final version = _walletVersion;
+    final taken = await send(_serverWallet());
+    // Left unmarked on a failure (offline, "saving too fast"): the next change
+    // tries again, and so does the next sign-in.
+    if (taken && version == _walletVersion) {
+      StorageService.setWalletUnsynced(id, false);
+    }
+  }
+
+  /// The wallet as the server wants it. Its limits are 0 to 1,000,000 coins and 0
+  /// to 99 of each power-up; a number past them would be refused every time.
+  Map<String, dynamic> _serverWallet() {
+    int cap(int v, int max) => v < 0 ? 0 : (v > max ? max : v);
+    return {
+      'coins': cap(state.coins, 1000000),
+      'fiftyFifty': cap(state.powerUps.fiftyFifty, 99),
+      'timeFreeze': cap(state.powerUps.timeFreeze, 99),
+      'shield': cap(state.powerUps.shield, 99),
+      'unlockedCharacters': state.unlockedCharacters.toList()..sort(),
+    };
+  }
+
+  /// Joins the phone's wallet with what the server holds, from a fresh sign-in or
+  /// profile. The server has one copy, the phone another:
+  ///  - the phone changed while the server could not be reached, or the server has
+  ///    nothing yet (an account from before wallets were saved): the phone's wins
+  ///    and goes up;
+  ///  - otherwise (a new phone, a reinstall) the server's wins and replaces the
+  ///    phone's numbers.
+  /// Bought characters are only ever added, whichever side they came from.
+  void syncWithServer(ServerWallet server) {
+    loadWallet(server.studentId);
+    final id = _walletOwner;
+    if (id == null) return;
+    final unsynced = StorageService.getWalletUnsynced(id);
+    final phoneEmpty = state.coins == 0 &&
+        state.powerUps.fiftyFifty == 0 &&
+        state.powerUps.timeFreeze == 0 &&
+        state.powerUps.shield == 0 &&
+        state.unlockedCharacters.isEmpty;
+
+    if (unsynced || server.isEmpty) {
+      if (!phoneEmpty) _queueUpload(id);
+      return;
+    }
+    state = state.copyWith(
+      coins: server.coins,
+      powerUps: PowerUps(
+        fiftyFifty: server.powerUps.fiftyFifty,
+        timeFreeze: server.powerUps.timeFreeze,
+        shield: server.powerUps.shield,
+      ),
+      unlockedCharacters: {
+        ...server.unlockedCharacters,
+        ...state.unlockedCharacters
+      },
+    );
+    _writeWallet(id);
+    // A character the phone has and the server lacks still has to go up.
+    if (!server.unlockedCharacters.containsAll(state.unlockedCharacters)) {
+      _queueUpload(id);
+    }
+  }
+
+  static CharacterData get _firstFree =>
+      allCharacters.firstWhere((c) => c.unlockCost == 0);
 
   /// The testing switch that opens every era also opens every character.
   bool _isUnlocked(String characterId, Set<String> bought) {
     final c = allCharacters.where((c) => c.id == characterId).firstOrNull;
     if (c == null) return false;
-    return c.unlockCost == 0 || bought.contains(characterId) || (testBuild && StorageService.getUnlockAll());
+    return c.unlockCost == 0 ||
+        bought.contains(characterId) ||
+        (testBuild && StorageService.getUnlockAll());
   }
 
   bool isCharacterUnlocked(String characterId) =>
@@ -271,7 +390,9 @@ class GameNotifier extends StateNotifier<GameState> {
   /// already, unknown, or the student cannot afford it.
   bool unlockCharacter(String characterId) {
     final c = allCharacters.where((c) => c.id == characterId).firstOrNull;
-    if (c == null || isCharacterUnlocked(characterId) || state.coins < c.unlockCost) {
+    if (c == null ||
+        isCharacterUnlocked(characterId) ||
+        state.coins < c.unlockCost) {
       return false;
     }
     state = state.copyWith(
@@ -383,12 +504,22 @@ class GameNotifier extends StateNotifier<GameState> {
 }
 
 final gameProvider = StateNotifierProvider<GameNotifier, GameState>((ref) {
-  final notifier = GameNotifier(testBuild: ref.watch(testBuildProvider));
+  final notifier = GameNotifier(
+    testBuild: ref.watch(testBuildProvider),
+    uploadWallet: ApiService().saveWallet,
+  );
   // The wallet follows whoever is logged in.
   ref.listen<String?>(
     authProvider.select((s) => s.student?.id),
     (_, id) => notifier.loadWallet(id),
     fireImmediately: true,
+  );
+  // And is joined with the server's copy each time that is freshly read.
+  ref.listen<ServerWallet?>(
+    authProvider.select((s) => s.serverWallet),
+    (_, wallet) {
+      if (wallet != null) notifier.syncWithServer(wallet);
+    },
   );
   return notifier;
 });

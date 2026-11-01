@@ -24,6 +24,38 @@ class PowerUps {
       };
 }
 
+/// What the server holds of a student's wallet, as read from a fresh sign-in or
+/// profile (never from the cached copy, which can be older than the phone).
+class ServerWallet {
+  final String studentId;
+  final int coins;
+  final PowerUps powerUps;
+  final Set<String> unlockedCharacters;
+
+  ServerWallet({
+    required this.studentId,
+    required this.coins,
+    required this.powerUps,
+    required this.unlockedCharacters,
+  });
+
+  factory ServerWallet.of(Student student) => ServerWallet(
+        studentId: student.id,
+        coins: student.coins,
+        powerUps: student.powerUps,
+        unlockedCharacters: student.unlockedCharacters.toSet(),
+      );
+
+  /// A student who never saved one (every account made before wallets reached the
+  /// server) comes back as all zeros and no characters.
+  bool get isEmpty =>
+      coins == 0 &&
+      powerUps.fiftyFifty == 0 &&
+      powerUps.timeFreeze == 0 &&
+      powerUps.shield == 0 &&
+      unlockedCharacters.isEmpty;
+}
+
 class Student {
   final String id;
   final String username;
@@ -35,6 +67,9 @@ class Student {
   String levelReached;
   int coins;
   PowerUps powerUps;
+
+  /// Characters this student bought (the free ones are not listed).
+  List<String> unlockedCharacters;
   bool mustChangePassword;
   final bool isActive;
   final String? lastActive;
@@ -51,6 +86,7 @@ class Student {
     this.levelReached = 'pre-colonial',
     this.coins = 0,
     PowerUps? powerUps,
+    this.unlockedCharacters = const [],
     this.isActive = true,
     this.lastActive,
   }) : powerUps = powerUps ?? PowerUps();
@@ -68,8 +104,13 @@ class Student {
       levelReached: json['levelReached'] as String? ?? 'pre-colonial',
       coins: json['coins'] as int? ?? 0,
       powerUps: json['powerUps'] != null
-          ? PowerUps.fromJson(Map<String, dynamic>.from(json['powerUps'] as Map))
+          ? PowerUps.fromJson(
+              Map<String, dynamic>.from(json['powerUps'] as Map))
           : PowerUps(),
+      unlockedCharacters: [
+        for (final id in (json['unlockedCharacters'] as List?) ?? const [])
+          '$id',
+      ],
       isActive: json['isActive'] as bool? ?? true,
       lastActive: json['lastActive'] as String?,
     );
@@ -86,5 +127,6 @@ class Student {
         'levelReached': levelReached,
         'coins': coins,
         'powerUps': powerUps.toJson(),
+        'unlockedCharacters': unlockedCharacters,
       };
 }

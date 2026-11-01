@@ -244,8 +244,9 @@ class PlayerComponent extends SpriteAnimationComponent
       if (position.x > limit && position.x < gate.position.x + gate.size.x) {
         position.x = limit;
         if (gate.requirementMet) {
-          // Every artifact answered: the gate simply opens. It asks nothing.
-          game.passEndGate(gate);
+          // Every artifact answered, but the student never saw it open (the
+          // trip to the gate normally does that): open it now. It asks nothing.
+          game.openEndGate(gate);
         } else {
           // Blocked for a reason the student can act on: they still have
           // artifacts to find. Telling them beats silently refusing.
@@ -458,7 +459,8 @@ class PlayerComponent extends SpriteAnimationComponent
     final hurtWidth = size.x * CombatConstants.playerHurtWidthFraction;
     final hurtLeft = position.x + (size.x - hurtWidth) / 2;
     final hurtTop = position.y;
-    final hurtBottom = position.y + size.y - CombatConstants.playerHurtFeetGrace;
+    final hurtBottom =
+        position.y + size.y - CombatConstants.playerHurtFeetGrace;
 
     final hitWidth = enemy.size.x * CombatConstants.enemyHitWidthFraction;
     final hitHeight = enemy.size.y * CombatConstants.enemyHitHeightFraction;
@@ -538,8 +540,7 @@ class PlayerComponent extends SpriteAnimationComponent
     _knockbackRemaining = CombatConstants.knockbackDuration;
     _invincibleUntil = DateTime.now().add(
       Duration(
-        milliseconds:
-            (CombatConstants.invincibilityDuration * 1000).round(),
+        milliseconds: (CombatConstants.invincibilityDuration * 1000).round(),
       ),
     );
   }

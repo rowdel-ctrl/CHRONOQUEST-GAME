@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/living_backdrop.dart';
+import '../../widgets/menu_chip.dart';
 import '../../widgets/pixel_icon.dart';
 
 String _formatCountdown(Duration d) {
@@ -13,6 +15,9 @@ String _formatCountdown(Duration d) {
   return '$minutes:${seconds.toString().padLeft(2, '0')}';
 }
 
+/// A level lost: the hero, hurt, in red light; "SUBUKAN ULIT!", the hearts that are
+/// left, and three buttons: ULIT (gold, the big one), the shop and the way back,
+/// both as icons. With no hearts left ULIT waits and a small clock says how long.
 class LevelFailedScreen extends ConsumerWidget {
   final String eraId;
   final int level;
@@ -22,182 +27,161 @@ class LevelFailedScreen extends ConsumerWidget {
     required this.level,
   });
 
+  static const retryKey = Key('level_failed_retry');
+  static const shopKey = Key('level_failed_shop');
+  static const backKey = Key('level_failed_back');
+  static const heartsKey = Key('level_failed_hearts');
+  static const timerKey = Key('level_failed_timer');
+  static const heroKey = Key('level_failed_hero');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hearts = ref.watch(gameProvider).hearts;
+    final game = ref.watch(gameProvider);
+    final hearts = game.hearts;
     final hasHearts = ref.read(gameProvider.notifier).canStartLevel;
     final timeUntilNext = ref.read(gameProvider.notifier).heartCountdown;
+    final wide = MediaQuery.sizeOf(context).width >= 560;
+
+    final hero = Image.asset(
+      'assets/characters/${game.selectedCharacterId}_hurt.png',
+      key: heroKey,
+      height: wide ? 150 : 110,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.none,
+      errorBuilder: (_, __, ___) =>
+          SizedBox(height: wide ? 150 : 110, width: 80),
+    );
+
+    final words = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:
+          wide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      children: [
+        Text(
+          'SUBUKAN ULIT!',
+          style: GoogleFonts.poppins(
+            fontSize: 28,
+            height: 1.15,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFFFF8F86),
+            shadows: const [
+              Shadow(color: AppColors.primaryDark, offset: Offset(0, 4))
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        // The hearts left: the one shared pool this failure just drew from, drawn
+        // with the same icons as the game's own hearts.
+        Row(
+          key: heartsKey,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 0; i < GameConstants.maxHearts; i++)
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Image.asset(
+                  i < hearts.count
+                      ? 'assets/ui/heart_full.png'
+                      : 'assets/ui/heart_empty.png',
+                  width: 24,
+                  height: 24,
+                  filterQuality: FilterQuality.none,
+                ),
+              ),
+            // Out of hearts: when the next one comes, or that it needs the internet.
+            if (!hasHearts) ...[
+              const SizedBox(width: 6),
+              Icon(Icons.schedule,
+                  size: 18, color: Colors.white.withValues(alpha: 0.8)),
+              const SizedBox(width: 4),
+              Text(
+                timeUntilNext != null
+                    ? _formatCountdown(timeUntilNext)
+                    : 'Mag-online',
+                key: timerKey,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Retry is disabled once the hearts pool is empty, until one regenerates.
+            GameButton(
+              key: retryKey,
+              label: 'ULIT',
+              icon: Icons.refresh,
+              width: 170,
+              onPressed:
+                  hasHearts ? () => context.go('/game/$eraId/$level') : null,
+            ),
+            const SizedBox(width: 10),
+            // Out of hearts, or short of a power-up: the shop.
+            MenuChip(
+              key: shopKey,
+              icon: PixelGlyph.cart,
+              tooltip: 'Tindahan',
+              onTap: () => context.push('/shop'),
+            ),
+            const SizedBox(width: 6),
+            MenuChip(
+              key: backKey,
+              icon: PixelGlyph.back,
+              tooltip: 'Bumalik',
+              onTap: () => context.go('/level-select/$eraId'),
+            ),
+          ],
+        ),
+      ],
+    );
 
     return Scaffold(
-      body: GameBackdrop(
-        baseColor: AppColors.background,
-        child: SafeArea(
-          child: Center(
-            // SingleChildScrollView is the actual bug fix here — this
-            // screen has two stacked buttons at the bottom, and without a
-            // scroll view, short landscape phones would push "BUMALIK SA
-            // LEVEL SELECT" off the bottom of the visible screen entirely.
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: GamePanel(
-                color: AppColors.surface,
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.all(22),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 380),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Failed icon
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: AppColors.danger.withValues(alpha: 0.15),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.danger,
-                            width: 3,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          color: AppColors.danger,
-                          size: 36,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Title
-                      Text(
-                        'SUBUKAN ULIT!',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          height: 1.4,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-
-                      Text(
-                        'Level $level — Naubos ang puso mo',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: AppColors.textMuted,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Hearts display — the single shared pool
-                      // (GAMEPLAY-V2.md section 8) that this failure just
-                      // spent the last of. Same icon as the in-game HUD.
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          GameConstants.maxHearts,
-                          (i) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Image.asset(
-                              i < hearts.count
-                                  ? 'assets/ui/heart_full.png'
-                                  : 'assets/ui/heart_empty.png',
-                              width: 24,
-                              height: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Hint / encouragement, or a no-hearts notice once the
-                      // persistent pool is empty.
-                      GamePanel(
-                        color: AppColors.surfaceAlt,
-                        borderWidth: 2,
-                        shadowOffset: 0,
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF4A1620), Color(0xFF1A0A10)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            // Red light, slow. The hero is not lit by it: it is in the dark.
+            Positioned.fill(
+              child: LivingBackdrop(
+                color: AppColors.danger,
+                fireflies: 0,
+                center: wide ? const Offset(0.3, 0.5) : const Offset(0.5, 0.25),
+              ),
+            ),
+            SafeArea(
+              child: Center(
+                // Scrolls only on a screen too short for it.
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: wide
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              hasHearts
-                                  ? Icons.lightbulb_outline
-                                  : Icons.favorite_border,
-                              color: hasHearts
-                                  ? AppColors.warning
-                                  : AppColors.danger,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                hasHearts
-                                    ? 'Tip: Basahin ulit ang history bago '
-                                        'mag-try ulit. Makakatulong ito sa '
-                                        'pagsagot!'
-                                    : timeUntilNext != null
-                                        ? 'Wala nang puso! Susunod na puso sa '
-                                            '${_formatCountdown(timeUntilNext)}.'
-                                        : 'Wala nang puso! Mag-online para '
-                                            'bumalik ang mga puso.',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 13,
-                                  color: AppColors.textSecondary,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
+                            hero,
+                            const SizedBox(width: 44),
+                            Flexible(child: words)
                           ],
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [hero, const SizedBox(height: 14), words],
                         ),
-                      ),
-                      const SizedBox(height: 18),
-
-                      // Retry button — disabled once the persistent hearts
-                      // pool is empty, until one regenerates.
-                      GameButton(
-                        label: 'ULIT',
-                        icon: Icons.refresh,
-                        color: AppColors.accent,
-                        width: double.infinity,
-                        onPressed: hasHearts
-                            ? () {
-                                context.go('/game/$eraId/$level');
-                              }
-                            : null,
-                      ),
-                      const SizedBox(height: 10),
-
-                      // Out of hearts, or short of a power-up: the shop.
-                      GameButton(
-                        label: 'TINDAHAN',
-                        leading: const PixelIcon(PixelGlyph.cart,
-                            size: 20, color: AppColors.primaryDark),
-                        color: hasHearts ? AppColors.surfaceAlt : AppColors.accent,
-                        textColor: hasHearts
-                            ? AppColors.textSecondary
-                            : AppColors.primaryDark,
-                        width: double.infinity,
-                        onPressed: () => context.push('/shop'),
-                      ),
-                      const SizedBox(height: 10),
-
-                      // Back to level select
-                      GameButton(
-                        label: 'BUMALIK',
-                        leading: const PixelIcon(PixelGlyph.back,
-                            size: 20, color: AppColors.textSecondary),
-                        color: AppColors.surfaceAlt,
-                        textColor: AppColors.textSecondary,
-                        width: double.infinity,
-                        onPressed: () {
-                          context.go('/level-select/$eraId');
-                        },
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

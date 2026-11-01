@@ -345,13 +345,24 @@ String _grouped(int n) {
   return out.toString();
 }
 
+/// The title of the era a row says the student has reached. The server sends the
+/// era id ("spanish"); anything it does not know leaves the line out rather than
+/// breaking the list.
+String _eraTitle(Object? value) {
+  if (value is! String) return '';
+  for (final era in allEras) {
+    if (era.id == value) return era.name;
+  }
+  return '';
+}
+
 /// One person on the list, read from the server's row.
 class _Entry {
   final int rank;
   final String id;
   final String name;
   final int score;
-  final int level;
+  final String era;
   final String classCode;
   final bool isMe;
   const _Entry({
@@ -359,14 +370,14 @@ class _Entry {
     required this.id,
     required this.name,
     required this.score,
-    required this.level,
+    required this.era,
     required this.classCode,
     required this.isMe,
   });
 
   String sub(bool withClass) {
     final parts = [
-      if (level > 0) 'Antas $level',
+      if (era.isNotEmpty) era,
       if (withClass && classCode.isNotEmpty) classCode,
     ];
     return parts.join(' · ');
@@ -404,8 +415,7 @@ class _BoardState extends State<_Board> {
           id: '${widget.board.leaders[i]['_id'] ?? widget.board.leaders[i]['id'] ?? ''}',
           name: widget.board.leaders[i]['name'] as String? ?? '?',
           score: (widget.board.leaders[i]['score'] as num?)?.toInt() ?? 0,
-          level:
-              (widget.board.leaders[i]['levelReached'] as num?)?.toInt() ?? 0,
+          era: _eraTitle(widget.board.leaders[i]['levelReached']),
           classCode: widget.board.leaders[i]['classCode'] as String? ?? '',
           isMe: widget.myId != null &&
               '${widget.board.leaders[i]['_id'] ?? widget.board.leaders[i]['id'] ?? ''}' ==
@@ -438,7 +448,7 @@ class _BoardState extends State<_Board> {
     final meCard = _MeCard(
       key: LeaderboardScreen.meCardKey,
       name: widget.myName.isNotEmpty ? widget.myName : (me?.name ?? ''),
-      level: me?.level ?? 0,
+      era: me?.era ?? '',
       rank: me?.rank,
       score: myScore,
       above: me == null
@@ -460,7 +470,7 @@ class _BoardState extends State<_Board> {
               id: widget.myId!,
               name: widget.myName,
               score: myScore,
-              level: 0,
+              era: '',
               classCode: '',
               isMe: true,
             ),
@@ -547,7 +557,7 @@ class _BoardState extends State<_Board> {
 // ── "Ikaw": the student's own place ──────────────────────────────────────────
 class _MeCard extends StatelessWidget {
   final String name;
-  final int level;
+  final String era;
   final int? rank;
   final int score;
   final _Entry? above;
@@ -555,7 +565,7 @@ class _MeCard extends StatelessWidget {
   const _MeCard({
     super.key,
     required this.name,
-    required this.level,
+    required this.era,
     required this.rank,
     required this.score,
     required this.above,
@@ -619,9 +629,11 @@ class _MeCard extends StatelessWidget {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    if (level > 0)
+                    if (era.isNotEmpty)
                       Text(
-                        'Antas $level',
+                        era,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           height: 1.2,

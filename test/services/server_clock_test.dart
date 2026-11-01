@@ -4,6 +4,33 @@ import 'package:chronoquest/services/server_clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // "Reachable" is what the first screen's signal icon shows.
+  test('reachable is unknown until the server has been asked', () {
+    expect(ServerClock(fetch: () async => null).reachable.value, isNull);
+  });
+
+  test('reachable follows the last read: yes, no, yes again', () async {
+    final answers = <int?>[1000, null, 2000];
+    final clock = ServerClock(fetch: () async => answers.removeAt(0));
+
+    await clock.sync();
+    expect(clock.reachable.value, isTrue);
+    await clock.sync();
+    expect(clock.reachable.value, isFalse, reason: 'the server did not answer');
+    await clock.sync();
+    expect(clock.reachable.value, isTrue);
+  });
+
+  test('an error while reading means not reachable', () async {
+    final clock = ServerClock(fetch: () async => throw Exception('offline'));
+    await clock.sync();
+    expect(clock.reachable.value, isFalse);
+  });
+
+  test('a clock made for tests is reachable', () {
+    expect(ServerClock.fixed(DateTime.utc(2021)).reachable.value, isTrue);
+  });
+
   test('has no time until the server has been read', () {
     final clock = ServerClock(fetch: () async => null);
     expect(clock.isSynced, isFalse);

@@ -179,7 +179,9 @@ void main() {
     expect(_minions(game), hasLength(BossPlan.minionsPerWave[0]));
     expect(game.questionShowing, isFalse, reason: 'the minions come before the next question');
 
-    // Beat them: each pays one Kaalaman charge.
+    // Beat them: each pays one Kaalaman charge (from a bar that is not full, as the
+    // full bar caps what they can add).
+    game.kaalaman = 4;
     final before = game.kaalaman;
     _beatWave(game);
     expect(game.kaalaman, before + BossPlan.minionsPerWave[0]);

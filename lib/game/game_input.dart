@@ -3,6 +3,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'chrono_game.dart';
 import '../models/control_scheme.dart';
+import '../widgets/action_disc.dart';
 
 /// Builds the on-screen joystick and jump/attack buttons — Flame's built-in
 /// input components (GAMEPLAY-V2.md Section 3: "Don't build the controls —
@@ -63,23 +64,15 @@ class GameInput {
     _mountMovement();
 
     final jumpButton = HudButtonComponent(
-      button: _buttonShape(label: 'JUMP', alpha: 0.35),
-      buttonDown: _buttonShape(label: 'JUMP', alpha: 0.65),
+      button: _ActionDisc(_ActionIcon.jump, pressed: false),
+      buttonDown: _ActionDisc(_ActionIcon.jump, pressed: true),
       margin: const EdgeInsets.only(right: 145, bottom: 35),
       onPressed: game.onPlayerJump,
     );
 
     final attackButton = HudButtonComponent(
-      button: _buttonShape(
-        label: 'ATK',
-        alpha: 0.35,
-        color: Colors.redAccent,
-      ),
-      buttonDown: _buttonShape(
-        label: 'ATK',
-        alpha: 0.65,
-        color: Colors.redAccent,
-      ),
+      button: _ActionDisc(_ActionIcon.attack, pressed: false),
+      buttonDown: _ActionDisc(_ActionIcon.attack, pressed: true),
       margin: const EdgeInsets.only(right: 15, bottom: 35),
       onPressed: game.onPlayerAttack,
     );
@@ -178,32 +171,29 @@ class GameInput {
       ],
     );
   }
+}
 
-  PositionComponent _buttonShape({
-    required String label,
-    required double alpha,
-    Color color = Colors.white,
-  }) {
-    // 20% bigger than the original 90 — playtesting found Jump/Attack too
-    // small and too close to the joystick to reach comfortably by thumb.
-    const diameter = 108.0;
-    return CircleComponent(
-      radius: diameter / 2,
-      paint: Paint()..color = color.withValues(alpha: alpha),
-      children: [
-        TextComponent(
-          text: label,
-          anchor: Anchor.center,
-          position: Vector2.all(diameter / 2),
-          textRenderer: TextPaint(
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
+enum _ActionIcon { jump, attack }
+
+/// A round action button with a picture on it, not a word: two chevrons up for
+/// Jump (gold) and a sword for Attack (red). 20% bigger than the original 90
+/// (playtesting found Jump/Attack too small and too close to the joystick to
+/// reach comfortably by thumb). Slightly see-through at rest so the level shows
+/// behind it, solid while pressed.
+class _ActionDisc extends PositionComponent {
+  final _ActionIcon icon;
+  final bool pressed;
+
+  _ActionDisc(this.icon, {required this.pressed})
+      : super(size: Vector2.all(GameInput._buttonDiameter));
+
+  @override
+  void render(Canvas canvas) {
+    paintActionDisc(
+      canvas,
+      size.x,
+      icon == _ActionIcon.jump ? ActionDiscKind.jump : ActionDiscKind.attack,
+      alpha: pressed ? 1.0 : 0.82,
     );
   }
 }

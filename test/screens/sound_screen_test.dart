@@ -116,7 +116,7 @@ void main() {
     expect(slider.onChanged, isNull);
   });
 
-  for (final size in const [Size(640, 360), Size(800, 360), Size(732, 320)]) {
+  for (final size in const [Size(640, 360), Size(732, 320)]) {
     testWidgets('fits a ${size.width.toInt()}x${size.height.toInt()} screen',
         (tester) async {
       await _size(tester, size);

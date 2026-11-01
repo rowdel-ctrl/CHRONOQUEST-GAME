@@ -73,7 +73,7 @@ Future<_GateGame> _mount(
 }
 
 void main() {
-  testWidgets('a gate with every artifact answered opens by itself, no question',
+  testWidgets('a gate with every artifact answered starts to open by itself, no question',
       (tester) async {
     final gate = GateComponent(worldX: 600);
     final game = await _mount(tester, gate, artifacts: 3, answered: 3);
@@ -81,8 +81,9 @@ void main() {
     game.player.position.x = gate.blockX - game.player.size.x + 4;
     await tester.pump(const Duration(milliseconds: 16));
 
-    expect(gate.opened, isTrue,
-        reason: 'the requirement is met, so reaching the gate opens it');
+    expect(game.gateReveal, isNotNull,
+        reason: 'the requirement is met, so reaching the gate starts it opening');
+    expect(gate.opened, isFalse, reason: 'it takes a few seconds to open');
     expect(game.questionShowing, isFalse,
         reason: 'the gate asks nothing; every question is on an artifact');
     expect(game.currentQuestion, isNull);

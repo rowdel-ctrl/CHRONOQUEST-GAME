@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants.dart';
 import '../models/era_progress.dart';
 import '../services/api_service.dart';
+import '../services/guest_mode.dart';
 import '../services/storage_service.dart';
 
 class ProgressState {
@@ -35,6 +36,13 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
 
   Future<void> loadProgress() async {
     state = state.copyWith(isLoading: true, error: null);
+    if (GuestMode.active) {
+      // A guest has no server record: progress is what this phone saved.
+      state = ProgressState(eraProgress: {
+        for (final era in allEras) era.id: _localProgress(era),
+      });
+      return;
+    }
     try {
       final progress = await _api.getEraProgress();
       state = ProgressState(eraProgress: progress);
@@ -54,6 +62,16 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
     }
   }
 
+  EraProgress _localProgress(EraData era) {
+    final done = StorageService.getCompletedLevels(era.id);
+    return EraProgress(
+      eraId: era.id,
+      levelsCompleted: done.length,
+      // The last level of an era is its boss.
+      bossDefeated: done.containsKey(era.levels.length),
+    );
+  }
+
   EraProgress getEraProgress(String eraId) {
     return state.eraProgress[eraId] ?? EraProgress(eraId: eraId);
   }
@@ -71,6 +89,5 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
   }
 }
 
-final progressProvider =
-    StateNotifierProvider<ProgressNotifier, ProgressState>(
-        (ref) => ProgressNotifier());
+final progressProvider = StateNotifierProvider<ProgressNotifier, ProgressState>(
+    (ref) => ProgressNotifier());

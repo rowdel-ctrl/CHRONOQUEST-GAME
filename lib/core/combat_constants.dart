@@ -1,4 +1,3 @@
-
 /// All Phase 2 combat/Kaalaman tuning numbers in one place (GAMEPLAY-V2.md
 /// Section 15, Phase 2 prompt: "Put all tuning numbers... in one clearly
 /// named constants file so they can be adjusted without hunting"). Every
@@ -8,12 +7,13 @@
 /// it was written about.
 class CombatConstants {
   // ─── Kaalaman charges (Section 4) ──────────────────────────────────────
-  /// Every level starts at 0 (Section 4). Artifacts are the only source of
-  /// charges — Phase 3 restored this after Phase 2 temporarily started at 3
-  /// so combat was testable before artifacts existed.
-  static const int kaalamanStart = 0;
-  /// How many orbs/segments the HUD bar is scaled to. Not a limit: charges
-  /// are bounded by content (5 artifacts x 2), so nothing is clamped to it.
+  /// Every level starts with the bar FULL (playtest 2026-10-30: starting at 0 left a
+  /// student who answered wrong with no attack and a wait). Attacks that land spend
+  /// charges, and a correct answer gives them back (+2).
+  static const int kaalamanStart = kaalamanDisplayMax;
+
+  /// How many orbs/segments the HUD bar holds: the most a student can have, so
+  /// what the bar shows is what there is (charges are capped here).
   static const int kaalamanDisplayMax = 10;
   static const int attackChargeCost = 1;
 
@@ -21,18 +21,14 @@ class CombatConstants {
   /// stranded without an attack. Regeneration stops at this floor; only
   /// artifacts push a player above it.
   static const int kaalamanRegenFloor = 1;
-  static const double kaalamanRegenSeconds = 20.0;
 
-  /// Section 4 sanctions a tutorial freebie: "Levels 1-2 of each era may
-  /// grant 1 as a tutorial freebie." Without it the very first level opens
-  /// with a dead attack button until the first artifact is claimed.
-  static const int kaalamanTutorialLevels = 2;
-  static const int kaalamanTutorialStart = 1;
+  /// Seconds at 0 charges before one comes back. 20 until 2026-10-30 (playtest:
+  /// "the regeneration is too long"), now 6.
+  static const double kaalamanRegenSeconds = 6.0;
 
   /// A boss arena has no artifacts to collect on the way in, so the fight opens
-  /// with enough charges to beat the first wave of minions (two walkers, or a
-  /// heavy that takes two hits). After that the minions pay for the next wave.
-  static const int bossStartCharges = 4;
+  /// with the bar full too. The minions pay for the next wave.
+  static const int bossStartCharges = kaalamanDisplayMax;
 
   // ─── Attack hitbox (Section 3: "a short forward hitbox... ~0.25s") ─────
   /// 64 until 2026-10-06, then 80: walking went from 210 to 250 units/s, so the
@@ -186,16 +182,19 @@ class CombatConstants {
   /// and 2026-10-04 corrections).
   static const int gatesPerLevel = 1;
 
-  /// A gate blocks the full corridor height and cannot be jumped, so it is
-  /// far taller than the old 40x50 WallComponent it replaces. Widened from 48 to
+  /// How tall the gate is drawn: 180, which snaps to 8 tiles (192). A gate blocks
+  /// the full corridor whatever the student's height (the stop is a sideways
+  /// clamp in PlayerComponent.update, so a jump never goes over it), and 180 is
+  /// well above the highest a jump reaches (about 128). It was 260 until
+  /// 2026-10-29 ("why is the gate so tall"). Still far taller than the old 40x50
+  /// WallComponent it replaces. Widened from 48 to
   /// 144 (6 tiles) after playtesting: at 48 it was half as wide as the player and
   /// read as a post, not a gate. The generator leaves 120 of floor past the exit
   /// so it fits (tools/levelgen/rules.js, exitMargin).
   static const double gateWidth = 144;
-  static const double gateHeight = 260;
+  static const double gateHeight = 180;
 
   /// How far in front of a gate the player is stopped, so they don't stand
   /// visually inside it while the question is open.
   static const double gateStandoff = 8;
-
 }

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/student.dart';
 import '../data/question_bank.dart';
 import '../services/api_service.dart';
+import '../services/guest_mode.dart';
 import '../services/question_sync.dart';
 import '../services/storage_service.dart';
 
@@ -11,11 +12,20 @@ class AuthState {
   final String? error;
   final bool isLoggedIn;
 
+  /// The wallet the server held at the last sign-in or profile read that reached
+  /// it. Null until then: the cached student is not one, since it can be older
+  /// than what the phone has. A new object each time, so the game notices.
+  final ServerWallet? serverWallet;
+
+  /// Someone trying the game without a class code (see [GuestMode]).
+  bool get isGuest => student?.id == GuestMode.studentId;
+
   const AuthState({
     this.student,
     this.isLoading = false,
     this.error,
     this.isLoggedIn = false,
+    this.serverWallet,
   });
 
   AuthState copyWith({
@@ -23,12 +33,14 @@ class AuthState {
     bool? isLoading,
     String? error,
     bool? isLoggedIn,
+    ServerWallet? serverWallet,
   }) {
     return AuthState(
       student: student ?? this.student,
       isLoading: isLoading ?? this.isLoading,
       error: error,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      serverWallet: serverWallet ?? this.serverWallet,
     );
   }
 }
@@ -53,9 +65,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<Map<String, dynamic>> login({
     required String classCode,
-    required String username,
+    String? username,
     String? name,
     required String password,
+    bool allowSameName = false,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
@@ -64,13 +77,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
         username: username,
         name: name,
         password: password,
+        allowSameName: allowSameName,
       );
-      final student =
-          Student.fromJson(data['user'] as Map<String, dynamic>);
+      final student = Student.fromJson(data['user'] as Map<String, dynamic>);
       state = AuthState(
         student: student,
         isLoggedIn: true,
         isLoading: false,
+        serverWallet: ServerWallet.of(student),
       );
       // Retry any results that were queued while logged out or with an
       // expired token — now that we have a fresh one, this should succeed.
@@ -94,17 +108,41 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (state.error != null) state = state.copyWith(error: null);
   }
 
+  /// Starts a guest session: the first era only, nothing sent to the server. Each
+  /// session starts fresh, so a demo always begins from the beginning.
+  Future<void> startGuest() async {
+    // Whatever the phone kept for someone before (progress, the codex) goes, and
+    // the guest's own wallet and hearts start empty.
+    await StorageService.clearAll();
+    await StorageService.clearGuestData(GuestMode.studentId);
+    QuestionBank.clearSynced();
+    GuestMode.active = true;
+    state = AuthState(
+      student: Student(
+        id: GuestMode.studentId,
+        username: 'guest',
+        name: 'Guest',
+        classCode: '',
+        gradeLevel: 'grade5',
+      ),
+      isLoggedIn: true,
+    );
+  }
+
   Future<void> refreshProfile() async {
+    if (GuestMode.active) return; // a guest has no profile on the server
     try {
-      final student = await _api.getProfile();
-      state = state.copyWith(student: student);
+      final student = await _api.getFreshProfile();
+      state = state.copyWith(
+          student: student, serverWallet: ServerWallet.of(student));
       QuestionSync.sync(student.classCode);
     } catch (_) {
-      // Use cached data
+      // Use cached data: the wallet is not joined with the server's this time.
     }
   }
 
   Future<void> logout() async {
+    GuestMode.active = false;
     await StorageService.clearAll();
     QuestionBank.clearSynced();
     state = const AuthState();

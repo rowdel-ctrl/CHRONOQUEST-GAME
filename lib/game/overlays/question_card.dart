@@ -195,35 +195,55 @@ class QuestionCard extends StatelessWidget {
   }
 
   Widget _options(QuestionLayout layout) {
-    return GridView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        mainAxisExtent: layout.optionHeight,
-      ),
-      children: question.options.map((option) {
-        if (hiddenOptions.contains(option.label)) {
-          return const SizedBox.shrink();
+    Widget cell(QuestionOption option) {
+      if (hiddenOptions.contains(option.label)) {
+        return const SizedBox.shrink();
+      }
+      var state = AnswerState.neutral;
+      if (answered) {
+        if (option.label == question.correctAnswer) {
+          state = AnswerState.correct;
+        } else if (option.label == selectedAnswer) {
+          state = AnswerState.wrong;
         }
-        var state = AnswerState.neutral;
-        if (answered) {
-          if (option.label == question.correctAnswer) {
-            state = AnswerState.correct;
-          } else if (option.label == selectedAnswer) {
-            state = AnswerState.wrong;
-          }
-        }
-        return AnswerButton(
-          option: option,
-          state: state,
-          selected: answered && option.label == selectedAnswer,
-          layout: layout,
-          onTap: () => onAnswer(option.label),
-        );
-      }).toList(),
+      }
+      return AnswerButton(
+        option: option,
+        state: state,
+        selected: answered && option.label == selectedAnswer,
+        layout: layout,
+        onTap: () => onAnswer(option.label),
+      );
+    }
+
+    // Two options a row, side by side. A row is as tall as its taller option, so
+    // a long answer is shown whole instead of ending in "...".
+    final options = question.options;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < options.length; i += 2) ...[
+          if (i > 0) const SizedBox(height: 10),
+          ConstrainedBox(
+            // A row where both options were removed (50/50) keeps its height.
+            constraints: BoxConstraints(minHeight: layout.optionHeight),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: cell(options[i])),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: i + 1 < options.length
+                        ? cell(options[i + 1])
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -264,6 +284,19 @@ class QuestionCard extends StatelessWidget {
           enabled: !answered && shieldCount > 0 && !shieldActive,
           layout: layout,
         ),
+        // A question with a countdown (the teacher set a timer) can be frozen too,
+        // not only the boss's.
+        if (_timed) ...[
+          const SizedBox(width: 16),
+          PowerupButton(
+            icon: Icons.ac_unit,
+            label: 'Time Freeze',
+            count: timeFreezeCount,
+            onTap: onTimeFreeze ?? () {},
+            enabled: !answered && !countdownFrozen,
+            layout: layout,
+          ),
+        ],
       ],
     );
   }

@@ -45,6 +45,18 @@ void main() {
     expect(gate.size.y, greaterThanOrEqualTo(CombatConstants.gateHeight));
   });
 
+  test('it is 8 tiles tall, a good deal above the highest a jump reaches', () async {
+    final (_, gate) = await _gateAt(5000);
+    const jumpPeak = 480.0 * 480.0 / (2 * 900.0); // about 128
+    expect(gate.size.y, 192);
+    expect(gate.size.y, greaterThan(jumpPeak + 40));
+  });
+
+  test('the student is drawn in front of it, not behind', () async {
+    final (game, gate) = await _gateAt(5000);
+    expect(gate.priority, lessThan(game.player.priority));
+  });
+
   test('it still stops the player 8 units in front of its left edge', () async {
     final (_, gate) = await _gateAt(5000);
     expect(gate.blockX, 5000 - CombatConstants.gateStandoff);
@@ -91,8 +103,8 @@ void main() {
     expect(near.calls, greaterThan(0));
   });
 
-  test('it is drawn at the same height whatever its width (264, 11 tiles)', () async {
+  test('it is drawn at the same height whatever its width (192, 8 tiles)', () async {
     final (_, gate) = await _gateAt(5000);
-    expect(gate.size.y, 264);
+    expect(gate.size.y, 192);
   });
 }

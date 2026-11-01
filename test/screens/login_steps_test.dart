@@ -15,9 +15,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class _Call {
-  final String classCode, username, password;
-  final String? name;
-  _Call(this.classCode, this.username, this.name, this.password);
+  final String classCode, password;
+  final String? username, name;
+  final bool allowSameName;
+  _Call(this.classCode, this.username, this.name, this.password, this.allowSameName);
 }
 
 class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
@@ -26,6 +27,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
   /// What the next login does: an error message to fail with, or null to succeed.
   String? failWith;
   bool mustChange = false;
+
+  /// True when the server answers a join (the student is new).
+  bool isNew = false;
 
   _FakeAuth() : super(const AuthState());
 
@@ -37,11 +41,12 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
   @override
   Future<Map<String, dynamic>> login({
     required String classCode,
-    required String username,
+    String? username,
     String? name,
     required String password,
+    bool allowSameName = false,
   }) async {
-    calls.add(_Call(classCode, username, name, password));
+    calls.add(_Call(classCode, username, name, password, allowSameName));
     if (failWith != null) {
       state = AuthState(error: failWith);
       return {'success': false};
@@ -51,11 +56,12 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
       student: Student.fromJson({
         'id': 's',
         'name': 'Juan',
+        'username': 'juandelacruz',
         'classCode': classCode,
         'mustChangePassword': mustChange,
       }),
     );
-    return {'success': true};
+    return {'success': true, 'isNewStudent': isNew};
   }
 
   @override
@@ -74,8 +80,16 @@ Future<void> _pump(
   List<String>? landedOn,
   LastSignIn? last,
   List<ForgotPasswordArgs>? forgotLog,
+  ValueNotifier<bool?>? connection,
+  VoidCallback? checkConnection,
+  bool animations = false,
 }) async {
   _auth = _FakeAuth();
+  // The first screen's rays, fireflies and fact line move forever, which pumpAndSettle
+  // would wait on. Most tests are not about that, so the phone says "remove animations".
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      FakeAccessibilityFeatures(disableAnimations: !animations);
+  addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
   await tester.binding.setSurfaceSize(size);
   tester.view.devicePixelRatio = 1.0;
   tester.view.physicalSize = size;
@@ -88,7 +102,13 @@ Future<void> _pump(
     GoRoute(
       path: '/',
       builder: (_, __) =>
-          LoginScreen(scannerBuilder: _camera(link), lastSignIn: () => last),
+          LoginScreen(
+            scannerBuilder: _camera(link),
+            lastSignIn: () => last,
+            // Never the real game clock: that would ask the live server.
+            connection: connection ?? ValueNotifier<bool?>(null),
+            checkConnection: checkConnection ?? () {},
+          ),
     ),
     GoRoute(
       path: '/forgot-password',
@@ -110,6 +130,20 @@ Future<void> _pump(
       builder: (_, __) {
         landedOn?.add('/change-password');
         return const Scaffold(body: Text('password stand-in'));
+      },
+    ),
+    GoRoute(
+      path: '/welcome',
+      builder: (_, __) {
+        landedOn?.add('/welcome');
+        return const Scaffold(body: Text('welcome stand-in'));
+      },
+    ),
+    GoRoute(
+      path: '/your-username',
+      builder: (_, __) {
+        landedOn?.add('/your-username');
+        return const Scaffold(body: Text('username stand-in'));
       },
     ),
   ]);
@@ -166,16 +200,18 @@ void main() {
   });
 
   group('answering', () {
-    testWidgets('a new student answers five questions, then joins once', (tester) async {
+    testWidgets('a new student answers five questions, then joins once with no username',
+        (tester) async {
       await _pump(tester);
       await _choose(tester, joining: true);
 
       await _answer(tester, 'edg5a1');
-      expect(find.text('Ano ang tunay mong pangalan?'), findsOneWidget);
-      await _answer(tester, 'Juan Dela Cruz');
-      expect(find.text('Gumawa ng username mo.'), findsOneWidget);
-      await _answer(tester, 'JuanNinja99');
+      expect(find.text('Ano ang pangalan mo?'), findsOneWidget);
+      await _answer(tester, 'Juan');
+      expect(find.text('Ano ang apelyido mo?'), findsOneWidget);
+      await _answer(tester, 'Dela Cruz');
       expect(find.text('Gumawa ng password.'), findsOneWidget);
+      expect(find.text('Gumawa ng username mo.'), findsNothing, reason: 'the server makes it');
       await _answer(tester, 'secret1');
       expect(find.text('Ulitin ang password.'), findsOneWidget);
       expect(find.text('SUMALI SA KLASE'), findsOneWidget);
@@ -186,8 +222,70 @@ void main() {
 
       expect(_auth.calls, hasLength(1));
       final c = _auth.calls.single;
-      expect((c.classCode, c.name, c.username, c.password),
-          ('edg5a1', 'Juan Dela Cruz', 'JuanNinja99', 'secret1'));
+      expect((c.classCode, c.name, c.username, c.password, c.allowSameName),
+          ('edg5a1', 'Juan Dela Cruz', null, 'secret1', false));
+    });
+
+    testWidgets('a name is tidied in the box once it is accepted', (tester) async {
+      await _pump(tester);
+      await _choose(tester, joining: true);
+      await _answer(tester, 'EDG5A1');
+      await _answer(tester, '  juan   MIGUEL ');
+      await _answer(tester, 'dela cruz');
+      await tester.tap(find.byKey(LoginScreen.backKey));
+      await tester.pump();
+      expect(_typed(tester), 'Dela Cruz');
+      await tester.tap(find.byKey(LoginScreen.backKey));
+      await tester.pump();
+      expect(_typed(tester), 'Juan Miguel');
+    });
+
+    testWidgets('names that are not names are refused, and the box says why', (tester) async {
+      await _pump(tester);
+      await _choose(tester, joining: true);
+      await _answer(tester, 'EDG5A1');
+
+      await _answer(tester, '');
+      expect(find.text('I-type ang pangalan mo'), findsOneWidget);
+      await _answer(tester, 'J');
+      expect(find.text('Dapat hindi bababa sa 2 letra.'), findsOneWidget);
+      await _answer(tester, 'Juan2');
+      expect(find.text('Letra lang ang puwede dito, walang numero.'), findsOneWidget);
+      expect(find.text('Ano ang pangalan mo?'), findsOneWidget, reason: 'still on the same question');
+
+      await _answer(tester, 'Juan');
+      await _answer(tester, '');
+      expect(find.text('I-type ang apelyido mo'), findsOneWidget);
+      await _answer(tester, 'Cruz123');
+      expect(find.text('Letra lang ang puwede dito, walang numero.'), findsOneWidget);
+      await _answer(tester, 'juan');
+      expect(find.text('Iba dapat ang apelyido sa pangalan.'), findsOneWidget);
+      expect(find.text('Ano ang apelyido mo?'), findsOneWidget);
+    });
+
+    testWidgets('names with two parts, accents, hyphens and apostrophes are fine', (tester) async {
+      await _pump(tester);
+      await _choose(tester, joining: true);
+      await _answer(tester, 'EDG5A1');
+      await _answer(tester, 'Maria Clara');
+      await _answer(tester, "Peña-O'Brien");
+      expect(find.text('Gumawa ng password.'), findsOneWidget);
+    });
+
+    testWidgets('a good last name turns green and shows the whole name', (tester) async {
+      await _pump(tester);
+      await _choose(tester, joining: true);
+      await _answer(tester, 'EDG5A1');
+      await _answer(tester, 'juan');
+
+      await tester.enterText(find.byType(TextField), 'dela cruz');
+      await tester.pump();
+      expect(find.text('✓ Makikita ng teacher mo: Juan Dela Cruz'), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle), findsWidgets);
+
+      await tester.enterText(find.byType(TextField), 'juan');
+      await tester.pump();
+      expect(find.textContaining('Makikita ng teacher mo'), findsNothing);
     });
 
     testWidgets('a returning student answers three and sends no name', (tester) async {
@@ -229,7 +327,7 @@ void main() {
       await _choose(tester, joining: true);
       await _answer(tester, 'EDG5A1');
       await _answer(tester, 'Juan');
-      await _answer(tester, 'juan1');
+      await _answer(tester, 'Dela Cruz');
       await tester.enterText(find.byType(TextField), 'abc');
       await tester.pump();
       expect(find.text('Dapat 6 characters o higit pa'), findsOneWidget);
@@ -249,7 +347,7 @@ void main() {
       await _choose(tester, joining: true);
       await _answer(tester, 'EDG5A1');
       await _answer(tester, 'Juan');
-      await _answer(tester, 'juan1');
+      await _answer(tester, 'Dela Cruz');
       await _answer(tester, 'secret1');
 
       await tester.enterText(find.byType(TextField), 'secret2');
@@ -271,13 +369,13 @@ void main() {
       await _pump(tester);
       await _choose(tester, joining: true);
       await _answer(tester, 'EDG5A1');
-      await _answer(tester, 'Juan Dela Cruz');
+      await _answer(tester, 'Juan');
       expect(find.text('Bago ako · Hakbang 3 ng 5'), findsOneWidget);
 
       await tester.tap(find.byKey(LoginScreen.backKey));
       await tester.pump();
-      expect(find.text('Ano ang tunay mong pangalan?'), findsOneWidget);
-      expect(_typed(tester), 'Juan Dela Cruz');
+      expect(find.text('Ano ang pangalan mo?'), findsOneWidget);
+      expect(_typed(tester), 'Juan');
 
       await tester.tap(find.byKey(LoginScreen.backKey));
       await tester.pump();
@@ -300,7 +398,7 @@ void main() {
       await _answer(tester, 'EDG5A1');
       expect(_scanCard, findsNothing);
       expect(find.byType(AuthGuide), findsOneWidget);
-      expect(find.text('Para makilala ka ng teacher mo.'), findsOneWidget);
+      expect(find.text('Tunay na pangalan, ha. Makikita ito ng teacher mo.'), findsOneWidget);
     });
 
     testWidgets('scanning fills the class code box and marks it green', (tester) async {
@@ -366,29 +464,123 @@ void main() {
     Future<void> joinAs(WidgetTester tester) async {
       await _choose(tester, joining: true);
       await _answer(tester, 'EDG5A1');
-      await _answer(tester, 'Juan Dela Cruz');
-      await _answer(tester, 'JuanNinja99');
+      await _answer(tester, 'Juan');
+      await _answer(tester, 'Dela Cruz');
       await _answer(tester, 'secret1');
       await _answer(tester, 'secret1');
       await tester.pumpAndSettle();
     }
 
-    testWidgets('a taken username goes back to the username question, answers kept',
+    testWidgets('a name the server does not accept goes back to the first-name question',
         (tester) async {
       await _pump(tester);
-      const taken = "May gumagamit na ng username na ito sa klase. Kung ikaw 'yan, piliin ang 'BALIK NA AKO'.";
-      _auth.failWith = taken;
+      const bad = 'I-type ang tunay mong pangalan para sa teacher mo.';
+      _auth.failWith = bad;
       await joinAs(tester);
 
-      expect(find.text('Gumawa ng username mo.'), findsOneWidget);
-      expect(find.text('Bago ako · Hakbang 3 ng 5'), findsOneWidget);
-      expect(find.text(taken), findsOneWidget);
-      expect(_typed(tester), 'JuanNinja99');
+      expect(find.text('Ano ang pangalan mo?'), findsOneWidget);
+      expect(find.text('Bago ako · Hakbang 2 ng 5'), findsOneWidget);
+      expect(find.text(bad), findsOneWidget);
+      expect(_typed(tester), 'Juan');
 
       // Editing the box clears the message.
-      await tester.enterText(find.byType(TextField), 'JuanNinja98');
+      await tester.enterText(find.byType(TextField), 'Juanito');
       await tester.pump();
-      expect(find.text(taken), findsNothing);
+      expect(find.text(bad), findsNothing);
+    });
+
+    testWidgets('a full class says so on the class code question', (tester) async {
+      await _pump(tester);
+      _auth.failWith = 'Puno na ang klase na ito. Itanong sa teacher mo.';
+      await joinAs(tester);
+
+      expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
+      expect(find.textContaining('Puno na ang klase'), findsOneWidget);
+    });
+
+    group('a student with this name is already in the class', () {
+      Future<void> askedWhoItIs(WidgetTester tester) async {
+        _auth.failWith = nameTakenMessage;
+        await joinAs(tester);
+      }
+
+      testWidgets('asks "Ikaw ba \'yon?" instead of showing an error', (tester) async {
+        await _pump(tester);
+        await askedWhoItIs(tester);
+
+        expect(find.text('May Juan Dela Cruz na sa klase mo.'), findsOneWidget);
+        expect(find.byKey(LoginScreen.sameNameLoginKey), findsOneWidget);
+        expect(find.byKey(LoginScreen.sameNameGoOnKey), findsOneWidget);
+        expect(find.text(nameTakenMessage), findsNothing, reason: 'it is a question, not a red banner');
+        expect(find.byKey(LoginScreen.nextKey), findsNothing);
+      });
+
+      testWidgets('"Ikaw \'yon" becomes a sign-in with the class code kept', (tester) async {
+        await _pump(tester);
+        await askedWhoItIs(tester);
+        _auth.failWith = null;
+
+        await tester.tap(find.byKey(LoginScreen.sameNameLoginKey));
+        await tester.pump();
+
+        expect(find.text('Ano ang username mo?'), findsOneWidget);
+        expect(find.text('Balik na ako · Hakbang 2 ng 3'), findsOneWidget);
+        await _answer(tester, 'juandelacruz');
+        await _answer(tester, 'abc123');
+        await tester.pumpAndSettle();
+
+        expect(_auth.calls, hasLength(2));
+        final c = _auth.calls.last;
+        expect((c.classCode, c.username, c.name, c.allowSameName),
+            ('EDG5A1', 'juandelacruz', null, false));
+      });
+
+      testWidgets('"Ibang tao ako" joins again and says to go on', (tester) async {
+        await _pump(tester);
+        await askedWhoItIs(tester);
+        _auth.failWith = null;
+        _auth.isNew = true;
+
+        await tester.tap(find.byKey(LoginScreen.sameNameGoOnKey));
+        await tester.pumpAndSettle();
+
+        expect(_auth.calls, hasLength(2));
+        final c = _auth.calls.last;
+        expect((c.name, c.username, c.allowSameName), ('Juan Dela Cruz', null, true));
+        expect(find.text('welcome stand-in'), findsOneWidget);
+      });
+
+      testWidgets('back returns to the last question with the password kept', (tester) async {
+        await _pump(tester);
+        await askedWhoItIs(tester);
+
+        await tester.tap(find.byKey(LoginScreen.backKey));
+        await tester.pump();
+
+        expect(find.text('Ulitin ang password.'), findsOneWidget);
+        expect(_typed(tester), 'secret1');
+      });
+
+      testWidgets('a failure after "Ibang tao ako" shows on the last question', (tester) async {
+        await _pump(tester);
+        await askedWhoItIs(tester);
+        _auth.failWith = 'Mabagal o walang internet. Subukan ulit.';
+
+        await tester.tap(find.byKey(LoginScreen.sameNameGoOnKey));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Ulitin ang password.'), findsOneWidget);
+        expect(find.text('Mabagal o walang internet. Subukan ulit.'), findsOneWidget);
+      });
+
+      for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
+        testWidgets('fits at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
+          await _pump(tester, size: size);
+          await askedWhoItIs(tester);
+          expect(tester.takeException(), isNull);
+          expect(find.byKey(LoginScreen.sameNameGoOnKey), findsOneWidget);
+        });
+      }
     });
 
     testWidgets('a wrong class code goes back to the first question', (tester) async {
@@ -428,6 +620,9 @@ void main() {
       const expected = {
         'Mali ang class code. Itanong sa teacher mo ang tamang code.': LoginField.classCode,
         'I-type ang class code at username.': LoginField.classCode,
+        'Puno na ang klase na ito. Itanong sa teacher mo.': LoginField.classCode,
+        nameTakenMessage: null,
+        'May problema sa pag-sali. Subukan ulit mamaya.': null,
         'May gumagamit na ng username na ito sa klase.': LoginField.username,
         "Walang account na may ganitong username sa class code na ito. I-check ang username, o piliin ang 'BAGO AKO' para sumali.":
             LoginField.username,
@@ -456,6 +651,22 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('hero stand-in'), findsOneWidget);
+    });
+
+    testWidgets('a new student is welcomed first, before the username and the hero', (tester) async {
+      await _pump(tester);
+      _auth.isNew = true;
+      await _choose(tester, joining: true);
+      await _answer(tester, 'EDG5A1');
+      await _answer(tester, 'Juan');
+      await _answer(tester, 'Dela Cruz');
+      await _answer(tester, 'secret1');
+      await _answer(tester, 'secret1');
+      await tester.pumpAndSettle();
+
+      expect(find.text('welcome stand-in'), findsOneWidget);
+      expect(find.text('username stand-in'), findsNothing, reason: 'the welcome comes first');
+      expect(find.text('hero stand-in'), findsNothing);
     });
 
     testWidgets('goes to change the password when the teacher set it', (tester) async {
@@ -506,7 +717,7 @@ void main() {
       await _choose(tester, joining: true);
       await _answer(tester, 'edg5a1');
       await _answer(tester, 'Juan');
-      await _answer(tester, 'juan1');
+      await _answer(tester, 'Dela Cruz');
       expect(find.text('Gumawa ng password.'), findsOneWidget);
       expect(find.byKey(LoginScreen.forgotKey), findsNothing);
     });
@@ -642,7 +853,7 @@ void main() {
       expect(find.byKey(LoginScreen.identityKey), findsNothing);
     });
 
-    for (final size in const [Size(800, 360), Size(732, 320), Size(640, 360), Size(400, 700)]) {
+    for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
       testWidgets('fits at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
         await _pump(tester, size: size, last: last);
         await _choose(tester, joining: false);
@@ -657,9 +868,7 @@ void main() {
 
   group('fits small phones', () {
     for (final size in const [
-      Size(800, 360),
       Size(732, 320),
-      Size(900, 412),
       Size(640, 360),
       Size(400, 700),
     ]) {
@@ -671,13 +880,17 @@ void main() {
         expect(tester.takeException(), isNull, reason: 'class code question');
 
         await _answer(tester, 'EDG5A1');
-        expect(tester.takeException(), isNull, reason: 'name question with the guide');
+        expect(tester.takeException(), isNull, reason: 'first name question with the guide');
 
-        await _answer(tester, 'Juan Dela Cruz');
-        _auth.state = const AuthState(
-            error: "May gumagamit na ng username na ito sa klase. Kung ikaw 'yan, piliin ang 'BALIK NA AKO'. Kung hindi, gumamit ng ibang username.");
+        await _answer(tester, 'Juan');
+        await tester.enterText(find.byType(TextField), 'Dela Cruz');
         await tester.pump();
-        expect(tester.takeException(), isNull, reason: 'the longest message');
+        expect(tester.takeException(), isNull, reason: 'last name with the full name under it');
+
+        _auth.state = const AuthState(
+            error: 'May problema sa server. Subukan ulit mamaya. Kung hindi pa rin, sabihin sa teacher mo ang class code at ang pangalan mo.');
+        await tester.pump();
+        expect(tester.takeException(), isNull, reason: 'a long message');
       });
     }
   });

@@ -1,24 +1,26 @@
-// The module (era background) screen: it can be left, and the guide speaks as the
-// hero the player picked.
-import 'dart:io';
-
+// The era background screen: its story one event at a time, and three sealed
+// key terms that are plainly meant to be tapped. It can be left, and the button
+// to go on opens only once every term has been read.
 import 'package:chronoquest/core/constants.dart';
+import 'package:chronoquest/data/era_story.dart';
 import 'package:chronoquest/screens/game/background_history_screen.dart';
-import 'package:chronoquest/services/storage_service.dart';
 import 'package:chronoquest/widgets/game_ui.dart';
+import 'package:chronoquest/widgets/pixel_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 
 GoRouter _router() => GoRouter(
       initialLocation: '/background/spanish',
       routes: [
         GoRoute(
           path: '/era-selection',
-          builder: (context, state) =>
-              const Scaffold(body: Text('era list stand-in')),
+          builder: (context, state) => const Scaffold(body: Text('era list stand-in')),
+        ),
+        GoRoute(
+          path: '/level-select/:eraId',
+          builder: (context, state) => const Scaffold(body: Text('levels stand-in')),
         ),
         GoRoute(
           path: '/background/:eraId',
@@ -28,41 +30,48 @@ GoRouter _router() => GoRouter(
       ],
     );
 
+Future<void> _open(
+  WidgetTester tester, {
+  Size size = const Size(732, 320),
+  bool animations = true,
+}) async {
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      FakeAccessibilityFeatures(disableAnimations: !animations);
+  addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+  await tester.binding.setSurfaceSize(size);
+  tester.view.devicePixelRatio = 1.0;
+  tester.view.physicalSize = size;
+  addTearDown(() {
+    tester.binding.setSurfaceSize(null);
+    tester.view.resetDevicePixelRatio();
+    tester.view.resetPhysicalSize();
+  });
+  await tester.pumpWidget(MaterialApp.router(routerConfig: _router()));
+  await tester.pump(const Duration(seconds: 1));
+}
+
+/// Opens term [i] and lets the flip finish.
+Future<void> _openTerm(WidgetTester tester, int i) async {
+  final card = find.byKey(BackgroundHistoryScreen.termKey(i));
+  await tester.ensureVisible(card);
+  await tester.tap(card);
+  await _settle(tester);
+}
+
+/// An animation started by a tap begins on the frame after it, so pump twice.
+Future<void> _settle(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 600));
+}
+
+GameButton _ready(WidgetTester tester) =>
+    tester.widget<GameButton>(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+
 void main() {
-  final hiveDir =
-      Directory.systemTemp.createTempSync('chronoquest_background_test_').path;
-
-  setUpAll(() async {
-    GoogleFonts.config.allowRuntimeFetching = false;
-    Hive.init(hiveDir);
-    final box = await Hive.openBox('chronoquest');
-    // Lapu-Lapu is chosen, on the Spanish era whose lore mentor is Rizal.
-    await box.put('selected_character', 'lapu');
-  });
-
-  tearDownAll(() async {
-    await Hive.close();
-    try {
-      Directory(hiveDir).deleteSync(recursive: true);
-    } catch (_) {}
-  });
-
-  Future<void> open(WidgetTester tester) async {
-    const size = Size(800, 360);
-    await tester.binding.setSurfaceSize(size);
-    tester.view.devicePixelRatio = 1.0;
-    tester.view.physicalSize = size;
-    addTearDown(() {
-      tester.binding.setSurfaceSize(null);
-      tester.view.resetDevicePixelRatio();
-      tester.view.resetPhysicalSize();
-    });
-    await tester.pumpWidget(MaterialApp.router(routerConfig: _router()));
-    await tester.pump(const Duration(seconds: 1));
-  }
+  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   testWidgets('has a back button that returns to the era list', (tester) async {
-    await open(tester);
+    await _open(tester);
     expect(find.byKey(BackgroundHistoryScreen.backButtonKey), findsOneWidget);
 
     await tester.tap(find.byKey(BackgroundHistoryScreen.backButtonKey));
@@ -71,60 +80,223 @@ void main() {
     expect(find.text('era list stand-in'), findsOneWidget);
   });
 
-  testWidgets('the guide speaks as the chosen hero, not the era mentor',
-      (tester) async {
-    await open(tester);
+  group('the story', () {
+    testWidgets('shows one event at a time, starting with the first', (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
 
-    expect(StorageService.getCharacter(), 'lapu');
-    expect(find.textContaining('Ako si '), findsOneWidget);
-    expect(find.textContaining('gagabayan ni'), findsNothing,
-        reason: 'the era mentor must not speak over a Lapu-Lapu player');
+      expect(find.text(beats[0].label), findsOneWidget);
+      expect(find.textContaining('Legazpi'), findsOneWidget);
+      expect(find.textContaining('Intramuros'), findsNothing, reason: 'that is the next event');
+    });
+
+    testWidgets('a dot for each event; tapping one shows that event', (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+      for (var i = 0; i < beats.length; i++) {
+        expect(find.byKey(BackgroundHistoryScreen.beatDotKey(i)), findsOneWidget);
+      }
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(1)));
+      await _settle(tester);
+      expect(find.text(beats[1].label), findsOneWidget);
+      expect(find.textContaining('Intramuros'), findsOneWidget);
+      expect(find.textContaining('Legazpi'), findsNothing);
+    });
+
+    testWidgets('the card shows it can be turned: a curling corner and an arrow', (tester) async {
+      await _open(tester);
+      expect(find.byKey(BackgroundHistoryScreen.curlKey), findsOneWidget);
+      expect(find.byKey(BackgroundHistoryScreen.nextKey), findsOneWidget);
+      expect(tester.getSize(find.byKey(BackgroundHistoryScreen.nextKey)).width, greaterThanOrEqualTo(40));
+    });
+
+    testWidgets('tapping the arrow, tapping the card, or swiping it each turn to the next event',
+        (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+      expect(find.text(beats[1].label), findsOneWidget);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatKey));
+      await _settle(tester);
+      expect(find.text(beats[2].label), findsOneWidget);
+
+      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey), const Offset(-200, 0), 800);
+      await _settle(tester);
+      expect(find.text(beats[3].label), findsOneWidget);
+
+      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey), const Offset(200, 0), 800);
+      await _settle(tester);
+      expect(find.text(beats[2].label), findsOneWidget, reason: 'a swipe the other way goes back');
+    });
+
+    testWidgets('on the last event the hint goes away: nothing more to turn to', (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(beats.length - 1)));
+      await _settle(tester);
+
+      expect(find.byKey(BackgroundHistoryScreen.nextKey), findsNothing);
+      expect(find.byKey(BackgroundHistoryScreen.curlKey), findsNothing);
+    });
+
+    testWidgets('each dot is a 40 pixel target', (tester) async {
+      await _open(tester);
+      final size = tester.getSize(find.byKey(BackgroundHistoryScreen.beatDotKey(0)));
+      expect(size.width, greaterThanOrEqualTo(40));
+    });
   });
 
-  testWidgets('the story is cut into events and a timeline', (tester) async {
-    await open(tester);
-    expect(find.text('PANAHON 2 NG 6'), findsOneWidget);
-    expect(find.text('Pananakop ng Espanya'), findsOneWidget);
-    expect(find.text('1565'), findsWidgets);
-    expect(find.text('Intramuros'), findsOneWidget, reason: 'a timeline node');
+  group('the screen has few words', () {
+    testWidgets('no era subtitle, no "PANAHON n NG 6", no speech, no "i-tap" instructions',
+        (tester) async {
+      await _open(tester);
+
+      expect(find.text('Pananakop ng Espanya'), findsOneWidget, reason: 'the era, once, as the title');
+      expect(find.text('PANAHON 2 NG 6'), findsNothing);
+      expect(find.textContaining('Ako si '), findsNothing);
+      expect(find.textContaining('i-tap'), findsNothing);
+      expect(find.textContaining('I-tap'), findsNothing);
+      expect(find.textContaining('NG 3 TERMINO'), findsNothing);
+      expect(find.textContaining('termino pa'), findsNothing);
+    });
   });
 
-  testWidgets('HANDA NA AKO opens only after every term is read', (tester) async {
-    await open(tester);
-    GameButton ready() => tester
-        .widget<GameButton>(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+  group('the sealed terms', () {
+    testWidgets('are shut, each with its name and no meaning yet', (tester) async {
+      await _open(tester);
+      final terms = keyTermsFor('spanish');
 
-    expect(ready().onPressed, isNull);
-    expect(find.text('0 NG 3 TERMINO'), findsOneWidget);
+      for (var i = 0; i < terms.length; i++) {
+        expect(find.byKey(BackgroundHistoryScreen.termKey(i)), findsOneWidget);
+        expect(find.text(terms[i]['term']!.toUpperCase()), findsOneWidget);
+        expect(find.text(terms[i]['def']!), findsNothing, reason: 'sealed');
+      }
+      expect(find.text('?'), findsNWidgets(terms.length));
+    });
 
-    for (var i = 0; i < 3; i++) {
-      final card = find.byKey(BackgroundHistoryScreen.termKey(i));
-      await tester.ensureVisible(card);
-      await tester.tap(card);
+    testWidgets('there is no hand: the first shut card rings instead, then the next, then none',
+        (tester) async {
+      await _open(tester);
+      final ring = find.byKey(BackgroundHistoryScreen.ringKey);
+      double ringY() => tester.getCenter(ring).dy;
+      double cardY(int i) => tester.getCenter(find.byKey(BackgroundHistoryScreen.termKey(i))).dy;
+
+      expect(find.byType(PixelIcon).evaluate().where((e) => (e.widget as PixelIcon).glyph == PixelGlyph.hand),
+          isEmpty);
+      expect(ring, findsOneWidget);
+      expect((ringY() - cardY(0)).abs(), lessThan(40), reason: 'at the first card');
+
+      await _openTerm(tester, 0);
+      expect(ring, findsOneWidget);
+      expect((ringY() - cardY(1)).abs(), lessThan(40), reason: 'now at the second');
+
+      await _openTerm(tester, 1);
+      await _openTerm(tester, 2);
+      expect(ring, findsNothing, reason: 'nothing left to open');
+    });
+
+    testWidgets('the shut cards shimmer, so something moves across each of them', (tester) async {
+      await _open(tester);
+      // One slanted band of light per shut card.
+      final bands = find.byWidgetPredicate((w) => w is Transform && w.child is Container && (w.child as Container).decoration is BoxDecoration && ((w.child as Container).decoration as BoxDecoration).gradient is LinearGradient && (w.child as Container).constraints?.maxWidth == 34);
+      expect(bands, findsNWidgets(3));
+      await _openTerm(tester, 0);
+      expect(bands, findsNWidgets(2), reason: 'an open card stops shimmering');
+    });
+
+    testWidgets('tapping one flips it open to its meaning with a green seal', (tester) async {
+      await _open(tester);
+      final terms = keyTermsFor('spanish');
+
+      await _openTerm(tester, 0);
+
+      expect(find.text(terms[0]['def']!), findsOneWidget);
+      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+      expect(find.text('?'), findsNWidgets(terms.length - 1));
+      expect(find.text(terms[1]['def']!), findsNothing, reason: 'the others stay sealed');
+    });
+
+    testWidgets('they glow and wobble while shut, and settle when the phone removes animations',
+        (tester) async {
+      await _open(tester);
+      expect(tester.hasRunningAnimations, isTrue);
+
+      await _open(tester, animations: false);
+      expect(tester.hasRunningAnimations, isFalse);
+    });
+
+    testWidgets('with animations off a tap opens it at once, and the first card still rings',
+        (tester) async {
+      await _open(tester, animations: false);
+      final terms = keyTermsFor('spanish');
+      expect(find.byKey(BackgroundHistoryScreen.ringKey), findsOneWidget);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.termKey(0)));
       await tester.pump();
-      expect(ready().onPressed, i < 2 ? isNull : isNotNull);
-    }
-    expect(find.text('3 NG 3 TERMINO'), findsOneWidget);
-    expect(find.text('Sistema ng pagbibigay ng lupain sa mga Espanyol'),
-        findsOneWidget);
+
+      expect(find.text(terms[0]['def']!), findsOneWidget);
+    });
   });
 
-  testWidgets('every era fits a small landscape phone', (tester) async {
+  group('HANDA NA AKO', () {
+    testWidgets('opens only after every term is read, and fills a dot for each', (tester) async {
+      await _open(tester);
+
+      expect(_ready(tester).onPressed, isNull);
+      for (var i = 0; i < 3; i++) {
+        expect(find.byKey(BackgroundHistoryScreen.termDotKey(i)), findsOneWidget);
+      }
+
+      for (var i = 0; i < 3; i++) {
+        await _openTerm(tester, i);
+        expect(_ready(tester).onPressed, i < 2 ? isNull : isNotNull, reason: 'after term $i');
+      }
+      expect(find.text('Sistema ng pagbibigay ng lupain sa mga Espanyol'), findsOneWidget);
+    });
+
+    testWidgets('goes on to the levels of the era', (tester) async {
+      await _open(tester);
+      for (var i = 0; i < 3; i++) {
+        await _openTerm(tester, i);
+      }
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text('levels stand-in'), findsOneWidget);
+    });
+  });
+
+  testWidgets('every era fits a small phone, with all its terms and the button reachable',
+      (tester) async {
+    for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
+      for (final era in allEras) {
+        await tester.binding.setSurfaceSize(size);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.physicalSize = size;
+        await tester.pumpWidget(MaterialApp(home: BackgroundHistoryScreen(eraId: era.id)));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(tester.takeException(), isNull, reason: '${era.id} at $size');
+
+        final terms = keyTermsFor(era.id);
+        for (var i = 0; i < terms.length; i++) {
+          await tester.ensureVisible(find.byKey(BackgroundHistoryScreen.termKey(i)));
+          expect(find.byKey(BackgroundHistoryScreen.termKey(i)).hitTestable(), findsOneWidget,
+              reason: '${era.id} term $i at $size');
+        }
+        await tester.ensureVisible(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+        expect(find.byKey(BackgroundHistoryScreen.readyButtonKey).hitTestable(), findsOneWidget,
+            reason: '${era.id} button at $size');
+      }
+    }
     addTearDown(() {
       tester.binding.setSurfaceSize(null);
       tester.view.resetDevicePixelRatio();
       tester.view.resetPhysicalSize();
     });
-    for (final size in const [Size(640, 360), Size(732, 320)]) {
-      for (final era in allEras) {
-        await tester.binding.setSurfaceSize(size);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.physicalSize = size;
-        await tester.pumpWidget(
-            MaterialApp(home: BackgroundHistoryScreen(eraId: era.id)));
-        await tester.pump(const Duration(milliseconds: 300));
-        expect(tester.takeException(), isNull, reason: '${era.id} at $size');
-      }
-    }
   });
 }

@@ -19,8 +19,11 @@
 // convention (see HANDOFF.md's "Definition of perfect").
 import 'dart:io';
 
+import 'package:chronoquest/models/control_scheme.dart';
+import 'package:chronoquest/providers/control_scheme_provider.dart';
 import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/screens/tutorial/tutorial_screen.dart';
+import 'package:chronoquest/widgets/pixel_icon.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,9 +64,28 @@ class _QuietGameNotifier extends StateNotifier<GameState>
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-Widget _app() => ProviderScope(
+/// The pictures loop for ever, so they are stood still: a test that waits for the
+/// screen to settle would never finish.
+void _noMotion(WidgetTester tester) {
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      const FakeAccessibilityFeatures(disableAnimations: true);
+  addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+}
+
+/// Stands in for the saved choice of movement controls.
+class _Scheme extends StateNotifier<ControlScheme>
+    implements ControlSchemeNotifier {
+  _Scheme(super.scheme);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+Widget _app({ControlScheme scheme = ControlScheme.joystick}) => ProviderScope(
+      key: UniqueKey(),
       overrides: [
         gameProvider.overrideWith((ref) => _QuietGameNotifier()),
+        controlSchemeProvider.overrideWith((ref) => _Scheme(scheme)),
       ],
       child: MaterialApp.router(routerConfig: _router()),
     );
@@ -121,13 +143,14 @@ void main() {
       tester.runAsync(() => StorageService.appBox.clear()) as Future<void>;
 
   testWidgets('can be closed with an X a child can hit', (tester) async {
+    _noMotion(tester);
     await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
     final skip = find.byKey(TutorialScreen.skipButtonKey);
     expect(skip, findsOneWidget);
-    expect(find.descendant(of: skip, matching: find.byIcon(Icons.close_rounded)),
+    expect(find.descendant(of: skip, matching: find.byType(PixelIcon)),
         findsOneWidget);
     final size = tester.getSize(skip);
     expect(size.width, greaterThanOrEqualTo(48));
@@ -135,28 +158,32 @@ void main() {
   });
 
   testWidgets('renders the first step on open', (tester) async {
+    _noMotion(tester);
     await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    expect(find.text('ANG BAYANI MO'), findsOneWidget);
+    expect(find.text('ANG MGA BUTTON'), findsOneWidget);
+    expect(find.byKey(TutorialScreen.backButtonKey), findsNothing);
     expect(find.byKey(TutorialScreen.nextButtonKey), findsOneWidget);
     expect(find.byKey(TutorialScreen.doneButtonKey), findsNothing);
   });
 
   testWidgets('Next advances through every step to the last', (tester) async {
+    _noMotion(tester);
     await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
     await goToLastStep(tester);
 
-    expect(find.text('GAMITIN ANG POWER-UP'), findsOneWidget);
+    expect(find.text('BOSS SA DULO'), findsOneWidget);
     expect(find.byKey(TutorialScreen.doneButtonKey), findsOneWidget);
     expect(find.byKey(TutorialScreen.nextButtonKey), findsNothing);
   });
 
   testWidgets('Skip marks the tutorial as seen', (tester) async {
+    _noMotion(tester);
     await resetStorage(tester);
     expect(StorageService.hasSeenTutorial(), isFalse);
 
@@ -169,6 +196,7 @@ void main() {
 
   testWidgets('Done on the last step marks the tutorial as seen',
       (tester) async {
+    _noMotion(tester);
     await resetStorage(tester);
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
@@ -177,5 +205,55 @@ void main() {
     await _tapAndAwaitWrite(tester, TutorialScreen.doneButtonKey);
 
     expect(StorageService.hasSeenTutorial(), isTrue);
+  });
+
+  testWidgets('Back and the dots move between pages', (tester) async {
+    _noMotion(tester);
+    await resetStorage(tester);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(TutorialScreen.nextButtonKey));
+    await tester.pumpAndSettle();
+    expect(find.text('ARTIFACT AT GATE'), findsOneWidget);
+    expect(find.byKey(TutorialScreen.backButtonKey), findsOneWidget);
+
+    await tester.tap(find.byKey(TutorialScreen.backButtonKey));
+    await tester.pumpAndSettle();
+    expect(find.text('ANG MGA BUTTON'), findsOneWidget);
+
+    await tester.tap(find.byKey(TutorialScreen.dotKey(3)));
+    await tester.pumpAndSettle();
+    expect(find.text('ALAGAAN ANG PUSO'), findsOneWidget);
+  });
+
+  testWidgets(
+      'the buttons page says how to move with the controls the student chose',
+      (tester) async {
+    _noMotion(tester);
+    await resetStorage(tester);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+    expect(find.text('I-drag ang bilog'), findsOneWidget);
+    expect(find.text('Pindutin ang kaliwa o kanan'), findsNothing);
+
+    await tester.pumpWidget(_app(scheme: ControlScheme.arrows));
+    await tester.pumpAndSettle();
+    expect(find.text('Pindutin ang kaliwa o kanan'), findsOneWidget);
+    expect(find.text('I-drag ang bilog'), findsNothing);
+  });
+
+  testWidgets('tapping a line on the buttons page does not break it',
+      (tester) async {
+    _noMotion(tester);
+    await resetStorage(tester);
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Iwas sa kalaban at butas'));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tap(find.text('Gumagamit ng Kaalaman'));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(tester.takeException(), isNull);
   });
 }

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../models/badge_defs.dart';
 import '../../widgets/game_ui.dart';
+import '../../widgets/living_backdrop.dart';
+import '../../widgets/new_badge.dart';
 
 /// What the player actually scored on the attempt that just ended.
 ///
@@ -19,11 +22,16 @@ class LevelCompleteResult {
   /// The coins picked up in this attempt, now in the wallet. Zero hides the line.
   final int coins;
 
+  /// The badges this attempt earned (already held, with their coin gift paid). They
+  /// are announced on the next screen.
+  final List<EarnedBadge> badges;
+
   const LevelCompleteResult({
     required this.score,
     required this.correct,
     required this.total,
     this.coins = 0,
+    this.badges = const [],
   });
 
   /// Used when this screen is reached without a result payload — a deep link
@@ -32,9 +40,18 @@ class LevelCompleteResult {
   static const empty = LevelCompleteResult(score: 0, correct: 0, total: 0);
 }
 
+/// The end of a level: the stars are the one big thing, on the dark with light
+/// behind them that matches the result (rays for three stars, a soft glow for two,
+/// none for one, so a low score is calm rather than scolding). Under them the
+/// score as x/y and one line of what was earned, then one gold button.
 class LevelCompleteScreen extends StatefulWidget {
-  static const Key dotsKey = Key('level_complete_dots');
+  static const Key titleKey = Key('level_complete_title');
+  static const Key scoreKey = Key('level_complete_score');
+  static const Key pointsKey = Key('level_complete_points');
   static const Key coinsKey = Key('level_complete_coins');
+  static const Key giftKey = Key('level_complete_gift');
+  static const Key goKey = Key('level_complete_go');
+  static const Key backdropKey = Key('level_complete_backdrop');
 
   final String eraId;
   final int level;
@@ -59,7 +76,11 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
   int get _correct => widget.result.correct;
   int get _total => widget.result.total;
   int get _percentage => _total > 0 ? (_correct / _total * 100).round() : 0;
-  int get _stars => _percentage >= 90 ? 3 : _percentage >= 70 ? 2 : 1;
+  int get _stars => _percentage >= 90
+      ? 3
+      : _percentage >= 70
+          ? 2
+          : 1;
 
   /// The score the game actually accumulated — not a re-derivation from the
   /// question count, which would silently drop the speed bonus.
@@ -85,221 +106,217 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The phone removes animations: everything is simply there.
+    if (!motionAllowed(context)) {
+      _starController.value = 1;
+      _scaleController.value = 1;
+    }
+  }
+
+  @override
   void dispose() {
     _starController.dispose();
     _scaleController.dispose();
     super.dispose();
   }
 
-  /// Cards wider than this lay out in two columns. The game is landscape, where
-  /// a one-column card (331 tall, 382 with a power-up) was taller than the
-  /// screen and scrolled; two columns come to about 190 (playtest, 2026-10-06).
-  static const double twoColumnMinWidth = 520;
-
   @override
   Widget build(BuildContext context) {
-    final era = getEraById(widget.eraId);
-
     return Scaffold(
       body: GameBackdrop(
         baseColor: AppColors.background,
-        child: SafeArea(
-          child: Center(
-            // Still scrollable as a safety net on a screen shorter than the
-            // card, but in two columns that no longer happens on a phone.
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: LayoutBuilder(builder: (context, box) {
-                  final wide = box.maxWidth - 40 >= twoColumnMinWidth;
-                  return GamePanel(
-                    color: AppColors.surface,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: wide
-                        ? const EdgeInsets.symmetric(horizontal: 22, vertical: 18)
-                        : const EdgeInsets.all(24),
-                    borderColor: AppColors.accent,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: wide ? 516 : 380),
-                      child: wide
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(child: _resultColumn(compact: true)),
-                                const SizedBox(width: 22),
-                                Expanded(child: _actionColumn(era, compact: true)),
-                              ],
-                            )
-                          : Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _resultColumn(compact: false),
-                                const SizedBox(height: 10),
-                                _actionColumn(era, compact: false),
-                              ],
-                            ),
+        child: Stack(
+          children: [
+            // The light matches the result. One star gets none.
+            if (_stars >= 2)
+              Positioned.fill(
+                child: LivingBackdrop(
+                  key: LevelCompleteScreen.backdropKey,
+                  center: const Offset(0.5, 0.4),
+                  fireflies: 0,
+                  rays: _stars == 3,
+                ),
+              ),
+            SafeArea(
+              child: Center(
+                // Shrinks a little on a screen too short for it, rather than scrolling.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
+                      child: _content(),
                     ),
-                  );
-                }),
+                  ),
+                ),
               ),
             ),
-          ),
+            // New badges slide in over the top for a few seconds.
+            if (widget.result.badges.isNotEmpty)
+              Positioned.fill(
+                  child: NewBadgeStrip(badges: widget.result.badges)),
+          ],
         ),
       ),
     );
   }
 
-  /// Badge, stars, the score and one dot per artifact.
-  Widget _resultColumn({required bool compact}) {
+  Widget _content() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        GameBadge(
-          text: 'LEVEL ${widget.level} TAPOS!',
-          color: AppColors.accent,
-          fontSize: 11,
-        ),
-        SizedBox(height: compact ? 8 : 18),
-        AnimatedBuilder(
-          animation: _starController,
-          builder: (context, _) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(3, (i) {
-                final delay = i * 0.3;
-                final progress =
-                    ((_starController.value - delay) / 0.4).clamp(0.0, 1.0);
-                final show = i < _stars && progress > 0;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Transform.scale(
-                    scale: show ? progress : 0.5,
-                    child: Icon(
-                      show ? Icons.star : Icons.star_border,
-                      color: show ? AppColors.accent : AppColors.textMuted,
-                      size: compact ? 34 : 40,
-                    ),
-                  ),
-                );
-              }),
-            );
-          },
-        ),
-        SizedBox(height: compact ? 8 : 16),
         Text(
-          '$_correct/$_total TAMA',
+          'LEVEL ${widget.level} TAPOS!',
+          key: LevelCompleteScreen.titleKey,
           style: GoogleFonts.poppins(
-            fontSize: 15,
-            height: 1.4,
-            color: AppColors.textPrimary,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColors.accent,
+            letterSpacing: 0.7,
+            shadows: const [
+              Shadow(color: AppColors.primaryDark, offset: Offset(0, 3)),
+            ],
           ),
         ),
-        if (_total > 0 && _total <= maxDots) ...[
-          const SizedBox(height: 6),
-          _dots(),
+        const SizedBox(height: 6),
+        _stars3(),
+        if (_total > 0) ...[
+          const SizedBox(height: 4),
+          Text(
+            '$_correct/$_total',
+            key: LevelCompleteScreen.scoreKey,
+            style: GoogleFonts.poppins(
+              fontSize: 26,
+              height: 1.2,
+              fontWeight: FontWeight.bold,
+              color: AppColors.surface,
+            ),
+          ),
         ],
+        const SizedBox(height: 6),
+        _earned(),
+        if (widget.level == 3 || widget.level == 7) ...[
+          const SizedBox(height: 8),
+          Row(
+            key: LevelCompleteScreen.giftKey,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.card_giftcard,
+                  color: AppColors.accent, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                _getPowerupName(widget.level),
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.surface,
+                ),
+              ),
+            ],
+          ),
+        ],
+        const SizedBox(height: 14),
+        GameButton(
+          key: LevelCompleteScreen.goKey,
+          label: 'SUSUNOD',
+          width: 220,
+          onPressed: () => context.go('/level-select/${widget.eraId}'),
+        ),
       ],
     );
   }
 
-  /// The most dots drawn; a level with more artifacts than this shows the
-  /// number only, so the row cannot outgrow the column.
-  static const int maxDots = 12;
-
-  /// One dot per artifact: green for each one answered right, an outline for
-  /// each one missed. Says the same as the score, at a glance.
-  Widget _dots() {
-    return Semantics(
-      label: '$_correct sa $_total artifact ang tama',
-      child: ExcludeSemantics(
-        child: Row(
-          key: LevelCompleteScreen.dotsKey,
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(_total, (i) {
-            final right = i < _correct;
-            return Container(
-              width: 10,
-              height: 10,
-              margin: EdgeInsets.only(left: i == 0 ? 0 : 4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: right ? AppColors.success : Colors.transparent,
-                border: Border.all(
-                  color: right ? AppColors.primaryDark : AppColors.textMuted,
-                  width: 1.5,
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-
-  /// Points, the era, the power-up if one was earned, and the button.
-  Widget _actionColumn(EraData era, {required bool compact}) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GameBadge(
-          text: '+$_points PUNTOS',
-          color: AppColors.success,
-          textColor: Colors.white,
-          fontSize: 10,
-        ),
-        if (widget.result.coins > 0) ...[
-          SizedBox(height: compact ? 6 : 8),
-          CoinsBadge(key: LevelCompleteScreen.coinsKey, coins: widget.result.coins),
-        ],
-        SizedBox(height: compact ? 6 : 10),
-        Text(
-          era.name,
-          style: GoogleFonts.poppins(
-            fontSize: 13,
-            color: AppColors.textMuted,
-          ),
-        ),
-        if (widget.level == 3 || widget.level == 7)
-          Padding(
-            padding: EdgeInsets.only(top: compact ? 8 : 12),
-            child: GamePanel(
-              color: AppColors.accent.withValues(alpha: 0.15),
-              borderWidth: 2,
-              shadowOffset: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.card_giftcard,
-                      color: AppColors.accent, size: 18),
-                  const SizedBox(width: 8),
-                  // Shrinks rather than overflows if a column is narrow.
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        _getPowerupName(widget.level),
-                        style: GoogleFonts.poppins(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
+  /// Three stars in an arc, the middle one the biggest, each popping in in turn.
+  Widget _stars3() {
+    const sizes = [56.0, 72.0, 56.0];
+    const turns = [-0.17, 0.0, 0.17];
+    return SizedBox(
+      height: 82,
+      child: AnimatedBuilder(
+        animation: _starController,
+        builder: (context, _) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: List.generate(3, (i) {
+              final delay = i * 0.3;
+              final progress =
+                  ((_starController.value - delay) / 0.4).clamp(0.0, 1.0);
+              final filled = i < _stars;
+              final pop = Curves.easeOutBack.transform(progress);
+              return Padding(
+                padding: EdgeInsets.only(
+                    left: i == 0 ? 0 : 4, bottom: i == 1 ? 0 : 2),
+                child: Transform.rotate(
+                  angle: turns[i],
+                  child: Transform.scale(
+                    scale: filled ? (progress > 0 ? pop : 0.2) : 1,
+                    child: Opacity(
+                      opacity: filled ? 1 : 0.55,
+                      child: Image.asset(
+                        filled
+                            ? 'assets/ui/star_full.png'
+                            : 'assets/ui/star_empty.png',
+                        width: sizes[i],
+                        height: sizes[i],
+                        // Without this an image is never drawn bigger than it is.
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                        errorBuilder: (_, __, ___) => Icon(
+                          filled ? Icons.star : Icons.star_border,
+                          color:
+                              filled ? AppColors.accent : AppColors.textMuted,
+                          size: sizes[i],
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }),
+          );
+        },
+      ),
+    );
+  }
+
+  /// One quiet line: the points, and the coins when there are any.
+  Widget _earned() {
+    final style = GoogleFonts.poppins(
+      fontSize: 18,
+      height: 1.2,
+      fontWeight: FontWeight.bold,
+      color: AppColors.accent,
+    );
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset('assets/ui/star_full.png',
+            width: 18, height: 18, filterQuality: FilterQuality.none),
+        const SizedBox(width: 5),
+        Text('+$_points', key: LevelCompleteScreen.pointsKey, style: style),
+        if (widget.result.coins > 0) ...[
+          Container(
+            width: 2,
+            height: 16,
+            margin: const EdgeInsets.symmetric(horizontal: 14),
+            color: const Color(0xFF4A3A5E),
           ),
-        SizedBox(height: compact ? 14 : 22),
-        GameButton(
-          label: 'SUSUNOD',
-          width: double.infinity,
-          onPressed: () {
-            context.go('/level-select/${widget.eraId}');
-          },
-        ),
+          Row(
+            key: LevelCompleteScreen.coinsKey,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/collectibles/coin.png',
+                  width: 18, height: 18),
+              const SizedBox(width: 5),
+              Text('+${widget.result.coins}', style: style),
+            ],
+          ),
+        ],
       ],
     );
   }

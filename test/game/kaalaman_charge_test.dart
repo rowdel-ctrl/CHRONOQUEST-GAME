@@ -46,15 +46,12 @@ void main() {
           lessThan(CombatConstants.artifactReward));
     });
 
-    test('is uncapped: a full level of artifacts is never clamped away', () {
-      final game = ChronoGame()..kaalaman = 0;
+    test('stops at the full bar, so the bar shows what there is', () {
+      final game = ChronoGame()..kaalaman = CombatConstants.kaalamanDisplayMax - 1;
 
-      for (var i = 0; i < CombatConstants.artifactsPerLevel; i++) {
-        game.grantCharges(CombatConstants.artifactReward);
-      }
+      game.grantCharges(CombatConstants.artifactReward);
 
-      expect(game.kaalaman,
-          CombatConstants.artifactsPerLevel * CombatConstants.artifactReward);
+      expect(game.kaalaman, CombatConstants.kaalamanDisplayMax);
     });
   });
 
@@ -98,17 +95,15 @@ void main() {
   });
 
   group('starting charges', () {
-    test('levels start at 0 — artifacts are the only source', () {
-      // Phase 2 temporarily started at 3 so combat was testable before
-      // artifacts existed; Section 4 specifies 0 and Phase 3 restored it.
-      expect(CombatConstants.kaalamanStart, 0);
+    test('every level, boss included, starts with the bar full', () {
+      expect(CombatConstants.kaalamanStart, CombatConstants.kaalamanDisplayMax);
+      expect(CombatConstants.bossStartCharges, CombatConstants.kaalamanDisplayMax);
+      expect(ChronoGame().kaalaman, CombatConstants.kaalamanDisplayMax);
     });
 
-    test('the tutorial freebie is smaller than one artifact reward', () {
-      // A freebie big enough to skip the first artifact would undercut the
-      // loop it exists to bootstrap.
-      expect(CombatConstants.kaalamanTutorialStart,
-          lessThanOrEqualTo(CombatConstants.artifactReward));
+    test('a student who answers wrong still has charges to attack with', () {
+      final game = ChronoGame();
+      expect(game.canAttack, isTrue);
     });
   });
 }

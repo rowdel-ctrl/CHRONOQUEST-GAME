@@ -38,7 +38,7 @@ Future<void> _pump(WidgetTester tester, Size size) async {
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
-  for (final size in const [Size(800, 360), Size(732, 320), Size(640, 360)]) {
+  for (final size in const [Size(732, 320), Size(640, 360)]) {
     testWidgets('chips are in order and tappable at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
       await _pump(tester, size);

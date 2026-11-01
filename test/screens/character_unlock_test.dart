@@ -10,7 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final _paid = allCharacters.firstWhere((c) => c.unlockCost > 0);
-final _paidIndex = allCharacters.indexOf(_paid);
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
   _FakeGame(int coins)
@@ -60,21 +59,20 @@ Future<void> _pump(WidgetTester tester, {required int coins}) async {
     child: const MaterialApp(home: CharacterSelectionScreen()),
   ));
   await tester.pump();
-  await tester.pump(const Duration(milliseconds: 100));
+  // The hero walks in and the row of heroes pops in; wait for that to finish.
+  await tester.pump(const Duration(milliseconds: 2300));
 }
 
-/// The carousel and the idle avatars animate forever, so settle by time.
+/// The rays and the idle hero move forever, so settle by time.
 Future<void> _settle(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 500));
   await tester.pump(const Duration(milliseconds: 100));
 }
 
-/// Swipes to the paid character, as a student would.
+/// Taps the paid character in the row of heroes, as a student would.
 Future<void> _goToPaid(WidgetTester tester) async {
-  for (var i = 0; i < _paidIndex; i++) {
-    await tester.drag(find.byType(PageView), const Offset(-400, 0));
-    await _settle(tester);
-  }
+  await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey(_paid.id)));
+  await _settle(tester);
 }
 
 void main() {
@@ -83,17 +81,16 @@ void main() {
   testWidgets('a free character is chosen with the usual button', (tester) async {
     await _pump(tester, coins: 0);
     expect(find.byKey(const ValueKey('unlock_character')), findsNothing);
-    expect(find.textContaining('PILIIN SI'), findsOneWidget);
+    expect(find.byKey(CharacterSelectionScreen.chooseKey), findsOneWidget);
   });
 
   testWidgets('a locked one shows its price and an unlock button, not Piliin', (tester) async {
     await _pump(tester, coins: 0);
     await _goToPaid(tester);
 
-    // (the next card, also locked, shows its price beside it)
     expect(find.text('${_paid.unlockCost}'), findsOneWidget);
     expect(find.byKey(const ValueKey('unlock_character')), findsOneWidget);
-    expect(find.textContaining('PILIIN SI'), findsNothing);
+    expect(find.byKey(CharacterSelectionScreen.chooseKey), findsNothing);
     expect(_game.selected, isEmpty);
   });
 
@@ -124,6 +121,6 @@ void main() {
     // The lock and price are gone, and the usual button is back.
     expect(find.text('${_paid.unlockCost}'), findsNothing);
     expect(find.byKey(const ValueKey('unlock_character')), findsNothing);
-    expect(find.textContaining('PILIIN SI'), findsOneWidget);
+    expect(find.byKey(CharacterSelectionScreen.chooseKey), findsOneWidget);
   });
 }

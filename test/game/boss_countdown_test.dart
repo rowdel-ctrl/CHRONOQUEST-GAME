@@ -116,14 +116,14 @@ void main() {
           countdownSeconds: seconds,
         );
 
-    testWidgets('shows the clock and still offers 50/50 and Shield, but not Time Freeze', (tester) async {
+    testWidgets('shows the clock and offers 50/50, Shield and Time Freeze', (tester) async {
       await _pump(tester, const Size(812, 375), timedCard());
       expect(find.byType(CountdownBar), findsOneWidget);
       expect(find.byType(TimerChip), findsNothing);
       expect(find.text('22s'), findsOneWidget);
       expect(find.textContaining('50/50'), findsOneWidget);
       expect(find.textContaining('Shield'), findsOneWidget);
-      expect(find.textContaining('Time Freeze'), findsNothing);
+      expect(find.textContaining('Time Freeze'), findsOneWidget);
     });
   });
 

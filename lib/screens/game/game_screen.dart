@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +16,10 @@ import '../../game/overlays/pause_overlay.dart';
 import '../../models/control_scheme.dart';
 import '../../providers/control_scheme_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/badge_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
+import '../splash/level_splash.dart';
 import 'level_complete_screen.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -30,17 +34,22 @@ class GameScreen extends ConsumerStatefulWidget {
 class _GameScreenState extends ConsumerState<GameScreen> {
   late ChronoGame game;
   late final GameNotifier _hearts = ref.read(gameProvider.notifier);
+  late final BadgeNotifier _badges = ref.read(badgeProvider.notifier);
+
+  /// Hearts lost in this attempt, for the Walang Galos badge.
+  int _heartsLost = 0;
   // Kept so the post-result refresh still works after this screen is gone.
   late final AuthNotifier _auth = ref.read(authProvider.notifier);
 
-  /// The coins picked up in this attempt go into the wallet once, when the
-  /// level ends either way. Quitting from the pause menu leaves them behind.
-  bool _coinsBanked = false;
-  void _bankCoins() {
-    if (_coinsBanked) return;
-    _coinsBanked = true;
-    _hearts.addCoins(game.playerCoins);
-  }
+  /// The level splash covers the level while it opens, for at least this long so the
+  /// fact can be read.
+  static const Duration _minSplash = Duration(milliseconds: 3000);
+  final Stopwatch _splashWatch = Stopwatch()..start();
+  Timer? _splashTimer;
+  bool _splash = true;
+  bool _loaded = false;
+  bool _pausedForSplash = false;
+  late final String _charId = ref.read(gameProvider).selectedCharacterId;
 
   @override
   void initState() {
@@ -58,17 +67,20 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ? GameConstants.maxHearts
           : gameState.hearts.count
       ..controlScheme = ref.read(controlSchemeProvider)
-      // Section 4's sanctioned tutorial freebie. Set here rather than in
-      // ChronoGame's field initialiser, which runs before currentLevel is
-      // assigned and so could not see the level number.
-      ..kaalaman = widget.level <= CombatConstants.kaalamanTutorialLevels
-          ? CombatConstants.kaalamanTutorialStart
-          : CombatConstants.kaalamanStart;
+      // Every level opens with the Kaalaman bar full.
+      ..kaalaman = CombatConstants.kaalamanStart;
 
     // Every heart lost in-level spends from the same persistent pool shown
     // on the menu screens (GAMEPLAY-V2.md section 8 — one shared pool, not
     // a level-local counter).
-    game.onHeartLost = () => ref.read(gameProvider.notifier).loseHeart();
+    game.onHeartLost = () {
+      _heartsLost++;
+      ref.read(gameProvider.notifier).loseHeart();
+    };
+
+    // Every coin goes into the wallet (and is saved on the phone) the moment it is
+    // picked up, so a level left from the pause menu, or a closed app, loses none.
+    game.onCoinCollected = () => _hearts.addCoins(1);
 
     // Hearts stop regenerating while the level is on screen. Deferred a frame:
     // changing a provider is not allowed while the widget tree is building.
@@ -76,7 +88,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     // Set callbacks for navigation
     game.onLevelComplete = (score, correct, total, answers) {
-      _bankCoins();
       // Save level completion
       final percentage = total > 0 ? (correct / total * 100).round() : 0;
       final stars = percentage >= 90
@@ -96,6 +107,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         correct: correct,
         total: total,
         coins: game.playerCoins,
+        // What this attempt earned in badges, with the coin gift already paid.
+        badges: _badges.recordLevel(
+          eraId: widget.eraId,
+          level: widget.level,
+          correct: correct,
+          total: total,
+          healthLost: _heartsLost,
+          anyWrong: answers.any((a) => !a.isCorrect),
+        ),
       );
       if (widget.level == getEraById(widget.eraId).levels.length) {
         context.go('/era-complete/${widget.eraId}', extra: result);
@@ -111,11 +131,38 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     game.onResultSubmitted = () => _auth.refreshProfile();
 
     game.onLevelFailed = () {
-      _bankCoins();
       // The pool is already at 0 by the time this fires — every hit that
       // got here already went through onHeartLost above.
+      _badges.recordFailed(); // no badge, but it was a day of play
       context.go('/level-failed/${widget.eraId}/${widget.level}');
     };
+
+    _splashTimer =
+        Timer.periodic(const Duration(milliseconds: 50), (_) => _checkSplash());
+  }
+
+  /// Watches for the level to finish loading. Once it has, the engine is held still
+  /// under the splash (a boss timer must not run where nobody can see it), and the
+  /// splash goes when it has been up long enough.
+  void _checkSplash() {
+    if (!mounted || !_splash) return;
+    if (!game.isLoaded) return;
+    if (!_loaded) {
+      _loaded = true;
+      game.pauseEngine();
+      _pausedForSplash = true;
+      setState(() {});
+    }
+    if (_splashWatch.elapsed >= _minSplash) _hideSplash();
+  }
+
+  void _hideSplash() {
+    _splashTimer?.cancel();
+    if (_pausedForSplash) {
+      game.resumeEngine();
+      _pausedForSplash = false;
+    }
+    if (mounted) setState(() => _splash = false);
   }
 
   /// Leaves the level from the pause menu.
@@ -143,6 +190,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   void dispose() {
+    _splashTimer?.cancel();
     // The era BGM loops forever once started, and nothing else in the app
     // stops it — without this it would keep playing over the menus after the
     // level is completed, failed or quit.
@@ -179,64 +227,79 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // both driven through Flame's own gesture handling on GameWidget. A
       // Flutter GestureDetector layered on top of it would compete with
       // those components' TapCallbacks/DragCallbacks for the same touches.
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Pillarbox on windows wider than GameConstants.maxAspectRatio so
-          // the scrolling background (which tiles horizontally past its own
-          // art's aspect ratio) never shows a visible seam — see that
-          // constant's doc comment for the math.
-          final maxWidth =
-              constraints.maxHeight * GameConstants.maxAspectRatio;
-          final width = constraints.maxWidth < maxWidth
-              ? constraints.maxWidth
-              : maxWidth;
-          return Center(
-            child: SizedBox(
-              width: width,
-              height: constraints.maxHeight,
-              child: GameWidget(
-                game: game,
-                overlayBuilderMap: {
-                  'HudOverlay': (context, game) =>
-                      HudOverlayWidget(game: game as ChronoGame),
-                  'QuestionOverlay': (context, chronoGame) {
-                    final g = chronoGame as ChronoGame;
-                    // Artifacts and gates resolve their own way (claim,
-                    // charges, retry, crumble); boss questions keep the
-                    // original path, which is bound by Section 12's frozen
-                    // POST payload.
-                    final fromAnswerPoint = g.activeArtifact != null;
-                    return QuestionOverlayWidget(
-                      game: g,
-                      onAnswer: fromAnswerPoint
-                          ? g.handleAnswerPointAnswer
-                          : g.handleAnswer,
-                    );
-                  },
-                  'BossHealthOverlay': (context, game) =>
-                      BossHealthOverlayWidget(game: game as ChronoGame),
-                  'GateLockedOverlay': (context, game) =>
-                      GateLockedOverlayWidget(game: game as ChronoGame),
-                  'PauseOverlay': (context, game) => PauseOverlayWidget(
-                        game: game as ChronoGame,
-                        onQuit: _quitToLevelSelect,
-                        // Opens over the paused level; Back returns to the
-                        // pause menu, which is still showing underneath.
-                        onSettings: () => context.push('/settings'),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // Pillarbox on windows wider than GameConstants.maxAspectRatio so
+              // the scrolling background (which tiles horizontally past its own
+              // art's aspect ratio) never shows a visible seam — see that
+              // constant's doc comment for the math.
+              final maxWidth =
+                  constraints.maxHeight * GameConstants.maxAspectRatio;
+              final width = constraints.maxWidth < maxWidth
+                  ? constraints.maxWidth
+                  : maxWidth;
+              return Center(
+                child: SizedBox(
+                  width: width,
+                  height: constraints.maxHeight,
+                  child: GameWidget(
+                    game: game,
+                    overlayBuilderMap: {
+                      'HudOverlay': (context, game) =>
+                          HudOverlayWidget(game: game as ChronoGame),
+                      'QuestionOverlay': (context, chronoGame) {
+                        final g = chronoGame as ChronoGame;
+                        // Artifacts and gates resolve their own way (claim,
+                        // charges, retry, crumble); boss questions keep the
+                        // original path, which is bound by Section 12's frozen
+                        // POST payload.
+                        final fromAnswerPoint = g.activeArtifact != null;
+                        return QuestionOverlayWidget(
+                          game: g,
+                          onAnswer: fromAnswerPoint
+                              ? g.handleAnswerPointAnswer
+                              : g.handleAnswer,
+                        );
+                      },
+                      'BossHealthOverlay': (context, game) =>
+                          BossHealthOverlayWidget(game: game as ChronoGame),
+                      'GateLockedOverlay': (context, game) =>
+                          GateLockedOverlayWidget(game: game as ChronoGame),
+                      'PauseOverlay': (context, game) => PauseOverlayWidget(
+                            game: game as ChronoGame,
+                            onQuit: _quitToLevelSelect,
+                            // Opens over the paused level; Back returns to the
+                            // pause menu, which is still showing underneath.
+                            onSettings: () => context.push('/settings'),
+                          ),
+                    },
+                    initialActiveOverlays: const ['HudOverlay'],
+                    loadingBuilder: (context) => Container(
+                      color: Colors.black,
+                      child: const Center(
+                        child:
+                            CircularProgressIndicator(color: Color(0xFFD4AF37)),
                       ),
-                },
-                initialActiveOverlays: const ['HudOverlay'],
-                loadingBuilder: (context) => Container(
-                  color: Colors.black,
-                  child: const Center(
-                    child:
-                        CircularProgressIndicator(color: Color(0xFFD4AF37)),
+                    ),
                   ),
                 ),
+              );
+            },
+          ),
+          if (_splash)
+            Positioned.fill(
+              child: LevelSplash(
+                eraId: widget.eraId,
+                level: widget.level,
+                charId: _charId,
+                ready: _loaded,
+                onSkip: _hideSplash,
               ),
             ),
-          );
-        },
+        ],
       ),
     );
   }

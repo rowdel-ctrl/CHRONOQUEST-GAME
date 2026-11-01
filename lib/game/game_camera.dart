@@ -6,8 +6,13 @@ import 'chrono_game.dart';
 /// behavior is unchanged: the viewfinder tracks the player's worldX every
 /// frame, offset so the player renders at the fixed screen position
 /// GameConstants.playerX (see ChronoGame.cameraLeftEdgeX).
+///
+/// [ChronoGame.cameraShake] is added on top, only for what is drawn: it is not
+/// part of `cameraLeftEdgeX`, so nothing that decides what is on screen (what
+/// to spawn, what to cull) shakes with it.
 extension GameCamera on ChronoGame {
   void updateCamera() {
-    camera.viewfinder.position = Vector2(cameraLeftEdgeX, 0);
+    camera.viewfinder.position =
+        Vector2(cameraLeftEdgeX + cameraShake.x, cameraShake.y);
   }
 }

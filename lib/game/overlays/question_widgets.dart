@@ -141,20 +141,26 @@ class AnswerButton extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
+          constraints: BoxConstraints(minHeight: layout.optionHeight),
           decoration: BoxDecoration(
             color: buttonColor,
             border: Border.all(color: borderColor, width: 2.5),
             borderRadius: BorderRadius.circular(4),
           ),
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          // The mark sits in the corner rather than beside the text, so
-          // options keep their full width and don't wrap or truncate sooner.
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          // The mark hangs on the button's top-right corner, over the border, so it
+          // never covers the text. The stack is as wide as the button (the text
+          // wrapper takes the full width), so the corner is the button's, not the
+          // end of a short answer. The text is never cut: a long answer makes its
+          // button (and its row) taller, and QuestionCard scales the whole card down
+          // if that no longer fits.
           child: Stack(
-            fit: StackFit.expand,
+            alignment: Alignment.center,
             clipBehavior: Clip.none,
             children: [
-              Center(
+              SizedBox(
+                width: double.infinity,
                 child: Text(
                   '${option.label}) ${option.text}',
                   textAlign: TextAlign.center,
@@ -165,13 +171,11 @@ class AnswerButton extends StatelessWidget {
                         ? FontWeight.bold
                         : FontWeight.w500,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Positioned(
-                top: 3,
-                right: -4,
+                top: -15,
+                right: -14,
                 child: AnswerMark(state: state),
               ),
             ],

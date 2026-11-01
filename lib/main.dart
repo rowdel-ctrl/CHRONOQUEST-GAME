@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'screens/splash/splash_screen.dart';
 import 'services/audio_service.dart';
 import 'services/storage_service.dart';
 import 'services/api_service.dart';
@@ -20,8 +21,23 @@ void main() async {
   // Hide status bar for immersive game
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+  // The splash is drawn at once; everything below loads behind it and moves its
+  // line along. The app shows when it is all done (and the splash has had its
+  // moment).
+  runApp(
+    BootApp(
+      load: _load,
+      app: () => const ProviderScope(child: ChronoQuestApp()),
+    ),
+  );
+}
+
+/// Opens the saved data, the questions and the audio, reporting how far it has got.
+Future<void> _load(BootProgress progress) async {
   // Initialize Hive for local storage
   await StorageService.initHive();
+  progress.value.value = 0.3;
+  progress.hero.value = StorageService.getCharacter();
   AudioService().loadSaved();
 
   // Load quiz questions from assets/data/*.json before any screen can ask
@@ -29,6 +45,7 @@ void main() async {
   // literal, so it's no longer instant/synchronous — it must complete
   // before the first level starts.
   await QuestionBank.loadAll();
+  progress.value.value = 0.8;
 
   // Questions the student's teacher published, saved from the last time the
   // phone was online. Used straight away, so they work offline.
@@ -39,10 +56,5 @@ void main() async {
   // Fire-and-forget: don't block app launch on network access, and any
   // still-unsent results just stay queued for the next attempt.
   ApiService().flushPendingResults();
-
-  runApp(
-    const ProviderScope(
-      child: ChronoQuestApp(),
-    ),
-  );
+  progress.value.value = 0.95;
 }

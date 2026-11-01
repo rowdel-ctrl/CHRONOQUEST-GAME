@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
 
+/// Joining found a student with the same name already in the class. Not an error
+/// to show: the screen asks "Ikaw ba 'yon?" instead.
+const String nameTakenMessage = 'May kapareho nang pangalan sa klase.';
+
 /// The message a student sees when the login or join request fails.
 ///
 /// The server answers in English and one answer can mean two things, so the raw
@@ -34,6 +38,11 @@ String loginErrorMessage(DioException e, {required bool joining}) {
       ? (data['message'] as String).toLowerCase()
       : '';
 
+  // Only the server's own code: it also answers 409 when it could not make a username.
+  if (joining && data is Map && data['code'] == 'NAME_TAKEN') {
+    return nameTakenMessage;
+  }
+
   switch (response.statusCode) {
     case 400:
       if (server.contains('real name')) {
@@ -47,6 +56,12 @@ String loginErrorMessage(DioException e, {required bool joining}) {
             ? 'Dapat 6 characters o higit pa ang password.'
             : 'Mali ang password. Subukan ulit.';
       }
+      if (server.contains('full')) {
+        return 'Puno na ang klase na ito. Itanong sa teacher mo.';
+      }
+      // A server that does not make usernames yet answers a join with "class code
+      // and username are required". Nothing the student typed is wrong.
+      if (joining) return 'May problema sa pag-sali. Subukan ulit mamaya.';
       return 'I-type ang class code at username.';
     case 401:
       return joining
@@ -71,8 +86,10 @@ enum LoginField { classCode, name, username, password }
 /// Which question a message from [loginErrorMessage] is about, or null when it is
 /// about nothing the student typed (no internet, too many tries, a server fault).
 LoginField? loginErrorField(String message) {
+  if (message == nameTakenMessage) return null;
   if (message.startsWith('Mali ang class code') ||
-      message.startsWith('I-type ang class code')) {
+      message.startsWith('I-type ang class code') ||
+      message.startsWith('Puno na ang klase')) {
     return LoginField.classCode;
   }
   if (message.contains('username')) return LoginField.username;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,9 +10,11 @@ import '../../providers/game_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/hearts_pill.dart';
+import '../../widgets/living_backdrop.dart';
 import '../../widgets/menu_chip.dart';
 import '../../widgets/pixel_icon.dart';
 import 'level_node.dart';
+import 'level_path.dart';
 
 String _formatCountdown(Duration d) {
   final minutes = d.inMinutes;
@@ -19,9 +22,16 @@ String _formatCountdown(Duration d) {
   return '$minutes:${seconds.toString().padLeft(2, '0')}';
 }
 
+/// The levels of an era as a winding path: gold nodes with their stars for the
+/// levels done, the student's hero standing on the next one (with light behind it
+/// and a ring spreading out of it), dark locked ones after it, and the boss at the
+/// end. Across a wide screen, down a narrow one (which scrolls to the next level).
 class LevelSelectScreen extends ConsumerStatefulWidget {
   final String eraId;
   const LevelSelectScreen({super.key, required this.eraId});
+
+  static Key nodeKey(int level) => ValueKey('level_node_$level');
+  static const Key pathKey = Key('level_path');
 
   @override
   ConsumerState<LevelSelectScreen> createState() => _LevelSelectScreenState();
@@ -30,6 +40,8 @@ class LevelSelectScreen extends ConsumerStatefulWidget {
 class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   Map<int, int> completedLevels = {};
   Timer? _heartsTimer;
+  final ScrollController _scroll = ScrollController();
+  bool _scrolledToCurrent = false;
 
   @override
   void initState() {
@@ -47,6 +59,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   @override
   void dispose() {
     _heartsTimer?.cancel();
+    _scroll.dispose();
     super.dispose();
   }
 
@@ -121,21 +134,35 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     ref.watch(unlockAllProvider);
     final era = getEraById(widget.eraId);
     final levelCount = era.levels.length;
-    ref.watch(gameProvider); // the map redraws as hearts come and go
+    final game =
+        ref.watch(gameProvider); // the map redraws as hearts come and go
     // Also true while the testing switch makes hearts free.
     final hasHearts = ref.read(gameProvider.notifier).canStartLevel;
     final timeUntilNext = ref.read(gameProvider.notifier).heartCountdown;
+    final eraColor = _getEraColor(widget.eraId);
+
+    bool unlocked(int level) => _isLevelUnlocked(level, levelCount);
+    // The one to play next: the first open level that is not finished.
+    final current = [for (var l = 1; l <= levelCount; l++) l].firstWhere(
+        (l) => unlocked(l) && !completedLevels.containsKey(l),
+        orElse: () => 0);
+
+    LevelNodeState stateOf(int level) {
+      if (completedLevels.containsKey(level)) return LevelNodeState.done;
+      if (level == current) return LevelNodeState.current;
+      return unlocked(level) ? LevelNodeState.open : LevelNodeState.locked;
+    }
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              _getEraColor(widget.eraId).withValues(alpha: 0.6),
-              _getEraColor(widget.eraId).withValues(alpha: 0.3),
-              Colors.black87,
+              Color.lerp(const Color(0xFF140E1F), eraColor, 0.65)!,
+              const Color(0xFF140E1F),
             ],
           ),
         ),
@@ -165,6 +192,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             height: 1.4,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.6,
                             color: AppColors.accent,
                           ),
                         ),
@@ -178,67 +207,91 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
                 ),
               ),
 
-              // Level milestones
+              // The winding path of levels
               Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: List.generate(levelCount, (i) {
-                        final level = i + 1;
-                        final isUnlocked = _isLevelUnlocked(level, levelCount);
-                        final isCompleted =
-                            completedLevels.containsKey(level);
-                        final stars = completedLevels[level] ?? 0;
-                        final isBoss = level == levelCount;
+                child: LayoutBuilder(
+                  builder: (context, box) {
+                    final vertical = box.maxWidth < 560;
+                    final height = vertical
+                        ? math.max(box.maxHeight, levelPathHeight(levelCount))
+                        : box.maxHeight;
+                    final area = Size(box.maxWidth, height);
+                    final points =
+                        levelPathPoints(levelCount, area, vertical: vertical);
 
-                        return Row(
-                          children: [
-                            // Road connector
-                            if (i > 0)
-                              Container(
-                                width: 30,
-                                height: 4,
-                                color: isCompleted || isUnlocked
-                                    ? AppColors.accent.withValues(alpha: 0.6)
-                                    : Colors.white24,
+                    final path = SizedBox(
+                      key: LevelSelectScreen.pathKey,
+                      width: area.width,
+                      height: area.height,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          // The light comes from the level to play next.
+                          if (current > 0)
+                            Positioned.fill(
+                              child: LivingBackdrop(
+                                color: Color.lerp(eraColor, Colors.white, 0.5)!,
+                                fireflies: 0,
+                                center: Offset(
+                                  points[current - 1].dx / area.width,
+                                  points[current - 1].dy / area.height,
+                                ),
                               ),
-                            // Level node
-                            LevelNode(
-                              level: level,
-                              isUnlocked: isUnlocked,
-                              isCompleted: isCompleted,
-                              stars: stars,
-                              isBoss: isBoss,
-                              onTap: isUnlocked
-                                  ? () {
-                                      if (hasHearts) {
-                                        _startLevel(level);
-                                      } else {
-                                        _showNoHeartsDialog(
-                                            context, timeUntilNext);
-                                      }
-                                    }
-                                  : null,
                             ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-              ),
+                          Positioned.fill(
+                            child: CustomPaint(
+                              painter: _RoadPainter(
+                                points,
+                                done: {
+                                  for (var l = 1; l <= levelCount; l++)
+                                    l: completedLevels.containsKey(l)
+                                },
+                              ),
+                            ),
+                          ),
+                          for (var i = 0; i < levelCount; i++)
+                            Positioned(
+                              left: points[i].dx - LevelNode.target / 2,
+                              top: points[i].dy - LevelNode.target / 2,
+                              child: LevelNode(
+                                key: LevelSelectScreen.nodeKey(i + 1),
+                                level: i + 1,
+                                state: stateOf(i + 1),
+                                stars: completedLevels[i + 1] ?? 0,
+                                isBoss: i + 1 == levelCount,
+                                heroId: game.selectedCharacterId,
+                                onTap: unlocked(i + 1)
+                                    ? () {
+                                        if (hasHearts) {
+                                          _startLevel(i + 1);
+                                        } else {
+                                          _showNoHeartsDialog(
+                                              context, timeUntilNext);
+                                        }
+                                      }
+                                    : null,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
 
-              // Bottom info
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  '${completedLevels.length}/$levelCount Levels Tapos',
-                  style: const TextStyle(
-                    color: Colors.white60,
-                    fontSize: 13,
-                  ),
+                    if (!vertical) return path;
+                    // A narrow screen runs the path downwards and starts at the
+                    // level to play next.
+                    if (!_scrolledToCurrent && current > 0) {
+                      _scrolledToCurrent = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!_scroll.hasClients) return;
+                        final target =
+                            points[current - 1].dy - box.maxHeight / 2;
+                        _scroll.jumpTo(target.clamp(
+                            0.0, _scroll.position.maxScrollExtent));
+                      });
+                    }
+                    return SingleChildScrollView(
+                        controller: _scroll, child: path);
+                  },
                 ),
               ),
             ],
@@ -255,15 +308,53 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
       case 'spanish':
         return const Color(0xFF4E342E);
       case 'nationalism':
-        return const Color(0xFF4E342E);
+        return const Color(0xFF4A3F8F);
       case 'american':
         return const Color(0xFF0D47A1);
       case 'ww2':
         return const Color(0xFF37474F);
       case 'modern':
-        return const Color(0xFF1A237E);
+        return const Color(0xFF4A148C);
       default:
         return const Color(0xFF4E342E);
     }
   }
+}
+
+/// The road between the levels: solid gold where the student has been, a dotted
+/// dim line where they have not.
+class _RoadPainter extends CustomPainter {
+  final List<Offset> points;
+  final Map<int, bool> done;
+  _RoadPainter(this.points, {required this.done});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final solid = Paint()
+      ..color = AppColors.accent
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round;
+    final dim = Paint()
+      ..color = Colors.white.withValues(alpha: 0.22)
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+    for (var i = 0; i < points.length - 1; i++) {
+      final a = points[i], b = points[i + 1];
+      // Gold from every finished level onwards: that road has been walked.
+      if (done[i + 1] == true) {
+        canvas.drawLine(a, b, solid);
+        continue;
+      }
+      // Dotted: 3 long, 7 apart.
+      final length = (b - a).distance;
+      final dir = (b - a) / length;
+      for (var t = 0.0; t < length; t += 10) {
+        canvas.drawLine(a + dir * t, a + dir * math.min(t + 3, length), dim);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RoadPainter old) =>
+      old.points != points || old.done != done;
 }

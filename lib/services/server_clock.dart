@@ -21,6 +21,7 @@ class ServerClock {
   @visibleForTesting
   ServerClock.fixed(DateTime serverNow) : _fetch = _nothing {
     _set(serverNow.millisecondsSinceEpoch);
+    reachable.value = true;
   }
 
   static final ServerClock instance = ServerClock();
@@ -44,6 +45,11 @@ class ServerClock {
 
   bool get isSynced => _serverMsAtSync != null;
 
+  /// Whether the last read of the server worked: null before the first one, then
+  /// true or false. The first screen shows it as the signal icon, so a student
+  /// can see "no internet" before typing a whole sign-up.
+  final ValueNotifier<bool?> reachable = ValueNotifier<bool?>(null);
+
   /// The server's time now, or null if it has not been read yet.
   DateTime? get now => _serverMsAtSync == null
       ? null
@@ -63,8 +69,10 @@ class ServerClock {
       final trip = Stopwatch()..start();
       final ms = await _fetch();
       if (ms != null) _set(ms + trip.elapsedMilliseconds ~/ 2);
+      reachable.value = ms != null;
     } catch (_) {
       // Offline: carry on with what there is.
+      reachable.value = false;
     } finally {
       _syncing = false;
     }
@@ -80,8 +88,8 @@ class ServerClock {
       return;
     }
     final phoneGap = DateTime.now().difference(_phoneAtSync);
-    final jumped = phoneGap.isNegative ||
-        (phoneGap - _since.elapsed).abs() > tolerance;
+    final jumped =
+        phoneGap.isNegative || (phoneGap - _since.elapsed).abs() > tolerance;
     if (jumped || _since.elapsed > recheckAfter) sync();
   }
 

@@ -49,6 +49,20 @@ class ApiConstants {
   }
 }
 
+// ─── UPDATES ────────────────────────────────────────────────────────────────
+/// Where the game looks for a newer version (see `services/update_check.dart`).
+class UpdateConstants {
+  /// The public download page.
+  static const String siteUrl = 'https://chronoquest-five.vercel.app';
+
+  static const String _latestOverride =
+      String.fromEnvironment('UPDATE_URL', defaultValue: '');
+
+  /// The small file on that page naming the newest version.
+  static String get latestUrl =>
+      _latestOverride.isNotEmpty ? _latestOverride : '$siteUrl/latest.json';
+}
+
 // ─── DEV FLAGS ──────────────────────────────────────────────────────────────
 class DevFlags {
   /// Lets you run the game without logging in:
@@ -113,6 +127,7 @@ class GameConstants {
   static const double playerX = 220.0;
   static const double gravity = 900.0;
   static const double jumpForce = -480.0;
+
   /// How far the player must travel before another enemy spawns ahead.
   ///
   /// Raised from 800 in Phase 2. That figure was set while every enemy
@@ -237,7 +252,8 @@ class EraData {
         (i) => Level(
           eraId: id,
           index: i + 1,
-          curriculum: CurriculumTag(grade: grade, term: term, weeks: levelWeeks[i]),
+          curriculum:
+              CurriculumTag(grade: grade, term: term, weeks: levelWeeks[i]),
           isBoss: i + 1 == levelWeeks.length,
           lengthUnits: CombatConstants.lengthUnitsDefault,
         ),
@@ -281,7 +297,16 @@ const List<EraData> allEras = [
     grade: 5,
     term: 1,
     levelWeeks: [
-      [1], [2], [3], [4], [5], [6], [7], [8], [9], [10],
+      [1],
+      [2],
+      [3],
+      [4],
+      [5],
+      [6],
+      [7],
+      [8],
+      [9],
+      [10],
     ],
   ),
   EraData(
@@ -304,7 +329,11 @@ const List<EraData> allEras = [
     grade: 5,
     term: 2,
     levelWeeks: [
-      [1, 2], [3, 4, 5], [6, 7], [8], [9, 10],
+      [1, 2],
+      [3, 4, 5],
+      [6, 7],
+      [8],
+      [9, 10],
     ],
   ),
   EraData(
@@ -336,7 +365,13 @@ const List<EraData> allEras = [
     // competency groups miscounted; corrected in its revision 5 (2026-09-25)
     // after recounting the source PDF gives [1]/[2-3]/[4-5]/[6]/[7]/[8-9]/[10].
     levelWeeks: [
-      [1], [2, 3], [4, 5], [6], [7], [8, 9], [10],
+      [1],
+      [2, 3],
+      [4, 5],
+      [6],
+      [7],
+      [8, 9],
+      [10],
     ],
   ),
   EraData(
@@ -346,7 +381,8 @@ const List<EraData> allEras = [
     guide: 'Apolinario Mabini',
     enemyTypes: ['american_soldier', 'propaganda'],
     bossName: 'general',
-    bossDialogue: 'Hindi ka mauuto ng pangako ng kalayaan, di ba? Patunayan mo!',
+    bossDialogue:
+        'Hindi ka mauuto ng pangako ng kalayaan, di ba? Patunayan mo!',
     groundColor: Color(0xFF8B6914),
     historicalText:
         'Noong 1898, pagkatapos ng Digmaang Espanyol-Amerikano, inilipat ang '
@@ -359,7 +395,14 @@ const List<EraData> allEras = [
     grade: 6,
     term: 1,
     levelWeeks: [
-      [1], [2], [3], [4], [5], [6], [7, 8], [9, 10],
+      [1],
+      [2],
+      [3],
+      [4],
+      [5],
+      [6],
+      [7, 8],
+      [9, 10],
     ],
   ),
   EraData(
@@ -381,7 +424,14 @@ const List<EraData> allEras = [
     grade: 6,
     term: 2,
     levelWeeks: [
-      [1, 2], [3], [4], [5], [6], [7], [8, 9], [10],
+      [1, 2],
+      [3],
+      [4],
+      [5],
+      [6],
+      [7],
+      [8, 9],
+      [10],
     ],
   ),
   EraData(
@@ -404,7 +454,11 @@ const List<EraData> allEras = [
     grade: 6,
     term: 3,
     levelWeeks: [
-      [1, 2, 3], [4], [5, 6], [7, 8], [9, 10],
+      [1, 2, 3],
+      [4],
+      [5, 6],
+      [7, 8],
+      [9, 10],
     ],
   ),
 ];
@@ -413,6 +467,9 @@ const List<EraData> allEras = [
 class CharacterData {
   final String id;
   final String name;
+
+  /// The name as shown big on the hero screen: "Rizal", not "Jose Rizal".
+  final String shortName;
   final String era;
   final String description;
   final int unlockCost;
@@ -420,6 +477,7 @@ class CharacterData {
   const CharacterData({
     required this.id,
     required this.name,
+    required this.shortName,
     required this.era,
     required this.description,
     this.unlockCost = 0,
@@ -430,6 +488,7 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'lapu',
     name: 'Datu Lapu-Lapu',
+    shortName: 'Lapu-Lapu',
     era: 'Sinaunang Pilipinas',
     description: 'Bayani ng Mactan',
     unlockCost: 0,
@@ -437,6 +496,7 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'rizal',
     name: 'Jose Rizal',
+    shortName: 'Rizal',
     era: 'Pananakop ng Espanya',
     description: 'Pambansang Bayani',
     unlockCost: 0,
@@ -444,6 +504,7 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'luna',
     name: 'Heneral Antonio Luna',
+    shortName: 'Luna',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Heneral ng Hukbong Pilipino',
     unlockCost: 100,
@@ -451,6 +512,7 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'bonifacio',
     name: 'Andres Bonifacio',
+    shortName: 'Bonifacio',
     era: 'Pananakop ng Espanya',
     description: 'Ama ng Katipunan',
     unlockCost: 200,
@@ -458,6 +520,7 @@ const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'delpilar',
     name: 'Gregorio Del Pilar',
+    shortName: 'Del Pilar',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
     unlockCost: 300,

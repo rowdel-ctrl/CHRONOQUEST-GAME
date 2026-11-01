@@ -126,12 +126,12 @@ void main() {
     await _unmount(tester);
   });
 
-  testWidgets('the chip disappears once the gate has opened', (tester) async {
+  testWidgets('the chip disappears once the student has gone into the gate', (tester) async {
     final game = _Game()..units = 500;
     await _pump(tester, game);
     expect(find.text('5 m'), findsOneWidget);
 
-    game.units = null; // the gate opened
+    game.units = null; // the student went in
     await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byType(GateIcon), findsNothing);

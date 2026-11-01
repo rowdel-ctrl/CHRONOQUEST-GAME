@@ -1,9 +1,13 @@
-// The level-complete card: it fits a short landscape phone without scrolling,
-// says x/10 for ten artifacts, and shows one dot per artifact.
-import 'package:chronoquest/core/constants.dart';
+// The level-complete screen: the stars are the one big thing, with light behind
+// them that matches the result, the score as x/y, one line of what was earned
+// and one gold button. It fits a short landscape phone and a tall narrow one.
+import 'package:chronoquest/models/badge_defs.dart';
 import 'package:chronoquest/screens/game/level_complete_screen.dart';
+import 'package:chronoquest/widgets/new_badge.dart';
+import 'package:chronoquest/widgets/living_backdrop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> _show(
@@ -14,112 +18,201 @@ Future<void> _show(
   int correct = 10,
   int total = 10,
   int coins = 35,
+  bool animations = true,
+  List<EarnedBadge> badges = const [],
 }) async {
+  tester.platformDispatcher.accessibilityFeaturesTestValue =
+      FakeAccessibilityFeatures(disableAnimations: !animations);
+  addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
   tester.view.devicePixelRatio = 1.0;
   tester.view.physicalSize = size;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(MaterialApp(
-    home: LevelCompleteScreen(
-      eraId: eraId,
-      level: level,
-      result: LevelCompleteResult(
-          score: 535, correct: correct, total: total, coins: coins),
+  final router = GoRouter(routes: [
+    GoRoute(
+      path: '/',
+      builder: (_, __) => LevelCompleteScreen(
+        eraId: eraId,
+        level: level,
+        result: LevelCompleteResult(score: 535, correct: correct, total: total, coins: coins, badges: badges),
+      ),
     ),
-  ));
+    GoRoute(
+      path: '/level-select/:eraId',
+      builder: (_, __) => const Scaffold(body: Text('levels stand-in')),
+    ),
+  ]);
+  await tester.pumpWidget(MaterialApp.router(routerConfig: router));
   await tester.pump(const Duration(seconds: 2)); // stars and pop-in
 }
 
-double _maxScroll(WidgetTester tester) =>
-    tester.state<ScrollableState>(find.byType(Scrollable).first).position.maxScrollExtent;
+/// The stars drawn full and empty.
+int _filled(WidgetTester tester) => tester
+    .widgetList<Image>(find.byType(Image))
+    .where((i) => i.image is AssetImage && (i.image as AssetImage).assetName == 'assets/ui/star_full.png')
+    .length;
+
+int _empty(WidgetTester tester) => tester
+    .widgetList<Image>(find.byType(Image))
+    .where((i) => i.image is AssetImage && (i.image as AssetImage).assetName == 'assets/ui/star_empty.png')
+    .length;
 
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
-  group('fits a short landscape phone without scrolling', () {
-    for (final size in const [Size(800, 360), Size(732, 320), Size(640, 360)]) {
+  group('new badges', () {
+    EarnedBadge badge(String id) {
+      final f = badgeFamilyOf(id)!;
+      return EarnedBadge(f, f.steps.firstWhere((s) => s.id == id));
+    }
+
+    testWidgets('slide in over the screen with the badge and its gift', (tester) async {
+      await _show(tester, size: const Size(732, 320), badges: [badge('perfect:1')]);
+      expect(find.byKey(NewBadgeStrip.stripKey), findsOneWidget);
+      expect(find.text('Perpekto! · Tanso'), findsOneWidget);
+      expect(find.text('+5 coins'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      // And the screen is still all there, with its button.
+      expect(find.byKey(LevelCompleteScreen.goKey).hitTestable(), findsOneWidget);
+    });
+
+    testWidgets('are not there when none were earned', (tester) async {
+      await _show(tester, size: const Size(732, 320));
+      expect(find.byKey(NewBadgeStrip.stripKey), findsNothing);
+    });
+  });
+
+  group('fits a phone, with the button on screen', () {
+    for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
       for (final level in [2, 3, 7]) {
-        testWidgets('level $level at ${size.width.toInt()}x${size.height.toInt()}',
-            (tester) async {
+        testWidgets('level $level at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
           await _show(tester, size: size, level: level);
 
           expect(tester.takeException(), isNull);
-          expect(_maxScroll(tester), 0,
-              reason: 'the card is taller than the screen, so it scrolls');
+          final button = tester.getRect(find.byKey(LevelCompleteScreen.goKey));
+          expect(button.bottom, lessThanOrEqualTo(size.height));
+          expect(button.top, greaterThanOrEqualTo(0));
+          expect(find.byKey(LevelCompleteScreen.goKey).hitTestable(), findsOneWidget);
         });
       }
     }
   });
 
-  group('the longest era titles still fit without scrolling', () {
-    // "Batas Militar at Muling Pagbangon ng Demokrasya" is 47 characters.
-    for (final era in allEras) {
-      for (final size in const [Size(732, 320), Size(640, 360)]) {
-        testWidgets('${era.id} at ${size.width.toInt()}x${size.height.toInt()}',
-            (tester) async {
-          await _show(tester, size: size, eraId: era.id, level: 3);
+  testWidgets('has few words: the title, the score, what was earned and the button', (tester) async {
+    await _show(tester, size: const Size(732, 320), level: 4, correct: 7, total: 8);
 
-          expect(tester.takeException(), isNull);
-          expect(_maxScroll(tester), 0);
-        });
-      }
-    }
+    expect(find.text('LEVEL 4 TAPOS!'), findsOneWidget);
+    expect(find.text('7/8'), findsOneWidget);
+    expect(find.text('SUSUNOD'), findsOneWidget);
+    expect(find.textContaining('TAMA'), findsNothing);
+    expect(find.textContaining('PUNTOS'), findsNothing);
+    expect(find.textContaining('COINS'), findsNothing);
+    expect(find.text('Pananakop ng Espanya'), findsNothing, reason: 'no era name on this screen');
+    expect(find.text('Sinaunang Pilipinas'), findsNothing);
   });
 
-  testWidgets('says x/10 and draws a dot for each artifact', (tester) async {
-    await _show(tester, size: const Size(800, 360), correct: 7, total: 10);
-
-    expect(find.text('7/10 TAMA'), findsOneWidget);
-    final dots = find.descendant(
-      of: find.byKey(LevelCompleteScreen.dotsKey),
-      matching: find.byType(Container),
-    );
-    expect(dots, findsNWidgets(10));
-
-    final colours = [
-      for (final c in tester.widgetList<Container>(dots))
-        (c.decoration as BoxDecoration).color,
-    ];
-    expect(colours.where((c) => c != Colors.transparent).length, 7,
-        reason: 'seven right, three missed');
-    expect(colours.take(7).every((c) => c != Colors.transparent), isTrue,
-        reason: 'the right ones come first');
+  testWidgets('no dot per artifact: the score says it', (tester) async {
+    await _show(tester, size: const Size(732, 320), correct: 7, total: 10);
+    expect(find.text('7/10'), findsOneWidget);
+    expect(find.byType(DecoratedBox).evaluate().where((e) {
+      final box = e.widget as DecoratedBox;
+      final d = box.decoration;
+      return d is BoxDecoration && d.shape == BoxShape.circle && (d.color == const Color(0xFF43A83E));
+    }), isEmpty);
   });
 
-  testWidgets('no dots when the total is not a level of artifacts', (tester) async {
-    await _show(tester, size: const Size(800, 360), correct: 0, total: 0);
-    expect(find.byKey(LevelCompleteScreen.dotsKey), findsNothing);
+  testWidgets('no score when the total is not a level of artifacts', (tester) async {
+    await _show(tester, size: const Size(732, 320), correct: 0, total: 0);
+    expect(find.byKey(LevelCompleteScreen.scoreKey), findsNothing);
   });
 
-  testWidgets('a narrow screen falls back to one column and still lays out',
-      (tester) async {
+  group('the stars follow the share right', () {
+    testWidgets('90% or more: three full stars', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 9, total: 10);
+      // One more full star is the one beside the points.
+      expect(_filled(tester), 3 + 1);
+      expect(_empty(tester), 0);
+    });
+
+    testWidgets('70% to 89%: two full, one empty', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 7, total: 10);
+      expect(_filled(tester), 2 + 1);
+      expect(_empty(tester), 1);
+    });
+
+    testWidgets('under 70%: one full, two empty', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 4, total: 10);
+      expect(_filled(tester), 1 + 1);
+      expect(_empty(tester), 2);
+    });
+  });
+
+  group('the light behind the stars matches the result', () {
+    testWidgets('three stars: rays and a glow', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 10, total: 10);
+      final light = tester.widget<LivingBackdrop>(find.byKey(LevelCompleteScreen.backdropKey));
+      expect(light.rays, isTrue);
+    });
+
+    testWidgets('two stars: a soft glow, no rays', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 7, total: 10);
+      final light = tester.widget<LivingBackdrop>(find.byKey(LevelCompleteScreen.backdropKey));
+      expect(light.rays, isFalse);
+    });
+
+    testWidgets('one star: no light at all', (tester) async {
+      await _show(tester, size: const Size(732, 320), correct: 4, total: 10);
+      expect(find.byKey(LevelCompleteScreen.backdropKey), findsNothing);
+    });
+  });
+
+  testWidgets('the level 3 and level 7 gifts are named, other levels have none', (tester) async {
+    await _show(tester, size: const Size(732, 320), level: 3);
+    expect(find.text('Nakakuha ng 50/50!'), findsOneWidget);
+
+    await _show(tester, size: const Size(732, 320), level: 7);
+    expect(find.text('Nakakuha ng Shield!'), findsOneWidget);
+
+    await _show(tester, size: const Size(732, 320), level: 5);
+    expect(find.byKey(LevelCompleteScreen.giftKey), findsNothing);
+  });
+
+  testWidgets('a narrow screen still lays out, with the gift', (tester) async {
     await _show(tester, size: const Size(400, 700), level: 3);
     expect(tester.takeException(), isNull);
     expect(find.text('SUSUNOD'), findsOneWidget);
     expect(find.text('Nakakuha ng 50/50!'), findsOneWidget);
   });
 
-  testWidgets('shows the coins earned in this attempt', (tester) async {
-    await _show(tester, size: const Size(800, 360), coins: 35);
+  testWidgets('shows the points and the coins earned in this attempt as one line', (tester) async {
+    await _show(tester, size: const Size(732, 320), coins: 35);
 
     expect(find.byKey(LevelCompleteScreen.coinsKey), findsOneWidget);
-    expect(find.text('+35 COINS'), findsOneWidget);
-    expect(find.text('+535 PUNTOS'), findsOneWidget,
-        reason: 'the points are still there');
+    expect(find.text('+35'), findsOneWidget);
+    expect(find.text('+535'), findsOneWidget, reason: 'the points are still there');
   });
 
-  testWidgets('no coins line when none were picked up', (tester) async {
-    await _show(tester, size: const Size(800, 360), coins: 0);
+  testWidgets('no coins in the line when none were picked up', (tester) async {
+    await _show(tester, size: const Size(732, 320), coins: 0);
 
     expect(find.byKey(LevelCompleteScreen.coinsKey), findsNothing);
-    expect(find.textContaining('COINS'), findsNothing);
+    expect(find.text('+535'), findsOneWidget);
   });
 
   test('a result made without coins (an old deep link) shows none', () {
     expect(LevelCompleteResult.empty.coins, 0);
   });
 
-  testWidgets('stars follow the share right', (tester) async {
-    await _show(tester, size: const Size(800, 360), correct: 10, total: 10);
-    expect(find.byIcon(Icons.star), findsNWidgets(3));
+  testWidgets('SUSUNOD goes back to the levels of the era', (tester) async {
+    await _show(tester, size: const Size(732, 320));
+    await tester.tap(find.byKey(LevelCompleteScreen.goKey));
+    await tester.pumpAndSettle();
+    expect(find.text('levels stand-in'), findsOneWidget);
+  });
+
+  testWidgets('with animations off the stars are all there at once and nothing moves',
+      (tester) async {
+    await _show(tester, size: const Size(732, 320), correct: 10, total: 10, animations: false);
+    expect(tester.hasRunningAnimations, isFalse);
+    expect(_filled(tester), 3 + 1);
   });
 }

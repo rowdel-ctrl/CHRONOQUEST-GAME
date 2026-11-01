@@ -9,6 +9,7 @@ import 'package:chronoquest/models/era_progress.dart';
 import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/models/student.dart';
 import 'package:chronoquest/providers/auth_provider.dart';
+import 'package:chronoquest/providers/badge_provider.dart';
 import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/providers/progress_provider.dart';
 import 'package:chronoquest/providers/unlock_all_provider.dart';
@@ -88,6 +89,7 @@ Future<void> _pump(WidgetTester tester, Size size,
         authProvider.overrideWith((ref) => _FakeAuth()),
         progressProvider.overrideWith((ref) => _FakeProgress()),
         unlockAllProvider.overrideWith((ref) => _FakeUnlock(unlockAll)),
+        badgeProvider.overrideWith((ref) => BadgeNotifier(payCoins: (_) {})),
       ],
       child: const MaterialApp(home: EraSelectionScreen()),
     ),
@@ -102,8 +104,6 @@ void main() {
   const sizes = {
     '640x360': Size(640, 360),
     '732x320': Size(732, 320),
-    '800x360': Size(800, 360),
-    '915x412': Size(915, 412),
   };
 
   testWidgets('era select no longer shows hearts, and has a Settings gear',

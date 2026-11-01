@@ -9,6 +9,7 @@
 // what is robust to that — that the card fits, that taps land, that the
 // desktop layout is untouched — rather than exact pixel heights. Whether the
 // phone layout also *looks* right is checked in a real run.
+import 'package:chronoquest/game/overlays/answer_feedback.dart';
 import 'package:chronoquest/game/overlays/question_card.dart';
 import 'package:chronoquest/game/overlays/question_layout.dart';
 import 'package:chronoquest/models/question.dart';
@@ -50,6 +51,7 @@ class _Calls {
   int continues = 0;
   int fiftyFifty = 0;
   int shields = 0;
+  int freezes = 0;
 }
 
 Widget _card(
@@ -253,6 +255,151 @@ void main() {
       await _pump(tester, size, _card(_Calls()));
 
       expectOnScreen(tester, find.byKey(QuestionCard.cardKey), size);
+    });
+  });
+
+  group('A long answer is shown whole, not cut with "..."', () {
+    // The longest real answers in the question bank are 100 to 124 letters.
+    const longA = 'Ang imperyalismo ay patakarang pagpapalawak ng kapangyarihan, '
+        'ang kolonyalismo ay ang aktuwal na pamamahala sa isang kolonya';
+    const longB = 'Programang nagbibigay ng tulong-pinansyal sa mahihirap na '
+        'pamilya na may kondisyon sa edukasyon at kalusugan';
+
+    Widget longCard(_Calls calls, {List<String> hidden = const []}) =>
+        QuestionCard(
+          question: Question(
+            id: 'q2',
+            era: 'modern',
+            questionText: 'Ano ang pagkakaiba ng dalawa?',
+            options: const [
+              QuestionOption(label: 'A', text: longA),
+              QuestionOption(label: 'B', text: longB),
+              QuestionOption(label: 'C', text: 'Mahigit 1,000'),
+              QuestionOption(label: 'D', text: 'Wala'),
+            ],
+            correctAnswer: 'A',
+            explanation: 'Dahil dito.',
+          ),
+          secondsElapsed: 4,
+          answered: false,
+          selectedAnswer: null,
+          hiddenOptions: hidden,
+          showPowerups: true,
+          fiftyFiftyCount: 1,
+          shieldCount: 1,
+          shieldActive: false,
+          onAnswer: calls.answers.add,
+          onContinue: () {},
+          onFiftyFifty: () {},
+          onShield: () {},
+        );
+
+    for (final entry in _phones.entries) {
+      testWidgets('${entry.key}: all four, whole and tappable', (tester) async {
+        final calls = _Calls();
+        await _pump(tester, entry.value, longCard(calls));
+
+        // No "..." : the text is not limited to a number of lines.
+        for (final t in tester.widgetList<Text>(find.byType(Text))) {
+          expect(t.overflow, isNot(TextOverflow.ellipsis));
+          expect(t.maxLines, isNull);
+        }
+        expect(tester.takeException(), isNull);
+        expectOnScreen(tester, find.byKey(QuestionCard.cardKey), entry.value);
+        expectOnScreen(tester, find.textContaining('B) Programang'), entry.value);
+        expectOnScreen(tester, find.text('D) Wala'), entry.value);
+
+        await tester.tap(find.textContaining('A) Ang imperyalismo'));
+        await tester.tap(find.text('D) Wala'));
+        expect(calls.answers, ['A', 'D']);
+      });
+    }
+
+    testWidgets('a row keeps its height when 50/50 removes both of its options',
+        (tester) async {
+      final size = _phones.values.first;
+      await _pump(tester, size, longCard(_Calls()));
+      final before = tester.getSize(find.byKey(QuestionCard.cardKey)).height;
+
+      await _pump(tester, size, longCard(_Calls(), hidden: ['C', 'D']));
+      final after = tester.getSize(find.byKey(QuestionCard.cardKey)).height;
+      // The long row above stays; the short row keeps at least its minimum.
+      expect(after, greaterThanOrEqualTo(before - 1));
+    });
+  });
+
+  group('The right/wrong mark', () {
+    for (final entry in _phones.entries) {
+      testWidgets('${entry.key}: hangs on the button corner, not on its text',
+          (tester) async {
+        await _pump(tester, entry.value,
+            _card(_Calls(), answered: true, selected: 'B'));
+
+        // B is wrong and A is right; both have short text.
+        final marks = find.byType(AnswerMark);
+        expect(marks, findsNWidgets(4));
+        for (final label in ['A) Mahigit 7,000', 'B) Mahigit 500']) {
+          final text = _onScreen(tester, find.text(label));
+          final button = _onScreen(
+              tester,
+              find
+                  .ancestor(of: find.text(label), matching: find.byType(AnimatedContainer))
+                  .first);
+          // The mark for this button is the one nearest its top-right corner.
+          final corner = button.topRight;
+          final nearest = [
+            for (var i = 0; i < 4; i++) _onScreen(tester, marks.at(i)),
+          ]..sort((a, b) => (a.center - corner).distance.compareTo((b.center - corner).distance));
+          final mark = nearest.first;
+          expect(mark.center.dx, greaterThan(button.right - 20),
+              reason: 'mark should be at the button edge, not the end of the text');
+          // The text box starts a few px below the mark (its first line has some
+          // empty space above the letters), so the mark is clear of the letters.
+          expect(mark.bottom, lessThan(text.top + 4),
+              reason: 'mark should hang above the text, not sit on it');
+        }
+      });
+    }
+  });
+
+  group('Time Freeze on an ordinary question', () {
+    Widget timedCard(_Calls calls, {double? fraction}) => QuestionCard(
+          question: _question(_explanation),
+          secondsElapsed: 4,
+          answered: false,
+          selectedAnswer: null,
+          hiddenOptions: const [],
+          showPowerups: true,
+          countdownFraction: fraction,
+          countdownSeconds: 12,
+          timeFreezeCount: 2,
+          onTimeFreeze: () => calls.freezes++,
+          fiftyFiftyCount: 1,
+          shieldCount: 1,
+          shieldActive: false,
+          onAnswer: calls.answers.add,
+          onContinue: () {},
+          onFiftyFifty: () {},
+          onShield: () {},
+        );
+
+    testWidgets('a question with a countdown offers it next to 50/50 and Shield',
+        (tester) async {
+      final calls = _Calls();
+      await _pump(tester, const Size(812, 375), timedCard(calls, fraction: 0.8));
+      expect(find.text('50/50 ×1'), findsOneWidget);
+      expect(find.text('Shield ×1'), findsOneWidget);
+      expect(find.text('Time Freeze ×2'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(find.text('Time Freeze ×2'));
+      expect(calls.freezes, 1);
+    });
+
+    testWidgets('a question without a countdown has nothing to freeze',
+        (tester) async {
+      await _pump(tester, const Size(812, 375), timedCard(_Calls()));
+      expect(find.textContaining('Time Freeze'), findsNothing);
     });
   });
 

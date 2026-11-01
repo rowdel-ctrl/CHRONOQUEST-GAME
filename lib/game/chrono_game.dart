@@ -14,6 +14,7 @@ import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
+import 'answer_point_handler.dart';
 import 'components/artifact_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
@@ -24,6 +25,7 @@ import 'components/parallax_background.dart';
 import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
+import 'gate_reveal.dart';
 import 'game_spawning.dart';
 import 'kaalaman_handler.dart';
 import 'level_loader.dart';
@@ -38,8 +40,7 @@ import 'stretch_to_fill_viewport.dart';
 /// never update again, since Flame doesn't rebuild overlay widgets on its
 /// own each frame.
 ///
-class ChronoGame extends FlameGame
-    with HasCollisionDetection, ChangeNotifier {
+class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// The game renders into a fixed virtual height that Flame scales to the
   /// real device, rather than drawing in raw device pixels. Without it the
   /// same sprite was ~11% of a desktop window's height and ~22% of a
@@ -82,6 +83,9 @@ class ChronoGame extends FlameGame
   /// worldX offset by the fixed screen position they render at (see
   /// `updateCamera()` in game_camera.dart).
   double get cameraLeftEdgeX {
+    // On the gate's trip the camera is not following the player.
+    final reveal = gateRevealCameraX;
+    if (reveal != null) return reveal;
     final follow = player.worldX - GameConstants.playerX;
     final level = tiledLevel;
     if (level == null || !level.isArena) return follow;
@@ -104,8 +108,7 @@ class ChronoGame extends FlameGame
 
   /// The [Level] data for [currentLevel] within [currentEra] — `Level.index`
   /// is 1-based, matching `currentLevel` directly.
-  Level get currentLevelData =>
-      getEraById(currentEra).levels[currentLevel - 1];
+  Level get currentLevelData => getEraById(currentEra).levels[currentLevel - 1];
 
   // Game state
   late PlayerComponent player;
@@ -162,6 +165,10 @@ class ChronoGame extends FlameGame
   /// new count to the same `HeartsState` pool shown on the menu screens.
   Function()? onHeartLost;
 
+  /// Called for every coin picked up, so the wallet gets it at once and quitting or
+  /// closing the game cannot lose it.
+  void Function()? onCoinCollected;
+
   /// Attack charges (GAMEPLAY-V2.md Section 4) — a level-local resource,
   /// same shape as [hearts]: every level starts fresh at
   /// `CombatConstants.kaalamanStart`, not carried over or persisted. This
@@ -195,6 +202,16 @@ class ChronoGame extends FlameGame
   /// How many artifacts the student still has to reach.
   int get artifactsRemaining =>
       (artifactsTotal - artifactsAnswered).clamp(0, artifactsTotal);
+
+  /// The camera trip to the gate that plays when the last artifact is answered
+  /// (gate_reveal.dart). Null the rest of the time. While it is set the world
+  /// does not update, and [gateRevealCameraX] is where the camera looks from.
+  GateReveal? gateReveal;
+  double? gateRevealCameraX;
+
+  /// How far the picture is shaken, in world units; zero except while the gate
+  /// is opening (gate_reveal.dart).
+  final Vector2 cameraShake = Vector2.zero();
 
   /// True while the "you still have artifacts to find" notice is on screen.
   bool gateLockedNoticeShowing = false;
@@ -355,6 +372,12 @@ class ChronoGame extends FlameGame
 
   @override
   void updateTree(double dt) {
+    // The camera trip to the gate: the world stands still, only the trip moves.
+    final reveal = gateReveal;
+    if (reveal != null) {
+      reveal.step(dt > maxFrameDt ? maxFrameDt : dt);
+      return;
+    }
     // Always at least one call, even for a zero-length frame: Flame also
     // mounts newly added components inside updateTree.
     var remaining = dt > maxFrameDt ? maxFrameDt : dt;
@@ -374,6 +397,9 @@ class ChronoGame extends FlameGame
     // movement, not last frame's (avoids a one-frame lag).
     updateCamera();
 
+    // Nothing spawns or counts while the camera is on the gate.
+    if (gateReveal != null) return;
+
     // A boss arena starts the fight as soon as the level is up: the boss is
     // already in the room.
     if (!bossPhase && !levelEnded && (tiledLevel?.isArena ?? false)) {
@@ -384,6 +410,7 @@ class ChronoGame extends FlameGame
       updateKaalamanRegen(dt);
       updateSpawning(dt);
       checkLevelEnd();
+      checkGateEntered();
     } else if (!questionShowing) {
       // In the boss fight a student at 0 still earns a charge back slowly.
       updateKaalamanRegen(dt);
@@ -393,10 +420,12 @@ class ChronoGame extends FlameGame
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
+    if (gateReveal != null) return gateReveal!.skip();
     if (!questionShowing) player.jump();
   }
 
   void onPlayerAttack() {
+    if (gateReveal != null) return gateReveal!.skip();
     if (!questionShowing) player.attack();
   }
 
@@ -428,9 +457,14 @@ class ChronoGame extends FlameGame
   double? gateDistanceUnits() {
     if (artifactsTotal == 0 || !canPassEndGate) return null;
     for (final gate in world.children.whereType<GateComponent>()) {
-      if (!gate.isLevelExit || !gate.isBlocking) continue;
+      if (!gate.isLevelExit || gate.entered) continue;
       final playerRight = player.position.x + player.size.x;
-      final left = gate.position.x - CombatConstants.gateStandoff - playerRight;
+      // A shut gate holds the student a little short of it; an open one is
+      // walked into, so it counts to the middle of the doorway.
+      final target = gate.opened
+          ? gate.position.x + gate.size.x / 2 + player.size.x / 2
+          : gate.position.x - CombatConstants.gateStandoff;
+      final left = target - playerRight;
       return left < 0 ? 0 : left;
     }
     return null;
@@ -449,6 +483,7 @@ class ChronoGame extends FlameGame
     playerCoins++;
     score += 5;
     audioService.playCoin();
+    onCoinCollected?.call();
     notifyListeners(); // coins/score changed
   }
 
@@ -479,7 +514,9 @@ class ChronoGame extends FlameGame
   void startBossFight() {
     bossPhase = true;
     final level = tiledLevel;
-    if (level != null && level.isArena && kaalaman < CombatConstants.bossStartCharges) {
+    if (level != null &&
+        level.isArena &&
+        kaalaman < CombatConstants.bossStartCharges) {
       kaalaman = CombatConstants.bossStartCharges;
     }
     boss = BossComponent(
@@ -519,7 +556,8 @@ class ChronoGame extends FlameGame
     // same array shape it always did.
     final bestByQuestion = <String, bool>{};
     for (final a in answers) {
-      bestByQuestion[a.questionId] = (bestByQuestion[a.questionId] ?? false) || a.isCorrect;
+      bestByQuestion[a.questionId] =
+          (bestByQuestion[a.questionId] ?? false) || a.isCorrect;
     }
     var correct = bestByQuestion.values.where((ok) => ok).length;
     var total = bestByQuestion.length;

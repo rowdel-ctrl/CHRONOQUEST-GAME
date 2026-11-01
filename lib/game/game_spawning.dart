@@ -86,9 +86,8 @@ extension GameSpawning on ChronoGame {
     // touching ground still returns the player somewhere they can stand.
     player.respawnAnchorX = level.spawnX;
 
-    if (level.kaalamanStart != null) {
-      kaalaman = level.kaalamanStart!;
-    }
+    // The map's own `kaalamanStart` (1 on levels 1-2) is no longer used: every
+    // level starts with the Kaalaman bar full.
   }
 
   /// The pre-Phase-4 path: procedural ground and runtime spawners.

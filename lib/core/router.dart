@@ -1,11 +1,14 @@
 // Destination in your repo: lib/core/router.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../services/guest_mode.dart';
 import '../services/storage_service.dart';
 import 'constants.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/change_password_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
+import '../screens/auth/username_screen.dart';
+import '../screens/auth/welcome_screen.dart';
 import '../screens/home/character_selection_screen.dart';
 import '../screens/home/era_selection_screen.dart';
 import '../screens/settings/controls_screen.dart';
@@ -18,6 +21,7 @@ import '../screens/game/game_screen.dart';
 import '../screens/game/level_complete_screen.dart';
 import '../screens/game/level_failed_screen.dart';
 import '../screens/game/era_complete_screen.dart';
+import '../screens/profile/badges_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/shop/shop_screen.dart';
 import '../screens/profile/leaderboard_screen.dart';
@@ -31,7 +35,9 @@ final GoRouter appRouter = GoRouter(
   redirect: (context, state) async {
     if (DevFlags.skipAuth) return null;
 
-    final hasToken = await StorageService.hasToken();
+    // A guest has no token but is signed in for as long as the game stays open.
+    final isGuest = GuestMode.active;
+    final hasToken = await StorageService.hasToken() || isGuest;
     final isLoginRoute = state.matchedLocation == '/login';
     final isForgotRoute = state.matchedLocation == '/forgot-password';
     final isChangePwRoute = state.matchedLocation == '/change-password';
@@ -39,8 +45,10 @@ final GoRouter appRouter = GoRouter(
     // Forgetting a password happens before signing in, so it is open to everyone
     // who is signed out.
     if (!hasToken && !isLoginRoute && !isForgotRoute) return '/login';
-    if (hasToken && (isLoginRoute || isForgotRoute)) return '/character-selection';
-    if (hasToken && !isChangePwRoute) {
+    if (hasToken && (isLoginRoute || isForgotRoute)) {
+      return '/character-selection';
+    }
+    if (hasToken && !isGuest && !isChangePwRoute) {
       final student = StorageService.getStudent();
       if (student?.mustChangePassword == true) return '/change-password';
     }
@@ -68,6 +76,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/change-password',
       builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
+      path: '/welcome',
+      builder: (context, state) => const WelcomeScreen(),
+    ),
+    GoRoute(
+      path: '/your-username',
+      builder: (context, state) => const UsernameScreen(),
     ),
     GoRoute(
       path: '/character-selection',
@@ -140,6 +156,10 @@ final GoRouter appRouter = GoRouter(
         coins: state.extra is LevelCompleteResult
             ? (state.extra! as LevelCompleteResult).coins
             : 0,
+        // And the badges it earned.
+        badges: state.extra is LevelCompleteResult
+            ? (state.extra! as LevelCompleteResult).badges
+            : const [],
       ),
     ),
     GoRoute(
@@ -153,6 +173,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/badges',
+      builder: (context, state) => const BadgesScreen(),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

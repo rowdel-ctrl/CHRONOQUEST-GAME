@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/game_ui.dart';
+import '../../widgets/living_backdrop.dart' show LivingBackdrop, motionAllowed;
+import '../../widgets/pixel_icon.dart';
 import '../chrono_game.dart';
 
-/// Pause menu overlay: resume, open settings, or quit.
+/// Pause menu overlay: one big gold play button in the middle, with Settings
+/// and Umalis (leave) as small round buttons either side. Each has one word
+/// under it, so what it does is never a guess.
 ///
-/// Ituloy has the full width and Settings and Umalis share the row beneath
-/// it. Three stacked buttons made the panel as tall as a sideways phone's
-/// whole screen (about 360), so the panel stays compact instead.
+/// Keeps the panel out of the picture: the level shows dimmed behind a few
+/// slow rays, and the whole menu is about 170 high, which fits a sideways
+/// phone's short screen without scrolling.
 class PauseOverlayWidget extends StatelessWidget {
+  static const playKey = ValueKey('pause-play');
+  static const settingsKey = ValueKey('pause-settings');
+  static const quitKey = ValueKey('pause-quit');
+
   final ChronoGame game;
   final VoidCallback onQuit;
 
@@ -23,99 +30,74 @@ class PauseOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {}, // Block taps
-      child: Container(
-        color: Colors.black.withValues(alpha: 0.7),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: GamePanel(
-              color: AppColors.surface,
-              margin: const EdgeInsets.symmetric(horizontal: 40),
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ColoredBox(color: Colors.black.withValues(alpha: 0.72)),
+          const LivingBackdrop(
+            center: Offset(0.5, 0.55),
+            fireflies: 0,
+          ),
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.pause,
-                          size: 24,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'PAUSE',
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          height: 1.4,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Resume button
-                  GameButton(
-                    label: 'ITULOY',
-                    icon: Icons.play_arrow,
-                    color: AppColors.success,
-                    textColor: Colors.white,
-                    width: 280,
-                    onPressed: () {
-                      game.overlays.remove('PauseOverlay');
-                      game.resumeEngine();
-                    },
-                  ),
-                  const SizedBox(height: 12),
-
-                  SizedBox(
-                    width: 280,
-                    child: Row(
-                      children: [
-                        if (onSettings != null) ...[
-                          Expanded(
-                            child: GameButton(
-                              label: 'SETTINGS',
-                              icon: Icons.settings,
-                              color: AppColors.surfaceAlt,
-                              textColor: AppColors.textPrimary,
-                              fontSize: 8,
-                              minHeight: 48,
-                              horizontalPadding: 10,
-                              onPressed: onSettings,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                        ],
-                        Expanded(
-                          child: GameButton(
-                            label: 'UMALIS',
-                            icon: Icons.exit_to_app,
-                            color: AppColors.surfaceAlt,
-                            textColor: AppColors.danger,
-                            fontSize: 8,
-                            minHeight: 48,
-                            horizontalPadding: 10,
-                            onPressed: () => _confirmQuit(context),
-                          ),
-                        ),
+                  Text(
+                    'PAUSE',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 4,
+                      height: 1.2,
+                      color: AppColors.accent,
+                      shadows: const [
+                        Shadow(
+                            color: AppColors.primaryDark, offset: Offset(0, 3)),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (onSettings != null) ...[
+                        _PauseAction(
+                          key: settingsKey,
+                          label: 'SETTINGS',
+                          onTap: onSettings!,
+                          face: const _SmallFace(
+                              glyph: PixelGlyph.gear, color: AppColors.primary),
+                        ),
+                        const SizedBox(width: 34),
+                      ],
+                      _PauseAction(
+                        key: playKey,
+                        label: 'ITULOY',
+                        onTap: () {
+                          game.overlays.remove('PauseOverlay');
+                          game.resumeEngine();
+                        },
+                        face: const _PlayFace(),
+                        topGap: 0,
+                      ),
+                      const SizedBox(width: 34),
+                      _PauseAction(
+                        key: quitKey,
+                        label: 'UMALIS',
+                        onTap: () => _confirmQuit(context),
+                        face: const _SmallFace(
+                            glyph: PixelGlyph.door, color: Color(0xFF8F2A22)),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -174,6 +156,150 @@ class PauseOverlayWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// A round button and the one word under it. The whole column is the target, so
+/// a thumb that lands on the word still works.
+class _PauseAction extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+  final Widget face;
+  final double topGap;
+
+  const _PauseAction({
+    super.key,
+    required this.label,
+    required this.onTap,
+    required this.face,
+    this.topGap = 17,
+  });
+
+  @override
+  State<_PauseAction> createState() => _PauseActionState();
+}
+
+class _PauseActionState extends State<_PauseAction> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: widget.label,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTap: widget.onTap,
+        child: Padding(
+          padding: EdgeInsets.only(top: widget.topGap),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedScale(
+                scale: _pressed ? 0.92 : 1,
+                duration: const Duration(milliseconds: 80),
+                child: widget.face,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.label,
+                style: GoogleFonts.poppins(
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                  height: 1.2,
+                  color: const Color(0xFFCDBA94),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The big gold play button. It breathes slowly, unless the phone has animations
+/// removed.
+class _PlayFace extends StatefulWidget {
+  const _PlayFace();
+
+  @override
+  State<_PlayFace> createState() => _PlayFaceState();
+}
+
+class _PlayFaceState extends State<_PlayFace>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1800));
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (motionAllowed(context)) {
+      if (!_controller.isAnimating) _controller.repeat(reverse: true);
+    } else {
+      _controller.stop();
+      _controller.value = 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) => Transform.scale(
+        scale: 1 + 0.045 * Curves.easeInOut.transform(_controller.value),
+        child: child,
+      ),
+      child: Container(
+        width: 88,
+        height: 88,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.accent,
+          border: Border.all(color: AppColors.primaryDark, width: 4),
+          boxShadow: const [
+            BoxShadow(color: AppColors.primaryDark, offset: Offset(0, 4)),
+          ],
+        ),
+        child: const Icon(Icons.play_arrow_rounded,
+            size: 52, color: AppColors.primaryDark),
+      ),
+    );
+  }
+}
+
+class _SmallFace extends StatelessWidget {
+  final PixelGlyph glyph;
+  final Color color;
+  const _SmallFace({required this.glyph, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 54,
+      height: 54,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.primaryDark, width: 3),
+        boxShadow: const [
+          BoxShadow(color: AppColors.primaryDark, offset: Offset(0, 3)),
+        ],
+      ),
+      child: PixelIcon(glyph, size: 28, color: AppColors.accent),
     );
   }
 }

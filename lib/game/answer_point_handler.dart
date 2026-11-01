@@ -1,4 +1,5 @@
 import 'package:flame/components.dart' show Vector2;
+import '../core/combat_constants.dart';
 import '../models/codex_entry.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
@@ -7,6 +8,7 @@ import 'chrono_game.dart';
 import 'components/artifact_component.dart';
 import 'components/gate_component.dart';
 import 'components/praise_component.dart';
+import 'gate_reveal.dart';
 
 /// The question flow for artifacts, and the end gate that follows them.
 ///
@@ -27,21 +29,38 @@ extension AnswerPointHandler on ChronoGame {
     _openQuestion(question);
   }
 
-  /// Opens the end gate. It asks nothing: the student has already answered
-  /// every artifact, which is the whole requirement. If it is the level's
-  /// exit, the level completes once the crumble effect has started.
-  void passEndGate(GateComponent gate) {
-    if (gate.opened) return;
-    gate.open();
+  /// The student has reached a shut gate with every artifact answered, and has
+  /// not seen it open (normally the camera trip has already done that, the
+  /// moment the last artifact was answered). Opens it now, the same way. The
+  /// gate asks nothing: answering every artifact is the whole requirement.
+  void openEndGate(GateComponent gate) {
+    if (gate.opened || gateReveal != null) return;
+    gateReveal = GateReveal(game: this, gate: gate);
+  }
+
+  /// The student has walked into the open gate. If it is the level's exit, that
+  /// ends the level, after a short moment so the hero is seen going in.
+  /// levelComplete() is itself guarded against running twice, since reaching
+  /// the exit marker can also trigger it.
+  void enterEndGate(GateComponent gate) {
+    if (gate.entered) return;
+    gate.entered = true;
     if (gate.isLevelExit) {
-      // Deferred so the crumble starts before the completion screen takes
-      // over. levelComplete() is itself guarded against running twice, since
-      // reaching the exit marker can also trigger it.
-      Future<void>.delayed(const Duration(milliseconds: 350), () {
+      Future<void>.delayed(const Duration(milliseconds: 500), () {
         if (isMounted) levelComplete();
       });
     }
     notifyState();
+  }
+
+  /// Checks, every frame, whether the student has walked into an open gate:
+  /// their middle has reached the middle of the doorway.
+  void checkGateEntered() {
+    for (final gate in world.children.whereType<GateComponent>()) {
+      if (!gate.opened || gate.entered) continue;
+      final middle = player.position.x + player.size.x / 2;
+      if (middle >= gate.position.x + gate.size.x / 2) enterEndGate(gate);
+    }
   }
 
   void _openQuestion(Question question) {
@@ -80,9 +99,12 @@ extension AnswerPointHandler on ChronoGame {
     // gate requires engagement, not perfection (see `artifactsAnswered`). Its
     // own flag, not `attempted`: a Shield absorbs a wrong answer without
     // setting `attempted`, which would have counted the same artifact twice.
+    var lastArtifactAnswered = false;
     if (artifact != null && !artifact.counted) {
       artifact.counted = true;
       artifactsAnswered++;
+      lastArtifactAnswered =
+          artifactsTotal > 0 && artifactsAnswered == artifactsTotal;
     }
 
     if (isCorrect) {
@@ -92,7 +114,8 @@ extension AnswerPointHandler on ChronoGame {
       // "WOW!" over the hero's head. Skipped when there is no hero on screen
       // (a bare game in a test).
       if (player.isMounted) {
-        player.add(PraiseComponent()..position = Vector2(player.size.x / 2, -4));
+        player
+            .add(PraiseComponent()..position = Vector2(player.size.x / 2, -4));
       }
 
       if (artifact != null) {
@@ -120,8 +143,24 @@ extension AnswerPointHandler on ChronoGame {
     overlays.remove('QuestionOverlay');
     questionShowing = false;
     // The last heart failed the level, which has already stopped the game.
-    if (!levelFailed) resumeEngine();
+    if (!levelFailed) {
+      if (lastArtifactAnswered) _startGateReveal();
+      resumeEngine();
+    }
     notifyState();
+  }
+
+  /// The last artifact is answered: show the end gate opening, then go back to
+  /// the student (gate_reveal.dart). Nothing happens when the level has no end
+  /// gate to show.
+  void _startGateReveal() {
+    if (levelEnded || gateReveal != null) return;
+    for (final gate in world.children.whereType<GateComponent>()) {
+      if (gate.isLevelExit && gate.isBlocking) {
+        openEndGate(gate);
+        return;
+      }
+    }
   }
 
   void _recordCodexEntry(ArtifactComponent artifact, Question question) {
@@ -140,11 +179,10 @@ extension AnswerPointHandler on ChronoGame {
     );
   }
 
-  /// Adds [amount] charges. Uncapped: a level only holds a fixed number of
-  /// artifacts, so supply is bounded by content, and a cap would only punish
-  /// students who answer the most.
+  /// Adds [amount] charges, up to the full bar (what the HUD shows is what there is).
   void grantCharges(int amount) {
-    kaalaman += amount;
+    kaalaman =
+        (kaalaman + amount).clamp(0, CombatConstants.kaalamanDisplayMax);
     notifyState();
   }
 }
