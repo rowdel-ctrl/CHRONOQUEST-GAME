@@ -17,7 +17,7 @@ class BadgeStep {
 }
 
 /// A badge and its levels. Most come in three (Tanso, Pilak, Ginto); an era, a
-/// trophy and the two single badges have one. The 16 families make 28 badges.
+/// trophy and the two single badges have one. The 20 families make 40 badges.
 class BadgeFamily {
   final String id;
   final String name;
@@ -95,7 +95,7 @@ BadgeStep _one(String id, int need, int coins,
 Iterable<EraData> _erasOfGrade(int grade) =>
     allEras.where((e) => e.grade == grade);
 
-/// The 16 families, in shelf order.
+/// The 20 families, in shelf order.
 final List<BadgeFamily> badgeFamilies = [
   // HUSAY: doing well in a level.
   BadgeFamily(
@@ -128,6 +128,26 @@ final List<BadgeFamily> badgeFamilies = [
     keep: true,
     steps: _three('comeback', const [1, 5, 15]),
   ),
+  BadgeFamily(
+    id: 'streak',
+    name: 'Sunod-sunod',
+    rule: 'Pinakamaraming tamang sagot nang sunod-sunod.',
+    group: BadgeGroup.husay,
+    glyph: 'bolt',
+    unit: 'sagot',
+    keep: false,
+    steps: _three('streak', const [5, 10, 22]),
+  ),
+  BadgeFamily(
+    id: 'nohelp',
+    name: 'Walang Tulong',
+    rule: 'Tapusin ang level nang walang ginamit na power-up.',
+    group: BadgeGroup.husay,
+    glyph: 'cross',
+    unit: 'level',
+    keep: false,
+    steps: _three('nohelp', const [1, 5, 15]),
+  ),
   // PAGLALAKBAY: the journey.
   for (final era in allEras)
     BadgeFamily(
@@ -155,6 +175,16 @@ final List<BadgeFamily> badgeFamilies = [
       keep: true,
       steps: [_one('champ:$grade', _erasOfGrade(grade).length, 60)],
     ),
+  BadgeFamily(
+    id: 'highroad',
+    name: 'Mataas na Daan',
+    rule: 'Kunin ang lahat ng barya sa matataas na platform ng isang level.',
+    group: BadgeGroup.paglalakbay,
+    glyph: 'peak',
+    unit: 'level',
+    keep: false,
+    steps: _three('highroad', const [1, 5, 15]),
+  ),
   // KODEKS AT SIPAG: collecting, coming back, and a few firsts.
   BadgeFamily(
     id: 'collector',
@@ -187,6 +217,16 @@ final List<BadgeFamily> badgeFamilies = [
     steps: _three('nodamage', const [1, 5, 15]),
   ),
   BadgeFamily(
+    id: 'nofall',
+    name: 'Walang Hulog',
+    rule: 'Tapusin ang level nang hindi nahuhulog sa ilog.',
+    group: BadgeGroup.kodeks,
+    glyph: 'drop',
+    unit: 'level',
+    keep: false,
+    steps: _three('nofall', const [1, 5, 15]),
+  ),
+  BadgeFamily(
     id: 'firstbuy',
     name: 'Unang Bili',
     rule: 'Bumili sa Tindahan sa unang pagkakataon.',
@@ -206,7 +246,7 @@ final List<BadgeFamily> badgeFamilies = [
   ),
 ];
 
-/// Every badge, 28 of them, family by family.
+/// Every badge, 40 of them, family by family.
 final List<BadgeStep> allBadgeSteps = [
   for (final f in badgeFamilies) ...f.steps,
 ];

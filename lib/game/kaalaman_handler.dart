@@ -1,4 +1,5 @@
 import '../core/combat_constants.dart';
+import 'answer_point_handler.dart';
 import 'chrono_game.dart';
 
 /// Kaalaman (attack charge) grant/spend for [ChronoGame]. Split out as an
@@ -20,11 +21,12 @@ extension KaalamanHandler on ChronoGame {
     return true;
   }
 
-  /// Slowly restores charges up to [CombatConstants.kaalamanRegenFloor]
-  /// while the player is below it. The timer resets whenever the player is
-  /// at or above the floor, so spending down to 0 always starts a full wait.
+  /// Restores one charge every [CombatConstants.kaalamanRegenSeconds] whenever the
+  /// bar is below full (2026-11-02; it used to refill only a student at 0, and
+  /// only to 1). The timer is idle while the bar is full, so spending the first
+  /// charge from a full bar starts a full wait.
   void updateKaalamanRegen(double dt) {
-    if (kaalaman >= CombatConstants.kaalamanRegenFloor) {
+    if (kaalaman >= CombatConstants.kaalamanDisplayMax) {
       kaalamanRegenTimer = 0;
       return;
     }
@@ -36,4 +38,11 @@ extension KaalamanHandler on ChronoGame {
     }
   }
 
+  /// An answer was given (an artifact's or the boss's). Keeps the streak, and every
+  /// third right answer in a row gives one extra charge. Returns true when it did.
+  bool noteAnswer({required bool correct}) {
+    final bonus = stats.answered(correct);
+    if (bonus) grantCharges(CombatConstants.streakBonusCharges);
+    return bonus;
+  }
 }

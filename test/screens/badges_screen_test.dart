@@ -73,10 +73,10 @@ void main() {
   // A student of their own each time, so what one test saves is not seen by the next.
   setUp(() => _badges = MemoryBadges()..load('student'));
 
-  testWidgets('a new student sees every badge dark, 0 of 28', (tester) async {
+  testWidgets('a new student sees every badge dark, 0 of 40', (tester) async {
     await _open(tester);
     expect(find.text('MGA BADGE'), findsOneWidget);
-    expect(find.text('0/28'), findsOneWidget);
+    expect(find.text('0/40'), findsOneWidget);
     expect(find.text('HUSAY'), findsOneWidget);
     expect(find.text('PAGLALAKBAY'), findsOneWidget);
     expect(find.text('KODEKS AT SIPAG'), findsOneWidget);
@@ -90,7 +90,7 @@ void main() {
   testWidgets('what is earned shows how far the next level is', (tester) async {
     _firstPerfectLevel();
     await _open(tester);
-    expect(find.text('3/28'), findsOneWidget);
+    expect(find.text('3/40'), findsOneWidget);
     // Perpekto! is at Tanso (1 of 1); Pilak needs 5.
     expect(find.descendant(of: find.byKey(BadgesScreen.tileKey('perfect')), matching: find.text('1/5 level')),
         findsOneWidget);

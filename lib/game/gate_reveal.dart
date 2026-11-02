@@ -99,7 +99,7 @@ class GateReveal {
     }
     if (!_soundPlayed && _elapsed >= _openStart) {
       _soundPlayed = true;
-      game.audioService.playPowerup();
+      game.audioService.playGateRumble();
     }
     gate.doorOpen = doorAt(_elapsed);
     final shake = shakeAt(_elapsed);

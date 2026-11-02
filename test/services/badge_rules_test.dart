@@ -1,4 +1,4 @@
-// The rules of the badges: 28 of them, earned by learning, never counted twice.
+// The rules of the badges: 40 of them, earned by learning, never counted twice.
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/badge_defs.dart';
 import 'package:chronoquest/models/badge_facts.dart';
@@ -15,6 +15,11 @@ BadgeFacts _level(
   int healthLost = 1,
   bool anyWrong = true,
   String day = '2026-10-30',
+  int falls = 1,
+  int highCoinsTotal = 0,
+  int highCoinsTaken = 0,
+  int bestStreak = 0,
+  int powerUpsUsed = 1,
 }) =>
     BadgeRules.applyLevel(f,
         eraId: era,
@@ -23,7 +28,12 @@ BadgeFacts _level(
         total: total,
         healthLost: healthLost,
         anyWrong: anyWrong,
-        day: day);
+        day: day,
+        falls: falls,
+        highCoinsTotal: highCoinsTotal,
+        highCoinsTaken: highCoinsTaken,
+        bestStreak: bestStreak,
+        powerUpsUsed: powerUpsUsed);
 
 List<String> _ids(List<EarnedBadge> b) => [for (final e in b) e.id];
 
@@ -43,18 +53,18 @@ QuizResult _result(String era, int level, int percent,
 
 void main() {
   group('the list of badges', () {
-    test('there are 28 in 16 families, each id used once', () {
-      expect(badgeFamilies, hasLength(16));
-      expect(allBadgeSteps, hasLength(28));
-      expect({for (final s in allBadgeSteps) s.id}, hasLength(28));
+    test('there are 40 in 20 families, each id used once', () {
+      expect(badgeFamilies, hasLength(20));
+      expect(allBadgeSteps, hasLength(40));
+      expect({for (final s in allBadgeSteps) s.id}, hasLength(40));
     });
 
-    test('the coin gifts add up to 535', () {
-      expect(allBadgeSteps.fold<int>(0, (sum, s) => sum + s.coins), 535);
+    test('the coin gifts add up to 675', () {
+      expect(allBadgeSteps.fold<int>(0, (sum, s) => sum + s.coins), 675);
     });
 
-    test('three tiers each for six families, one level for ten', () {
-      expect(badgeFamilies.where((f) => f.tiered), hasLength(6));
+    test('three tiers each for ten families, one level for ten', () {
+      expect(badgeFamilies.where((f) => f.tiered), hasLength(10));
       expect(badgeFamilies.where((f) => !f.tiered), hasLength(10));
       final perfect = badgeFamilies.firstWhere((f) => f.id == 'perfect');
       expect([for (final s in perfect.steps) s.need], [1, 5, 15]);
@@ -63,10 +73,10 @@ void main() {
           [BadgeMetal.tanso, BadgeMetal.pilak, BadgeMetal.ginto]);
     });
 
-    test('17 can be worked out again from the server, 11 are this phone only', () {
+    test('17 can be worked out again from the server, 23 are this phone only', () {
       final keep = badgeFamilies.where((f) => f.keep).fold<int>(0, (n, f) => n + f.steps.length);
       expect(keep, 17);
-      expect(allBadgeSteps.length - keep, 11);
+      expect(allBadgeSteps.length - keep, 23);
     });
 
     test('an era badge is named for its era, a champion for its three eras', () {
@@ -105,6 +115,45 @@ void main() {
       var f = _level(const BadgeFacts(), 'spanish', 1, healthLost: 0);
       f = _level(f, 'spanish', 2, healthLost: 2);
       expect(f.noDamage, {'spanish:1'});
+    });
+
+    test('Walang Hulog: a level with no fall into a river, once per level', () {
+      var f = _level(const BadgeFacts(), 'spanish', 1, falls: 0);
+      f = _level(f, 'spanish', 2, falls: 2);
+      f = _level(f, 'spanish', 1, falls: 0);
+      expect(f.noFall, {'spanish:1'});
+      expect(_ids(BadgeRules.newlyEarned(f, codexTotal: 0)), contains('nofall:1'));
+    });
+
+    test('Mataas na Daan: only when every coin on the high platforms was taken', () {
+      var f = _level(const BadgeFacts(), 'spanish', 1, highCoinsTotal: 5, highCoinsTaken: 5);
+      f = _level(f, 'spanish', 2, highCoinsTotal: 5, highCoinsTaken: 4);
+      f = _level(f, 'spanish', 3, highCoinsTotal: 0, highCoinsTaken: 0);
+      expect(f.highRoad, {'spanish:1'}, reason: 'a level with no high coins cannot earn it');
+    });
+
+    test('Sunod-sunod keeps the best run ever, and never lowers it', () {
+      var f = _level(const BadgeFacts(), 'spanish', 1, bestStreak: 7);
+      f = _level(f, 'spanish', 2, bestStreak: 4);
+      expect(f.bestStreak, 7);
+      expect(_ids(BadgeRules.newlyEarned(f, codexTotal: 0)), contains('streak:1'));
+      expect(_ids(BadgeRules.newlyEarned(f, codexTotal: 0)), isNot(contains('streak:2')));
+      f = _level(f, 'spanish', 3, bestStreak: 22);
+      expect(_ids(BadgeRules.newlyEarned(f, codexTotal: 0)), containsAll(['streak:2', 'streak:3']));
+    });
+
+    test('Walang Tulong: a level with no power-up used', () {
+      var f = _level(const BadgeFacts(), 'spanish', 1, powerUpsUsed: 0);
+      f = _level(f, 'spanish', 2, powerUpsUsed: 1);
+      expect(f.noHelp, {'spanish:1'});
+    });
+
+    test('a level that does not say what happened earns none of the new ones', () {
+      final f = _level(const BadgeFacts(), 'spanish', 1);
+      expect(f.noFall, isEmpty);
+      expect(f.highRoad, isEmpty);
+      expect(f.noHelp, isEmpty);
+      expect(f.bestStreak, 0);
     });
 
     test('a replay never counts a level twice', () {

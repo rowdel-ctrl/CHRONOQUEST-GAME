@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
@@ -12,6 +13,7 @@ import 'attack_hitbox_component.dart';
 import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'gate_component.dart';
+import 'heart_pickup_component.dart';
 
 /// Player character — `position.x` is the player's real world x-position,
 /// `worldX`. Horizontal movement is driven by the on-screen joystick
@@ -52,6 +54,12 @@ class PlayerComponent extends SpriteAnimationComponent
 
   double velocityY = 0.0;
   bool isOnGround = false;
+
+  /// Seconds between footsteps while walking, and how fast the student has to be
+  /// falling for the landing to thud.
+  static const double _stepSeconds = 0.3;
+  static const double _thudSpeed = 220;
+  double _stepTimer = 0;
   bool isHurt = false;
 
   /// Which way the character is drawn facing, toggled whenever the
@@ -202,6 +210,16 @@ class PlayerComponent extends SpriteAnimationComponent
     if (horizontalInput != 0) {
       position.x += forwardSpeed * horizontalInput * dt;
       facingRight = horizontalInput > 0;
+      // A footstep every so often while walking on the ground.
+      if (isOnGround) {
+        _stepTimer -= dt;
+        if (_stepTimer <= 0) {
+          _stepTimer = _stepSeconds;
+          game.audioService.playStep();
+        }
+      }
+    } else {
+      _stepTimer = 0; // the first step sounds as soon as the walk starts
     }
 
     // Knockback from contact damage: a steady shove away from the enemy for
@@ -261,7 +279,13 @@ class PlayerComponent extends SpriteAnimationComponent
       position.y += velocityY * dt;
     }
 
+    final fallSpeed = velocityY;
     final onGround = resolveGroundContact();
+
+    // A thud for a real landing, not for stepping down off a kerb.
+    if (onGround && !isOnGround && fallSpeed > _thudSpeed) {
+      game.audioService.playLand();
+    }
 
     // Landed after a jump — swap back from the jump pose to the running
     // animation. Without this, the player stayed frozen in the jump frame
@@ -305,12 +329,26 @@ class PlayerComponent extends SpriteAnimationComponent
     }
   }
 
+  final Paint _bubbleFill = Paint()..color = const Color(0x337FD3FF);
+  final Paint _bubbleEdge = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 3
+    ..color = const Color(0xCC9FE0FF);
+
+  /// The Shield's bubble around the student, for as long as it is up.
+  void _drawBubble(Canvas canvas) {
+    final rect = Rect.fromLTWH(-6, -6, size.x + 12, size.y + 12);
+    canvas.drawOval(rect, _bubbleFill);
+    canvas.drawOval(rect, _bubbleEdge);
+  }
+
   @override
   void render(Canvas canvas) {
     if (!_flashVisible) return;
 
     if (facingRight) {
       super.render(canvas);
+      if (game.shieldActive) _drawBubble(canvas);
       return;
     }
     // Mirror the drawn sprite within its own bounding box: translate to the
@@ -323,6 +361,7 @@ class PlayerComponent extends SpriteAnimationComponent
     canvas.scale(-1, 1);
     super.render(canvas);
     canvas.restore();
+    if (game.shieldActive) _drawBubble(canvas);
   }
 
   void jump() {
@@ -403,7 +442,12 @@ class PlayerComponent extends SpriteAnimationComponent
   /// respawning on the lip with the joystick still held walked them straight
   /// back off, one heart per second, until the level failed. Backing up
   /// (never past the start of that ground) gives them time to jump.
-  static const double respawnRunway = 300;
+  ///
+  /// 300 until 2026-11-02, when a fall became "soft": the student comes back close to
+  /// the edge they fell from (200 behind it is a run-up for the jump),
+  /// safe from enemies for [CombatConstants.invincibilityDuration], and never behind
+  /// the halfway flag once that is passed.
+  static const double respawnRunway = 200;
 
   void respawn() {
     final centre = respawnAnchorX + size.x / 2;
@@ -415,6 +459,14 @@ class PlayerComponent extends SpriteAnimationComponent
       if (centre >= section.position.x &&
           centre <= section.position.x + section.size.x) {
         if (x < section.position.x) x = section.position.x;
+        // Once the halfway flag has been passed, a fall in that block never
+        // puts the student back behind it.
+        final flag = game.stats.checkpointX;
+        if (flag != null &&
+            x < flag &&
+            flag <= section.position.x + section.size.x) {
+          x = flag;
+        }
         surfaceY = section.position.y;
         break;
       }
@@ -423,6 +475,9 @@ class PlayerComponent extends SpriteAnimationComponent
     position.y = surfaceY - size.y;
     velocityY = 0;
     isOnGround = true;
+    // A moment to find their feet: flashing, and no enemy can hurt them.
+    _invincibleUntil = DateTime.now().add(Duration(
+        milliseconds: (CombatConstants.invincibilityDuration * 1000).round()));
     // A respawn cancels any in-flight knockback — otherwise the shove that
     // pushed the player into the gap keeps pushing once they are back.
     _knockbackVelocityX = 0;
@@ -454,6 +509,48 @@ class PlayerComponent extends SpriteAnimationComponent
     }
   }
 
+  /// A hit that is not an enemy touching the student (the boss's shockwave): the
+  /// same damage, shove and safe moment, the same Shield.
+  void takeHazardHit({required int knockbackDirection}) =>
+      _takeContactDamage(knockbackDirection: knockbackDirection);
+
+  /// Whether the drawn body (as [_hurtBy] measures it) overlaps a box: used by
+  /// hazards that are not enemies.
+  bool bodyOverlaps(double left, double top, double right, double bottom) {
+    final hurtWidth = size.x * CombatConstants.playerHurtWidthFraction;
+    final hurtLeft = position.x + (size.x - hurtWidth) / 2;
+    final hurtBottom =
+        position.y + size.y - CombatConstants.playerHurtFeetGrace;
+    return hurtLeft < right &&
+        hurtLeft + hurtWidth > left &&
+        position.y < bottom &&
+        hurtBottom > top;
+  }
+
+  /// The ring that bursts where the Shield's bubble was.
+  void _popShield() {
+    game.audioService.playShieldPop();
+    final ring = CircleComponent(
+      radius: 40,
+      anchor: Anchor.center,
+      position: position + size / 2,
+      priority: 14,
+      paint: Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4
+        ..color = const Color(0xFF7FD3FF),
+    );
+    ring.add(ScaleEffect.to(
+      Vector2.all(2.2),
+      EffectController(duration: 0.3, curve: Curves.easeOut),
+    ));
+    ring.add(OpacityEffect.fadeOut(
+      EffectController(duration: 0.3),
+      onComplete: ring.removeFromParent,
+    ));
+    game.world.add(ring);
+  }
+
   /// Whether the part of the player that can be hurt overlaps the part of [enemy] that hurts.
   bool _hurtBy(EnemyComponent enemy) {
     final hurtWidth = size.x * CombatConstants.playerHurtWidthFraction;
@@ -480,8 +577,9 @@ class PlayerComponent extends SpriteAnimationComponent
 
     if (other is CoinComponent && !other.collected) {
       other.collect();
-      game.collectCoin();
+      game.collectCoin(onHighPlatform: other.onHighPlatform);
     }
+    if (other is HeartPickupComponent) other.collect();
     if (other is ArtifactComponent && other.isInteractable) {
       // Walk into it and the question opens (GAMEPLAY-V2.md Section 6).
       // No damage, ever — an artifact is an opportunity, not a hazard.
@@ -535,7 +633,15 @@ class PlayerComponent extends SpriteAnimationComponent
   void _takeContactDamage({required int knockbackDirection}) {
     if (invincible) return;
 
-    game.loseLife();
+    // A Shield turns one hit away as well as one wrong answer (2026-11-02): no
+    // heart is lost, the bubble pops, and the usual shove and safe moment follow.
+    if (game.shieldActive) {
+      game.shieldActive = false;
+      _popShield();
+      game.notifyState();
+    } else {
+      game.loseLife();
+    }
     _knockbackVelocityX = CombatConstants.knockbackForce * knockbackDirection;
     _knockbackRemaining = CombatConstants.knockbackDuration;
     _invincibleUntil = DateTime.now().add(

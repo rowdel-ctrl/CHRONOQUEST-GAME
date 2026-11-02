@@ -1,7 +1,10 @@
+import 'package:flame/components.dart' show Vector2;
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import 'chrono_game.dart';
 import 'components/boss_component.dart';
+import 'components/praise_component.dart';
+import 'kaalaman_handler.dart';
 
 /// Question flow for [ChronoGame]: showing a question and resolving the
 /// player's answer. Split out of chrono_game.dart to keep that file within
@@ -32,9 +35,17 @@ extension QuizHandler on ChronoGame {
       timeTaken: currentQuestion!.elapsedSeconds,
     ));
 
+    // The streak counts boss answers too, the wrong ones ending it.
+    final streakBonus = noteAnswer(correct: isCorrect);
+
     if (isCorrect) {
       overlays.remove('QuestionOverlay');
       player.triggerCheer();
+      if (streakBonus) audioService.playStreak();
+      if (streakBonus && player.isMounted) {
+        player.add(PraiseComponent(word: '+1 KAALAMAN!')
+          ..position = Vector2(player.size.x / 2, -4));
+      }
       score += 10;
       // Speed bonus
       if (currentQuestion!.elapsedSeconds < 10) {

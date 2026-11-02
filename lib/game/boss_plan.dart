@@ -20,6 +20,48 @@ class BossPlan {
   /// A wave of minions comes after every this many questions.
   static const int questionsPerWave = 2;
 
+  /// From phase 2 the boss also attacks with each wave: it flashes for this long
+  /// (the warning) and sends a shockwave along the floor. Phase 2 sends one, phase 3
+  /// two, the second after the shorter warning.
+  static const double telegraphSeconds = 1.0;
+  static const double secondTelegraphSeconds = 0.6;
+
+  /// Before each question the boss glows gold and the screen says which one is coming,
+  /// for this long, so a question never just appears.
+  static const double leadInSeconds = 0.9;
+
+  /// In an arena the question waits on a scroll that appears at least this far from the
+  /// student, who has to walk to it.
+  static const double scrollMinDistance = 450;
+
+  /// A scroll is kept this far from a minion, if there is a spot that allows it.
+  static const double scrollMinionGap = 250;
+
+  /// A new wave is not sent while this many minions are still alive.
+  static const int maxLiveMinions = 6;
+
+  /// "Tanong 7 ng 22": the question about to be asked, counting the ones already right.
+  static String questionTag(int solved, int total) => 'Tanong ${solved + 1} ng $total';
+
+  /// Where the scroll appears: a spot at least [scrollMinDistance] from the student (x) and,
+  /// when possible, at least [scrollMinionGap] from every minion. With no such spot the
+  /// farthest one. Null when the arena has no spots.
+  static ({double x, double y})? scrollSpot(
+    List<({double x, double y})> spots,
+    double playerX,
+    List<double> minionXs,
+    Random random,
+  ) {
+    if (spots.isEmpty) return null;
+    final far = spots.where((s) => (s.x - playerX).abs() >= scrollMinDistance).toList();
+    if (far.isEmpty) {
+      return ([...spots]..sort((a, b) => (b.x - playerX).abs().compareTo((a.x - playerX).abs()))).first;
+    }
+    final clear = far.where((s) => minionXs.every((m) => (m - s.x).abs() >= scrollMinionGap)).toList();
+    final pool = clear.isEmpty ? far : clear;
+    return pool[random.nextInt(pool.length)];
+  }
+
   /// How [total] questions split over the three phases: 10, 6 and 6 of 22 (the lesson's own
   /// questions, then the review in two halves), and in the same proportion for any other size.
   static List<int> phaseSizes(int total) {

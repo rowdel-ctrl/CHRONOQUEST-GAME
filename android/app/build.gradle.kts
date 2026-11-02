@@ -29,6 +29,12 @@ fun gitCommitCount(): Int {
 // project argument gives the app its own id, name and version suffix.
 val testBuild = project.findProperty("testBuild")?.toString() == "true"
 
+// A third build, for trying the new top-down gameplay on a phone: its own app id and
+// name, so it sits next to the student and tester apps with its own saved data and can
+// never touch a real student's progress. Make it with
+//     flutter build apk --release --dart-define=NEW_GAMEPLAY=true --android-project-arg=questBuild=true
+val questBuild = project.findProperty("questBuild")?.toString() == "true"
+
 android {
     namespace = "com.chronoquest.chronoquest"
     compileSdk = 36
@@ -40,15 +46,21 @@ android {
     }
 
     defaultConfig {
-        applicationId = if (testBuild) "com.chronoquest.chronoquest.test" else "com.chronoquest.chronoquest"
+        applicationId = when {
+            questBuild -> "com.chronoquest.chronoquest.quest"
+            testBuild -> "com.chronoquest.chronoquest.test"
+            else -> "com.chronoquest.chronoquest"
+        }
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         // The 1.5.0 split (arm64-only) build went out as 2086 (2000 for arm64 plus
         // 86 commits). A build for all chips has no such 2000, so it would look like a
         // downgrade; the 2100 keeps every build above that.
-        versionCode = 2100 + gitCommitCount()
-        versionName = "${flutter.versionName}${if (testBuild) "-test" else ""}"
-        manifestPlaceholders["appLabel"] = if (testBuild) "ChronoQuest TEST" else "chronoquest"
+        // Nothing is committed between some builds, so the commit count alone repeats.
+        // Pass --android-project-arg=codeBump=1 (2, 3 ...) to keep the code above the last build.
+        versionCode = 2100 + gitCommitCount() + (project.findProperty("codeBump")?.toString()?.toIntOrNull() ?: 0)
+        versionName = "${flutter.versionName}${if (questBuild) "-quest" else if (testBuild) "-test" else ""}"
+        manifestPlaceholders["appLabel"] = if (questBuild) "ChronoQuest NEW" else if (testBuild) "ChronoQuest TEST" else "chronoquest"
     }
 
     buildTypes {

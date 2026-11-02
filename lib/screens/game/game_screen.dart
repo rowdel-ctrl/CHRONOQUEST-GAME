@@ -82,6 +82,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // picked up, so a level left from the pause menu, or a closed app, loses none.
     game.onCoinCollected = () => _hearts.addCoins(1);
 
+    // A heart found in the level goes back into the same pool.
+    game.onHeartGained = _hearts.gainHeart;
+
     // Hearts stop regenerating while the level is on screen. Deferred a frame:
     // changing a provider is not allowed while the widget tree is building.
     Future<void>.microtask(_hearts.enterLevel);
@@ -100,6 +103,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // Award powerup at milestones
       ref.read(gameProvider.notifier).awardPowerUp(widget.level);
 
+      // The new rules' gifts: a boss beaten gives one of each power-up, and a level
+      // with no wrong answer gives one at random.
+      final isBoss = widget.level == getEraById(widget.eraId).levels.length;
+      final List<PowerUpKind> freeUps = isBoss
+          ? _hearts.grantAllPowerUps()
+          : (answers.isNotEmpty && answers.every((a) => a.isCorrect))
+              ? [_hearts.grantRandomPowerUp()]
+              : const [];
+
       // Navigate, carrying the attempt's real result so the completion
       // screen reports what the player actually scored.
       final result = LevelCompleteResult(
@@ -107,6 +119,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         correct: correct,
         total: total,
         coins: game.playerCoins,
+        powerUps: freeUps,
         // What this attempt earned in badges, with the coin gift already paid.
         badges: _badges.recordLevel(
           eraId: widget.eraId,
@@ -115,6 +128,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           total: total,
           healthLost: _heartsLost,
           anyWrong: answers.any((a) => !a.isCorrect),
+          falls: game.stats.falls,
+          highCoinsTotal: game.stats.highCoinsTotal,
+          highCoinsTaken: game.stats.highCoinsTaken,
+          bestStreak: game.stats.bestStreak,
+          powerUpsUsed: game.stats.powerUpsUsed,
         ),
       );
       if (widget.level == getEraById(widget.eraId).levels.length) {

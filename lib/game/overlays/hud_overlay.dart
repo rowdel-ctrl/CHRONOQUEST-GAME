@@ -104,7 +104,9 @@ class BossHealthOverlayWidget extends StatelessWidget {
         // Low on the screen it covered the boss's head and the student.
         final screenWidth = MediaQuery.sizeOf(context).width;
         final barWidth = (screenWidth - 2 * 215).clamp(200.0, 520.0);
-        return Positioned(
+        return Positioned.fill(child: IgnorePointer(child: Stack(children: [
+          if (boss.scrollSide != 0) _scrollArrow(boss.scrollSide),
+          Positioned(
           top: 10,
           left: 40,
           right: 40,
@@ -131,19 +133,51 @@ class BossHealthOverlayWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                boss.banner ?? _getBossDialogue(game.currentEra),
+                boss.banner ?? boss.askTag ?? _getBossDialogue(game.currentEra),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  color: boss.banner != null ? Colors.orangeAccent : Colors.yellowAccent,
-                  fontSize: boss.banner != null ? 20 : 15,
+                  color: boss.banner != null || boss.askTag != null ? Colors.orangeAccent : Colors.yellowAccent,
+                  fontSize: boss.banner != null ? 20 : (boss.askTag != null ? 17 : 15),
                   fontWeight: FontWeight.bold,
                   shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
                 ),
               ),
             ],
           ),
-        );
+          ),
+        ])));
       },
+    );
+  }
+
+  /// Points at the scroll while it is off screen: [side] is -1 for left, 1 for right.
+  Widget _scrollArrow(int side) {
+    return Positioned(
+      top: 0,
+      bottom: 0,
+      left: side < 0 ? 10 : null,
+      right: side > 0 ? 10 : null,
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: Colors.amber, width: 2),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (side < 0) const Icon(Icons.arrow_back_ios_new, color: Colors.amber, size: 22),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(Icons.menu_book, color: Colors.amber, size: 22),
+              ),
+              if (side > 0) const Icon(Icons.arrow_forward_ios, color: Colors.amber, size: 22),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

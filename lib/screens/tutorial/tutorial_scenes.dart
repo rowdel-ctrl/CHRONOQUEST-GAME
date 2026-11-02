@@ -1326,7 +1326,7 @@ class ShopScene extends StatelessWidget {
     ),
     (
       'SHIELD',
-      'Salo ng 1 mali',
+      'Salo ng 1 mali o hit',
       25,
       Color(0xFF4F8FE6),
       'assets/powerups/shield.png'

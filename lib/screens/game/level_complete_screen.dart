@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/badge_defs.dart';
+import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/living_backdrop.dart';
 import '../../widgets/new_badge.dart';
@@ -26,12 +27,17 @@ class LevelCompleteResult {
   /// are announced on the next screen.
   final List<EarnedBadge> badges;
 
+  /// The free power-ups this attempt gave (one at random for a level with no wrong
+  /// answer, one of each for a boss), already in the wallet.
+  final List<PowerUpKind> powerUps;
+
   const LevelCompleteResult({
     required this.score,
     required this.correct,
     required this.total,
     this.coins = 0,
     this.badges = const [],
+    this.powerUps = const [],
   });
 
   /// Used when this screen is reached without a result payload — a deep link
@@ -50,6 +56,7 @@ class LevelCompleteScreen extends StatefulWidget {
   static const Key pointsKey = Key('level_complete_points');
   static const Key coinsKey = Key('level_complete_coins');
   static const Key giftKey = Key('level_complete_gift');
+  static const Key freeKey = Key('level_complete_free');
   static const Key goKey = Key('level_complete_go');
   static const Key backdropKey = Key('level_complete_backdrop');
 
@@ -199,6 +206,26 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
         ],
         const SizedBox(height: 6),
         _earned(),
+        if (widget.result.powerUps.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Row(
+            key: LevelCompleteScreen.freeKey,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.card_giftcard,
+                  color: AppColors.accent, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                'Libre: ${widget.result.powerUps.map(powerUpTitle).join(', ')}',
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.surface,
+                ),
+              ),
+            ],
+          ),
+        ],
         if (widget.level == 3 || widget.level == 7) ...[
           const SizedBox(height: 8),
           Row(

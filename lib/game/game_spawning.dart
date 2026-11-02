@@ -65,12 +65,14 @@ extension GameSpawning on ChronoGame {
 
   /// Instantiates an authored level and points the player at its spawn.
   void _buildTiledLevel(LoadedLevel level) {
-    LevelBuilder.build(
+    final extras = LevelBuilder.build(
       level: level,
       world: world,
       groundY: groundY,
       eraId: currentEra,
+      levelNo: currentLevel,
     );
+    stats.highCoinsTotal = extras.highCoinCount;
 
     tiledLevel = level;
     artifactsTotal = level.entities.where((e) => e.type == 'artifact').length;

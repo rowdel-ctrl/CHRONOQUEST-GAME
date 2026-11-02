@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/constants.dart';
+import '../services/audio_service.dart';
 
 /// Shared retro pixel-art UI kit. Every screen builds panels, buttons, and
 /// bars from these instead of raw Material widgets, so the whole app reads
@@ -111,7 +112,12 @@ class _GameButtonState extends State<GameButton> {
       onTapDown: disabled ? null : (_) => setState(() => _pressed = true),
       onTapUp: disabled ? null : (_) => setState(() => _pressed = false),
       onTapCancel: disabled ? null : () => setState(() => _pressed = false),
-      onTap: widget.onPressed,
+      onTap: disabled
+          ? null
+          : () {
+              AudioService().playTap();
+              widget.onPressed!();
+            },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 80),
         transform: Matrix4.translationValues(

@@ -202,7 +202,7 @@ void main() {
       await _pump(tester, const Size(812, 375));
       await tester.ensureVisible(find.byKey(ProfileScreen.badgesKey));
       expect(find.text('MGA BADGE'), findsOneWidget);
-      expect(find.text('0/28'), findsOneWidget);
+      expect(find.text('0/40'), findsOneWidget);
       expect(find.byKey(ProfileScreen.badgesNewKey), findsNothing);
     });
 
@@ -210,14 +210,14 @@ void main() {
       final badges = holding();
       await _pump(tester, const Size(812, 375), badges: badges);
       await tester.ensureVisible(find.byKey(ProfileScreen.badgesKey));
-      expect(find.text('3/28'), findsOneWidget);
+      expect(find.text('3/40'), findsOneWidget);
       expect(find.text('BAGO 3'), findsOneWidget);
     });
 
     testWidgets('and the tag is gone once they have been seen', (tester) async {
       final badges = holding(seen: true);
       await _pump(tester, const Size(812, 375), badges: badges);
-      expect(find.text('3/28'), findsOneWidget);
+      expect(find.text('3/40'), findsOneWidget);
       expect(find.byKey(ProfileScreen.badgesNewKey), findsNothing);
     });
   });

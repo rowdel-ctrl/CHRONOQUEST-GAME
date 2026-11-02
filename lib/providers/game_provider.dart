@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants.dart';
@@ -62,6 +63,13 @@ enum PowerUpKind {
   const PowerUpKind(this.priceCoins);
   final int priceCoins;
 }
+
+/// The name of a power-up as the shop and the result screens write it.
+String powerUpTitle(PowerUpKind kind) => switch (kind) {
+      PowerUpKind.fiftyFifty => '50/50',
+      PowerUpKind.shield => 'Shield',
+      PowerUpKind.timeFreeze => 'Time Freeze',
+    };
 
 class GameNotifier extends StateNotifier<GameState> {
   /// Hearts are counted in the server's time ([ServerClock]), never the phone's:
@@ -486,6 +494,46 @@ class GameNotifier extends StateNotifier<GameState> {
       state.powerUps.shield--;
       state = state.copyWith(powerUps: state.powerUps);
     }
+  }
+
+  /// One free power-up of a random kind (a level finished without a wrong answer).
+  /// Returns which one, so the screen can say so.
+  PowerUpKind grantRandomPowerUp([math.Random? random]) {
+    final kind = PowerUpKind.values[(random ?? math.Random())
+        .nextInt(PowerUpKind.values.length)];
+    _giveFree(kind);
+    saveWallet();
+    return kind;
+  }
+
+  /// One of each power-up (a boss beaten).
+  List<PowerUpKind> grantAllPowerUps() {
+    for (final kind in PowerUpKind.values) {
+      _giveFree(kind);
+    }
+    saveWallet();
+    return PowerUpKind.values.toList();
+  }
+
+  void _giveFree(PowerUpKind kind) {
+    final p = state.powerUps;
+    switch (kind) {
+      case PowerUpKind.fiftyFifty:
+        p.fiftyFifty++;
+      case PowerUpKind.shield:
+        p.shield++;
+      case PowerUpKind.timeFreeze:
+        p.timeFreeze++;
+    }
+    state = state.copyWith(powerUps: p);
+  }
+
+  /// One heart given back in a level (a heart pickup, the halfway flag), in the
+  /// same pool the menus show. Does nothing when the pool is full.
+  void gainHeart() {
+    if (heartsAreFree) return;
+    if (state.hearts.count >= GameConstants.maxHearts) return;
+    _store(state.hearts.withHeart());
   }
 
   void awardPowerUp(int level) {

@@ -38,6 +38,10 @@ class BadgeRules {
       'collector' => codexTotal,
       'days' => facts.days.length,
       'nodamage' => facts.noDamage.length,
+      'nofall' => facts.noFall.length,
+      'highroad' => facts.highRoad.length,
+      'streak' => facts.bestStreak,
+      'nohelp' => facts.noHelp.length,
       'firstbuy' => facts.bought ? 1 : 0,
       'bossclean' => facts.bossClean ? 1 : 0,
       _ => 0,
@@ -84,6 +88,11 @@ class BadgeRules {
   /// A level finished. [correct] of [total] is the game's own score for it,
   /// [healthLost] the hearts lost in it, and [anyWrong] whether any answer was ever
   /// wrong (even one put right on a retry).
+  ///
+  /// The rest are what the try itself counted: [falls] into a river, the coins on the
+  /// high platforms ([highCoinsTotal], of which [highCoinsTaken]), the longest run of
+  /// right answers ([bestStreak]) and the power-ups used. Left out, they earn nothing
+  /// (a fall and a power-up are assumed).
   static BadgeFacts applyLevel(
     BadgeFacts facts, {
     required String eraId,
@@ -93,6 +102,11 @@ class BadgeRules {
     required int healthLost,
     required bool anyWrong,
     required String day,
+    int falls = 1,
+    int highCoinsTotal = 0,
+    int highCoinsTaken = 0,
+    int bestStreak = 0,
+    int powerUpsUsed = 1,
   }) {
     final key = levelKey(eraId, level);
     final percent = total > 0 ? (correct / total * 100).round() : 0;
@@ -108,6 +122,12 @@ class BadgeRules {
           ? {...facts.perfect, key}
           : facts.perfect,
       noDamage: healthLost == 0 ? {...facts.noDamage, key} : facts.noDamage,
+      noFall: falls == 0 ? {...facts.noFall, key} : facts.noFall,
+      highRoad: highCoinsTotal > 0 && highCoinsTaken >= highCoinsTotal
+          ? {...facts.highRoad, key}
+          : facts.highRoad,
+      noHelp: powerUpsUsed == 0 ? {...facts.noHelp, key} : facts.noHelp,
+      bestStreak: math.max(facts.bestStreak, bestStreak),
       bosses: isBoss ? {...facts.bosses, eraId} : facts.bosses,
       bossClean: facts.bossClean || (isBoss && total > 0 && !anyWrong),
     );

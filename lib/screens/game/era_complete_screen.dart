@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/badge_defs.dart';
 import '../../models/quiz_result.dart';
+import '../../providers/game_provider.dart';
 import '../../services/api_service.dart';
 import '../../widgets/confetti.dart';
 import '../../widgets/era_medal.dart';
@@ -26,6 +27,9 @@ class EraCompleteScreen extends StatefulWidget {
   /// a pop-up, anything else a strip across the top.
   final List<EarnedBadge> badges;
 
+  /// The free power-ups the boss gave (one of each), already in the wallet.
+  final List<PowerUpKind> powerUps;
+
   /// Reads the student's results. Tests pass their own; the app asks the server.
   final Future<List<QuizResult>> Function()? loadResults;
 
@@ -34,10 +38,12 @@ class EraCompleteScreen extends StatefulWidget {
     required this.eraId,
     this.coins = 0,
     this.badges = const [],
+    this.powerUps = const [],
     this.loadResults,
   });
 
   static const coinsKey = Key('era_complete_coins');
+  static const powerUpsKey = Key('era_complete_powerups');
   static const medalKey = Key('era_complete_medal');
   static const levelsKey = Key('era_complete_levels');
   static const bossKey = Key('era_complete_boss');
@@ -232,6 +238,13 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
                 text: '${learningGain >= 0 ? '+' : ''}$learningGain%',
               ),
             ],
+            if (widget.powerUps.isNotEmpty)
+              _Stat(
+                key: EraCompleteScreen.powerUpsKey,
+                icon: const Icon(Icons.card_giftcard,
+                    size: 16, color: AppColors.accent),
+                text: '+${widget.powerUps.length} power-up',
+              ),
             if (widget.coins > 0)
               _Stat(
                 key: EraCompleteScreen.coinsKey,

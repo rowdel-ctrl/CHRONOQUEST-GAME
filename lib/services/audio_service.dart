@@ -38,6 +38,9 @@ class AudioService {
     'wrong.mp3',
     'enemy_defeat.mp3',
     'praise.wav',
+    'land.wav',
+    'step.wav',
+    'tap.wav',
   ];
 
   bool _soundEnabled = true;
@@ -92,6 +95,9 @@ class AudioService {
   /// The era whose BGM is currently loaded, so [toggleMusic] can resume the
   /// right track after being switched back on.
   String? _currentBgmEra;
+
+  /// True from the moment the boss fight's music starts until any music stops.
+  bool _bossMusic = false;
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
@@ -202,7 +208,11 @@ class AudioService {
     _save(() => StorageService.setMusicEnabled(on));
     if (_musicEnabled) {
       final era = _currentBgmEra;
-      if (era != null) playBgm(era);
+      if (_bossMusic) {
+        playBossBgm();
+      } else if (era != null) {
+        playBgm(era);
+      }
     } else {
       stopBgm();
     }
@@ -226,6 +236,30 @@ class AudioService {
   Future<void> playBossDefeat() => _playSfx('boss_defeat.mp3');
   Future<void> playEraComplete() => _playSfx('era_complete.mp3');
 
+  // Placeholders made by tools/sfx/make_sfx.js; a recording with the same file
+  // name dropped over one replaces it.
+  Future<void> playLand() => _playSfx('land.wav');
+  Future<void> playStep() => _playSfx('step.wav');
+  Future<void> playTap() => _playSfx('tap.wav');
+  Future<void> playArtifactGlow() => _playSfx('artifact.wav');
+  Future<void> playGateRumble() => _playSfx('gate_rumble.wav');
+  Future<void> playSplash() => _playSfx('splash.wav');
+  Future<void> playHeart() => _playSfx('heart.wav');
+  Future<void> playFlag() => _playSfx('flag.wav');
+  Future<void> playShieldPop() => _playSfx('shield_pop.wav');
+  Future<void> playStreak() => _playSfx('streak.wav');
+  Future<void> playChaserNotice() => _playSfx('chaser_notice.wav');
+  Future<void> playHeavyWindup() => _playSfx('heavy_windup.wav');
+  Future<void> playLunge() => _playSfx('lunge.wav');
+  Future<void> playBossWarning({bool short = false}) =>
+      _playSfx(short ? 'boss_warning_short.wav' : 'boss_warning.wav');
+  Future<void> playShockwave() => _playSfx('shockwave.wav');
+  Future<void> playBossPhase() => _playSfx('boss_phase.wav');
+
+  /// The chime for the boss about to ask a question. Made, but not played yet:
+  /// it waits for the boss's question lead-in.
+  Future<void> playBossAsk() => _playSfx('boss_ask.wav');
+
   // ─── BACKGROUND MUSIC ─────────────────────────────────────────────────────
 
   /// Music files drop the hyphen used in era ids (`bgm_precolonial.mp3` for
@@ -241,6 +275,7 @@ class AudioService {
 
   Future<void> playBgm(String eraId) async {
     _currentBgmEra = eraId;
+    _bossMusic = false;
     if (!_musicEnabled) return;
     try {
       await _ensureInitialized();
@@ -255,7 +290,25 @@ class AudioService {
     }
   }
 
+  /// The boss fight's own music, in place of the era's track until the level
+  /// ends. [setMusicEnabled] brings the right one back if music is switched off
+  /// and on again mid-fight.
+  Future<void> playBossBgm() async {
+    _bossMusic = true;
+    if (!_musicEnabled) return;
+    try {
+      await _ensureInitialized();
+      await FlameAudio.bgm.play(
+        'bgm_boss.wav',
+        volume: _bgmBaseVolume * _musicVolume,
+      );
+    } catch (e) {
+      debugPrint('AudioService: failed to play the boss music: $e');
+    }
+  }
+
   Future<void> stopBgm() async {
+    _bossMusic = false;
     if (!_initialized) return;
     try {
       await FlameAudio.bgm.stop();

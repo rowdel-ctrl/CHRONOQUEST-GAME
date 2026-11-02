@@ -21,6 +21,35 @@ Question _q(int i) => Question(
 List<Question> _pool(int n) => [for (var i = 0; i < n; i++) _q(i)];
 
 void main() {
+  group('BossPlan scroll and lead-in', () {
+    test('the tag counts the answers already right', () {
+      expect(BossPlan.questionTag(0, 22), 'Tanong 1 ng 22');
+      expect(BossPlan.questionTag(6, 22), 'Tanong 7 ng 22');
+    });
+
+    final spots = [for (final x in [100.0, 500.0, 900.0, 1300.0, 1700.0]) (x: x, y: 660.0)];
+
+    test('the scroll is at least 450 from the student', () {
+      for (var seed = 0; seed < 30; seed++) {
+        final s = BossPlan.scrollSpot(spots, 100, const [], Random(seed))!;
+        expect((s.x - 100).abs(), greaterThanOrEqualTo(BossPlan.scrollMinDistance));
+      }
+    });
+
+    test('it keeps away from minions when a spot allows it', () {
+      for (var seed = 0; seed < 30; seed++) {
+        final s = BossPlan.scrollSpot(spots, 100, const [900, 1300], Random(seed))!;
+        expect(s.x, 1700, reason: 'the only far spot with no minion near');
+      }
+    });
+
+    test('with no spot far enough it takes the farthest; with no spots at all, none', () {
+      final near = [(x: 100.0, y: 660.0), (x: 300.0, y: 660.0)];
+      expect(BossPlan.scrollSpot(near, 120, const [], Random(1))!.x, 300);
+      expect(BossPlan.scrollSpot(const [], 0, const [], Random(1)), isNull);
+    });
+  });
+
   group('BossPlan', () {
     test('a boss level of 22 splits 10, 6 and 6: its own lesson, then the review in two halves', () {
       expect(BossPlan.phaseSizes(22), [10, 6, 6]);

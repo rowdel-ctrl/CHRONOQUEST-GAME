@@ -89,6 +89,11 @@ class AppFlags {
   /// The student build (no flag) has no Test Mode: the switch is not on the
   /// Settings screen, and a value saved by an earlier tester install is ignored.
   static const bool testBuild = bool.fromEnvironment('TEST_MODE');
+
+  /// True only in a build made with `--dart-define=NEW_GAMEPLAY=true`: the new
+  /// top-down gameplay in `lib/quest/` is reachable. Off by default, so the student
+  /// and tester builds never see it and the platformer is untouched.
+  static const bool newGameplay = bool.fromEnvironment('NEW_GAMEPLAY');
 }
 
 // ─── GAME CONSTANTS ─────────────────────────────────────────────────────────

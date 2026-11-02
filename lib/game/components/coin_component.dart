@@ -11,10 +11,13 @@ class CoinComponent extends SpriteComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   bool collected = false;
 
+  /// Lying on a high platform: taking all of those in a level is the Mataas na Daan badge.
+  final bool onHighPlatform;
+
   double _bobTime = 0;
   late final double _baseY;
 
-  CoinComponent({Vector2? spawnPosition}) {
+  CoinComponent({Vector2? spawnPosition, this.onHighPlatform = false}) {
     if (spawnPosition != null) {
       position = spawnPosition;
     }

@@ -99,6 +99,11 @@ class BadgeNotifier extends StateNotifier<BadgeState> {
     required int total,
     required int healthLost,
     required bool anyWrong,
+    int falls = 1,
+    int highCoinsTotal = 0,
+    int highCoinsTaken = 0,
+    int bestStreak = 0,
+    int powerUpsUsed = 1,
   }) {
     if (!state.enabled) return const [];
     final facts = BadgeRules.applyLevel(
@@ -110,6 +115,11 @@ class BadgeNotifier extends StateNotifier<BadgeState> {
       healthLost: healthLost,
       anyWrong: anyWrong,
       day: BadgeRules.dayOf(_now()),
+      falls: falls,
+      highCoinsTotal: highCoinsTotal,
+      highCoinsTaken: highCoinsTaken,
+      bestStreak: bestStreak,
+      powerUpsUsed: powerUpsUsed,
     );
     return _earn(facts);
   }

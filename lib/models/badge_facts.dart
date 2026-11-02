@@ -13,6 +13,15 @@ class BadgeFacts {
   final Set<String> perfect;
   final Set<String> noDamage;
 
+  /// Levels finished without falling into a river (Walang Hulog), taking every coin on
+  /// the high platforms (Mataas na Daan), and without using a power-up (Walang Tulong).
+  final Set<String> noFall;
+  final Set<String> highRoad;
+  final Set<String> noHelp;
+
+  /// The most right answers in a row, best ever (Sunod-sunod).
+  final int bestStreak;
+
   /// Times a replay beat the best score before it.
   final int comebacks;
 
@@ -43,6 +52,10 @@ class BadgeFacts {
     this.threeStar = const {},
     this.perfect = const {},
     this.noDamage = const {},
+    this.noFall = const {},
+    this.highRoad = const {},
+    this.noHelp = const {},
+    this.bestStreak = 0,
     this.comebacks = 0,
     this.bosses = const {},
     this.bossClean = false,
@@ -58,6 +71,10 @@ class BadgeFacts {
     Set<String>? threeStar,
     Set<String>? perfect,
     Set<String>? noDamage,
+    Set<String>? noFall,
+    Set<String>? highRoad,
+    Set<String>? noHelp,
+    int? bestStreak,
     int? comebacks,
     Set<String>? bosses,
     bool? bossClean,
@@ -72,6 +89,10 @@ class BadgeFacts {
         threeStar: threeStar ?? this.threeStar,
         perfect: perfect ?? this.perfect,
         noDamage: noDamage ?? this.noDamage,
+        noFall: noFall ?? this.noFall,
+        highRoad: highRoad ?? this.highRoad,
+        noHelp: noHelp ?? this.noHelp,
+        bestStreak: bestStreak ?? this.bestStreak,
         comebacks: comebacks ?? this.comebacks,
         bosses: bosses ?? this.bosses,
         bossClean: bossClean ?? this.bossClean,
@@ -87,6 +108,10 @@ class BadgeFacts {
         'threeStar': threeStar.toList(),
         'perfect': perfect.toList(),
         'noDamage': noDamage.toList(),
+        'noFall': noFall.toList(),
+        'highRoad': highRoad.toList(),
+        'noHelp': noHelp.toList(),
+        'bestStreak': bestStreak,
         'comebacks': comebacks,
         'bosses': bosses.toList(),
         'bossClean': bossClean,
@@ -112,6 +137,10 @@ class BadgeFacts {
       threeStar: strings('threeStar'),
       perfect: strings('perfect'),
       noDamage: strings('noDamage'),
+      noFall: strings('noFall'),
+      highRoad: strings('highRoad'),
+      noHelp: strings('noHelp'),
+      bestStreak: (json['bestStreak'] as num?)?.toInt() ?? 0,
       comebacks: (json['comebacks'] as num?)?.toInt() ?? 0,
       bosses: strings('bosses'),
       bossClean: json['bossClean'] as bool? ?? false,

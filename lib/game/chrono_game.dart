@@ -21,7 +21,8 @@ import 'components/boss_component.dart';
 import 'components/gate_component.dart';
 import 'components/gap_component.dart';
 import 'components/enemy_spawner.dart';
-import 'components/parallax_background.dart';
+import 'components/world_backdrop.dart';
+import 'components/world_foreground.dart';
 import 'components/tile_platform_component.dart';
 import 'game_camera.dart';
 import 'game_input.dart';
@@ -29,6 +30,7 @@ import 'gate_reveal.dart';
 import 'game_spawning.dart';
 import 'kaalaman_handler.dart';
 import 'level_loader.dart';
+import 'run_stats.dart';
 import 'stretch_to_fill_viewport.dart';
 
 /// Main Flame game class for ChronoQuest.
@@ -164,6 +166,13 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// Fired once per heart lost, so the caller (GameScreen) can persist the
   /// new count to the same `HeartsState` pool shown on the menu screens.
   Function()? onHeartLost;
+
+  /// Fired once per heart given back (a heart pickup, the halfway flag), so the
+  /// caller can put it in the same persisted pool.
+  Function()? onHeartGained;
+
+  /// What happened in this try, for the rules and badges that look back over it.
+  final RunStats stats = RunStats();
 
   /// Called for every coin picked up, so the wallet gets it at once and quitting or
   /// closing the game cannot lose it.
@@ -319,14 +328,17 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
     // Real parallax background using the actual era artwork. Its own
     // update() derives layer offsets from the camera's movement — see
-    // ParallaxBackground.
+    // WorldBackdrop.
     //
     // Mounted as the camera's backdrop rather than a direct child of the
     // game: the backdrop renders inside the viewport, so it is scaled to the
     // virtual resolution along with the world, and it stays put as the
     // camera moves — which is what a parallax layer wants. A direct child
     // would be drawn in raw canvas pixels and no longer line up.
-    camera.backdrop = ParallaxBackground();
+    camera.backdrop = WorldBackdrop();
+    // The leaves, grass, mist and darker corners that pass in front of the player.
+    // In the viewport (drawn over the world), under the on-screen controls.
+    camera.viewport.add(WorldForeground());
 
     // Player — lives in world space so the camera transform applies to it.
     player = PlayerComponent(characterId: selectedCharacterId);
@@ -351,7 +363,12 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // Get the sound effects ready, then play the BGM. Not awaited: audio must
     // never hold up the level.
     unawaited(audioService.preloadSfx());
-    audioService.playBgm(currentEra);
+    // A boss level has its own music, not the era's.
+    if (isBossLevel) {
+      audioService.playBossBgm();
+    } else {
+      audioService.playBgm(currentEra);
+    }
   }
 
   /// Longest stretch of game time one frame may advance. A stall longer than
@@ -442,6 +459,26 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     return true;
   }
 
+  /// Gives one heart back, up to the five. False, with nothing changed, when the
+  /// hearts are already full.
+  bool gainHeart() {
+    if (hearts >= GameConstants.maxHearts) return false;
+    hearts++;
+    onHeartGained?.call();
+    notifyListeners(); // hearts changed
+    return true;
+  }
+
+  /// The student has passed the halfway flag: one heart back, once per try, and a
+  /// fall no longer puts them back before it.
+  void reachFlag(double flagX) {
+    if (stats.flagReached) return;
+    stats.flagReached = true;
+    stats.checkpointX = flagX;
+    gainHeart();
+    audioService.playFlag();
+  }
+
   /// Lets [QuizHandler] (quiz_handler.dart) notify overlay listeners, since
   /// [notifyListeners] is protected and can't be called from an extension.
   void notifyState() => notifyListeners();
@@ -471,6 +508,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   }
 
   void playerFellInGap() {
+    stats.falls++;
+    audioService.playSplash();
     if (!loseLife()) player.respawn();
   }
 
@@ -479,7 +518,8 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// they just took a hit, and the wall keeps scrolling past.
   void playerHitObstacle() => loseLife();
 
-  void collectCoin() {
+  void collectCoin({bool onHighPlatform = false}) {
+    if (onHighPlatform) stats.highCoinsTaken++;
     playerCoins++;
     score += 5;
     audioService.playCoin();

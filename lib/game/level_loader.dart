@@ -12,9 +12,12 @@ import 'components/coin_component.dart';
 import 'components/enemy_component.dart';
 import 'components/gap_component.dart';
 import 'components/gate_component.dart';
+import 'components/halfway_flag_component.dart';
+import 'components/heart_pickup_component.dart';
 import 'components/terrain_component.dart';
 import 'components/tile_platform_component.dart';
 import 'generated_level_manifest.dart';
+import 'level_extras.dart';
 import 'game_collision.dart' show footSpanFraction;
 
 /// One run of ground columns that share a surface height. A level's ground is a
@@ -521,12 +524,21 @@ class LevelBuilder {
   ///
   /// [groundY] is the world y of the ground surface and [eraId] selects
   /// enemy sprites and the gate's wall art.
-  static void build({
+  ///
+  /// With [levelNo], the new rules' extras go in too (extra coins and a heart on the
+  /// high platforms, the halfway flag; see [LevelExtras]), and are returned. Without
+  /// it the level is built exactly as the map says.
+  static LevelExtras build({
     required LoadedLevel level,
     required Component world,
     required double groundY,
     required String eraId,
+    int? levelNo,
   }) {
+    final extras = levelNo == null
+        ? LevelExtras.none
+        : LevelExtras.plan(level,
+            eraId: eraId, levelNo: levelNo, groundY: groundY);
     // One collision section per block of ground, at its own height, reaching
     // down to the bottom of the screen. They are not drawn: the terrain
     // component below paints the tiles the map holds.
@@ -589,7 +601,10 @@ class LevelBuilder {
           );
 
         case 'coin':
-          world.add(CoinComponent(spawnPosition: Vector2(e.x, e.y)));
+          world.add(CoinComponent(
+            spawnPosition: Vector2(e.x, e.y),
+            onHighPlatform: extras.isHighCoin(e),
+          ));
 
         case 'platform':
           // Tiled gives a platform a pixel width; the component takes tiles.
@@ -611,6 +626,17 @@ class LevelBuilder {
           );
       }
     }
+
+    for (final at in extras.bonusCoins) {
+      world.add(CoinComponent(spawnPosition: at, onHighPlatform: true));
+    }
+    final heart = extras.heart;
+    if (heart != null) world.add(HeartPickupComponent(spawnPosition: heart));
+    final flag = extras.flag;
+    if (flag != null && levelNo != null) {
+      world.add(HalfwayFlagComponent(poleX: flag.x, surfaceY: flag.surfaceY));
+    }
+    return extras;
   }
 
   /// Maps an `art` property ("artifact_3") to the 1-5 sprite index

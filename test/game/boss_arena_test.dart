@@ -112,7 +112,8 @@ void main() {
     expect(game.bossPhase, isTrue);
     expect(game.boss, isNotNull);
     expect(game.world.children.whereType<BossComponent>(), hasLength(1));
-    expect(game.boss!.position.x + 60, level.boss!.x);
+    // (it paces a little round that place, never more than its range from it)
+    expect(game.boss!.position.x + 60, closeTo(level.boss!.x, 100.01));
     // And with charges to fight the first wave, since there were no artifacts on the way.
     expect(game.kaalaman, CombatConstants.bossStartCharges);
 

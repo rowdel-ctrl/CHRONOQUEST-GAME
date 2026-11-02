@@ -134,7 +134,7 @@ void main() {
     }
     // One short line each, not paragraphs.
     expect(find.text('Tanggal 2 mali'), findsOneWidget);
-    expect(find.text('Salo ng 1 mali'), findsOneWidget);
+    expect(find.text('Salo ng 1 mali o hit'), findsOneWidget);
     expect(find.text('Hinto ang oras'), findsOneWidget);
   });
 

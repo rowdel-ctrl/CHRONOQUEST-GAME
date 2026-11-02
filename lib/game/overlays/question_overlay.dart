@@ -137,6 +137,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     if (countdown == null || countdown.frozen || answered) return;
     if (widget.game.playerPowerUps.timeFreeze <= 0) return;
     widget.game.playerPowerUps.timeFreeze--;
+    widget.game.stats.powerUpsUsed++;
     widget.game.audioService.playPowerup();
     setState(countdown.freeze);
   }
@@ -153,6 +154,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     if (widget.game.playerPowerUps.fiftyFifty <= 0) return;
 
     widget.game.playerPowerUps.fiftyFifty--;
+    widget.game.stats.powerUpsUsed++;
     widget.game.audioService.playPowerup();
 
     // Hide 2 wrong options
@@ -169,6 +171,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     if (widget.game.playerPowerUps.shield > 0) {
       widget.game.shieldActive = true;
       widget.game.playerPowerUps.shield--;
+      widget.game.stats.powerUpsUsed++;
       widget.game.audioService.playPowerup();
       setState(() {});
     }

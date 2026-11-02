@@ -9,6 +9,8 @@ import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/game/boss_plan.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/boss_component.dart';
+import 'package:chronoquest/game/components/boss_shockwave.dart';
+import 'package:chronoquest/game/components/heart_pickup_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
 import 'package:chronoquest/game/level_loader.dart';
@@ -59,6 +61,7 @@ class _BossGame extends ChronoGame {
     currentLevel = 5; // the Pananakop ng Espanya boss level
     questionPool = QuestionPool(questions: [for (var i = 0; i < 22; i++) _q(i)]);
     bossPhase = true;
+    hearts = 99; // the standing student is hit by every shockwave; hearts are not what is tested
   }
 }
 
@@ -95,6 +98,10 @@ String _wrong(_BossGame game) => game.currentQuestion!.options.map((o) => o.labe
 /// run out, so no timer is left pending when the test ends.
 Future<void> _flush(WidgetTester tester) => tester.pump(const Duration(seconds: 3));
 
+/// Waits out the 1.5 seconds of safety after a hit (it is counted on the wall clock).
+Future<void> _safeMomentOver(WidgetTester tester) =>
+    tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 1600)));
+
 /// Lets sprite loading (real file I/O) finish so new components mount.
 Future<void> _settle(WidgetTester tester) async {
   for (var i = 0; i < 6; i++) {
@@ -111,6 +118,24 @@ void _run(_BossGame game, double seconds) {
   }
 }
 
+/// Like [_run], but lets the engine finish mounting what was added meanwhile (a
+/// shockwave only exists once its short load has finished, which needs the event
+/// loop). Stops when a question is up or when [until] says so.
+Future<void> _runAsync(WidgetTester tester, _BossGame game, double seconds, {bool Function()? until}) async {
+  for (var t = 0.0; t < seconds; t += 0.25) {
+    if (game.questionShowing || (until != null && until())) return;
+    _run(game, 0.25);
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 2)));
+  }
+}
+
+/// Runs on until the boss announces a new phase (the wave and any attack have to be
+/// over first), or 20 seconds have gone.
+Future<void> _runUntilBanner(WidgetTester tester, _BossGame game, BossComponent boss) =>
+    _runAsync(tester, game, 20, until: () => boss.banner != null);
+
+List<BossShockwave> _waves(_BossGame game) => game.world.children.whereType<BossShockwave>().toList();
+
 List<EnemyComponent> _minions(_BossGame game) => game.world.children.whereType<EnemyComponent>().toList();
 
 /// Beats every minion of the wave that is up (each pays one Kaalaman charge).
@@ -126,20 +151,42 @@ void _beatWave(_BossGame game) {
 Future<void> _round(WidgetTester tester, _BossGame game, {bool right = true}) async {
   expect(game.questionShowing, isTrue);
   game.handleAnswer(right ? _right(game) : _wrong(game));
-  _run(game, 1.2);
+  _run(game, 1.8);
   await _settle(tester);
   _beatWave(game);
-  _run(game, 4);
+  await _runAsync(tester, game, 12);
 }
 
 /// Answers two questions right, so the first wave has come ([_run] stops short of the next
 /// question: it is not asked until the wave is beaten).
 Future<void> _firstWave(WidgetTester tester, _BossGame game) async {
   game.handleAnswer(_right(game));
-  _run(game, 1.2);
+  _run(game, 1.8);
   await _settle(tester);
   game.handleAnswer(_right(game));
-  _run(game, 1.2);
+  _run(game, 1.8);
+  await _settle(tester);
+}
+
+/// Arena: runs until the scroll is up, then walks the student onto it, which opens the question.
+Future<void> _touchScroll(WidgetTester tester, _BossGame game, BossComponent boss) async {
+  _run(game, 3);
+  await _settle(tester);
+  final scroll = boss.scroll!;
+  game.player.position.setValues(scroll.position.x - 48, scroll.position.y - 60);
+  _run(game, 0.1);
+  expect(game.questionShowing, isTrue, reason: 'touching the scroll opens the question');
+}
+
+/// Arena: answers two questions right (each reached by its scroll), so the first wave has come.
+/// The student is put at [playerX] for the second answer, where the wave is sent from.
+Future<void> _firstWaveInArena(WidgetTester tester, _BossGame game, BossComponent boss, {double? playerX}) async {
+  await _touchScroll(tester, game, boss);
+  game.handleAnswer(_right(game));
+  await _touchScroll(tester, game, boss);
+  if (playerX != null) game.player.position.x = playerX;
+  game.handleAnswer(_right(game));
+  _run(game, 1.0);
   await _settle(tester);
 }
 
@@ -158,6 +205,23 @@ void main() {
     await _flush(tester);
   });
 
+  testWidgets('a question never just appears: the boss glows and the screen says which one is coming', (tester) async {
+    final (game, boss) = await _start(tester);
+    _run(game, 20);
+    // The first card has its own lead-in too, so it came after the tag went.
+    expect(boss.askTag, isNull);
+    game.handleAnswer(_right(game));
+    _run(game, 0.85);
+    expect(game.questionShowing, isFalse);
+    expect(boss.askTag, 'Tanong 2 ng 22');
+    _run(game, 0.5);
+    expect(game.questionShowing, isFalse, reason: 'still the lead-in');
+    _run(game, 0.5);
+    expect(game.questionShowing, isTrue);
+    expect(boss.askTag, isNull, reason: 'the tag goes when the card opens');
+    await _flush(tester);
+  });
+
   testWidgets('a right answer hurts the boss; a wave comes after every second question, not every one', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
@@ -166,7 +230,7 @@ void main() {
     game.handleAnswer(_right(game));
     expect(boss.health, 21);
     expect(game.questionShowing, isFalse);
-    _run(game, 1.2);
+    _run(game, 1.8);
     expect(_minions(game), isEmpty, reason: 'no wave after the first question');
     expect(game.questionShowing, isTrue);
     final second = game.currentQuestion!;
@@ -174,7 +238,7 @@ void main() {
 
     game.handleAnswer(_right(game));
     expect(boss.health, 20);
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     expect(_minions(game), hasLength(BossPlan.minionsPerWave[0]));
     expect(game.questionShowing, isFalse, reason: 'the minions come before the next question');
@@ -271,14 +335,14 @@ void main() {
     }
     expect(boss.answerSeconds, 15);
     game.handleAnswer(_right(game)); // the 10th
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     expect(_minions(game), hasLength(2));
     _beatWave(game);
-    _run(game, 1.0);
+    await _runUntilBanner(tester, game, boss);
     expect(boss.banner, 'PHASE 2');
     expect(game.questionShowing, isFalse, reason: 'announced before it is asked');
-    _run(game, 2);
+    _run(game, 3);
     expect(boss.banner, isNull);
     expect(game.questionShowing, isTrue);
 
@@ -287,45 +351,159 @@ void main() {
     await _round(tester, game); // the 11th: no wave
     expect(boss.answerSeconds, 12);
     game.handleAnswer(_right(game)); // the 12th: a wave
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     expect(_minions(game), hasLength(3));
     _beatWave(game);
-    _run(game, 4);
+    await _runAsync(tester, game, 12);
     for (var n = 13; n <= 15; n++) {
       await _round(tester, game);
     }
     game.handleAnswer(_right(game)); // the 16th
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     _beatWave(game);
-    _run(game, 1.0);
+    await _runUntilBanner(tester, game, boss);
     expect(boss.banner, 'PHASE 3');
-    _run(game, 2);
+    _run(game, 3);
 
     // Phase 3: questions 17 to 22, 10 seconds, waves of four.
     expect(boss.answerSeconds, 10);
     await _round(tester, game); // the 17th
     game.handleAnswer(_right(game)); // the 18th
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     expect(_minions(game), hasLength(4));
     _beatWave(game);
-    _run(game, 4);
+    await _runAsync(tester, game, 12);
     for (var n = 19; n <= 20; n++) {
       await _round(tester, game);
     }
     game.handleAnswer(_right(game)); // the 21st
-    _run(game, 1.2);
+    _run(game, 1.8);
     await _settle(tester);
     _beatWave(game);
-    _run(game, 1.0);
+    await _runUntilBanner(tester, game, boss);
     // The 22nd is the last one left.
     expect(boss.banner, 'FINAL QUESTION');
-    _run(game, 2);
+    _run(game, 3);
     expect(game.questionShowing, isTrue);
     game.handleAnswer(_right(game));
     expect(boss.isDefeated, isTrue);
+    await _flush(tester);
+  });
+
+  testWidgets('phase 1 has no boss attack; phase 2 sends one shockwave, phase 3 two', (tester) async {
+    final (game, boss) = await _start(tester);
+    game.hearts = 5;
+    _run(game, 20);
+
+    // Phase 1: waves of minions only.
+    await _round(tester, game);
+    game.handleAnswer(_right(game));
+    _run(game, 1.8);
+    await _settle(tester);
+    _run(game, 3);
+    expect(_waves(game), isEmpty, reason: 'phase 1: no shockwave');
+    expect(boss.attackBusy, isFalse);
+    _beatWave(game);
+    _run(game, 4);
+    for (var n = 3; n <= 9; n++) {
+      await _round(tester, game);
+    }
+    game.handleAnswer(_right(game)); // the 10th
+    _run(game, 1.8);
+    await _settle(tester);
+    _beatWave(game);
+    await _runUntilBanner(tester, game, boss);
+    expect(boss.banner, 'PHASE 2');
+    _run(game, 3);
+
+    // Phase 2: questions 11 and 12, then a wave of three with ONE shockwave.
+    await _round(tester, game); // the 11th
+    game.handleAnswer(_right(game)); // the 12th
+    _run(game, 1.2);
+    await _settle(tester);
+    expect(boss.attackBusy, isTrue, reason: 'the warning has started');
+    expect(_waves(game), isEmpty, reason: 'a warning first, the wave after');
+    _beatWave(game);
+    _run(game, 0.5);
+    expect(game.questionShowing, isFalse, reason: 'the next question waits for the attack');
+    var sent = false;
+    for (var i = 0; i < 160 && !game.questionShowing; i++) {
+      _run(game, 0.05);
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 2)));
+      if (_waves(game).isNotEmpty) sent = true;
+    }
+    expect(sent, isTrue, reason: 'a shockwave left the boss');
+    expect(game.questionShowing, isTrue, reason: 'then the question comes');
+    await _flush(tester);
+  });
+
+  testWidgets('a shockwave costs a heart, a jump over it does not, and a Shield turns it away', (tester) async {
+    final (game, boss) = await _start(tester);
+    _run(game, 20);
+    final p = game.player;
+
+    BossShockwave wave() => BossShockwave(
+          direction: 1,
+          start: Vector2(p.position.x - 10, game.groundY - BossShockwave.waveHeight),
+        );
+
+    // On the ground: hit.
+    game.hearts = 5;
+    final hit = wave();
+    game.world.add(hit);
+    await _settle(tester);
+    hit.update(0.01);
+    expect(game.hearts, 4);
+    hit.removeFromParent();
+
+    // A Shield absorbs it (once the safe moment of the last hit is over: it runs on
+    // the clock on the wall, not the game's).
+    await _safeMomentOver(tester);
+    p.position.x += 400;
+    game.shieldActive = true;
+    final shielded = BossShockwave(
+        direction: 1,
+        start: Vector2(p.position.x - 10, game.groundY - BossShockwave.waveHeight));
+    game.world.add(shielded);
+    await _settle(tester);
+    shielded.update(0.01);
+    expect(game.hearts, 4, reason: 'no heart lost');
+    expect(game.shieldActive, isFalse, reason: 'the bubble popped');
+    shielded.removeFromParent();
+
+    // In the air above it: nothing.
+    await _safeMomentOver(tester);
+    p.position.y = game.groundY - p.size.y - 140;
+    final over = BossShockwave(
+        direction: 1,
+        start: Vector2(p.position.x - 10, game.groundY - BossShockwave.waveHeight));
+    game.world.add(over);
+    await _settle(tester);
+    over.update(0.01);
+    expect(game.hearts, 4, reason: 'jumped over it');
+    over.removeFromParent();
+    await _flush(tester);
+    expect(boss.isDefeated, isFalse);
+  });
+
+  testWidgets('phase 2 drops a heart for a student who is missing some; a full one gets none', (tester) async {
+    final (game, boss) = await _start(tester);
+    game.hearts = 3;
+    _run(game, 20);
+    for (var n = 1; n <= 9; n++) {
+      await _round(tester, game);
+    }
+    game.handleAnswer(_right(game));
+    _run(game, 1.8);
+    await _settle(tester);
+    _beatWave(game);
+    await _runUntilBanner(tester, game, boss);
+    expect(boss.banner, 'PHASE 2');
+    await _settle(tester);
+    expect(game.world.children.whereType<HeartPickupComponent>(), hasLength(1));
     await _flush(tester);
   });
 
@@ -348,35 +526,74 @@ LoadedLevel _arena(String file) =>
 
 void arenaTests() {
   group('in a boss arena', () {
-    testWidgets('the boss is already standing where the map put it, and stays', (tester) async {
+    testWidgets('the boss is already standing where the map put it, and paces round it', (tester) async {
       final level = _arena('era2_5');
       final (game, boss) = await _start(tester, arena: level);
       final spot = level.boss!;
-      expect(boss.position.x, spot.x - 60);
+      expect(boss.position.x, closeTo(spot.x - 60, 100.01), reason: 'it paces round the place the map gave');
       expect(boss.position.y, spot.y - 140);
       expect(boss.reachedCenter, isTrue);
 
       game.player.position.x = 1500; // the student walks across the room
-      _run(game, 3);
-      expect(boss.position.x, spot.x - 60, reason: 'an arena boss does not follow the camera');
+      var moved = false;
+      for (var i = 0; i < 40; i++) {
+        game.updateTree(0.1);
+        final off = (boss.position.x - (spot.x - 60)).abs();
+        expect(off, lessThanOrEqualTo(100.01), reason: 'it never goes far, and never chases');
+        if (off > 20) moved = true;
+        if (game.questionShowing) break;
+      }
+      expect(moved, isTrue, reason: 'it does not stand still');
+      expect(boss.position.y, spot.y - 140);
       await _flush(tester);
     });
 
-    testWidgets('the first question comes after a moment to look around', (tester) async {
-      final (game, _) = await _start(tester, arena: _arena('era2_5'));
+    testWidgets('the first question waits on a scroll far from the student', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      game.player.position.x = level.spawnX;
       _run(game, 1);
       expect(game.questionShowing, isFalse);
+      expect(boss.scroll, isNull, reason: 'the boss takes a moment first');
       _run(game, 2);
-      expect(game.questionShowing, isTrue);
+      await _settle(tester);
+      expect(game.questionShowing, isFalse, reason: 'the question is on the scroll, not on screen');
+      expect(boss.askTag, 'Tanong 1 ng 22');
+      final scroll = boss.scroll!;
+      final playerMid = game.player.position.x + game.player.size.x / 2;
+      expect((scroll.position.x - playerMid).abs(), greaterThanOrEqualTo(450));
+      expect(level.minionSpawns.any((s) => (s.x - scroll.position.x).abs() < 0.5), isTrue,
+          reason: 'it stands on a spot the map gave');
+      _run(game, 0.1);
+      final side = scroll.position.x < game.cameraLeftEdgeX
+          ? -1
+          : (scroll.position.x > game.cameraRightEdgeX ? 1 : 0);
+      expect(boss.scrollSide, side, reason: 'the arrow points to it while it is off screen');
+
+      await _touchScroll(tester, game, boss);
+      expect(boss.scroll, isNull);
+      expect(boss.askTag, isNull);
+      expect(boss.scrollSide, 0);
+      await _flush(tester);
+    });
+
+    testWidgets('a wave comes with the next scroll; the student crosses the room with minions about', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      await _firstWaveInArena(tester, game, boss, playerX: level.spawnX);
+      expect(_minions(game), hasLength(BossPlan.minionsPerWave[0]));
+      _run(game, 1.0);
+      await _settle(tester);
+      expect(boss.scroll, isNotNull, reason: 'the next question is already on its scroll');
+      expect(game.questionShowing, isFalse);
       await _flush(tester);
     });
 
     testWidgets('a wave stands on the map spots, far from the student', (tester) async {
       final level = _arena('era2_5');
-      final (game, _) = await _start(tester, arena: level);
+      final (game, boss) = await _start(tester, arena: level);
       game.player.position.x = level.spawnX; // at the left end
-      _run(game, 3);
-      await _firstWave(tester, game);
+      await _firstWaveInArena(tester, game, boss, playerX: level.spawnX);
 
       final minions = _minions(game);
       expect(minions, hasLength(BossPlan.minionsPerWave[0]));
@@ -393,9 +610,8 @@ void arenaTests() {
 
     testWidgets('on a raised floor the minions stand on it', (tester) async {
       final level = _arena('era6_5'); // the palace steps: the dais is 72 up
-      final (game, _) = await _start(tester, arena: level);
-      _run(game, 3);
-      await _firstWave(tester, game);
+      final (game, boss) = await _start(tester, arena: level);
+      await _firstWaveInArena(tester, game, boss);
       expect(_minions(game), isNotEmpty);
       for (final m in _minions(game)) {
         expect(m.position.y + m.size.y, 660 - 72);

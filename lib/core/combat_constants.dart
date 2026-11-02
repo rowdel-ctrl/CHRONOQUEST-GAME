@@ -17,14 +17,16 @@ class CombatConstants {
   static const int kaalamanDisplayMax = 10;
   static const int attackChargeCost = 1;
 
-  /// A student at 0 charges slowly earns one back, so they can never be
-  /// stranded without an attack. Regeneration stops at this floor; only
-  /// artifacts push a player above it.
-  static const int kaalamanRegenFloor = 1;
+  /// Whenever the bar is below full, one charge comes back every this many
+  /// seconds (2026-11-02, the new rules: it used to refill only a student at 0, and
+  /// only up to 1). 20 until 2026-10-30 (playtest: "the regeneration is too long"),
+  /// then 6 at 0 charges, now 8 at any level below full.
+  static const double kaalamanRegenSeconds = 8.0;
 
-  /// Seconds at 0 charges before one comes back. 20 until 2026-10-30 (playtest:
-  /// "the regeneration is too long"), now 6.
-  static const double kaalamanRegenSeconds = 6.0;
+  /// Answering this many in a row right gives one extra charge on top of the
+  /// artifact's own reward, and again at every further multiple.
+  static const int streakForBonus = 3;
+  static const int streakBonusCharges = 1;
 
   /// A boss arena has no artifacts to collect on the way in, so the fight opens
   /// with the bar full too. The minions pay for the next wave.
@@ -50,8 +52,37 @@ class CombatConstants {
   static const double patrolRange = 150;
   static const double patrolSpeed = 40;
 
+  /// A Walker turns to face a student who comes this close on its own level.
+  static const double walkerNoticeRange = 320;
+
+  // ─── Chaser (the spirit, propaganda and cloud enemies) ──────────────────
+  /// Walks towards a student who comes within [chaserNoticeRange] on its own
+  /// level, slower than the student's 250, never further than [chaserLeash] from
+  /// where it stood, and never off a ledge. Out of range it walks home and paces.
+  static const double chaserNoticeRange = 440;
+  static const double chaserSpeed = 110;
+  static const double chaserLeash = 380;
+
+  /// How far apart in height two things can be and still count as "on the same
+  /// level" (a jump reaches about 128).
+  static const double sameLevelTolerance = 150;
+
+  // ─── Heavy lunge ─────────────────────────────────────────────────────────
+  /// A Heavy flashes for [lungeWindup] seconds, then lunges a short way towards
+  /// the student, then needs [lungeRecover] to get its breath back.
+  static const double lungeTriggerRange = 260;
+  static const double lungeWindup = 0.6;
+  static const double lungeDuration = 0.3;
+  static const double lungeSpeed = 480;
+  static const double lungeRecover = 0.8;
+  static const double lungeCooldown = 1.0;
+
+  /// A lunge never takes a Heavy further than this from where it stood.
+  static const double lungeLeash = 200;
+
   // ─── Enemy HP (Section 5 table) ─────────────────────────────────────────
   static const int walkerHp = 1;
+  static const int chaserHp = 1;
   static const int heavyHp = 2;
 
   // ─── Contact damage / knockback / i-frames (Section 5) ──────────────────

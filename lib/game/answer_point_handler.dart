@@ -9,6 +9,7 @@ import 'components/artifact_component.dart';
 import 'components/gate_component.dart';
 import 'components/praise_component.dart';
 import 'gate_reveal.dart';
+import 'kaalaman_handler.dart';
 
 /// The question flow for artifacts, and the end gate that follows them.
 ///
@@ -26,6 +27,7 @@ extension AnswerPointHandler on ChronoGame {
 
     artifact.lastQuestion = question;
     activeArtifact = artifact;
+    audioService.playArtifactGlow();
     _openQuestion(question);
   }
 
@@ -107,15 +109,19 @@ extension AnswerPointHandler on ChronoGame {
           artifactsTotal > 0 && artifactsAnswered == artifactsTotal;
     }
 
+    // The streak counts every answer, wrong ones too (they end it).
+    final streakBonus = noteAnswer(correct: isCorrect);
+
     if (isCorrect) {
       score += 10;
       if (question.elapsedSeconds < 10) score += 5;
       player.triggerCheer();
-      // "WOW!" over the hero's head. Skipped when there is no hero on screen
-      // (a bare game in a test).
+      // "WOW!" over the hero's head (or the streak's bonus). Skipped when there is
+      // no hero on screen (a bare game in a test).
+      if (streakBonus) audioService.playStreak();
       if (player.isMounted) {
-        player
-            .add(PraiseComponent()..position = Vector2(player.size.x / 2, -4));
+        player.add(PraiseComponent(word: streakBonus ? '+1 KAALAMAN!' : null)
+          ..position = Vector2(player.size.x / 2, -4));
       }
 
       if (artifact != null) {

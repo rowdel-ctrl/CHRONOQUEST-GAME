@@ -56,6 +56,10 @@ void main() {
   });
 
   group('regeneration', () {
+    test('is one charge every 8 seconds', () {
+      expect(CombatConstants.kaalamanRegenSeconds, 8);
+    });
+
     test('restores one charge after the regen time when at zero', () {
       final game = ChronoGame()..kaalaman = 0;
 
@@ -63,34 +67,73 @@ void main() {
       expect(game.kaalaman, 0);
 
       game.updateKaalamanRegen(1);
-      expect(game.kaalaman, CombatConstants.kaalamanRegenFloor);
+      expect(game.kaalaman, 1);
     });
 
-    test('stops at the floor and never tops up past it', () {
-      final game = ChronoGame()..kaalaman = 0;
+    test('keeps going whenever the bar is below full, not only at zero', () {
+      final game = ChronoGame()..kaalaman = 4;
+
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds);
+      expect(game.kaalaman, 5);
+      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds);
+      expect(game.kaalaman, 6);
+    });
+
+    test('stops at the full bar', () {
+      final game = ChronoGame()
+        ..kaalaman = CombatConstants.kaalamanDisplayMax - 1;
 
       game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds);
       game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 5);
 
-      expect(game.kaalaman, CombatConstants.kaalamanRegenFloor);
+      expect(game.kaalaman, CombatConstants.kaalamanDisplayMax);
     });
 
-    test('does not regenerate when the player already has charges', () {
-      final game = ChronoGame()..kaalaman = 2;
-
-      game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 3);
-
-      expect(game.kaalaman, 2);
-    });
-
-    test('spending down to zero starts a full wait, not a partial one', () {
-      final game = ChronoGame()..kaalaman = 1;
+    test('spending the first charge from a full bar starts a full wait', () {
+      final game = ChronoGame();
       game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 0.9);
       game.trySpendCharge();
 
       game.updateKaalamanRegen(CombatConstants.kaalamanRegenSeconds * 0.5);
 
-      expect(game.kaalaman, 0);
+      expect(game.kaalaman, CombatConstants.kaalamanDisplayMax - 1);
+    });
+  });
+
+  group('streak of right answers', () {
+    test('every third one in a row gives one extra charge', () {
+      final game = ChronoGame()..kaalaman = 2;
+
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.kaalaman, 2);
+      expect(game.noteAnswer(correct: true), isTrue);
+      expect(game.kaalaman, 3);
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.noteAnswer(correct: true), isTrue, reason: 'and again at six');
+      expect(game.kaalaman, 4);
+      expect(game.stats.bestStreak, 6);
+    });
+
+    test('a wrong answer starts the count again, and the best run is kept', () {
+      final game = ChronoGame()..kaalaman = 2;
+      game.noteAnswer(correct: true);
+      game.noteAnswer(correct: true);
+      game.noteAnswer(correct: false);
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.noteAnswer(correct: true), isFalse);
+      expect(game.kaalaman, 2, reason: 'no bonus: the run was broken');
+      expect(game.stats.bestStreak, 2);
+      expect(game.stats.wrongAnswers, 1);
+    });
+
+    test('the bonus cannot go over the full bar', () {
+      final game = ChronoGame();
+      for (var i = 0; i < 3; i++) {
+        game.noteAnswer(correct: true);
+      }
+      expect(game.kaalaman, CombatConstants.kaalamanDisplayMax);
     });
   });
 

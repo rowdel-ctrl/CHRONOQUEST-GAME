@@ -200,6 +200,9 @@ void main() {
       ..y = game.groundY - p.size.y - 30;
     p.velocityY = 600;
     p.isOnGround = false;
+    // (This test moves the student about by hand; the halfway flag's heart is not
+    // what it is measuring.)
+    game.stats.flagReached = true;
     final heartsBefore = game.hearts;
     await tester.pump(const Duration(milliseconds: 300));
     expect(p.position.x, dropX, reason: 'not respawned: never fell through');
@@ -261,7 +264,9 @@ void main() {
     expect(children.whereType<GateComponent>().length, 1);
     expect(children.whereType<GateComponent>().single.isLevelExit, isTrue,
         reason: 'the gate sits at the exit, so it ends the level');
-    expect(children.whereType<CoinComponent>().length, listed('coin'));
+    // The map's own coins, plus the extra ones the new rules put on high platforms.
+    expect(children.whereType<CoinComponent>().length,
+        greaterThanOrEqualTo(listed('coin')));
     expect(children.whereType<TilePlatformComponent>().length, listed('platform'));
 
     // ── the HUD pill counts what the level actually holds ────────────────

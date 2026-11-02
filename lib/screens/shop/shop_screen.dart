@@ -365,7 +365,7 @@ const _names = {
 /// One short line each: what it does.
 const _blurbs = {
   PowerUpKind.fiftyFifty: 'Tanggal 2 mali',
-  PowerUpKind.shield: 'Salo ng 1 mali',
+  PowerUpKind.shield: 'Salo ng 1 mali o hit',
   PowerUpKind.timeFreeze: 'Hinto ang oras',
 };
 

@@ -9,6 +9,9 @@ import '../chrono_game.dart';
 import '../enemy_behavior.dart';
 import '../game_collision.dart';
 import 'coin_component.dart';
+import 'player_component.dart';
+
+enum _HeavyState { idle, windup, lunge, recover }
 
 /// Enemy encountered as the player advances through the world. Spawns at a
 /// fixed world position ahead of the camera; the camera moving past it (as
@@ -139,39 +142,209 @@ class EnemyComponent extends SpriteAnimationComponent
     );
   }
 
+  /// Heavy only: where it is in its lunge. Idle until a student comes close,
+  /// then [_HeavyState.windup] (it flashes), [_HeavyState.lunge], [_HeavyState.recover].
+  _HeavyState _heavyState = _HeavyState.idle;
+  double _heavyTime = 0;
+  double _heavyCooldown = 0;
+  int _lungeDirection = 1;
+
+  /// True after a lunge has carried it off its spot: it shuffles back, once nobody
+  /// is near. A Heavy that has not lunged never moves.
+  bool _lunged = false;
+
+  /// A chaser growls once each time a student comes into its range.
+  bool _growled = false;
+
+  /// Whether this Heavy is in its wind-up flash right now.
+  @visibleForTesting
+  bool get isWindingUp => _heavyState == _HeavyState.windup;
+
+  /// Whether this Heavy is mid-lunge right now.
+  @visibleForTesting
+  bool get isLunging => _heavyState == _HeavyState.lunge;
+
+  /// Walker only: set once it has turned to face a student who came close, and
+  /// cleared when they leave, so it turns once per approach and not every frame.
+  bool _noticed = false;
+
+  PlayerComponent? get _playerOrNull {
+    try {
+      return game.player;
+    } catch (_) {
+      return null; // a bare game with no player
+    }
+  }
+
+  /// The student, when they are close enough to matter ([range] along the ground)
+  /// and on this enemy's own level (not far above or below).
+  PlayerComponent? _playerWithin(double range) {
+    final p = _playerOrNull;
+    if (p == null) return null;
+    final dx = (p.position.x + p.size.x / 2) - (position.x + size.x / 2);
+    final dy = (p.position.y + p.size.y) - (position.y + size.y);
+    if (dx.abs() > range || dy.abs() > CombatConstants.sameLevelTolerance) {
+      return null;
+    }
+    return p;
+  }
+
+  /// 1 when [p] is to the right of this enemy, -1 to the left.
+  int _towards(PlayerComponent p) =>
+      (p.position.x + p.size.x / 2) >= (position.x + size.x / 2) ? 1 : -1;
+
   @override
   void update(double dt) {
     super.update(dt);
     if (defeated) return;
 
-    if (_behavior == EnemyBehavior.walker) {
-      final nextX = position.x + CombatConstants.patrolSpeed * _direction * dt;
-
-      // Turn around at a ledge rather than walk out over a gap. Only applies
-      // while currently standing on ground: an enemy placed over a hole by
-      // mistake would otherwise flip direction every frame.
-      if (_isSupportedAt(position.x) && !_isSupportedAt(nextX)) {
-        _direction = -_direction;
-        return;
-      }
-
-      position.x = nextX;
-      final offsetFromSpawn = position.x - _spawnX;
-      if (offsetFromSpawn.abs() >= _patrolRange) {
-        // Clamp back onto the range's edge rather than let one frame's
-        // movement overshoot it, then turn around.
-        position.x = _spawnX + _patrolRange * _direction;
-        _direction = -_direction;
-      }
+    switch (_behavior) {
+      case EnemyBehavior.walker:
+        _updateWalker(dt);
+      case EnemyBehavior.chaser:
+        _updateChaser(dt);
+      case EnemyBehavior.heavy:
+        _updateHeavy(dt);
     }
-    // Heavy: deliberately no movement of its own ("barely moves" — Section
-    // 5). The camera panning past it is the only motion it shows.
 
     // Never culled behind the camera (see level_culling.dart). A living
     // enemy the player ran past is still there if they come back — which
     // also means running past one is a real decision rather than a way to
     // make it cease to exist. Defeated enemies are removed by the death
     // sequence in _die(), not by position.
+  }
+
+  /// Paces back and forth within its patrol range, turning at ledges. A student
+  /// who comes close is faced once, so a walker no longer ignores them.
+  void _updateWalker(double dt) {
+    final near = _playerWithin(CombatConstants.walkerNoticeRange);
+    if (near == null) {
+      _noticed = false;
+    } else if (!_noticed) {
+      _noticed = true;
+      _direction = _towards(near);
+    }
+    _patrol(dt);
+  }
+
+  void _patrol(double dt) {
+    final nextX = position.x + CombatConstants.patrolSpeed * _direction * dt;
+
+    // Turn around at a ledge rather than walk out over a gap. Only applies
+    // while currently standing on ground: an enemy placed over a hole by
+    // mistake would otherwise flip direction every frame.
+    if (_isSupportedAt(position.x) && !_isSupportedAt(nextX)) {
+      _direction = -_direction;
+      return;
+    }
+
+    position.x = nextX;
+    final offsetFromSpawn = position.x - _spawnX;
+    if (offsetFromSpawn.abs() >= _patrolRange) {
+      // Clamp back onto the range's edge rather than let one frame's
+      // movement overshoot it, then turn around.
+      position.x = _spawnX + _patrolRange * _direction;
+      _direction = -_direction;
+    }
+  }
+
+  /// Walks towards a student who comes close, slower than they walk, never past
+  /// its leash and never off a ledge. Out of range it walks home and paces.
+  void _updateChaser(double dt) {
+    final target = _playerWithin(CombatConstants.chaserNoticeRange);
+    if (target == null) {
+      _growled = false;
+    } else if (!_growled) {
+      _growled = true;
+      game.audioService.playChaserNotice();
+    }
+    if (target != null) {
+      final dir = _towards(target);
+      _direction = dir;
+      final dx = (target.position.x + target.size.x / 2) -
+          (position.x + size.x / 2);
+      if (dx.abs() < 8) return; // right on top: no jitter
+      final nextX = position.x + CombatConstants.chaserSpeed * dir * dt;
+      final withinLeash =
+          (nextX - _spawnX).abs() <= CombatConstants.chaserLeash;
+      final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
+      if (withinLeash && ledgeOk) position.x = nextX;
+      return;
+    }
+    if ((position.x - _spawnX).abs() > _patrolRange) {
+      // Too far from home to pace: walk back first.
+      _direction = position.x > _spawnX ? -1 : 1;
+      position.x += CombatConstants.patrolSpeed * _direction * dt;
+      return;
+    }
+    _patrol(dt);
+  }
+
+  /// Stands still until a student comes close; then flashes for a moment (the
+  /// warning), lunges a short way, and gets its breath back. A hit during the
+  /// wind-up interrupts it.
+  void _updateHeavy(double dt) {
+    switch (_heavyState) {
+      case _HeavyState.idle:
+        _heavyCooldown -= dt;
+        final target = _playerWithin(CombatConstants.lungeTriggerRange);
+        if (target != null && _heavyCooldown <= 0) {
+          _lungeDirection = _towards(target);
+          _direction = _lungeDirection;
+          _heavyState = _HeavyState.windup;
+          _heavyTime = 0;
+          game.audioService.playHeavyWindup();
+          add(ColorEffect(
+            Colors.white,
+            EffectController(
+                duration: CombatConstants.lungeWindup / 6,
+                reverseDuration: CombatConstants.lungeWindup / 6,
+                repeatCount: 3),
+            opacityFrom: 0,
+            opacityTo: 0.8,
+          ));
+        } else if (target == null && _lunged) {
+          // Nobody near: shuffle back to the place it was put.
+          final back = position.x > _spawnX ? -1 : 1;
+          final step = CombatConstants.patrolSpeed * dt;
+          if ((position.x - _spawnX).abs() <= step) {
+            position.x = _spawnX;
+            _lunged = false;
+          } else {
+            position.x += back * step;
+          }
+        }
+      case _HeavyState.windup:
+        _heavyTime += dt;
+        if (_heavyTime >= CombatConstants.lungeWindup) {
+          _heavyState = _HeavyState.lunge;
+          _heavyTime = 0;
+          game.audioService.playLunge();
+        }
+      case _HeavyState.lunge:
+        _heavyTime += dt;
+        final nextX = position.x +
+            CombatConstants.lungeSpeed * _lungeDirection * dt;
+        final withinLeash =
+            (nextX - _spawnX).abs() <= CombatConstants.lungeLeash;
+        final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
+        if (withinLeash && ledgeOk) {
+          position.x = nextX;
+          _lunged = true;
+        } else {
+          _heavyTime = CombatConstants.lungeDuration; // stopped short: spent
+        }
+        if (_heavyTime >= CombatConstants.lungeDuration) {
+          _heavyState = _HeavyState.recover;
+          _heavyTime = 0;
+        }
+      case _HeavyState.recover:
+        _heavyTime += dt;
+        if (_heavyTime >= CombatConstants.lungeRecover) {
+          _heavyState = _HeavyState.idle;
+          _heavyCooldown = CombatConstants.lungeCooldown;
+        }
+    }
   }
 
   /// Whether the centre of the sprite, at world x [x], is over solid ground —
@@ -219,6 +392,9 @@ class EnemyComponent extends SpriteAnimationComponent
     if (_hp <= 0) {
       _die();
     } else {
+      // A hit knocks the wind-up out of a Heavy: it has to start over.
+      _heavyState = _HeavyState.idle;
+      _heavyCooldown = CombatConstants.lungeCooldown;
       _flinch();
     }
   }

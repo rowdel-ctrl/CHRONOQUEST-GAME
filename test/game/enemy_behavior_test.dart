@@ -1,7 +1,6 @@
-// Walker/Heavy behaviour (GAMEPLAY-V2.md Section 5) and the enemyTypeTable
-// each maps to. Chaser is explicitly skipped this phase — the three
-// sprites that would use it run as Walkers instead, already covered by the
-// table assertions below (they're plain entries with behavior: walker).
+// Walker/Chaser/Heavy behaviour (GAMEPLAY-V2.md Section 5, and the 2026-11-02 changes:
+// a walker turns to a student who comes close, the three spirit-type enemies chase,
+// and a Heavy flashes and lunges) and the enemyTypeTable each maps to.
 //
 // Uses EnemyComponent's `enemyTypeOverride` (@visibleForTesting) to force a
 // specific sprite type rather than relying on eraId's random pick between
@@ -40,25 +39,31 @@ void main() {
   group('enemyTypeTable', () {
     test('every key matches CombatConstants HP values', () {
       for (final entry in enemyTypeTable.entries) {
-        final expectedHp = entry.value.behavior == EnemyBehavior.walker
-            ? CombatConstants.walkerHp
-            : CombatConstants.heavyHp;
+        final expectedHp = switch (entry.value.behavior) {
+          EnemyBehavior.walker => CombatConstants.walkerHp,
+          EnemyBehavior.chaser => CombatConstants.chaserHp,
+          EnemyBehavior.heavy => CombatConstants.heavyHp,
+        };
         expect(entry.value.maxHp, expectedHp,
             reason: '${entry.key} HP does not match its behaviour\'s '
                 'CombatConstants value');
       }
     });
 
-    test('has exactly 7 Walkers and 3 Heavies (Section 5\'s table)', () {
-      final walkers = enemyTypeTable.values
-          .where((d) => d.behavior == EnemyBehavior.walker)
-          .length;
-      final heavies = enemyTypeTable.values
-          .where((d) => d.behavior == EnemyBehavior.heavy)
-          .length;
+    test('has 4 Walkers, 3 Chasers and 3 Heavies', () {
+      int count(EnemyBehavior b) =>
+          enemyTypeTable.values.where((d) => d.behavior == b).length;
 
-      expect(walkers, 7);
-      expect(heavies, 3);
+      expect(count(EnemyBehavior.walker), 4);
+      expect(count(EnemyBehavior.chaser), 3);
+      expect(count(EnemyBehavior.heavy), 3);
+    });
+
+    test('the spirit, propaganda and cloud enemies are the chasers', () {
+      for (final sprite in ['dark_spirit', 'propaganda', 'misinfo_cloud']) {
+        expect(enemyTypeTable[sprite]!.behavior, EnemyBehavior.chaser,
+            reason: sprite);
+      }
     });
 
     test('covers every sprite every era can pick', () {
@@ -155,6 +160,160 @@ void main() {
       expect(enemy.position.x, startX,
           reason: 'a Heavy "barely moves" (Section 5) — zero patrol '
               'movement this phase');
+    });
+  });
+
+  /// Puts the (bare) game's student [dx] units to the right of [enemy]'s middle,
+  /// on the same ground.
+  void placePlayerBeside(ChronoGame game, EnemyComponent enemy, double dx) {
+    final p = game.player;
+    p.position = Vector2(
+      enemy.position.x + enemy.size.x / 2 + dx - p.size.x / 2,
+      enemy.position.y + enemy.size.y - p.size.y,
+    );
+  }
+
+  group('Walker notices a student', () {
+    test('turns to face one who comes close, once', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'spanish_soldier');
+      placePlayerBeside(game, enemy, -150); // to its left
+      enemy.update(1 / 60);
+      expect(enemy.patrolDirection, -1);
+      // Walking on, it does not keep snapping back to face them every frame.
+      for (var i = 0; i < 400; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.patrolDirection, anyOf(-1, 1));
+    });
+
+    test('ignores one far away', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'spanish_soldier');
+      final start = enemy.patrolDirection;
+      placePlayerBeside(game, enemy, -(CombatConstants.walkerNoticeRange + 200));
+      enemy.update(1 / 60);
+      expect(enemy.patrolDirection, start);
+    });
+  });
+
+  group('Chaser', () {
+    test('walks towards a student who comes close, slower than they walk',
+        () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'dark_spirit');
+      placePlayerBeside(game, enemy, -300);
+      final before = enemy.position.x;
+      for (var i = 0; i < 60; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.position.x, lessThan(before), reason: 'it came closer');
+      expect(before - enemy.position.x,
+          closeTo(CombatConstants.chaserSpeed, 3),
+          reason: 'one second at chaserSpeed');
+      expect(CombatConstants.chaserSpeed, lessThan(250),
+          reason: 'a student can outrun it');
+      expect(enemy.patrolDirection, -1, reason: 'and faces them');
+    });
+
+    test('never goes further than its leash from where it stood', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'dark_spirit');
+      final spawn = enemy.position.x;
+      placePlayerBeside(game, enemy, -400);
+      for (var i = 0; i < 60 * 10; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(spawn - enemy.position.x,
+          lessThanOrEqualTo(CombatConstants.chaserLeash + 0.01));
+    });
+
+    test('does not chase a student on another level', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'dark_spirit');
+      placePlayerBeside(game, enemy, -300);
+      game.player.position.y -= CombatConstants.sameLevelTolerance + 100;
+      final before = enemy.position.x;
+      enemy.update(1 / 60);
+      // It only paces (at patrolSpeed), it does not run at chaserSpeed.
+      expect((enemy.position.x - before).abs(),
+          lessThanOrEqualTo(CombatConstants.patrolSpeed / 60 + 0.01));
+    });
+
+    test('dies to one hit', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'dark_spirit');
+      enemy.takeHit();
+      expect(enemy.defeated, true);
+    });
+  });
+
+  group('Heavy lunge', () {
+    test('flashes first, then lunges towards the student, then rests', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'tank');
+      final start = enemy.position.x;
+      placePlayerBeside(game, enemy, -200);
+
+      enemy.update(1 / 60);
+      expect(enemy.isWindingUp, true, reason: 'the warning comes first');
+      expect(enemy.position.x, start, reason: 'and it does not move during it');
+
+      var t = 0.0;
+      while (!enemy.isLunging && t < 2) {
+        enemy.update(1 / 60);
+        t += 1 / 60;
+      }
+      expect(enemy.isLunging, true);
+      expect(t, closeTo(CombatConstants.lungeWindup, 0.1));
+
+      while (enemy.isLunging && t < 3) {
+        enemy.update(1 / 60);
+        t += 1 / 60;
+      }
+      expect(start - enemy.position.x, greaterThan(60),
+          reason: 'it moved a good way towards the student (to the left)');
+      expect(start - enemy.position.x,
+          lessThanOrEqualTo(CombatConstants.lungeLeash + 0.01));
+      expect(enemy.isLunging, false);
+    });
+
+    test('a hit during the wind-up stops it', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'tank');
+      placePlayerBeside(game, enemy, -200);
+      enemy.update(1 / 60);
+      expect(enemy.isWindingUp, true);
+      enemy.takeHit();
+      expect(enemy.isWindingUp, false);
+      expect(enemy.defeated, false);
+    });
+
+    test('does nothing while the student is far away', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'tank');
+      placePlayerBeside(game, enemy, -(CombatConstants.lungeTriggerRange + 300));
+      for (var i = 0; i < 120; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.isWindingUp, false);
+      expect(enemy.isLunging, false);
+    });
+
+    test('goes back to where it stood once the student leaves', () async {
+      final game = _bareGame();
+      final enemy = await _mountEnemy(game, 'tank');
+      final start = enemy.position.x;
+      placePlayerBeside(game, enemy, -200);
+      for (var i = 0; i < 60 * 3; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.position.x, isNot(start));
+      placePlayerBeside(game, enemy, -2000);
+      for (var i = 0; i < 60 * 12; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(enemy.position.x, start);
     });
   });
 

@@ -160,6 +160,10 @@ final GoRouter appRouter = GoRouter(
         badges: state.extra is LevelCompleteResult
             ? (state.extra! as LevelCompleteResult).badges
             : const [],
+        // And the power-ups it gave.
+        powerUps: state.extra is LevelCompleteResult
+            ? (state.extra! as LevelCompleteResult).powerUps
+            : const [],
       ),
     ),
     GoRoute(
