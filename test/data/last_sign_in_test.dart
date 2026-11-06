@@ -121,7 +121,7 @@ void main() {
 
       await StorageService.clearAll();
 
-      expect(StorageService.getCharacter(), 'rizal', reason: 'back to the default');
+      expect(StorageService.getCharacter(), 'boy', reason: 'back to the default');
       expect(StorageService.getCompletedLevels('spanish'), isEmpty);
       expect(StorageService.getCachedEraProgress('spanish'), isNull);
       expect(StorageService.getHeartsState().count, HeartsState.initial().count);

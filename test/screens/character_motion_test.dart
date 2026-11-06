@@ -16,7 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 final _paid = allCharacters.firstWhere((c) => c.unlockCost > 0);
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
-  _FakeGame({int coins = 0, String selected = 'rizal'})
+  _FakeGame({int coins = 0, String selected = 'boy'})
       : super(GameState(
           coins: coins,
           selectedCharacterId: selected,
@@ -58,8 +58,11 @@ late _FakeGame _game;
 final _landed = <String>[];
 
 Future<void> _pump(WidgetTester tester,
-    {bool animations = true, int coins = 0, bool opened = true}) async {
-  _game = _FakeGame(coins: coins);
+    {bool animations = true,
+    int coins = 0,
+    bool opened = true,
+    String selected = 'boy'}) async {
+  _game = _FakeGame(coins: coins, selected: selected);
   _landed.clear();
   tester.platformDispatcher.accessibilityFeaturesTestValue =
       FakeAccessibilityFeatures(disableAnimations: !animations);
@@ -98,38 +101,38 @@ void main() {
 
   testWidgets('another hero slides out and the next slides in', (tester) async {
     await _pump(tester);
-    final rest = _heroX(tester, 'rizal');
+    final rest = _heroX(tester, 'boy');
 
     await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
     await tester.pump(); // the animation starts on this frame
     await tester.pump(const Duration(milliseconds: 150));
-    // Rizal is leaving to the left.
-    expect(find.byKey(const ValueKey('hero_rizal')), findsOneWidget);
-    expect(_heroX(tester, 'rizal'), lessThan(rest - 5));
+    // The boy is leaving to the left.
+    expect(find.byKey(const ValueKey('hero_boy')), findsOneWidget);
+    expect(_heroX(tester, 'boy'), lessThan(rest - 5));
 
     await tester.pump(const Duration(milliseconds: 250));
-    // Luna is arriving from the right.
-    expect(find.byKey(const ValueKey('hero_luna')), findsOneWidget);
-    expect(find.byKey(const ValueKey('hero_rizal')), findsNothing);
+    // The girl is arriving from the right.
+    expect(find.byKey(const ValueKey('hero_girl')), findsOneWidget);
+    expect(find.byKey(const ValueKey('hero_boy')), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 600));
-    expect(_name(tester), 'Luna');
-    expect((_heroX(tester, 'luna') - rest).abs(), lessThan(1),
+    expect(_name(tester), 'Babae');
+    expect((_heroX(tester, 'girl') - rest).abs(), lessThan(1),
         reason: 'and it comes to rest in the same place');
   });
 
   testWidgets('a hero that comes in from the left when going back',
       (tester) async {
-    await _pump(tester);
-    final rest = _heroX(tester, 'rizal');
+    await _pump(tester, selected: 'girl');
+    final rest = _heroX(tester, 'girl');
     await tester.tap(find.byKey(CharacterSelectionScreen.prevKey));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 330));
-    expect(find.byKey(const ValueKey('hero_lapu')), findsOneWidget);
-    expect(_heroX(tester, 'lapu'), lessThan(rest),
-        reason: 'Lapu-Lapu comes from the left');
+    expect(find.byKey(const ValueKey('hero_boy')), findsOneWidget);
+    expect(_heroX(tester, 'boy'), lessThan(rest),
+        reason: 'the boy comes from the left');
     await tester.pump(const Duration(milliseconds: 700));
-    expect(_name(tester), 'Lapu-Lapu');
+    expect(_name(tester), 'Lalaki');
   });
 
   testWidgets('a bought hero lights up with sparks, confetti and NAKUHA NA!',
@@ -169,7 +172,7 @@ void main() {
     await _pump(tester);
     await tester.tap(find.byKey(CharacterSelectionScreen.chooseKey));
     await tester.pump(const Duration(milliseconds: 100));
-    expect(_game.chosen, ['rizal'], reason: 'the hero is chosen at once');
+    expect(_game.chosen, ['boy'], reason: 'the hero is chosen at once');
     expect(_landed, isEmpty);
 
     await tester.pump(const Duration(milliseconds: 500));
@@ -195,13 +198,13 @@ void main() {
       'with animations removed there is no motion at all, and choosing is at once',
       (tester) async {
     await _pump(tester, animations: false);
-    final rest = _heroX(tester, 'rizal');
+    final rest = _heroX(tester, 'boy');
 
     await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
     await tester.pump();
-    expect(_name(tester), 'Luna');
-    expect(find.byKey(const ValueKey('hero_rizal')), findsNothing);
-    expect((_heroX(tester, 'luna') - rest).abs(), lessThan(1));
+    expect(_name(tester), 'Babae');
+    expect(find.byKey(const ValueKey('hero_boy')), findsNothing);
+    expect((_heroX(tester, 'girl') - rest).abs(), lessThan(1));
     expect(
         tester.state<ParticleLayerState>(find.byType(ParticleLayer)).alive, 0);
 

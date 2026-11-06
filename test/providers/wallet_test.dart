@@ -238,6 +238,62 @@ void main() {
       expect(StorageService.getCharacter(), free.id);
     });
 
+    test('a fresh student has exactly the boy and the girl to pick', () {
+      final n = fresh('r1');
+      final open = [
+        for (final c in allCharacters)
+          if (n.isCharacterUnlocked(c.id)) c.id
+      ];
+      expect(open, ['boy', 'girl']);
+      expect(n.state.selectedCharacterId, 'boy');
+    });
+
+    const prices = {
+      'rizal': 600,
+      'luna': 400,
+      'bonifacio': 250,
+      'delpilar': 250,
+      'lapu': 150,
+    };
+    for (final e in prices.entries) {
+      test('${e.key} is refused until bought and costs ${e.value}', () {
+        expect(getCharacterById(e.key).unlockCost, e.value);
+
+        final poor = fresh('p_${e.key}', coins: e.value - 1);
+        poor.selectCharacter(e.key);
+        expect(poor.state.selectedCharacterId, 'boy', reason: 'locked');
+        expect(poor.unlockCharacter(e.key), isFalse);
+        expect(poor.state.coins, e.value - 1);
+
+        final rich = fresh('b_${e.key}', coins: e.value + 5);
+        expect(rich.unlockCharacter(e.key), isTrue);
+        expect(rich.state.coins, 5, reason: 'the price was taken');
+        rich.selectCharacter(e.key);
+        expect(rich.state.selectedCharacterId, e.key);
+
+        // Still his after the app is opened again.
+        final again = GameNotifier(clock: ServerClock.fixed(server))
+          ..loadWallet('b_${e.key}');
+        expect(again.isCharacterUnlocked(e.key), isTrue);
+        expect(again.state.coins, 5);
+      });
+    }
+
+    test('a saved rizal of a student who never bought him falls back to boy',
+        () async {
+      await StorageService.saveCharacter('rizal');
+      final n = GameNotifier(clock: ServerClock.fixed(server));
+      expect(n.state.selectedCharacterId, 'rizal',
+          reason: 'read from the phone before anyone is known');
+      n.loadWallet('r2');
+      expect(n.state.selectedCharacterId, 'boy');
+      expect(StorageService.getCharacter(), 'boy');
+    });
+
+    test('an unknown id falls back to the first free hero', () {
+      expect(getCharacterById('nobody').id, 'boy');
+    });
+
     test('the testing switch opens every character', () async {
       await StorageService.setUnlockAll(true);
       addTearDown(() => StorageService.setUnlockAll(false));

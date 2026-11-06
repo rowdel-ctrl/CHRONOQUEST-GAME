@@ -17,6 +17,10 @@ import '../../widgets/pixel_icon.dart';
 /// The colour of each hero: the light behind it and the tint of its roster tile.
 Color characterColor(String id) {
   switch (id) {
+    case 'boy':
+      return const Color(0xFF9B6BD1);
+    case 'girl':
+      return const Color(0xFFD97BB6);
     case 'lapu':
       return const Color(0xFFD4A853);
     case 'rizal':
@@ -31,6 +35,9 @@ Color characterColor(String id) {
       return AppColors.accent;
   }
 }
+
+/// How many walking pictures a hero has: 4, and 5 for Lapu-Lapu.
+int walkFramesOf(String id) => id == 'lapu' ? 5 : 4;
 
 /// 0 before [a], 1 after [b], a straight line between.
 double _seg(double t, double a, double b) =>
@@ -437,9 +444,12 @@ class _StageState extends State<_Stage> with TickerProviderStateMixin {
     if (motionAllowed(context)) {
       if (!_nudge.isAnimating) _nudge.repeat(reverse: true);
       if (!_bob.isAnimating) _bob.repeat(reverse: true);
-      // There is no idle art, so the four walk frames are shown slowly.
+      // The walk frames are shown slowly as the idle (4 frames, 5 for Lapu-Lapu).
       _frameTimer = Timer.periodic(const Duration(milliseconds: 450), (_) {
-        if (mounted) setState(() => _idleFrame = (_idleFrame + 1) % 4);
+        if (mounted) {
+          setState(() =>
+              _idleFrame = (_idleFrame + 1) % walkFramesOf(widget.char.id));
+        }
       });
       _glintTimer =
           Timer.periodic(const Duration(milliseconds: 2300), (_) => _glint());
@@ -743,7 +753,7 @@ class _StageState extends State<_Stage> with TickerProviderStateMixin {
       if (m.full) {
         final k = _seg(e, 0, 0.475);
         dx = -(1 - Curves.easeOut.transform(k)) * (_stageW / 2 + heroW);
-        if (e < 0.475) frame = ((e * 2000) ~/ 110) % 4;
+        if (e < 0.475) frame = ((e * 2000) ~/ 110) % walkFramesOf(char.id);
         final s = math.sin(_seg(e, 0.475, 0.6) * math.pi);
         sy = 1 - 0.08 * s;
         sx = 1 + 0.05 * s;
@@ -809,7 +819,7 @@ class _StageState extends State<_Stage> with TickerProviderStateMixin {
         dy -= 28 * heroScale * rise;
       } else {
         final p = (ch - 0.5) / 0.5;
-        frame = ((ch * 1300) ~/ 90) % 4;
+        frame = ((ch * 1300) ~/ 90) % walkFramesOf(char.id);
         dx = Curves.easeInCubic.transform(p) *
             (MediaQuery.sizeOf(context).width + heroW);
       }
@@ -819,7 +829,8 @@ class _StageState extends State<_Stage> with TickerProviderStateMixin {
     final bob = Curves.easeInOut.transform(_bob.value);
     final path = jump
         ? 'assets/characters/${char.id}_jump.png'
-        : 'assets/characters/${char.id}_walk_${frame + 1}.png';
+        : 'assets/characters/${char.id}_walk_'
+            '${frame % walkFramesOf(char.id) + 1}.png';
     Widget sprite = _HeroSprite(
       key: ValueKey('hero_${char.id}'),
       path: path,
@@ -867,10 +878,13 @@ class _HeroSprite extends StatelessWidget {
     required this.jump,
   });
 
+  /// The new pictures are not all one size, so none is stretched: each is drawn
+  /// at its own pixels divided by (300 / [height]), the same rule as the game
+  /// (a 300 pixel tall picture fills the stage), standing on its bottom edge.
   Widget _image() => Image.asset(
         path,
-        width: width,
-        fit: BoxFit.fitWidth,
+        scale: 300 / height,
+        fit: BoxFit.contain,
         alignment: Alignment.bottomCenter,
         filterQuality: FilterQuality.none,
         gaplessPlayback: true,
@@ -910,16 +924,15 @@ class _HeroSprite extends StatelessWidget {
     } else {
       body = _image();
     }
-    // The jump frame is taller than the others; scaled down so it stays on the stage.
-    if (jump) {
-      body = Transform.scale(
-          scale: 0.85, alignment: Alignment.bottomCenter, child: body);
-    }
+    // The new jump picture is the same size as the walk ones, so it needs no
+    // scaling down any more.
     return SizedBox(
       width: width,
       height: height,
       child: OverflowBox(
         alignment: Alignment.bottomCenter,
+        minWidth: 0,
+        maxWidth: double.infinity,
         minHeight: 0,
         maxHeight: double.infinity,
         child: body,
@@ -1176,15 +1189,28 @@ class _Info extends StatelessWidget {
                   dx: -16,
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (var i = 0; i < allCharacters.length; i++) ...[
-                      if (i > 0) const SizedBox(width: 6),
-                      _tile(i),
+                // Seven heroes: the tiles get narrower when the row would not
+                // fit (a 320 wide phone), down to 34 wide.
+                LayoutBuilder(builder: (context, box) {
+                  final n = allCharacters.length;
+                  // 6 apart when all fit at 48 wide, else closer, then thinner.
+                  final gap = !box.maxWidth.isFinite ||
+                          box.maxWidth >= 48 * n + 6 * (n - 1)
+                      ? 6.0
+                      : 3.0;
+                  final tileW = box.maxWidth.isFinite
+                      ? ((box.maxWidth - gap * (n - 1)) / n).clamp(34.0, 48.0)
+                      : 48.0;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (var i = 0; i < n; i++) ...[
+                        if (i > 0) SizedBox(width: gap),
+                        _tile(i, tileW),
+                      ],
                     ],
-                  ],
-                ),
+                  );
+                }),
               ],
             ),
             if (ce > 0.2 && ce < 0.85)
@@ -1266,13 +1292,14 @@ class _Info extends StatelessWidget {
     );
   }
 
-  Widget _tile(int i) {
+  Widget _tile(int i, double tileW) {
     final c = allCharacters[i];
     final tile = _RosterTile(
       char: c,
       selected: i == selected,
       locked: isLocked(c.id),
       color: characterColor(c.id),
+      width: tileW,
       onTap: () => onPick(i),
     );
     final m = motion;
@@ -1298,6 +1325,7 @@ class _RosterTile extends StatelessWidget {
   final bool selected;
   final bool locked;
   final Color color;
+  final double width;
   final VoidCallback onTap;
 
   const _RosterTile({
@@ -1305,6 +1333,7 @@ class _RosterTile extends StatelessWidget {
     required this.selected,
     required this.locked,
     required this.color,
+    this.width = 48,
     required this.onTap,
   });
 
@@ -1344,8 +1373,8 @@ class _RosterTile extends StatelessWidget {
               Transform.scale(scale: scale, child: child),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
-            width: 48,
-            height: 54,
+            width: width,
+            height: width * 54 / 48,
             transform: Matrix4.translationValues(0, selected ? -4 : 0, 0),
             decoration: BoxDecoration(
               color: selected

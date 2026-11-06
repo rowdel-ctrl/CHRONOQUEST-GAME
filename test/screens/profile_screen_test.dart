@@ -146,7 +146,7 @@ void main() {
     expect(find.text('EDG5A1'), findsOneWidget);
     expect(find.byKey(ProfileScreen.heroKey), findsOneWidget);
     final hero = tester.widget<Image>(find.byKey(ProfileScreen.heroKey));
-    expect((hero.image as AssetImage).assetName, 'assets/characters/rizal_walk_1.png');
+    expect((hero.image as AssetImage).assetName, 'assets/characters/boy_walk_1.png');
   });
 
   testWidgets('the school and the labels are not on the page', (tester) async {

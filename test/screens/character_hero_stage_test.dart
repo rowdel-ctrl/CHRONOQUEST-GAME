@@ -1,5 +1,5 @@
 // Pick your hero: one big hero with light in its own colour, a short name, one
-// button, and a row of all five to tap or swipe between.
+// button, and a row of all seven to tap or swipe between.
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/providers/game_provider.dart';
@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
-  _FakeGame({String selected = 'rizal'})
+  _FakeGame({String selected = 'boy'})
       : super(GameState(
           selectedCharacterId: selected,
           hearts: const HeartsState(count: 3, regenStartMs: null),
@@ -42,7 +42,7 @@ late _FakeGame _game;
 Future<void> _pump(
   WidgetTester tester, {
   Size size = const Size(732, 320),
-  String selected = 'rizal',
+  String selected = 'boy',
   bool animations = false,
   List<String>? landedOn,
 }) async {
@@ -105,7 +105,7 @@ void main() {
     testWidgets(
         'the right arrow shows the next hero and the left one the one before',
         (tester) async {
-      await _pump(tester); // Rizal, the second of five
+      await _pump(tester, selected: 'rizal'); // the fourth of seven
       await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
       await tester.pump();
       expect(_name(tester), 'Luna');
@@ -119,7 +119,7 @@ void main() {
 
     testWidgets('an arrow with nowhere to go is dim and does nothing',
         (tester) async {
-      await _pump(tester, selected: 'lapu');
+      await _pump(tester, selected: 'boy');
       Opacity dim(Key key) => tester.widget<Opacity>(
           find.descendant(of: find.byKey(key), matching: find.byType(Opacity)));
       expect(dim(CharacterSelectionScreen.prevKey).opacity, lessThan(0.5));
@@ -127,7 +127,7 @@ void main() {
 
       await tester.tap(find.byKey(CharacterSelectionScreen.prevKey));
       await tester.pump();
-      expect(_name(tester), 'Lapu-Lapu');
+      expect(_name(tester), 'Lalaki');
     });
 
     testWidgets('and the right one is dim on the last hero', (tester) async {
@@ -170,7 +170,7 @@ void main() {
         (tester) async {
       CharacterSelectionScreen.resetOpening();
       await _pump(tester, animations: true); // about 300 ms in
-      final hero = find.byKey(const ValueKey('hero_rizal'));
+      final hero = find.byKey(const ValueKey('hero_boy'));
       final early = tester.getCenter(hero).dx;
       await tester.pump(const Duration(milliseconds: 2400));
       final rest = tester.getCenter(hero).dx;
@@ -188,7 +188,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 2500));
       // The screen is opened again in the same run of the game.
       await _pump(tester, animations: true);
-      final hero = find.byKey(const ValueKey('hero_rizal'));
+      final hero = find.byKey(const ValueKey('hero_boy'));
       final early = tester.getCenter(hero).dx;
       await tester.pump(const Duration(milliseconds: 2500));
       expect((tester.getCenter(hero).dx - early).abs(), lessThan(2));
@@ -202,9 +202,10 @@ void main() {
 
   testWidgets('shows the short name, big, and nothing about the era',
       (tester) async {
-    await _pump(tester);
+    await _pump(tester, selected: 'rizal');
     expect(_name(tester), 'Rizal');
     expect(find.text('Jose Rizal'), findsNothing);
+    expect(find.text('Batang Lalaki'), findsNothing);
     for (final c in allCharacters) {
       expect(find.text(c.era), findsNothing);
       expect(find.text(c.description), findsNothing);
@@ -248,7 +249,7 @@ void main() {
         '${paid.unlockCost}');
     expect(find.byKey(CharacterSelectionScreen.unlockKey), findsOneWidget);
 
-    await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey('rizal')));
+    await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey('girl')));
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(CharacterSelectionScreen.priceKey), findsNothing);
   });
@@ -256,44 +257,49 @@ void main() {
   testWidgets(
       'a swipe on the hero goes to the next one, and back, and stops at the ends',
       (tester) async {
-    await _pump(tester, selected: 'lapu');
-    final hero = find.byKey(const ValueKey('hero_lapu'));
-    expect(_name(tester), 'Lapu-Lapu');
+    await _pump(tester, selected: 'girl');
+    final hero = find.byKey(const ValueKey('hero_girl'));
+    expect(_name(tester), 'Babae');
 
     await tester.fling(hero, const Offset(-300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(_name(tester), 'Rizal');
-
-    await tester.fling(
-        find.byKey(const ValueKey('hero_rizal')), const Offset(300, 0), 1500);
-    await tester.pump(const Duration(milliseconds: 300));
     expect(_name(tester), 'Lapu-Lapu');
 
-    await tester.fling(
-        find.byKey(const ValueKey('hero_lapu')), const Offset(300, 0), 1500);
+    await tester.fling(find.byKey(const ValueKey('hero_lapu')),
+        const Offset(300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(_name(tester), 'Lapu-Lapu', reason: 'nothing before the first');
+    expect(_name(tester), 'Babae');
+
+    await tester.fling(find.byKey(const ValueKey('hero_girl')),
+        const Offset(300, 0), 1500);
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(_name(tester), 'Lalaki');
+
+    await tester.fling(find.byKey(const ValueKey('hero_boy')),
+        const Offset(300, 0), 1500);
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(_name(tester), 'Lalaki', reason: 'nothing before the first');
   });
 
   testWidgets('PILIIN chooses the hero and goes on to the eras',
       (tester) async {
     final landed = <String>[];
     await _pump(tester, landedOn: landed);
-    await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey('lapu')));
+    await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey('girl')));
     await tester.pump(const Duration(milliseconds: 300));
 
     await tester.tap(find.byKey(CharacterSelectionScreen.chooseKey));
     await tester.pump(const Duration(milliseconds: 300));
 
-    expect(_game.chosen, ['lapu']);
+    expect(_game.chosen, ['girl']);
     expect(landed, ['/era-selection']);
   });
 
   testWidgets('the light behind the hero takes the hero\'s own colour',
       (tester) async {
     await _pump(tester);
-    expect(characterColor('rizal'), isNot(characterColor('luna')));
-    expect(find.byKey(const ValueKey('backdrop_rizal')), findsOneWidget);
+    expect(characterColor('boy'), isNot(characterColor('luna')));
+    expect(find.byKey(const ValueKey('backdrop_boy')), findsOneWidget);
 
     await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey('luna')));
     await tester.pump(const Duration(milliseconds: 300));
@@ -318,7 +324,7 @@ void main() {
     expect(tester.hasRunningAnimations, isFalse);
   });
 
-  for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
+  for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700), Size(320, 640)]) {
     testWidgets('fits ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
       await _pump(tester, size: size, animations: true);

@@ -17,7 +17,7 @@ class BootProgress {
   final ValueNotifier<double> value = ValueNotifier<double>(0);
 
   /// The hero the student chose, once the saved data has been read.
-  final ValueNotifier<String> hero = ValueNotifier<String>('rizal');
+  final ValueNotifier<String> hero = ValueNotifier<String>('boy');
 
   void dispose() {
     value.dispose();

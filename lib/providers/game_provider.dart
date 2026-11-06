@@ -23,7 +23,7 @@ class GameState {
   final Set<String> unlockedCharacters;
 
   GameState({
-    this.selectedCharacterId = 'rizal',
+    this.selectedCharacterId = 'boy',
     this.currentEraId = 'pre-colonial',
     this.currentLevel = 1,
     PowerUps? powerUps,

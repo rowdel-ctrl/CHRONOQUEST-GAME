@@ -82,7 +82,7 @@ class StorageService {
   }
 
   static String getCharacter() {
-    return appBox.get(_characterKey, defaultValue: 'rizal') as String;
+    return appBox.get(_characterKey, defaultValue: 'boy') as String;
   }
 
   // ─── CONTROL SCHEME ───────────────────────────────────────────────────────

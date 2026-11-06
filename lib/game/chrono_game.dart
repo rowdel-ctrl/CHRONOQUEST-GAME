@@ -307,7 +307,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   double currentTime() => _gameTime;
 
   // Character selection
-  String selectedCharacterId = 'rizal';
+  String selectedCharacterId = 'boy';
 
   @override
   Future<void> onLoad() async {

@@ -44,6 +44,8 @@ void main() {
         .pumpWidget(MaterialApp(home: SplashScreen(progress: progress)));
     await tester.pump();
     expect(tester.widget<LoadingLine>(find.byType(LoadingLine)).progress, 0);
+    expect(tester.widget<LoadingLine>(find.byType(LoadingLine)).charId, 'boy',
+        reason: 'the first free hero until the student is known');
 
     progress.hero.value = 'luna';
     progress.value.value = 0.8;

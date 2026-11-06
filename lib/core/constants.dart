@@ -489,14 +489,32 @@ class CharacterData {
   });
 }
 
+// The first character with unlockCost 0 is the free default hero.
+// The names of 'boy' and 'girl' are placeholders: rename them here only.
 const List<CharacterData> allCharacters = [
+  CharacterData(
+    id: 'boy',
+    name: 'Batang Lalaki',
+    shortName: 'Lalaki',
+    era: 'Bagong Bayani',
+    description: 'Mag-aaral na handang matuto',
+    unlockCost: 0,
+  ),
+  CharacterData(
+    id: 'girl',
+    name: 'Batang Babae',
+    shortName: 'Babae',
+    era: 'Bagong Bayani',
+    description: 'Mag-aaral na handang matuto',
+    unlockCost: 0,
+  ),
   CharacterData(
     id: 'lapu',
     name: 'Datu Lapu-Lapu',
     shortName: 'Lapu-Lapu',
     era: 'Sinaunang Pilipinas',
     description: 'Bayani ng Mactan',
-    unlockCost: 0,
+    unlockCost: 150,
   ),
   CharacterData(
     id: 'rizal',
@@ -504,7 +522,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Rizal',
     era: 'Pananakop ng Espanya',
     description: 'Pambansang Bayani',
-    unlockCost: 0,
+    unlockCost: 600,
   ),
   CharacterData(
     id: 'luna',
@@ -512,7 +530,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Luna',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Heneral ng Hukbong Pilipino',
-    unlockCost: 100,
+    unlockCost: 400,
   ),
   CharacterData(
     id: 'bonifacio',
@@ -520,7 +538,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Bonifacio',
     era: 'Pananakop ng Espanya',
     description: 'Ama ng Katipunan',
-    unlockCost: 200,
+    unlockCost: 250,
   ),
   CharacterData(
     id: 'delpilar',
@@ -528,7 +546,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Del Pilar',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
-    unlockCost: 300,
+    unlockCost: 250,
   ),
 ];
 
@@ -556,6 +574,6 @@ int eraNumberFor(String eraId) {
 CharacterData getCharacterById(String characterId) {
   return allCharacters.firstWhere(
     (c) => c.id == characterId,
-    orElse: () => allCharacters[1], // default to rizal
+    orElse: () => allCharacters.firstWhere((c) => c.unlockCost == 0),
   );
 }
