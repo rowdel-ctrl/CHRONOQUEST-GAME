@@ -50,7 +50,7 @@ void main() {
     final game = ChronoGame()
       ..currentEra = _eraIds[_era - 1]
       ..currentLevel = _bossLevels[_era - 1]
-      ..selectedCharacterId = 'rizal'
+      ..selectedCharacterId = 'boy'
       ..hearts = 5;
     // No audio plugin in a test: its late channel errors are not the fight's.
     final reportError = FlutterError.onError;
@@ -85,6 +85,13 @@ void main() {
     Future<void> run(double seconds, {bool stopOnQuestion = true}) async {
       for (var t = 0.0; t < seconds; t += 0.1) {
         if (stopOnQuestion && game.questionShowing) break;
+        // Since 1.6.3 a question waits on a scroll in the arena: the student walks to it.
+        final scroll = game.boss?.scroll;
+        if (scroll != null && !game.questionShowing && scroll.isLoaded) {
+          game.player.position
+            ..x = scroll.position.x - game.player.size.x / 2
+            ..y = scroll.position.y - game.player.size.y / 2;
+        }
         game.update(0.1);
         final banner = game.boss?.banner;
         if (banner != null && banner != lastBanner) {
