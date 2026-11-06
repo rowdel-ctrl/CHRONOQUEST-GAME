@@ -5,6 +5,7 @@ import 'package:flame/effects.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
+import '../art_scale.dart';
 import '../chrono_game.dart';
 import '../enemy_behavior.dart';
 import '../game_collision.dart';
@@ -107,21 +108,21 @@ class EnemyComponent extends SpriteAnimationComponent
     _behavior = typeData.behavior;
     _hp = typeData.maxHp;
 
-    // Load the 2-frame walking cycle
-    final frame1 = await game.loadSprite('enemies/${_enemyType}_1.png');
-    final frame2 = await game.loadSprite('enemies/${_enemyType}_2.png');
+    _typeData = typeData;
 
-    animation = SpriteAnimation.spriteList(
-      [frame1, frame2],
-      stepTime: 0.3,
-    );
+    // The walking cycle: _1 is required, _2 and _3 are used when the art has
+    // them (the old art only had two pictures).
+    final frames = [await game.loadSprite('enemies/${_enemyType}_1.png')];
+    for (var i = 2; i <= 3; i++) {
+      final frame = await _tryLoad('${_enemyType}_$i');
+      if (frame != null) frames.add(frame);
+    }
+    animation = SpriteAnimation.spriteList(frames, stepTime: 0.2);
+    _hurtSprite = await _tryLoad('${_enemyType}_hurt');
+    _attackSprite = await _tryLoad('${_enemyType}_attack');
 
-    // 1.5x the native 60x72 art. Everything in the world except the player
-    // (96x120) and boss (120x140) used to render at native size, so the
-    // player towered over enemies that were supposed to threaten them. The
-    // hitbox below is added after this and derives from `size`, so the hit
-    // area grows with the sprite — deliberate, since the sprite is what the
-    // student aims at.
+    // The box stays 90x108 for physics and level layout; only the drawing
+    // follows the picture's own size (see [render] and art_scale.dart).
     size = Vector2(spriteWidth, spriteHeight);
     position = Vector2(
       worldX ?? game.cameraRightEdgeX + 60,
@@ -132,15 +133,50 @@ class EnemyComponent extends SpriteAnimationComponent
     // transparent margins, so a full-size hitbox made the enemy hurt the
     // player from a visible gap away — the "phantom hit" the project's own
     // Flame conventions warn about, and what a playtester read as the enemy
-    // damaging them without being touched.
-    add(
-      RectangleHitbox.relative(
-        Vector2(CombatConstants.enemyHitWidthFraction, CombatConstants.enemyHitHeightFraction),
-        parentSize: size,
-        anchor: Anchor.center,
-      ),
-    );
+    // damaging them without being touched. A low or wide body (tank, cloud)
+    // has its own size and stands on the ground; see [_hitLocal].
+    final local = _hitLocal;
+    add(RectangleHitbox(
+      position: Vector2(local.left, local.top),
+      size: Vector2(local.width, local.height),
+    ));
   }
+
+  EnemyTypeData? _typeData;
+  Sprite? _hurtSprite;
+  Sprite? _attackSprite;
+
+  /// Seconds the hurt picture still shows after a hit that did not defeat it.
+  double _hurtLeft = 0;
+
+  Future<Sprite?> _tryLoad(String name) async {
+    try {
+      return await game.loadSprite('enemies/$name.png');
+    } catch (_) {
+      return null; // optional picture: the walking pictures stand in
+    }
+  }
+
+  /// The hit area in this component's own coordinates (0,0 = top-left of the box).
+  /// Tall humans: the old centred fractions of the box. Low or wide bodies: their own
+  /// size, centred sideways, with the bottom on the feet line.
+  Rect get _hitLocal {
+    final data = _typeData ??
+        (enemyTypeOverride == null ? null : enemyTypeDataFor(enemyTypeOverride!));
+    if (data != null && data.hasBodyHit) {
+      final w = data.hitWidth!;
+      final h = data.hitHeight!;
+      return Rect.fromLTWH((size.x - w) / 2, size.y - h, w, h);
+    }
+    final w = size.x * CombatConstants.enemyHitWidthFraction;
+    final h = size.y * CombatConstants.enemyHitHeightFraction;
+    return Rect.fromLTWH((size.x - w) / 2, (size.y - h) / 2, w, h);
+  }
+
+  /// The part of this enemy that hurts, in world coordinates. The player's contact
+  /// check should use this so it and the collision hitbox can never disagree.
+  Rect get hitRect =>
+      _hitLocal.shift(Offset(topLeftPosition.x, topLeftPosition.y));
 
   /// Heavy only: where it is in its lunge. Idle until a student comes close,
   /// then [_HeavyState.windup] (it flashes), [_HeavyState.lunge], [_HeavyState.recover].
@@ -196,6 +232,7 @@ class EnemyComponent extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
+    if (_hurtLeft > 0) _hurtLeft -= dt;
     if (defeated) return;
 
     switch (_behavior) {
@@ -360,27 +397,56 @@ class EnemyComponent extends SpriteAnimationComponent
     return game.isGroundUnder(centre - footHalfWidth, centre + footHalfWidth);
   }
 
+  /// Which picture is drawn now: 'hurt' during a flinch and while thrown away when
+  /// defeated, 'attack' during a Heavy's wind-up and lunge, else 'walk'. A picture the
+  /// art does not have is never named: the walking pictures stand in.
+  @visibleForTesting
+  String get shownPicture {
+    if (_hurtSprite != null && (defeated || _hurtLeft > 0)) return 'hurt';
+    if (_attackSprite != null &&
+        (_heavyState == _HeavyState.windup ||
+            _heavyState == _HeavyState.lunge)) {
+      return 'attack';
+    }
+    return 'walk';
+  }
+
+  Sprite? get _shownSprite {
+    switch (shownPicture) {
+      case 'hurt':
+        return _hurtSprite;
+      case 'attack':
+        return _attackSprite;
+      default:
+        return animationTicker?.getSprite();
+    }
+  }
+
+  // The picture is drawn here by paintArt, so super.render (which would stretch
+  // the animation into the 90x108 box) is deliberately not called.
   @override
+  // ignore: must_call_super
   void render(Canvas canvas) {
+    final sprite = _shownSprite;
+    if (sprite == null) return;
     // The enemy art faces left natively (enemies originally only ever
     // advanced toward the player), so walking left needs no flip and
     // walking right does — the opposite of PlayerComponent, whose art
     // faces right.
-    if (_direction < 0) {
-      super.render(canvas);
-      return;
-    }
-    // Mirrored via a render-local canvas transform rather than
-    // `flipHorizontally()`, for the same reason PlayerComponent avoids it:
-    // that method compensates a non-center anchor by nudging `position.x`,
-    // which here is world-authoritative state read by the despawn check and
-    // by the patrol anchor (`_spawnX`) every frame. A transform-based flip
-    // would silently displace both by ±size.x on every turn.
-    canvas.save();
-    canvas.translate(size.x, 0);
-    canvas.scale(-1, 1);
-    super.render(canvas);
-    canvas.restore();
+    //
+    // paintArt mirrors around the feet with a render-local canvas transform
+    // rather than `flipHorizontally()`, for the same reason PlayerComponent
+    // avoids it: that method compensates a non-center anchor by nudging
+    // `position.x`, which here is world-authoritative state read by the
+    // despawn check and by the patrol anchor (`_spawnX`) every frame.
+    paintArt(
+      canvas,
+      sprite,
+      footX: size.x / 2,
+      footY: size.y,
+      flip: _direction >= 0,
+      overridePaint: paint,
+    );
   }
 
   /// Called when the player's attack hitbox connects. Decrements HP and
@@ -416,6 +482,7 @@ class EnemyComponent extends SpriteAnimationComponent
   /// shoved back a few units and settles, so the swing visibly landed.
   void _flinch() {
     final away = _awayFromPlayer();
+    _hurtLeft = 0.14; // the flash is 0.07 s in and 0.07 s out
     add(ColorEffect(
       Colors.white,
       EffectController(duration: 0.07, reverseDuration: 0.07),

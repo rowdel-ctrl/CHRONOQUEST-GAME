@@ -1,10 +1,11 @@
 import 'dart:math' as math;
-import 'dart:ui' show Color, Rect;
+import 'dart:ui' show Canvas, Color, Rect;
 
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flutter/foundation.dart' show VoidCallback;
+import 'package:flutter/foundation.dart' show VoidCallback, visibleForTesting;
 import '../answer_point_handler.dart';
+import '../art_scale.dart';
 import '../boss_plan.dart';
 import '../chrono_game.dart';
 import '../quiz_handler.dart';
@@ -30,6 +31,17 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   late Sprite idleSprite;
   late Sprite attackSprite;
   late Sprite defeatedSprite;
+
+  /// Optional pictures: shown when the boss takes damage and when a shockwave is
+  /// released. Without them the attack picture stands in, as before.
+  Sprite? hurtSprite;
+  Sprite? specialSprite;
+
+  /// Seconds the hurt / special picture still shows.
+  double _hurtLeft = 0;
+  double _specialLeft = 0;
+  static const double _hurtSeconds = 0.4;
+  static const double _specialSeconds = 0.3;
 
   // Cached velocity
   final Vector2 _velocity = Vector2.zero();
@@ -108,6 +120,8 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     idleSprite     = await game.loadSprite('bosses/${bossName}_idle.png');
     attackSprite   = await game.loadSprite('bosses/${bossName}_attack.png');
     defeatedSprite = await game.loadSprite('bosses/${bossName}_defeated.png');
+    hurtSprite = await _tryLoad('${bossName}_hurt');
+    specialSprite = await _tryLoad('${bossName}_special');
 
     sprite = idleSprite;
     size = Vector2(120, 140);
@@ -124,12 +138,49 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     game.audioService.playBossAppear();
   }
 
+  Future<Sprite?> _tryLoad(String name) async {
+    try {
+      return await game.loadSprite('bosses/$name.png');
+    } catch (_) {
+      return null; // optional picture: the attack picture stands in
+    }
+  }
+
+  /// Hurt after damage, then special for the moment a shockwave is released, then
+  /// attack for the red warning, else idle. Each falls back to the attack picture.
+  void _refreshSprite() {
+    if (isDefeated) return;
+    if (_hurtLeft > 0) {
+      sprite = hurtSprite ?? attackSprite;
+    } else if (_specialLeft > 0) {
+      sprite = specialSprite ?? attackSprite;
+    } else if (_telegraph > 0) {
+      sprite = attackSprite;
+    } else {
+      sprite = idleSprite;
+    }
+  }
+
+  /// Bosses face left and are never mirrored. The picture's size is its own
+  /// (art_scale.dart) with the middle of its bottom edge on the boss's feet.
+  @override
+  // ignore: must_call_super
+  void render(Canvas canvas) {
+    final art = sprite;
+    if (art == null) return;
+    paintArt(canvas, art,
+        footX: size.x / 2, footY: size.y, overridePaint: paint);
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
     if (isDefeated) return;
 
+    if (_hurtLeft > 0) _hurtLeft -= dt;
+    if (_specialLeft > 0) _specialLeft -= dt;
     _updateAttack(dt);
+    _refreshSprite();
     _updateShake(dt);
 
     // Recomputed every frame since the camera keeps advancing with the
@@ -244,12 +295,8 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   void takeDamage() {
     health--;
-    sprite = attackSprite;
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (!isDefeated) {
-        sprite = idleSprite;
-      }
-    });
+    _hurtLeft = _hurtSeconds;
+    _refreshSprite();
 
     _questions.solve();
     if (health <= 0) {
@@ -317,10 +364,17 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     _beginTelegraph(BossPlan.telegraphSeconds);
   }
 
+  /// Starts the red warning and one shockwave without going through the phases.
+  @visibleForTesting
+  void warnForTest() {
+    _shockwavesLeft = 1;
+    _beginTelegraph(BossPlan.telegraphSeconds);
+  }
+
   void _beginTelegraph(double seconds) {
     _telegraph = seconds;
     game.audioService.playBossWarning(short: seconds < BossPlan.telegraphSeconds);
-    sprite = attackSprite;
+    _refreshSprite();
     add(ColorEffect(
       const Color(0xFFFF3B30),
       EffectController(
@@ -335,12 +389,12 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     _telegraph -= dt;
     if (_telegraph > 0) return;
     _sendShockwave();
+    _specialLeft = _specialSeconds;
     _shockwavesLeft--;
     if (_shockwavesLeft > 0) {
       _beginTelegraph(BossPlan.secondTelegraphSeconds);
-    } else if (!isDefeated) {
-      sprite = idleSprite;
     }
+    _refreshSprite();
   }
 
   void _sendShockwave() {

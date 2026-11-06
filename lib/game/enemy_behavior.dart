@@ -10,7 +10,24 @@ class EnemyTypeData {
   final EnemyBehavior behavior;
   final int maxHp;
 
-  const EnemyTypeData({required this.behavior, required this.maxHp});
+  /// The part of this enemy that hurts and can be hit, in game units
+  /// (width x height). Null means the old rule: a centred
+  /// `enemyHitWidthFraction` x `enemyHitHeightFraction` rectangle of the 90x108 box,
+  /// which fits the tall humans. A value means the body is low or wide (a tank, a
+  /// cloud), so the rectangle is that size and sits ON THE GROUND (its bottom at
+  /// the feet line) instead of floating in the middle of the tall box.
+  final double? hitWidth;
+  final double? hitHeight;
+
+  const EnemyTypeData({
+    required this.behavior,
+    required this.maxHp,
+    this.hitWidth,
+    this.hitHeight,
+  });
+
+  /// Whether the hit area sits on the ground with its own size (see [hitWidth]).
+  bool get hasBodyHit => hitWidth != null && hitHeight != null;
 }
 
 /// Every enemy sprite this game has art for, mapped to its behaviour and HP.
@@ -21,13 +38,19 @@ const Map<String, EnemyTypeData> enemyTypeTable = {
   'tribal_warrior': EnemyTypeData(behavior: EnemyBehavior.walker, maxHp: 1),
   'spanish_soldier': EnemyTypeData(behavior: EnemyBehavior.walker, maxHp: 1),
   'american_soldier': EnemyTypeData(behavior: EnemyBehavior.walker, maxHp: 1),
-  'japanese_soldier': EnemyTypeData(behavior: EnemyBehavior.walker, maxHp: 1),
+  // 85x89 picture with a rifle held out: the body itself is about 50 wide.
+  'japanese_soldier': EnemyTypeData(
+      behavior: EnemyBehavior.walker, maxHp: 1, hitWidth: 50, hitHeight: 86),
   // Chasers — 1 hit. The three that used to run as Walkers until this existed.
   'dark_spirit': EnemyTypeData(behavior: EnemyBehavior.chaser, maxHp: 1),
   'propaganda': EnemyTypeData(behavior: EnemyBehavior.chaser, maxHp: 1),
-  'misinfo_cloud': EnemyTypeData(behavior: EnemyBehavior.chaser, maxHp: 1),
+  // Wide and low (85x69): a body-sized hit area on the ground.
+  'misinfo_cloud': EnemyTypeData(
+      behavior: EnemyBehavior.chaser, maxHp: 1, hitWidth: 75, hitHeight: 66),
   // Heavies — 2 hits, lunge when you come close.
-  'tank': EnemyTypeData(behavior: EnemyBehavior.heavy, maxHp: 2),
+  // Wide and low (85x60): nothing above 60 units can hurt the student or be hit.
+  'tank': EnemyTypeData(
+      behavior: EnemyBehavior.heavy, maxHp: 2, hitWidth: 80, hitHeight: 60),
   'tax_collector': EnemyTypeData(behavior: EnemyBehavior.heavy, maxHp: 2),
   'corruption_figure': EnemyTypeData(behavior: EnemyBehavior.heavy, maxHp: 2),
 };

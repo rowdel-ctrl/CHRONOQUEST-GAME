@@ -110,6 +110,14 @@ Future<void> _settle(WidgetTester tester) async {
   }
 }
 
+/// Runs the world forward [seconds] in small steps even while a question is up
+/// (the game clamps one frame to a few hundredths of a second).
+void _step(_BossGame game, double seconds) {
+  for (var t = 0.0; t < seconds - 1e-9; t += 0.05) {
+    game.updateTree(0.05);
+  }
+}
+
 /// Runs the world forward [seconds] in small steps (not while a question is up).
 void _run(_BossGame game, double seconds) {
   for (var t = 0.0; t < seconds; t += 0.05) {
@@ -390,6 +398,35 @@ void main() {
     expect(game.questionShowing, isTrue);
     game.handleAnswer(_right(game));
     expect(boss.isDefeated, isTrue);
+    await _flush(tester);
+  });
+
+  testWidgets('the boss shows hurt when it takes damage, and idle again after', (tester) async {
+    final (game, boss) = await _start(tester);
+    expect(boss.hurtSprite, isNotNull, reason: 'the new art has a hurt picture');
+    expect(boss.specialSprite, isNotNull);
+    expect(boss.sprite, same(boss.idleSprite));
+
+    boss.takeDamage();
+    expect(boss.sprite, same(boss.hurtSprite));
+    expect(boss.sprite, isNot(same(boss.attackSprite)));
+    _step(game, 0.2);
+    expect(boss.sprite, same(boss.hurtSprite), reason: 'still hurt 0.2 s later');
+    _step(game, 0.25);
+    expect(boss.sprite, same(boss.idleSprite), reason: 'hurt lasts 0.4 s');
+    await _flush(tester);
+  });
+
+  testWidgets('the warning shows attack, the release shows special for a moment', (tester) async {
+    final (game, boss) = await _start(tester);
+
+    boss.warnForTest();
+    _step(game, 0.05);
+    expect(boss.sprite, same(boss.attackSprite), reason: 'the red warning');
+    _step(game, BossPlan.telegraphSeconds);
+    expect(boss.sprite, same(boss.specialSprite), reason: 'the shockwave has just left');
+    _step(game, 0.35);
+    expect(boss.sprite, same(boss.idleSprite));
     await _flush(tester);
   });
 
