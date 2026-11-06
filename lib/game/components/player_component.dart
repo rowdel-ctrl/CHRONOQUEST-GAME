@@ -2,9 +2,11 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
 import '../answer_point_handler.dart';
+import '../art_scale.dart';
 import '../chrono_game.dart';
 import '../game_collision.dart';
 import '../kaalaman_handler.dart';
@@ -79,6 +81,46 @@ class PlayerComponent extends SpriteAnimationComponent
   late SpriteAnimation jumpAnim;
   late SpriteAnimation hurtAnim;
 
+  /// The hero's attack pictures by number (`<id>_attack_1..4`). Optional: a hero
+  /// with none swings with no picture of its own and keeps the old white slash.
+  /// Lapu has only 1..3.
+  final Map<int, Sprite> _attackSprites = {};
+
+  /// Whether this hero has attack pictures. The attack hitbox skips its own
+  /// white crescent when it does, because the pictures draw a golden slash.
+  bool get hasAttackArt => _attackSprites.isNotEmpty;
+
+  /// Seconds since the current swing began, or null when no attack picture is
+  /// showing. A per-frame timer like [_attackCooldownRemaining], not a
+  /// `Future.delayed`. It is only a picture: movement and jumping carry on.
+  double? _attackPictureElapsed;
+
+  /// Whether the swing began in the air (decided once, at the moment of the swing).
+  bool _attackInAir = false;
+
+  /// Ground swing with 4 pictures: attack_1, then attack_4 from this moment.
+  static const double _groundSecondPictureAt = 0.17;
+
+  /// Air swing: attack_2, then attack_3 from this moment.
+  static const double _airSecondPictureAt = 0.10;
+
+  /// The attack picture number (1..4) showing right now, or null when the walk,
+  /// jump or hurt picture is. Hurt wins over a swing.
+  @visibleForTesting
+  int? get attackPictureNumber {
+    final elapsed = _attackPictureElapsed;
+    if (elapsed == null || isHurt || _attackSprites.isEmpty) return null;
+    final int number;
+    if (_attackInAir) {
+      number = elapsed < _airSecondPictureAt ? 2 : 3;
+    } else if (_attackSprites.containsKey(4)) {
+      number = elapsed < _groundSecondPictureAt ? 1 : 4;
+    } else {
+      number = 1;
+    }
+    return _attackSprites.containsKey(number) ? number : null;
+  }
+
   /// Time left before another `attack()` can spawn a new hitbox
   /// (CombatConstants.attackCooldown) — counted down every frame, not a
   /// `Future.delayed`, so it can be checked synchronously from `attack()`.
@@ -147,31 +189,34 @@ class PlayerComponent extends SpriteAnimationComponent
 
   @override
   Future<void> onLoad() async {
-    // 1.5x the native 52x68 art, same ratio as before (was 64x80 — barely
-    // bigger than a 60x72 enemy, so the hero didn't read as the hero). The
-    // boss already upscales its own native art by roughly this much (80x90
-    // -> 120x140), so this brings the player closer to that same treatment
-    // instead of sitting almost flush with regular enemies.
+    // The box stays 96x120 for physics and the hitbox. The pictures are drawn at
+    // their own size (pixels / artPixelsPerUnit, see art_scale.dart) with the
+    // middle of their bottom edge on the feet, so a wide attack picture simply
+    // draws wider than the box without moving the hero.
     size = Vector2(96, 120);
     position = Vector2(0, game.groundY - size.y);
 
-    // Load walk frames as individual sprites and build the animation sequence
+    // Load walk frames as individual sprites and build the animation sequence.
+    // A hero has 4 to 6 of them (Lapu has 5); a missing number is skipped.
     final walkSprites = <Sprite>[];
-    for (int i = 1; i <= 4; i++) {
-      try {
-        walkSprites.add(
-            await game.loadSprite('characters/${characterId}_walk_$i.png'));
-      } catch (e) {
-        // Safe fallback placeholder if asset fails to load
-        debugPrint('Failed to load character walk frame $i: $e');
-      }
+    for (int i = 1; i <= 6; i++) {
+      final sprite = await _tryLoadSprite('${characterId}_walk_$i');
+      if (sprite != null) walkSprites.add(sprite);
     }
 
     if (walkSprites.isNotEmpty) {
       walkAnimation = SpriteAnimation.spriteList(walkSprites, stepTime: 0.15);
     } else {
+      debugPrint('No walk frames found for character $characterId');
       // Emergency blank animation fallback
       walkAnimation = SpriteAnimation.spriteList([], stepTime: 1.0);
+    }
+
+    // Attack pictures are optional.
+    _attackSprites.clear();
+    for (int i = 1; i <= 4; i++) {
+      final sprite = await _tryLoadSprite('${characterId}_attack_$i');
+      if (sprite != null) _attackSprites[i] = sprite;
     }
 
     // Load single jump and hurt frames
@@ -188,11 +233,37 @@ class PlayerComponent extends SpriteAnimationComponent
     add(RectangleHitbox());
   }
 
+  /// A picture from `assets/characters/`, or null when the file is not there.
+  ///
+  /// Checked against the asset list first, so a hero with fewer pictures (Lapu
+  /// has 5 walk and 3 attack pictures) never asks for a file that is not there.
+  Future<Sprite?> _tryLoadSprite(String name) async {
+    final path = 'characters/$name.png';
+    try {
+      _assets ??= (await AssetManifest.loadFromAssetBundle(rootBundle))
+          .listAssets()
+          .toSet();
+      if (!_assets!.contains('${game.images.prefix}$path')) return null;
+      return await game.loadSprite(path);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Set<String>? _assets;
+
   @override
   void update(double dt) {
     super.update(dt);
 
     if (_attackCooldownRemaining > 0) _attackCooldownRemaining -= dt;
+
+    final pictureElapsed = _attackPictureElapsed;
+    if (pictureElapsed != null) {
+      final next = pictureElapsed + dt;
+      _attackPictureElapsed =
+          next >= CombatConstants.attackHitboxDuration ? null : next;
+    }
 
     // Where the middle of the sprite is before any horizontal move this frame:
     // which side of a wall the player is on, if they run into one.
@@ -342,25 +413,34 @@ class PlayerComponent extends SpriteAnimationComponent
     canvas.drawOval(rect, _bubbleEdge);
   }
 
+  /// The picture to draw now: the swing's if one is showing, else the current
+  /// frame of the walk, jump or hurt animation.
+  Sprite? get _currentSprite {
+    final number = attackPictureNumber;
+    if (number != null) return _attackSprites[number];
+    return animationTicker?.getSprite();
+  }
+
+  // Not calling super: it would draw the frame squeezed into the 96x120 box.
   @override
+  // ignore: must_call_super
   void render(Canvas canvas) {
     if (!_flashVisible) return;
 
-    if (facingRight) {
-      super.render(canvas);
-      if (game.shieldActive) _drawBubble(canvas);
-      return;
+    // The art faces right. Facing left is mirrored by paintArt around the feet,
+    // render-local: position.x IS worldX (camera, collision, spawner), so it must
+    // not move. Restored before children (the hitbox) render.
+    final sprite = _currentSprite;
+    if (sprite != null) {
+      paintArt(
+        canvas,
+        sprite,
+        footX: size.x / 2,
+        footY: size.y,
+        flip: !facingRight,
+        overridePaint: paint,
+      );
     }
-    // Mirror the drawn sprite within its own bounding box: translate to the
-    // right edge, then scale -1 so drawing runs back over [0, size.x]. Only
-    // affects this render call's canvas — position/transform (and therefore
-    // worldX and the hitbox) are untouched. Restored before children (the
-    // hitbox) render, so it can't leak into their transform either.
-    canvas.save();
-    canvas.translate(size.x, 0);
-    canvas.scale(-1, 1);
-    super.render(canvas);
-    canvas.restore();
     if (game.shieldActive) _drawBubble(canvas);
   }
 
@@ -381,6 +461,9 @@ class PlayerComponent extends SpriteAnimationComponent
     if (!game.canAttack) return;
 
     _attackCooldownRemaining = CombatConstants.attackCooldown;
+    // Picture only: which sequence plays is decided by where the hero is now.
+    _attackInAir = !isOnGround;
+    _attackPictureElapsed = 0;
 
     final hitboxSize = Vector2(
       CombatConstants.attackHitboxWidth,
@@ -394,12 +477,14 @@ class PlayerComponent extends SpriteAnimationComponent
         size: hitboxSize,
         facingRight: facingRight,
         follow: this,
+        drawSlash: !hasAttackArt,
       ),
     );
   }
 
   void triggerHurt() {
     isHurt = true;
+    _attackPictureElapsed = null; // hurt wins over a swing
     animation = hurtAnim;
     game.audioService.playHurt();
     Future.delayed(const Duration(milliseconds: 600), () {
@@ -559,15 +644,12 @@ class PlayerComponent extends SpriteAnimationComponent
     final hurtBottom =
         position.y + size.y - CombatConstants.playerHurtFeetGrace;
 
-    final hitWidth = enemy.size.x * CombatConstants.enemyHitWidthFraction;
-    final hitHeight = enemy.size.y * CombatConstants.enemyHitHeightFraction;
-    final hitLeft = enemy.position.x + (enemy.size.x - hitWidth) / 2;
-    final hitTop = enemy.position.y + (enemy.size.y - hitHeight) / 2;
+    final hit = enemy.hitRect;
 
-    return hurtLeft < hitLeft + hitWidth &&
-        hurtLeft + hurtWidth > hitLeft &&
-        hurtTop < hitTop + hitHeight &&
-        hurtBottom > hitTop;
+    return hurtLeft < hit.right &&
+        hurtLeft + hurtWidth > hit.left &&
+        hurtTop < hit.bottom &&
+        hurtBottom > hit.top;
   }
 
   @override

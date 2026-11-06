@@ -29,6 +29,11 @@ class AttackHitboxComponent extends PositionComponent
   /// lasts, so a swing made on the move travels with the hero instead of being
   /// left behind (at walking speed the hero covers about 60 units in a swing).
   final PositionComponent? follow;
+
+  /// Whether to draw the white crescent. The 2026-11 hero art draws its own
+  /// golden slash as part of the attack pictures, so the player turns this off
+  /// for heroes that have them; the hit box does not change either way.
+  final bool drawSlash;
   late final Vector2 _followOffset;
 
   /// Enemies already hit by this swing — guards against a Heavy (2 HP)
@@ -45,6 +50,7 @@ class AttackHitboxComponent extends PositionComponent
     required super.size,
     this.facingRight = true,
     this.follow,
+    this.drawSlash = true,
   }) {
     _followOffset = follow == null ? Vector2.zero() : position - follow!.position;
   }
@@ -72,6 +78,7 @@ class AttackHitboxComponent extends PositionComponent
 
   @override
   void render(Canvas canvas) {
+    if (!drawSlash) return;
     final t = (_elapsed / CombatConstants.attackHitboxDuration).clamp(0.0, 1.0);
     // The swing itself takes the first 60% of the time; the rest is the glow
     // dying away.
