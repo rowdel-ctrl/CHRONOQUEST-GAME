@@ -116,7 +116,7 @@ void main() {
     expect(find.byKey(const ValueKey('hero_boy')), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 600));
-    expect(_name(tester), 'Babae');
+    expect(_name(tester), 'Maria');
     expect((_heroX(tester, 'girl') - rest).abs(), lessThan(1),
         reason: 'and it comes to rest in the same place');
   });
@@ -132,7 +132,7 @@ void main() {
     expect(_heroX(tester, 'boy'), lessThan(rest),
         reason: 'the boy comes from the left');
     await tester.pump(const Duration(milliseconds: 700));
-    expect(_name(tester), 'Lalaki');
+    expect(_name(tester), 'Juan');
   });
 
   testWidgets('a bought hero lights up with sparks, confetti and NAKUHA NA!',
@@ -202,7 +202,7 @@ void main() {
 
     await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
     await tester.pump();
-    expect(_name(tester), 'Babae');
+    expect(_name(tester), 'Maria');
     expect(find.byKey(const ValueKey('hero_boy')), findsNothing);
     expect((_heroX(tester, 'girl') - rest).abs(), lessThan(1));
     expect(

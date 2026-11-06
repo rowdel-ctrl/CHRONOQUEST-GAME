@@ -127,7 +127,7 @@ void main() {
 
       await tester.tap(find.byKey(CharacterSelectionScreen.prevKey));
       await tester.pump();
-      expect(_name(tester), 'Lalaki');
+      expect(_name(tester), 'Juan');
     });
 
     testWidgets('and the right one is dim on the last hero', (tester) async {
@@ -205,7 +205,7 @@ void main() {
     await _pump(tester, selected: 'rizal');
     expect(_name(tester), 'Rizal');
     expect(find.text('Jose Rizal'), findsNothing);
-    expect(find.text('Batang Lalaki'), findsNothing);
+    expect(find.text('Juan dela Cruz'), findsNothing);
     for (final c in allCharacters) {
       expect(find.text(c.era), findsNothing);
       expect(find.text(c.description), findsNothing);
@@ -259,7 +259,7 @@ void main() {
       (tester) async {
     await _pump(tester, selected: 'girl');
     final hero = find.byKey(const ValueKey('hero_girl'));
-    expect(_name(tester), 'Babae');
+    expect(_name(tester), 'Maria');
 
     await tester.fling(hero, const Offset(-300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
@@ -268,17 +268,17 @@ void main() {
     await tester.fling(find.byKey(const ValueKey('hero_lapu')),
         const Offset(300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(_name(tester), 'Babae');
+    expect(_name(tester), 'Maria');
 
     await tester.fling(find.byKey(const ValueKey('hero_girl')),
         const Offset(300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(_name(tester), 'Lalaki');
+    expect(_name(tester), 'Juan');
 
     await tester.fling(find.byKey(const ValueKey('hero_boy')),
         const Offset(300, 0), 1500);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(_name(tester), 'Lalaki', reason: 'nothing before the first');
+    expect(_name(tester), 'Juan', reason: 'nothing before the first');
   });
 
   testWidgets('PILIIN chooses the hero and goes on to the eras',

@@ -490,20 +490,20 @@ class CharacterData {
 }
 
 // The first character with unlockCost 0 is the free default hero.
-// The names of 'boy' and 'girl' are placeholders: rename them here only.
+// 'boy' and 'girl' are Juan and Maria (ids stay boy and girl: they name the picture files).
 const List<CharacterData> allCharacters = [
   CharacterData(
     id: 'boy',
-    name: 'Batang Lalaki',
-    shortName: 'Lalaki',
+    name: 'Juan dela Cruz',
+    shortName: 'Juan',
     era: 'Bagong Bayani',
     description: 'Mag-aaral na handang matuto',
     unlockCost: 0,
   ),
   CharacterData(
     id: 'girl',
-    name: 'Batang Babae',
-    shortName: 'Babae',
+    name: 'Maria dela Cruz',
+    shortName: 'Maria',
     era: 'Bagong Bayani',
     description: 'Mag-aaral na handang matuto',
     unlockCost: 0,
