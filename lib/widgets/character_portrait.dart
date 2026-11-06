@@ -26,6 +26,13 @@ class CharacterPortrait extends StatelessWidget {
     this.alignment = Alignment.bottomCenter,
   });
 
+  /// A cropped (cover) portrait zooms in on the face: the new pictures show
+  /// the whole figure, so without it the head would be tiny.
+  Widget _zoom(Widget image) => fit == BoxFit.cover
+      ? Transform.scale(
+          scale: 1.5, alignment: const Alignment(0, -0.75), child: image)
+      : image;
+
   @override
   Widget build(BuildContext context) {
     final inset = width < 40 ? 2.0 : 3.0;
@@ -45,14 +52,16 @@ class CharacterPortrait extends StatelessWidget {
         child: ClipRect(
           child: Padding(
             padding: EdgeInsets.all(width < 40 ? 0 : 4),
-            child: Image.asset(
-              'assets/characters/${characterId}_walk_1.png',
-              fit: fit,
-              alignment: alignment,
-              filterQuality: FilterQuality.none,
-              errorBuilder: (_, __, ___) => const Center(
-                child: PixelIcon(PixelGlyph.profile,
-                    size: 20, color: AppColors.accent),
+            child: _zoom(
+              Image.asset(
+                'assets/characters/${characterId}_walk_1.png',
+                fit: fit,
+                alignment: alignment,
+                filterQuality: FilterQuality.medium,
+                errorBuilder: (_, __, ___) => const Center(
+                  child: PixelIcon(PixelGlyph.profile,
+                      size: 20, color: AppColors.accent),
+                ),
               ),
             ),
           ),

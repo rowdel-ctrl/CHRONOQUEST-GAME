@@ -47,7 +47,8 @@ class LevelFailedScreen extends ConsumerWidget {
       key: heroKey,
       height: wide ? 150 : 110,
       fit: BoxFit.contain,
-      filterQuality: FilterQuality.none,
+      alignment: Alignment.bottomCenter,
+      filterQuality: FilterQuality.medium,
       errorBuilder: (_, __, ___) =>
           SizedBox(height: wide ? 150 : 110, width: 80),
     );

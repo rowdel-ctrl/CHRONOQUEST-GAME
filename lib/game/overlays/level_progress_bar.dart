@@ -158,12 +158,17 @@ class _HeroMarker extends StatelessWidget {
         border: Border.all(color: AppColors.accent, width: 1.2),
       ),
       child: ClipOval(
-        child: Image.asset(
-          'assets/characters/${characterId}_walk_1.png',
-          fit: BoxFit.cover,
-          alignment: Alignment.topCenter,
-          filterQuality: FilterQuality.none,
-          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+        // The new pictures show the whole figure, so zoom in on the face.
+        child: Transform.scale(
+          scale: 1.6,
+          alignment: const Alignment(0, -0.75),
+          child: Image.asset(
+            'assets/characters/${characterId}_walk_1.png',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            filterQuality: FilterQuality.medium,
+            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          ),
         ),
       ),
     );

@@ -74,12 +74,17 @@ class LoadingLine extends StatelessWidget {
                   border: Border.all(color: AppColors.primaryDark, width: 2.5),
                 ),
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/characters/${charId}_walk_1.png',
-                    fit: BoxFit.cover,
-                    alignment: const Alignment(0, -0.88),
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (_, __, ___) => const SizedBox(),
+                  // The new pictures show the whole figure, so zoom in on the face.
+                  child: Transform.scale(
+                    scale: 1.6,
+                    alignment: const Alignment(0, -0.75),
+                    child: Image.asset(
+                      'assets/characters/${charId}_walk_1.png',
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                      filterQuality: FilterQuality.medium,
+                      errorBuilder: (_, __, ___) => const SizedBox(),
+                    ),
                   ),
                 ),
               ),

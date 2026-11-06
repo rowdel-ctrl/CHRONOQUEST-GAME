@@ -7,6 +7,7 @@ import '../../core/constants.dart';
 import '../../models/control_scheme.dart';
 import '../../widgets/action_disc.dart';
 import '../../widgets/gate_icon.dart';
+import '../../widgets/hero_art.dart';
 import '../../widgets/pixel_icon.dart';
 
 /// The little pictures on the how-to-play pages. Each is a small copy of the play
@@ -77,32 +78,37 @@ Widget _img(String path,
     {double? w,
     double? h,
     BoxFit fit = BoxFit.contain,
-    Alignment alignment = Alignment.center}) {
+    Alignment alignment = Alignment.center,
+    FilterQuality quality = FilterQuality.none}) {
   return Image.asset(
     path,
     width: w,
     height: h,
     fit: fit,
     alignment: alignment,
-    filterQuality: FilterQuality.none,
+    filterQuality: quality,
     gaplessPlayback: true,
     errorBuilder: (_, __, ___) => SizedBox(width: w, height: h),
   );
 }
 
 String _walk(String id, int ms, {int every = 140}) =>
-    'assets/characters/${id}_walk_${(ms ~/ every) % 4 + 1}.png';
+    heroWalkAsset(id, ms, every: every);
 
-Widget _hero(String id, {String? path, double w = 43}) {
+/// The hero, kept in proportion: the new pictures are about square and the
+/// figure fills the height, so the height is fixed and the width follows.
+Widget _hero(String id, {String? path, double h = 56}) {
   return SizedBox(
-      width: w,
+      height: h,
       child: _img(path ?? 'assets/characters/${id}_walk_1.png',
-          w: w, fit: BoxFit.fitWidth, alignment: Alignment.bottomCenter));
+          h: h,
+          alignment: Alignment.bottomCenter,
+          quality: FilterQuality.medium));
 }
 
 Widget _soldier(int ms) =>
     _img('assets/enemies/spanish_soldier_${(ms ~/ 250) % 2 + 1}.png',
-        w: 41, h: 50, alignment: Alignment.bottomCenter);
+        h: 48, alignment: Alignment.bottomCenter, quality: FilterQuality.medium);
 
 /// The forest of the level: four layers, with the era's green wash over them.
 class SceneForest extends StatelessWidget {
@@ -956,11 +962,11 @@ class FlowScene extends StatelessWidget {
               left: 3,
               bottom: 20,
               child: SizedBox(
-                  width: 32,
+                  height: 40,
                   child: _img(_walk(charId, ms),
-                      w: 32,
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.bottomCenter))),
+                      h: 40,
+                      alignment: Alignment.bottomCenter,
+                      quality: FilterQuality.medium))),
           Positioned(
               right: 4,
               top: 34 + 3 * math.sin(ms / 1600 * 2 * math.pi),
@@ -1558,8 +1564,10 @@ class BossScene extends StatelessWidget {
             right: 10,
             bottom: 38 + 3 * math.sin(ms / 2400 * 2 * math.pi),
             child: _img('assets/bosses/bakunawa_idle.png',
-                w: 86, h: 96, alignment: Alignment.bottomCenter)),
-        Positioned(left: 156, bottom: 39, child: _hero(charId)),
+                h: 96,
+                alignment: Alignment.bottomCenter,
+                quality: FilterQuality.medium)),
+        Positioned(left: 146, bottom: 39, child: _hero(charId)),
         Positioned(
           left: 9,
           top: 40,

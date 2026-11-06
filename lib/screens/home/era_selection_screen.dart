@@ -600,7 +600,7 @@ class _Art extends StatelessWidget {
                 eraSprite(era.id),
                 fit: BoxFit.contain,
                 alignment: Alignment.bottomCenter,
-                filterQuality: FilterQuality.none,
+                filterQuality: FilterQuality.medium,
                 errorBuilder: (_, __, ___) => const SizedBox(),
               ),
             ),

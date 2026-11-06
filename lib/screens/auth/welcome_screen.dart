@@ -34,7 +34,8 @@ class WelcomeScreen extends ConsumerWidget {
         'assets/characters/luna_jump.png',
         height: wide ? 150 : 120,
         fit: BoxFit.contain,
-        filterQuality: FilterQuality.none,
+        alignment: Alignment.bottomCenter,
+        filterQuality: FilterQuality.medium,
         errorBuilder: (_, __, ___) => const SizedBox(height: 120, width: 80),
       ),
     );

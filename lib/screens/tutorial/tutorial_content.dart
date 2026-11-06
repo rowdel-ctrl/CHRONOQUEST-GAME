@@ -88,7 +88,7 @@ final List<TutorialStep> tutorialSteps = [
           peek: 4200, builder: (_, ms) => HeartScene(charId: c.charId, ms: ms)),
       text: TutorialText(title: 'ALAGAAN ANG PUSO', children: [
         TutorialRow(
-            leading: _asset('assets/enemies/spanish_soldier_1.png'),
+            leading: _creature('assets/enemies/spanish_soldier_1.png'),
             text: 'Natamaan o nahulog',
             chip: const TutorialChip('−1', AppColors.danger,
                 icon: 'assets/ui/heart_full.png')),
@@ -150,6 +150,15 @@ Widget _asset(String path) => Image.asset(path,
     fit: BoxFit.contain,
     filterQuality: FilterQuality.none,
     errorBuilder: (_, __, ___) => const SizedBox(width: 26, height: 26));
+
+/// An enemy picture in the row's small box: whole figure, never stretched.
+Widget _creature(String path) => Image.asset(path,
+    width: 28,
+    height: 28,
+    fit: BoxFit.contain,
+    alignment: Alignment.bottomCenter,
+    filterQuality: FilterQuality.medium,
+    errorBuilder: (_, __, ___) => const SizedBox(width: 28, height: 28));
 
 // ── Layout ─────────────────────────────────────────────────────────────────────
 

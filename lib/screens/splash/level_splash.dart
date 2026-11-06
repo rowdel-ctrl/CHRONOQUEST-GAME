@@ -5,6 +5,7 @@ import '../../core/constants.dart';
 import '../../data/era_story.dart';
 import '../../game/components/parallax_background.dart';
 import '../../widgets/forest_backdrop.dart';
+import '../../widgets/hero_art.dart';
 import '../../widgets/loading_line.dart';
 import '../../widgets/scene_clock.dart';
 
@@ -155,7 +156,7 @@ class _Walker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80,
+      width: 104,
       height: 104,
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -171,15 +172,15 @@ class _Walker extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5))),
           ),
           Image.asset(
-            'assets/characters/${charId}_walk_${(ms ~/ 140) % 4 + 1}.png',
-            width: 80,
+            heroWalkAsset(charId, ms),
+            width: 104,
             height: 104,
             fit: BoxFit.contain,
             alignment: Alignment.bottomCenter,
-            filterQuality: FilterQuality.none,
+            filterQuality: FilterQuality.medium,
             gaplessPlayback: true,
             errorBuilder: (_, __, ___) =>
-                const SizedBox(width: 80, height: 104),
+                const SizedBox(width: 104, height: 104),
           ),
         ],
       ),
@@ -238,7 +239,7 @@ class _BossPortrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: 124,
       height: 112,
       child: Stack(
         alignment: Alignment.center,
@@ -263,7 +264,7 @@ class _BossPortrait extends StatelessWidget {
             'assets/bosses/${name}_idle.png',
             fit: BoxFit.contain,
             alignment: Alignment.bottomCenter,
-            filterQuality: FilterQuality.none,
+            filterQuality: FilterQuality.medium,
             errorBuilder: (_, __, ___) => const SizedBox(),
           ),
         ],

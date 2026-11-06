@@ -242,7 +242,8 @@ class _LevelNodeState extends State<LevelNode>
                         'assets/characters/${widget.heroId}_walk_1.png',
                         height: 44,
                         fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
+                        alignment: Alignment.bottomCenter,
+                        filterQuality: FilterQuality.medium,
                         errorBuilder: (_, __, ___) =>
                             const SizedBox(height: 44, width: 30),
                       ),
