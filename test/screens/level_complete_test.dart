@@ -146,17 +146,16 @@ void main() {
     });
   });
 
-  group('the light behind the stars matches the result', () {
-    testWidgets('three stars: rays and a glow', (tester) async {
+  group('the lantern night behind the stars matches the result', () {
+    testWidgets('three stars: the night is behind the result', (tester) async {
       await _show(tester, size: const Size(732, 320), correct: 10, total: 10);
-      final light = tester.widget<LivingBackdrop>(find.byKey(LevelCompleteScreen.backdropKey));
-      expect(light.rays, isTrue);
+      expect(find.byKey(LevelCompleteScreen.backdropKey), findsOneWidget);
+      expect(tester.widget<LivingBackdrop>(find.byKey(LevelCompleteScreen.backdropKey)).color, isNotNull);
     });
 
-    testWidgets('two stars: a soft glow, no rays', (tester) async {
+    testWidgets('two stars: the night is behind the result too', (tester) async {
       await _show(tester, size: const Size(732, 320), correct: 7, total: 10);
-      final light = tester.widget<LivingBackdrop>(find.byKey(LevelCompleteScreen.backdropKey));
-      expect(light.rays, isFalse);
+      expect(find.byKey(LevelCompleteScreen.backdropKey), findsOneWidget);
     });
 
     testWidgets('one star: no light at all', (tester) async {

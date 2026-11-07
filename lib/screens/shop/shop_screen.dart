@@ -241,9 +241,6 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
         children: [
           const Positioned.fill(
             child: LivingBackdrop(
-              center: Offset(0.5, 0.4),
-              fireflies: 0,
-              rays: false,
               animate: false,
             ),
           ),

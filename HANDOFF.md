@@ -3,6 +3,16 @@
 > **Chat nickname: GAME.** This file is for the game app only (`CHRONO-GAMEAPP`). The board that shows all three chats is `../HANDOFF.md`. Dashboard: `../CHRONO-DASHBOARD/HANDOFF.md`. Landing page: `../CHRONO-LANDING/HANDOFF.md`.
 > At the end of a session add a dated entry at the top (automatically, without asking). Keep the newest entry under one page. Keep this file under about 400 lines: when it grows past that, move the oldest entries in full to `docs/handoff-archive/` and leave a one-line pointer under "Older entries" at the bottom.
 
+**Date:** 2026-11-07 (later: PAROL NIGHT MENU BACKGROUND built on branch `feat/parol-backdrop` from `feat/new-art`, **uncommitted, not pushed, no APK**, not seen on a phone)
+**From:** Claude Code (Sonnet 5.5)
+- **Ask (user):** the turning gold rays "are not for me"; redesign only the background of character select, login and the other menu screens. Mockups: parol night alone https://claude.ai/artifact/6mrepRwd9fqNR6p8XBMbzg and five whole screens over it https://claude.ai/artifact/HAXtbTntdqJV2RZyqbsEcJ (user: "I like those parol nights look", then "Go build now"). Only the background changed; no layout, text, button or rule.
+- **What it is:** `LivingBackdrop` (`lib/widgets/living_backdrop.dart`) now paints the parol night instead of the rays: star lanterns swaying on two strings over kubo roofs with lit windows, a wooden deck at the bottom; sky and one lantern take `color` (hero, era or era-complete colour). Drawn on a 144-unit-high grid scaled up (never narrower than 200 units), 30 frames a second, a still picture with `animate: false` or the phone's "remove animations". Constructor is now only `color` and `animate`: `center`, `fireflies` and `rays` were removed and the 14 call sites fixed. Level select: the backdrop moved out of the scrolling path to sit fixed behind the whole screen (it replaces that screen's gradient). Pause overlay: no rays any more, only the dim. Level complete: 2 and 3 stars both get the night, 1 star none.
+- **Tests:** 1,400 pass; `flutter analyze` clean. New in `living_widgets_test.dart` (every screen size paints, colour kept, `animate: false` stays still); `level_complete_test.dart` updated (no `rays` any more). Real hero screen rendered at 732x320 and 400x700 with `tool/character_screen_shots_test.dart`: looks right. **Not checked:** the other screens by eye in the real game, a phone, speed on a low-end phone.
+- **Left alone on purpose:** the unrelated uncommitted quest-mode removal in the working tree (`constants.dart`, `build.gradle.kts`, `lib/quest/`, `tool/check_old_gameplay.js`) is not mine and is not part of this work. Commit only the backdrop files.
+- **Next:** the user looks at it on a phone (needs a build, then a version bump: pubspec AND `appVersion`).
+
+---
+
 **Date:** 2026-11-07 (NEW HERO, ENEMY AND BOSS ART + BOY/GIRL DEFAULTS, on branch `feat/new-art`, 5 commits, NOT pushed, NOT built, not on a phone)
 **From:** Claude Code (Sonnet 5.5)
 - **Safe way back:** branch `feat/new-art` from `1ab3993`; tag `before-new-art` marks the old game; `git checkout feat/quest-gameplay` returns to it. Five commits so each part can be reverted alone: art (`f09cd3c`), roster and prices (`47d1291`), player drawing and attack (`9d90f87`), enemies and bosses (`4969ddf`), menus (`c868d94`).

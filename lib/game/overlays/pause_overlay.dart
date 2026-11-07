@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
-import '../../widgets/living_backdrop.dart' show LivingBackdrop, motionAllowed;
+import '../../widgets/living_backdrop.dart' show motionAllowed;
 import '../../widgets/pixel_icon.dart';
 import '../chrono_game.dart';
 
@@ -34,10 +34,6 @@ class PauseOverlayWidget extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           ColoredBox(color: Colors.black.withValues(alpha: 0.72)),
-          const LivingBackdrop(
-            center: Offset(0.5, 0.55),
-            fireflies: 0,
-          ),
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 16),

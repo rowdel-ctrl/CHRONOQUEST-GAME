@@ -134,12 +134,8 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
         baseColor: AppColors.background,
         child: Stack(
           children: [
-            Positioned.fill(
-              child: LivingBackdrop(
-                fireflies: 0,
-                center:
-                    wide ? const Offset(0.27, 0.46) : const Offset(0.5, 0.25),
-              ),
+            const Positioned.fill(
+              child: LivingBackdrop(),
             ),
             const Positioned.fill(child: Confetti()),
             SafeArea(

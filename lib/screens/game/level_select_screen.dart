@@ -155,148 +155,135 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.lerp(const Color(0xFF140E1F), eraColor, 0.65)!,
-              const Color(0xFF140E1F),
-            ],
+      body: Stack(
+        children: [
+          // The night behind the whole screen, in the era's colour. It stays put
+          // while a narrow screen's path scrolls over it.
+          Positioned.fill(
+            child: LivingBackdrop(
+              color: Color.lerp(eraColor, Colors.white, 0.5)!,
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Header
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Row(
-                  children: [
-                    MenuChip(
-                      icon: PixelGlyph.back,
-                      tooltip: 'Bumalik',
-                      onTap: () => context.go('/era-selection'),
-                    ),
-                    Expanded(
-                      // Shrinks to fit rather than cutting the name: the longest
-                      // is 47 characters.
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          era.name.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            height: 1.4,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.6,
-                            color: AppColors.accent,
+          SafeArea(
+            child: Column(
+              children: [
+                // Header
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    children: [
+                      MenuChip(
+                        icon: PixelGlyph.back,
+                        tooltip: 'Bumalik',
+                        onTap: () => context.go('/era-selection'),
+                      ),
+                      Expanded(
+                        // Shrinks to fit rather than cutting the name: the longest
+                        // is 47 characters.
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            era.name.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              height: 1.4,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.6,
+                              color: AppColors.accent,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    // The shared hearts pool, the same pill character select
-                    // shows in the same corner. Level select is where hearts
-                    // gate starting a level, so it is where they matter most.
-                    const HeartsPill(),
-                  ],
+                      // The shared hearts pool, the same pill character select
+                      // shows in the same corner. Level select is where hearts
+                      // gate starting a level, so it is where they matter most.
+                      const HeartsPill(),
+                    ],
+                  ),
                 ),
-              ),
 
-              // The winding path of levels
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, box) {
-                    final vertical = box.maxWidth < 560;
-                    final height = vertical
-                        ? math.max(box.maxHeight, levelPathHeight(levelCount))
-                        : box.maxHeight;
-                    final area = Size(box.maxWidth, height);
-                    final points =
-                        levelPathPoints(levelCount, area, vertical: vertical);
+                // The winding path of levels
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, box) {
+                      final vertical = box.maxWidth < 560;
+                      final height = vertical
+                          ? math.max(box.maxHeight, levelPathHeight(levelCount))
+                          : box.maxHeight;
+                      final area = Size(box.maxWidth, height);
+                      final points =
+                          levelPathPoints(levelCount, area, vertical: vertical);
 
-                    final path = SizedBox(
-                      key: LevelSelectScreen.pathKey,
-                      width: area.width,
-                      height: area.height,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          // The light comes from the level to play next.
-                          if (current > 0)
+                      final path = SizedBox(
+                        key: LevelSelectScreen.pathKey,
+                        width: area.width,
+                        height: area.height,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
                             Positioned.fill(
-                              child: LivingBackdrop(
-                                color: Color.lerp(eraColor, Colors.white, 0.5)!,
-                                fireflies: 0,
-                                center: Offset(
-                                  points[current - 1].dx / area.width,
-                                  points[current - 1].dy / area.height,
+                              child: CustomPaint(
+                                painter: _RoadPainter(
+                                  points,
+                                  done: {
+                                    for (var l = 1; l <= levelCount; l++)
+                                      l: completedLevels.containsKey(l)
+                                  },
                                 ),
                               ),
                             ),
-                          Positioned.fill(
-                            child: CustomPaint(
-                              painter: _RoadPainter(
-                                points,
-                                done: {
-                                  for (var l = 1; l <= levelCount; l++)
-                                    l: completedLevels.containsKey(l)
-                                },
-                              ),
-                            ),
-                          ),
-                          for (var i = 0; i < levelCount; i++)
-                            Positioned(
-                              left: points[i].dx - LevelNode.target / 2,
-                              top: points[i].dy - LevelNode.target / 2,
-                              child: LevelNode(
-                                key: LevelSelectScreen.nodeKey(i + 1),
-                                level: i + 1,
-                                state: stateOf(i + 1),
-                                stars: completedLevels[i + 1] ?? 0,
-                                isBoss: i + 1 == levelCount,
-                                heroId: game.selectedCharacterId,
-                                onTap: unlocked(i + 1)
-                                    ? () {
-                                        if (hasHearts) {
-                                          _startLevel(i + 1);
-                                        } else {
-                                          _showNoHeartsDialog(
-                                              context, timeUntilNext);
+                            for (var i = 0; i < levelCount; i++)
+                              Positioned(
+                                left: points[i].dx - LevelNode.target / 2,
+                                top: points[i].dy - LevelNode.target / 2,
+                                child: LevelNode(
+                                  key: LevelSelectScreen.nodeKey(i + 1),
+                                  level: i + 1,
+                                  state: stateOf(i + 1),
+                                  stars: completedLevels[i + 1] ?? 0,
+                                  isBoss: i + 1 == levelCount,
+                                  heroId: game.selectedCharacterId,
+                                  onTap: unlocked(i + 1)
+                                      ? () {
+                                          if (hasHearts) {
+                                            _startLevel(i + 1);
+                                          } else {
+                                            _showNoHeartsDialog(
+                                                context, timeUntilNext);
+                                          }
                                         }
-                                      }
-                                    : null,
+                                      : null,
+                                ),
                               ),
-                            ),
-                        ],
-                      ),
-                    );
+                          ],
+                        ),
+                      );
 
-                    if (!vertical) return path;
-                    // A narrow screen runs the path downwards and starts at the
-                    // level to play next.
-                    if (!_scrolledToCurrent && current > 0) {
-                      _scrolledToCurrent = true;
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (!_scroll.hasClients) return;
-                        final target =
-                            points[current - 1].dy - box.maxHeight / 2;
-                        _scroll.jumpTo(target.clamp(
-                            0.0, _scroll.position.maxScrollExtent));
-                      });
-                    }
-                    return SingleChildScrollView(
-                        controller: _scroll, child: path);
-                  },
+                      if (!vertical) return path;
+                      // A narrow screen runs the path downwards and starts at the
+                      // level to play next.
+                      if (!_scrolledToCurrent && current > 0) {
+                        _scrolledToCurrent = true;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (!_scroll.hasClients) return;
+                          final target =
+                              points[current - 1].dy - box.maxHeight / 2;
+                          _scroll.jumpTo(target.clamp(
+                              0.0, _scroll.position.maxScrollExtent));
+                        });
+                      }
+                      return SingleChildScrollView(
+                          controller: _scroll, child: path);
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

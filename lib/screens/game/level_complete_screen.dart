@@ -138,12 +138,9 @@ class _LevelCompleteScreenState extends State<LevelCompleteScreen>
           children: [
             // The light matches the result. One star gets none.
             if (_stars >= 2)
-              Positioned.fill(
+              const Positioned.fill(
                 child: LivingBackdrop(
                   key: LevelCompleteScreen.backdropKey,
-                  center: const Offset(0.5, 0.4),
-                  fireflies: 0,
-                  rays: _stars == 3,
                 ),
               ),
             SafeArea(

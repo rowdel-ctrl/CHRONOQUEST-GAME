@@ -53,10 +53,7 @@ class SplashScreen extends StatelessWidget {
             children: [
               Opacity(
                 opacity: rays,
-                child: const LivingBackdrop(
-                    color: AppColors.accent,
-                    center: Offset(0.5, 0.44),
-                    fireflies: 8),
+                child: const LivingBackdrop(color: AppColors.accent),
               ),
               Center(
                 child: FittedBox(

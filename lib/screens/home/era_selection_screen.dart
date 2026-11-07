@@ -113,7 +113,6 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
     final current = visibleEras.indexWhere(
       (e) => unlocked(e) && !notifier.getEraProgress(e.id).isCompleted,
     );
-    final columns = math.min(math.max(visibleEras.length, 1), 3);
     final lit = current < 0 ? null : visibleEras[current];
 
     return Scaffold(
@@ -126,8 +125,6 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
               Positioned.fill(
                 child: LivingBackdrop(
                   color: eraCardColor(lit.id),
-                  fireflies: 0,
-                  center: Offset(((current % columns) + 0.5) / columns, 0.5),
                 ),
               ),
             SafeArea(

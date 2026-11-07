@@ -227,9 +227,6 @@ class _CharacterSelectionScreenState
                 child: LivingBackdrop(
                   key: ValueKey('backdrop_${char.id}'),
                   color: color,
-                  fireflies: 8,
-                  center:
-                      wide ? const Offset(0.27, 0.56) : const Offset(0.5, 0.3),
                 ),
               ),
             ),

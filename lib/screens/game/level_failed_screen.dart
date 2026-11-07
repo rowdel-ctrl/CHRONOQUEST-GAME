@@ -154,11 +154,9 @@ class LevelFailedScreen extends ConsumerWidget {
         child: Stack(
           children: [
             // Red light, slow. The hero is not lit by it: it is in the dark.
-            Positioned.fill(
+            const Positioned.fill(
               child: LivingBackdrop(
                 color: AppColors.danger,
-                fireflies: 0,
-                center: wide ? const Offset(0.3, 0.5) : const Offset(0.5, 0.25),
               ),
             ),
             SafeArea(

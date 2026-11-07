@@ -87,8 +87,6 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
                 duration: const Duration(milliseconds: 450),
                 builder: (context, color, _) => LivingBackdrop(
                   color: color ?? step.color,
-                  center: const Offset(0.27, 0.55),
-                  fireflies: 6,
                 ),
               ),
             ),

@@ -90,8 +90,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Positioned.fill(
           child: LivingBackdrop(
             color: characterColor(characterId),
-            fireflies: 0,
-            center: wide ? const Offset(0.16, 0.4) : const Offset(0.5, 0.18),
           ),
         ),
         SafeArea(

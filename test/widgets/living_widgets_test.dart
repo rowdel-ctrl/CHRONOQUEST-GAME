@@ -1,4 +1,4 @@
-// The pieces of the first screen that move or report: the turning rays, the
+// The pieces of the first screen that move or report: the lantern night, the
 // "Alam mo ba?" line and the connection icon.
 import 'package:chronoquest/data/login_facts.dart';
 import 'package:chronoquest/widgets/confetti.dart';
@@ -44,6 +44,38 @@ void main() {
       await _show(tester, const SizedBox.expand(child: LivingBackdrop()), animations: false);
       expect(tester.hasRunningAnimations, isFalse);
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('draws on every kind of screen without trouble', (tester) async {
+      // Landscape phone, long phone, portrait phone, a tablet, and a tiny box.
+      for (final size in const [
+        Size(732, 320),
+        Size(873, 393),
+        Size(360, 760),
+        Size(1280, 800),
+        Size(40, 30),
+      ]) {
+        await _show(
+          tester,
+          Center(child: SizedBox.fromSize(size: size, child: const LivingBackdrop())),
+        );
+        await tester.pump(const Duration(milliseconds: 500));
+        expect(tester.takeException(), isNull, reason: '$size');
+      }
+    });
+
+    testWidgets('a new colour repaints it, and it keeps the colour it was given', (tester) async {
+      await _show(tester, const SizedBox.expand(child: LivingBackdrop(color: Color(0xFF9B6BD1))));
+      expect(tester.widget<LivingBackdrop>(find.byType(LivingBackdrop)).color, const Color(0xFF9B6BD1));
+      await _show(tester, const SizedBox.expand(child: LivingBackdrop(color: Color(0xFFD97BB6))));
+      await tester.pump();
+      expect(tester.widget<LivingBackdrop>(find.byType(LivingBackdrop)).color, const Color(0xFFD97BB6));
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('animate: false stays still even when the phone allows motion', (tester) async {
+      await _show(tester, const SizedBox.expand(child: LivingBackdrop(animate: false)));
+      expect(tester.hasRunningAnimations, isFalse);
     });
 
     testWidgets('the hero bobs, and stays still when animations are off', (tester) async {

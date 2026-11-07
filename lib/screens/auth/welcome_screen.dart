@@ -97,12 +97,8 @@ class WelcomeScreen extends ConsumerWidget {
           child: SafeArea(
             child: Stack(
               children: [
-                Positioned.fill(
-                  child: LivingBackdrop(
-                    fireflies: 0,
-                    center:
-                        wide ? const Offset(0.28, 0.5) : const Offset(0.5, 0.3),
-                  ),
+                const Positioned.fill(
+                  child: LivingBackdrop(),
                 ),
                 const Positioned.fill(child: Confetti()),
                 Center(

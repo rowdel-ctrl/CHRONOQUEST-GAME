@@ -116,9 +116,6 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
               Positioned.fill(
                 child: LivingBackdrop(
                   color: Color.lerp(eraColor, Colors.white, 0.4)!,
-                  fireflies: 0,
-                  center:
-                      wide ? const Offset(0.27, 0.45) : const Offset(0.5, 0.25),
                 ),
               ),
               SafeArea(

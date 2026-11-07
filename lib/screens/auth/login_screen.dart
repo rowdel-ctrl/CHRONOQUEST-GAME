@@ -935,10 +935,9 @@ class _ChoiceViewState extends State<_ChoiceView> {
     return Stack(
       children: [
         // The light comes from behind the hero, wherever the hero is.
-        Positioned.fill(
+        const Positioned.fill(
           child: LivingBackdrop(
             key: ChoiceKeys.backdrop,
-            center: row ? const Offset(0.22, 0.58) : const Offset(0.5, 0.3),
           ),
         ),
         Center(
