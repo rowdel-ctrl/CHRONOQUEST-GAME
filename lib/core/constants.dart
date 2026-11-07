@@ -490,6 +490,8 @@ class CharacterData {
 }
 
 // The first character with unlockCost 0 is the free default hero.
+// The order is the order on the hero screen: the two free heroes, then the others from the
+// cheapest to the dearest (Del Pilar and Bonifacio tie, Bonifacio first).
 // 'boy' and 'girl' are Juan and Maria (ids stay boy and girl: they name the picture files).
 const List<CharacterData> allCharacters = [
   CharacterData(
@@ -517,22 +519,6 @@ const List<CharacterData> allCharacters = [
     unlockCost: 150,
   ),
   CharacterData(
-    id: 'rizal',
-    name: 'Jose Rizal',
-    shortName: 'Rizal',
-    era: 'Pananakop ng Espanya',
-    description: 'Pambansang Bayani',
-    unlockCost: 600,
-  ),
-  CharacterData(
-    id: 'luna',
-    name: 'Heneral Antonio Luna',
-    shortName: 'Luna',
-    era: 'Himagsikan at Imperyalismong Amerikano',
-    description: 'Heneral ng Hukbong Pilipino',
-    unlockCost: 400,
-  ),
-  CharacterData(
     id: 'bonifacio',
     name: 'Andres Bonifacio',
     shortName: 'Bonifacio',
@@ -547,6 +533,22 @@ const List<CharacterData> allCharacters = [
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
     unlockCost: 250,
+  ),
+  CharacterData(
+    id: 'luna',
+    name: 'Heneral Antonio Luna',
+    shortName: 'Luna',
+    era: 'Himagsikan at Imperyalismong Amerikano',
+    description: 'Heneral ng Hukbong Pilipino',
+    unlockCost: 400,
+  ),
+  CharacterData(
+    id: 'rizal',
+    name: 'Jose Rizal',
+    shortName: 'Rizal',
+    era: 'Pananakop ng Espanya',
+    description: 'Pambansang Bayani',
+    unlockCost: 600,
   ),
 ];
 

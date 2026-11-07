@@ -105,10 +105,10 @@ void main() {
     testWidgets(
         'the right arrow shows the next hero and the left one the one before',
         (tester) async {
-      await _pump(tester, selected: 'rizal'); // the fourth of seven
+      await _pump(tester, selected: 'bonifacio'); // the fourth of seven
       await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
       await tester.pump();
-      expect(_name(tester), 'Luna');
+      expect(_name(tester), 'Del Pilar');
 
       await tester.tap(find.byKey(CharacterSelectionScreen.prevKey));
       await tester.pump();
@@ -131,7 +131,7 @@ void main() {
     });
 
     testWidgets('and the right one is dim on the last hero', (tester) async {
-      await _pump(tester, selected: 'delpilar');
+      await _pump(tester, selected: 'rizal');
       Opacity dim(Key key) => tester.widget<Opacity>(
           find.descendant(of: find.byKey(key), matching: find.byType(Opacity)));
       expect(dim(CharacterSelectionScreen.nextKey).opacity, lessThan(0.5));
