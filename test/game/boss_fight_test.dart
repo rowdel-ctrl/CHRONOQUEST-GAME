@@ -544,13 +544,13 @@ void main() {
     await _flush(tester);
   });
 
-  testWidgets('a shield turns a wrong answer away, and the fight goes on', (tester) async {
+  testWidgets('a wrong answer costs nothing, so it does not use up a Shield, and the fight goes on', (tester) async {
     final (game, boss) = await _start(tester);
     _run(game, 20);
     game.shieldActive = true;
 
     game.handleAnswer(_wrong(game));
-    expect(game.shieldActive, isFalse);
+    expect(game.shieldActive, isTrue, reason: 'kept for a minion or the shockwave');
     expect(boss.health, 22);
     _run(game, 3);
     expect(game.questionShowing, isTrue);

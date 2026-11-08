@@ -63,9 +63,10 @@ Widget _card(
   int fiftyFifty = 1,
   int shield = 1,
   String explanation = _explanation,
+  Question? question,
 }) =>
     QuestionCard(
-      question: _question(explanation),
+      question: question ?? _question(explanation),
       secondsElapsed: 4,
       answered: answered,
       selectedAnswer: selected,
@@ -468,6 +469,28 @@ void main() {
       await tester.tap(find.text('50/50 ×1'));
       await tester.tap(find.text('Shield ×1'));
       expect([calls.fiftyFifty, calls.shields], [1, 1]);
+    });
+
+    testWidgets('50/50 cannot be used on a question with only 3 options', (tester) async {
+      final calls = _Calls();
+      final three = Question(
+        id: 'q3',
+        era: 'pre-colonial',
+        questionText: 'Alin ang tamang sagot?',
+        options: const [
+          QuestionOption(label: 'A', text: 'Una'),
+          QuestionOption(label: 'B', text: 'Ikalawa'),
+          QuestionOption(label: 'C', text: 'Ikatlo'),
+        ],
+        correctAnswer: 'A',
+        explanation: _explanation,
+      );
+      await _pump(tester, _desktops.values.first, _card(calls, question: three));
+
+      await tester.tap(find.text('50/50 ×1'));
+      expect(calls.fiftyFifty, 0, reason: 'hiding two of three would leave only the answer');
+      await tester.tap(find.text('Shield ×1'));
+      expect(calls.shields, 1);
     });
 
     testWidgets('an empty power-up cannot be used', (tester) async {

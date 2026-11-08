@@ -172,12 +172,31 @@ void main() {
       expect(again.state.powerUps.shield, 0);
     });
 
-    test('the milestone rewards are kept too', () {
-      final n = fresh('p4');
-      n.awardPowerUp(3);
-      n.awardPowerUp(7);
+    test('using one in a level takes it out and saves at once', () {
+      final n = fresh('p4', coins: 200);
+      n.buyPowerUp(PowerUpKind.fiftyFifty);
+      n.buyPowerUp(PowerUpKind.shield);
+      n.usePowerUp(PowerUpKind.fiftyFifty);
+      expect(n.state.powerUps.fiftyFifty, 0);
+      // Nothing else is called: a level killed here must not give it back.
       final again = GameNotifier(clock: ServerClock.fixed(server))..loadWallet('p4');
-      expect(again.state.powerUps.fiftyFifty, 1);
+      expect(again.state.powerUps.fiftyFifty, 0);
+      expect(again.state.powerUps.shield, 1);
+    });
+
+    test('using one that is not owned changes nothing', () {
+      final n = fresh('p4b');
+      n.usePowerUp(PowerUpKind.timeFreeze);
+      expect(n.state.powerUps.timeFreeze, 0);
+    });
+
+    test('a Shield that was never needed can be given back and is saved', () {
+      final n = fresh('p4c', coins: 100);
+      n.buyPowerUp(PowerUpKind.shield);
+      n.usePowerUp(PowerUpKind.shield);
+      n.refundShield();
+      expect(n.state.powerUps.shield, 1);
+      final again = GameNotifier(clock: ServerClock.fixed(server))..loadWallet('p4c');
       expect(again.state.powerUps.shield, 1);
     });
   });

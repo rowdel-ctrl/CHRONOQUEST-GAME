@@ -272,7 +272,8 @@ class QuestionCard extends StatelessWidget {
           label: '50/50',
           count: fiftyFiftyCount,
           onTap: onFiftyFifty,
-          enabled: !answered && hiddenOptions.isEmpty,
+          // Only a question with 4 or more options: hiding two of 3 leaves the answer.
+          enabled: !answered && hiddenOptions.isEmpty && question.options.length >= 4,
           layout: layout,
         ),
         const SizedBox(width: 16),

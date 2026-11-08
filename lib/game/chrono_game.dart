@@ -283,7 +283,14 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   List<QuestionSnapshot> answers = [];
 
   // Powerups
+  /// This level's own copy of the student's power-ups, for the question card to show. It is
+  /// not the wallet: every use is reported through [onPowerUpUsed], and the screen takes it
+  /// out of the wallet and saves it at once.
   PowerUps playerPowerUps = PowerUps();
+
+  /// Called when a power-up is used, with its kind's name ('fiftyFifty', 'shield' or
+  /// 'timeFreeze', the names of `PowerUpKind`).
+  void Function(String kind)? onPowerUpUsed;
 
   // Services
   final AudioService audioService = AudioService();

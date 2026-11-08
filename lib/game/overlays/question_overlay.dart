@@ -137,6 +137,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     if (countdown == null || countdown.frozen || answered) return;
     if (widget.game.playerPowerUps.timeFreeze <= 0) return;
     widget.game.playerPowerUps.timeFreeze--;
+    widget.game.onPowerUpUsed?.call('timeFreeze');
     widget.game.stats.powerUpsUsed++;
     widget.game.audioService.playPowerup();
     setState(countdown.freeze);
@@ -152,8 +153,12 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     final question = widget.game.currentQuestion;
     if (question == null) return;
     if (widget.game.playerPowerUps.fiftyFifty <= 0) return;
+    // Hiding two options of a 3-option question would leave only the right one, and a
+    // second use on the same question would waste the power-up.
+    if (question.options.length < 4 || hiddenOptions.isNotEmpty) return;
 
     widget.game.playerPowerUps.fiftyFifty--;
+    widget.game.onPowerUpUsed?.call('fiftyFifty');
     widget.game.stats.powerUpsUsed++;
     widget.game.audioService.playPowerup();
 
@@ -168,9 +173,10 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   }
 
   void _useShield() {
-    if (widget.game.playerPowerUps.shield > 0) {
+    if (widget.game.playerPowerUps.shield > 0 && !widget.game.shieldActive) {
       widget.game.shieldActive = true;
       widget.game.playerPowerUps.shield--;
+      widget.game.onPowerUpUsed?.call('shield');
       widget.game.stats.powerUpsUsed++;
       widget.game.audioService.playPowerup();
       setState(() {});

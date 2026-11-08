@@ -475,32 +475,44 @@ class GameNotifier extends StateNotifier<GameState> {
     saveWallet();
   }
 
-  void useFiftyFifty() {
-    if (state.powerUps.fiftyFifty > 0) {
-      state.powerUps.fiftyFifty--;
-      state = state.copyWith(powerUps: state.powerUps);
+  /// Takes one power-up out of the wallet the moment it is used in a level, and saves, so
+  /// a level that is closed, quit or killed afterwards does not give it back.
+  void usePowerUp(PowerUpKind kind) {
+    final p = state.powerUps;
+    final left = switch (kind) {
+      PowerUpKind.fiftyFifty => p.fiftyFifty,
+      PowerUpKind.shield => p.shield,
+      PowerUpKind.timeFreeze => p.timeFreeze,
+    };
+    if (left <= 0) return;
+    switch (kind) {
+      case PowerUpKind.fiftyFifty:
+        p.fiftyFifty--;
+      case PowerUpKind.shield:
+        p.shield--;
+      case PowerUpKind.timeFreeze:
+        p.timeFreeze--;
     }
+    state = state.copyWith(powerUps: p);
+    saveWallet();
   }
 
-  void useTimeFreeze() {
-    if (state.powerUps.timeFreeze > 0) {
-      state.powerUps.timeFreeze--;
-      state = state.copyWith(powerUps: state.powerUps);
-    }
-  }
-
-  void useShield() {
-    if (state.powerUps.shield > 0) {
-      state.powerUps.shield--;
-      state = state.copyWith(powerUps: state.powerUps);
-    }
+  /// Gives back a Shield that was switched on in a level and never needed.
+  void refundShield() {
+    state.powerUps.shield++;
+    state = state.copyWith(powerUps: state.powerUps);
+    saveWallet();
   }
 
   /// One free power-up of a random kind (a level finished without a wrong answer).
-  /// Returns which one, so the screen can say so.
-  PowerUpKind grantRandomPowerUp([math.Random? random]) {
-    final kind = PowerUpKind.values[(random ?? math.Random())
-        .nextInt(PowerUpKind.values.length)];
+  /// Returns which one, so the screen can say so. A level with no timer never gives a
+  /// Time Freeze, which has nothing to freeze there ([timeFreezeUsable] false).
+  PowerUpKind grantRandomPowerUp([math.Random? random, bool timeFreezeUsable = true]) {
+    final kinds = [
+      for (final k in PowerUpKind.values)
+        if (timeFreezeUsable || k != PowerUpKind.timeFreeze) k,
+    ];
+    final kind = kinds[(random ?? math.Random()).nextInt(kinds.length)];
     _giveFree(kind);
     saveWallet();
     return kind;
@@ -534,20 +546,6 @@ class GameNotifier extends StateNotifier<GameState> {
     if (heartsAreFree) return;
     if (state.hearts.count >= GameConstants.maxHearts) return;
     _store(state.hearts.withHeart());
-  }
-
-  void awardPowerUp(int level) {
-    // Powerup earned at milestones
-    // NOTE: level 5 used to award Time Freeze, which has no working use in the
-    // game (see question_overlay.dart). Removed rather than left dead — if you
-    // want a level-5 reward, consider granting an extra fiftyFifty or shield here.
-    if (level == 3) {
-      state.powerUps.fiftyFifty++;
-    } else if (level == 7) {
-      state.powerUps.shield++;
-    }
-    state = state.copyWith(powerUps: state.powerUps);
-    saveWallet();
   }
 }
 

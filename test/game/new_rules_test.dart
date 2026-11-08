@@ -384,6 +384,15 @@ void main() {
       expect(total, 60, reason: 'one power-up each time');
     });
 
+    test('a level with no timer never gives a Time Freeze', () {
+      final n = fresh('np2b');
+      for (var i = 0; i < 80; i++) {
+        n.grantRandomPowerUp(null, false);
+      }
+      expect(n.state.powerUps.timeFreeze, 0);
+      expect(n.state.powerUps.fiftyFifty + n.state.powerUps.shield, 80);
+    });
+
     test('they are kept on the phone', () {
       fresh('np3').grantAllPowerUps();
       final again = fresh('np3');

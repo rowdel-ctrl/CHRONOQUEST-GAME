@@ -57,19 +57,9 @@ extension QuizHandler on ChronoGame {
       resumeEngine();
       notifyState(); // score changed, and possibly boss health
     } else {
-      // Shield absorbs wrong answer — no damage to boss, but no life lost
-      // either.
-      if (shieldActive) {
-        overlays.remove('QuestionOverlay');
-        shieldActive = false;
-        questionShowing = false;
-        resumeEngine();
-        boss?.missed();
-        return;
-      }
-
       // Wrong answer: no HP lost (GAMEPLAY-V2.md Section 6/8) — just close
-      // the question.
+      // the question. A Shield is not spent here: there is nothing to absorb, and it
+      // stays for a minion's hit or the boss's shockwave.
       overlays.remove('QuestionOverlay');
       questionShowing = false;
       resumeEngine();

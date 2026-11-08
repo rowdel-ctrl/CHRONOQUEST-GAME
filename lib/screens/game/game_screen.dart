@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../../game/chrono_game.dart';
 import '../../core/combat_constants.dart';
+import '../../data/question_bank.dart';
 import '../../game/answer_point_handler.dart';
 import '../../game/quiz_handler.dart';
 import '../../game/overlays/gate_locked_overlay.dart';
@@ -14,6 +15,7 @@ import '../../game/overlays/hud_overlay.dart';
 import '../../game/overlays/question_overlay.dart';
 import '../../game/overlays/pause_overlay.dart';
 import '../../models/control_scheme.dart';
+import '../../models/student.dart' show PowerUps;
 import '../../providers/control_scheme_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/badge_provider.dart';
@@ -60,7 +62,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ..currentEra = widget.eraId
       ..currentLevel = widget.level
       ..selectedCharacterId = gameState.selectedCharacterId
-      ..playerPowerUps = gameState.powerUps
+      // The level's own copy: what the question card shows. Each use goes to the wallet
+      // below at once (it used to share the wallet's object and save only on leaving).
+      ..playerPowerUps = PowerUps(
+        fiftyFifty: gameState.powerUps.fiftyFifty,
+        timeFreeze: gameState.powerUps.timeFreeze,
+        shield: gameState.powerUps.shield,
+      )
       // A full bar when hearts are free (the testing switch), so an empty
       // pool does not end the level on the first hit.
       ..hearts = _hearts.heartsAreFree
@@ -85,6 +93,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // A heart found in the level goes back into the same pool.
     game.onHeartGained = _hearts.gainHeart;
 
+    // A power-up used leaves the wallet, and is saved, the moment it is used.
+    game.onPowerUpUsed = (kind) => _hearts.usePowerUp(PowerUpKind.values.byName(kind));
+
     // Hearts stop regenerating while the level is on screen. Deferred a frame:
     // changing a provider is not allowed while the widget tree is building.
     Future<void>.microtask(_hearts.enterLevel);
@@ -98,19 +109,24 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           : percentage >= 70
               ? 2
               : 1;
+      // Read before it is saved: the free power-ups are for the first clear only, so a
+      // level played again over and over pays nothing more than coins.
+      final firstClear =
+          !StorageService.getCompletedLevels(widget.eraId).containsKey(widget.level);
       StorageService.saveLevelCompleted(widget.eraId, widget.level, stars);
 
-      // Award powerup at milestones
-      ref.read(gameProvider.notifier).awardPowerUp(widget.level);
-
-      // The new rules' gifts: a boss beaten gives one of each power-up, and a level
-      // with no wrong answer gives one at random.
+      // The gifts, first clear only: a boss beaten gives one of each power-up, and a level
+      // with no wrong answer gives one at random (never a Time Freeze in a level with no
+      // timer, where it could not be used).
       final isBoss = widget.level == getEraById(widget.eraId).levels.length;
-      final List<PowerUpKind> freeUps = isBoss
-          ? _hearts.grantAllPowerUps()
-          : (answers.isNotEmpty && answers.every((a) => a.isCorrect))
-              ? [_hearts.grantRandomPowerUp()]
-              : const [];
+      final timed = QuestionBank.timerSecondsFor(widget.eraId, widget.level) > 0;
+      final List<PowerUpKind> freeUps = !firstClear
+          ? const []
+          : isBoss
+              ? _hearts.grantAllPowerUps()
+              : (answers.isNotEmpty && answers.every((a) => a.isCorrect))
+                  ? [_hearts.grantRandomPowerUp(null, timed)]
+                  : const [];
 
       // Navigate, carrying the attempt's real result so the completion
       // screen reports what the player actually scored.
@@ -222,8 +238,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     Future<void>.microtask(audio.stopBgm);
     // The hearts clock starts again; also deferred, for the same reason.
     Future<void>.microtask(_hearts.exitLevel);
-    // Power-ups used in the level were changed in place; keep what is left.
-    Future<void>.microtask(_hearts.saveWallet);
+    // A Shield switched on and never needed goes back to the wallet (every use was
+    // already taken out and saved when it happened).
+    if (game.shieldActive) {
+      game.shieldActive = false;
+      Future<void>.microtask(_hearts.refundShield);
+    }
     super.dispose();
   }
 
