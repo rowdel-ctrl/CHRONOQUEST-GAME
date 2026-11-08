@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -18,10 +19,29 @@ import '../../widgets/pixel_icon.dart';
 /// first one still shut breathes and rings, so it is plain they are to be tapped.
 /// The story card has a curling corner and a bouncing arrow, and the next dot rings,
 /// so it is plain it can be turned (tap it, tap the arrow, or swipe).
+///
+/// The terms stay locked until every event of the story has been read. An event
+/// counts as read once it has stayed on screen for [readTimeFor] (a thin bar along
+/// the bottom of the card fills meanwhile), so tapping straight through to the last
+/// one does not unlock them.
 class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
   const BackgroundHistoryScreen({super.key, required this.eraId});
 
+  /// How long an event must stay on screen to count as read: 1.5 s and 0.15 s a
+  /// word, never under 2.5 s or over 7 s (a card of 25 words takes about 5 s).
+  static Duration readTimeFor(StoryBeat beat) {
+    final words = beat.text
+        .replaceAll('**', '')
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .length;
+    final ms = (1500 + 150 * words).clamp(2500, 7000);
+    return Duration(milliseconds: ms);
+  }
+
+  static const Key readBarKey = Key('background_read_bar');
+  static const Key lockNoteKey = Key('background_lock_note');
   static const Key backButtonKey = Key('background_back_button');
   static const Key readyButtonKey = Key('background_ready_button');
   static const Key beatKey = Key('background_beat');
@@ -41,6 +61,45 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
   final Set<int> _opened = {};
   int _beat = 0;
 
+  /// The events that have stayed on screen long enough to count as read.
+  final Set<int> _read = {};
+  Timer? _dwell;
+
+  List<StoryBeat> get _beats {
+    final story = eraStories[widget.eraId];
+    return story?.beats ??
+        [StoryBeat('', getEraById(widget.eraId).historicalText)];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDwell();
+  }
+
+  @override
+  void dispose() {
+    _dwell?.cancel();
+    super.dispose();
+  }
+
+  /// Starts the clock on the event now showing (none if it is already read).
+  void _startDwell() {
+    _dwell?.cancel();
+    final beats = _beats;
+    final i = _beat.clamp(0, beats.length - 1);
+    if (_read.contains(i)) return;
+    _dwell = Timer(BackgroundHistoryScreen.readTimeFor(beats[i]), () {
+      if (mounted) setState(() => _read.add(i));
+    });
+  }
+
+  void _goTo(int i) {
+    final last = _beats.length - 1;
+    setState(() => _beat = i.clamp(0, last));
+    _startDwell();
+  }
+
   /// Back to the era list. The screen is reached with `go`, so there is no
   /// page under it for the phone's own back button to return to.
   void _back() => context.go('/era-selection');
@@ -51,28 +110,45 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
     final eraColor = eraColorFor(widget.eraId);
     final terms = keyTermsFor(widget.eraId);
     final story = eraStories[widget.eraId];
-    final beats = story?.beats ?? [StoryBeat('', era.historicalText)];
-    final beat = beats[_beat.clamp(0, beats.length - 1)];
+    final beats = _beats;
+    final current = _beat.clamp(0, beats.length - 1);
+    final beat = beats[current];
     final ready = _opened.length >= terms.length;
     final wide = MediaQuery.sizeOf(context).width >= 560;
+    // The terms wait until every event has been read for its time.
+    final locked = _read.length < beats.length;
     // The first card still shut is the one that breathes and rings.
     final first = [for (var i = 0; i < terms.length; i++) i]
         .where((i) => !_opened.contains(i));
-    final pointAt = first.isEmpty ? -1 : first.first;
+    final pointAt = locked || first.isEmpty ? -1 : first.first;
 
     final storyCard = _StoryCard(
       beat: beat,
       beatCount: beats.length,
-      current: _beat.clamp(0, beats.length - 1),
-      onPick: (i) => setState(() => _beat = i),
-      onStep: (forward) => setState(() =>
-          _beat = (_beat + (forward ? 1 : -1)).clamp(0, beats.length - 1)),
+      current: current,
+      read: _read,
+      readTime: BackgroundHistoryScreen.readTimeFor(beat),
+      onPick: _goTo,
+      onStep: (forward) => _goTo(current + (forward ? 1 : -1)),
       scrolls: story == null,
     );
     final termCards = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (locked) ...[
+          Text(
+            'Basahin muna ang kuwento (${_read.length} ng ${beats.length})',
+            key: BackgroundHistoryScreen.lockNoteKey,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AppColors.accent,
+            ),
+          ),
+          const SizedBox(height: 6),
+        ],
         for (var i = 0; i < terms.length; i++) ...[
           if (i > 0) const SizedBox(height: 7),
           _TermCard(
@@ -80,6 +156,7 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
             term: terms[i],
             open: _opened.contains(i),
             pointing: i == pointAt,
+            locked: locked,
             order: i,
             onTap: () => setState(() => _opened.add(i)),
           ),
@@ -230,6 +307,10 @@ class _StoryCard extends StatefulWidget {
   final StoryBeat beat;
   final int beatCount;
   final int current;
+
+  /// The events already read, and how long the one showing must stay up.
+  final Set<int> read;
+  final Duration readTime;
   final ValueChanged<int> onPick;
 
   /// One step on: true for the next event, false for the one before.
@@ -242,6 +323,8 @@ class _StoryCard extends StatefulWidget {
     required this.beat,
     required this.beatCount,
     required this.current,
+    required this.read,
+    required this.readTime,
     required this.onPick,
     required this.onStep,
     required this.scrolls,
@@ -366,6 +449,13 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 8),
+                          _ReadBar(
+                            key: ValueKey(
+                                'read_bar_${widget.current}_${widget.read.contains(widget.current)}'),
+                            done: widget.read.contains(widget.current),
+                            time: widget.readTime,
+                          ),
                         ],
                       ),
                     ),
@@ -408,6 +498,7 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                     _BeatDot(
                       key: BackgroundHistoryScreen.beatDotKey(i),
                       on: i == widget.current,
+                      read: widget.read.contains(i),
                       ring: i == widget.current + 1 ? _ring : null,
                       label: '${i + 1} ng ${widget.beatCount}',
                       onTap: () => widget.onPick(i),
@@ -468,6 +559,50 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
   }
 }
 
+/// A thin bar along the foot of the story card. It fills over the time the event
+/// must stay on screen, then stays full: the event is read. With the phone's
+/// animations off it stays empty until the time is up and then shows full.
+class _ReadBar extends StatelessWidget {
+  final bool done;
+  final Duration time;
+  const _ReadBar({super.key, required this.done, required this.time});
+
+  @override
+  Widget build(BuildContext context) {
+    final animate = !done && motionAllowed(context);
+    Widget fill(double t) => Align(
+          alignment: Alignment.centerLeft,
+          child: FractionallySizedBox(
+            widthFactor: t,
+            child: Container(
+              decoration: BoxDecoration(
+                color: done ? AppColors.success : AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+          ),
+        );
+    return Container(
+      key: BackgroundHistoryScreen.readBarKey,
+      height: 6,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceAlt,
+        borderRadius: BorderRadius.circular(3),
+        border: Border.all(color: AppColors.primaryDark.withValues(alpha: 0.5)),
+      ),
+      child: done
+          ? fill(1)
+          : animate
+              ? TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: 1),
+                  duration: time,
+                  builder: (context, t, _) => fill(t),
+                )
+              : fill(0),
+    );
+  }
+}
+
 /// The turned-up corner of a page: a light triangle with a soft shadow.
 class _CurlPainter extends CustomPainter {
   @override
@@ -501,6 +636,9 @@ class _CurlPainter extends CustomPainter {
 /// One dot of the timeline: 40 square to hit, a small gold light to look at.
 class _BeatDot extends StatelessWidget {
   final bool on;
+
+  /// Read for long enough: the dot keeps a gold fill after the reader moves on.
+  final bool read;
   final String label;
   final VoidCallback onTap;
 
@@ -509,6 +647,7 @@ class _BeatDot extends StatelessWidget {
   const _BeatDot(
       {super.key,
       required this.on,
+      required this.read,
       required this.label,
       required this.onTap,
       this.ring});
@@ -554,7 +693,11 @@ class _BeatDot extends StatelessWidget {
                   height: on ? 20 : 15,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: on ? AppColors.accent : const Color(0xFF3A2E52),
+                    color: on
+                        ? AppColors.accent
+                        : read
+                            ? AppColors.accent.withValues(alpha: 0.55)
+                            : const Color(0xFF3A2E52),
                     border: Border.all(color: AppColors.primaryDark, width: 3),
                     boxShadow: on
                         ? [
@@ -584,6 +727,10 @@ class _TermCard extends StatefulWidget {
   final bool open;
   final bool pointing;
 
+  /// The story has not been read through yet: the card is dim, still, and cannot
+  /// be opened.
+  final bool locked;
+
   /// Its place in the list, so the light sweeps over the cards in turn.
   final int order;
   final VoidCallback onTap;
@@ -592,6 +739,7 @@ class _TermCard extends StatefulWidget {
     required this.term,
     required this.open,
     required this.pointing,
+    required this.locked,
     required this.order,
     required this.onTap,
   });
@@ -643,7 +791,7 @@ class _TermCardState extends State<_TermCard> with TickerProviderStateMixin {
   }
 
   void _sync() {
-    final shouldMove = !widget.open && motionAllowed(context);
+    final shouldMove = !widget.open && !widget.locked && motionAllowed(context);
     if (shouldMove && !_loop.isAnimating) {
       _loop.repeat(reverse: true);
       _shimmer.repeat();
@@ -671,14 +819,17 @@ class _TermCardState extends State<_TermCard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final term = widget.term;
+    final locked = widget.locked && !widget.open;
     return Semantics(
-      button: !widget.open,
+      button: !widget.open && !locked,
       label: widget.open
           ? '${term['term']}: ${term['def']}'
-          : 'Buksan ang ${term['term']}',
+          : locked
+              ? 'Basahin muna ang kuwento'
+              : 'Buksan ang ${term['term']}',
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: widget.open ? null : widget.onTap,
+        onTap: widget.open || locked ? null : widget.onTap,
         child: AnimatedBuilder(
           animation: Listenable.merge([_loop, _flip, _shimmer, _ring]),
           builder: (context, _) {
@@ -690,87 +841,91 @@ class _TermCardState extends State<_TermCard> with TickerProviderStateMixin {
             final breath = Curves.easeInOut.transform(_loop.value);
             // The card to open next breathes a little.
             final scale = widget.pointing && !open ? 1 + 0.02 * breath : 1.0;
-            return Transform.scale(
-              scale: scale,
-              child: Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.002)
-                  ..rotateX(angle),
-                child: Container(
-                  // Tall enough for the meaning, so opening a card does not move the others.
-                  constraints: const BoxConstraints(minHeight: 62),
-                  decoration: BoxDecoration(
-                    color: open ? AppColors.surface : null,
-                    gradient: open
-                        ? null
-                        : const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Color(0xFF5B2F18), Color(0xFF3A1D0E)],
+            return Opacity(
+              opacity: locked ? 0.55 : 1,
+              child: Transform.scale(
+                scale: scale,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.002)
+                    ..rotateX(angle),
+                  child: Container(
+                    // Tall enough for the meaning, so opening a card does not move the others.
+                    constraints: const BoxConstraints(minHeight: 62),
+                    decoration: BoxDecoration(
+                      color: open ? AppColors.surface : null,
+                      gradient: open
+                          ? null
+                          : const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Color(0xFF5B2F18), Color(0xFF3A1D0E)],
+                            ),
+                      borderRadius: BorderRadius.circular(6),
+                      border:
+                          Border.all(color: AppColors.primaryDark, width: 2.5),
+                      boxShadow: [
+                        if (!open && !locked)
+                          BoxShadow(
+                            color: AppColors.accent
+                                .withValues(alpha: 0.6 * breath),
+                            blurRadius: 16 * breath,
+                            spreadRadius: 3 * breath,
                           ),
-                    borderRadius: BorderRadius.circular(6),
-                    border:
-                        Border.all(color: AppColors.primaryDark, width: 2.5),
-                    boxShadow: [
-                      if (!open)
-                        BoxShadow(
-                          color:
-                              AppColors.accent.withValues(alpha: 0.6 * breath),
-                          blurRadius: 16 * breath,
-                          spreadRadius: 3 * breath,
-                        ),
-                      const BoxShadow(
-                          color: AppColors.primaryDark, offset: Offset(0, 3)),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(3.5),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          child: Row(
-                            children: [
-                              _seal(open, breath),
-                              const SizedBox(width: 11),
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      open
-                                          ? term['term']!
-                                          : term['term']!.toUpperCase(),
-                                      style: GoogleFonts.poppins(
-                                        fontSize: open ? 13 : 14,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: open ? 0 : 0.5,
-                                        height: 1.2,
-                                        color: open
-                                            ? AppColors.primaryDark
-                                            : AppColors.accent,
-                                      ),
-                                    ),
-                                    if (open)
+                        const BoxShadow(
+                            color: AppColors.primaryDark, offset: Offset(0, 3)),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(3.5),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            child: Row(
+                              children: [
+                                _seal(open, breath, locked),
+                                const SizedBox(width: 11),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
                                       Text(
-                                        term['def']!,
+                                        open
+                                            ? term['term']!
+                                            : term['term']!.toUpperCase(),
                                         style: GoogleFonts.poppins(
-                                          fontSize: 11,
-                                          height: 1.25,
-                                          color: AppColors.textSecondary,
+                                          fontSize: open ? 13 : 14,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: open ? 0 : 0.5,
+                                          height: 1.2,
+                                          color: open
+                                              ? AppColors.primaryDark
+                                              : AppColors.accent,
                                         ),
                                       ),
-                                  ],
+                                      if (open)
+                                        Text(
+                                          term['def']!,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 11,
+                                            height: 1.25,
+                                            color: AppColors.textSecondary,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        if (!open) _shimmerBand(),
-                      ],
+                          if (!open && !locked) _shimmerBand(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -784,29 +939,36 @@ class _TermCardState extends State<_TermCard> with TickerProviderStateMixin {
 
   /// The red seal (green with a tick once open). On the card to open next a ring
   /// spreads out from it.
-  Widget _seal(bool open, double breath) {
+  Widget _seal(bool open, double breath, bool locked) {
     final seal = Transform.rotate(
-      angle: open ? 0 : (breath - 0.5) * 0.3,
+      angle: open || locked ? 0 : (breath - 0.5) * 0.3,
       child: Container(
         width: 28,
         height: 28,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: open ? AppColors.success : AppColors.danger,
+          color: open
+              ? AppColors.success
+              : locked
+                  ? AppColors.primaryLight
+                  : AppColors.danger,
           border: Border.all(color: AppColors.primaryDark, width: 2.5),
         ),
         child: open
             ? const Icon(Icons.check_rounded, size: 18, color: Colors.white)
-            : Text(
-                '?',
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFFFFE98A),
-                  height: 1.1,
-                ),
-              ),
+            : locked
+                ? const Icon(Icons.lock_rounded,
+                    size: 16, color: AppColors.primaryDark)
+                : Text(
+                    '?',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFFFE98A),
+                      height: 1.1,
+                    ),
+                  ),
       ),
     );
     if (open || !widget.pointing) return seal;

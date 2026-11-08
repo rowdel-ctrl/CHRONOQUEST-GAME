@@ -16,11 +16,13 @@ GoRouter _router() => GoRouter(
       routes: [
         GoRoute(
           path: '/era-selection',
-          builder: (context, state) => const Scaffold(body: Text('era list stand-in')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('era list stand-in')),
         ),
         GoRoute(
           path: '/level-select/:eraId',
-          builder: (context, state) => const Scaffold(body: Text('levels stand-in')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('levels stand-in')),
         ),
         GoRoute(
           path: '/background/:eraId',
@@ -64,8 +66,23 @@ Future<void> _settle(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 600));
 }
 
-GameButton _ready(WidgetTester tester) =>
-    tester.widget<GameButton>(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+/// Stays on each event for its reading time and turns with the arrow, so the whole
+/// story counts as read and the terms unlock.
+Future<void> _readStory(WidgetTester tester, [String era = 'spanish']) async {
+  final beats = eraStories[era]!.beats;
+  for (var i = 0; i < beats.length; i++) {
+    await tester.pump(BackgroundHistoryScreen.readTimeFor(beats[i]) +
+        const Duration(milliseconds: 100));
+    if (i < beats.length - 1) {
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+    }
+  }
+  await tester.pump(const Duration(milliseconds: 600));
+}
+
+GameButton _ready(WidgetTester tester) => tester
+    .widget<GameButton>(find.byKey(BackgroundHistoryScreen.readyButtonKey));
 
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
@@ -81,20 +98,24 @@ void main() {
   });
 
   group('the story', () {
-    testWidgets('shows one event at a time, starting with the first', (tester) async {
+    testWidgets('shows one event at a time, starting with the first',
+        (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
 
       expect(find.text(beats[0].label), findsOneWidget);
       expect(find.textContaining('Legazpi'), findsOneWidget);
-      expect(find.textContaining('Intramuros'), findsNothing, reason: 'that is the next event');
+      expect(find.textContaining('Intramuros'), findsNothing,
+          reason: 'that is the next event');
     });
 
-    testWidgets('a dot for each event; tapping one shows that event', (tester) async {
+    testWidgets('a dot for each event; tapping one shows that event',
+        (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
       for (var i = 0; i < beats.length; i++) {
-        expect(find.byKey(BackgroundHistoryScreen.beatDotKey(i)), findsOneWidget);
+        expect(
+            find.byKey(BackgroundHistoryScreen.beatDotKey(i)), findsOneWidget);
       }
 
       await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(1)));
@@ -104,14 +125,18 @@ void main() {
       expect(find.textContaining('Legazpi'), findsNothing);
     });
 
-    testWidgets('the card shows it can be turned: a curling corner and an arrow', (tester) async {
+    testWidgets(
+        'the card shows it can be turned: a curling corner and an arrow',
+        (tester) async {
       await _open(tester);
       expect(find.byKey(BackgroundHistoryScreen.curlKey), findsOneWidget);
       expect(find.byKey(BackgroundHistoryScreen.nextKey), findsOneWidget);
-      expect(tester.getSize(find.byKey(BackgroundHistoryScreen.nextKey)).width, greaterThanOrEqualTo(40));
+      expect(tester.getSize(find.byKey(BackgroundHistoryScreen.nextKey)).width,
+          greaterThanOrEqualTo(40));
     });
 
-    testWidgets('tapping the arrow, tapping the card, or swiping it each turn to the next event',
+    testWidgets(
+        'tapping the arrow, tapping the card, or swiping it each turn to the next event',
         (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
@@ -124,19 +149,24 @@ void main() {
       await _settle(tester);
       expect(find.text(beats[2].label), findsOneWidget);
 
-      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey), const Offset(-200, 0), 800);
+      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey),
+          const Offset(-200, 0), 800);
       await _settle(tester);
       expect(find.text(beats[3].label), findsOneWidget);
 
-      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey), const Offset(200, 0), 800);
+      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey),
+          const Offset(200, 0), 800);
       await _settle(tester);
-      expect(find.text(beats[2].label), findsOneWidget, reason: 'a swipe the other way goes back');
+      expect(find.text(beats[2].label), findsOneWidget,
+          reason: 'a swipe the other way goes back');
     });
 
-    testWidgets('on the last event the hint goes away: nothing more to turn to', (tester) async {
+    testWidgets('on the last event the hint goes away: nothing more to turn to',
+        (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
-      await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(beats.length - 1)));
+      await tester.tap(
+          find.byKey(BackgroundHistoryScreen.beatDotKey(beats.length - 1)));
       await _settle(tester);
 
       expect(find.byKey(BackgroundHistoryScreen.nextKey), findsNothing);
@@ -145,17 +175,20 @@ void main() {
 
     testWidgets('each dot is a 40 pixel target', (tester) async {
       await _open(tester);
-      final size = tester.getSize(find.byKey(BackgroundHistoryScreen.beatDotKey(0)));
+      final size =
+          tester.getSize(find.byKey(BackgroundHistoryScreen.beatDotKey(0)));
       expect(size.width, greaterThanOrEqualTo(40));
     });
   });
 
   group('the screen has few words', () {
-    testWidgets('no era subtitle, no "PANAHON n NG 6", no speech, no "i-tap" instructions',
+    testWidgets(
+        'no era subtitle, no "PANAHON n NG 6", no speech, no "i-tap" instructions',
         (tester) async {
       await _open(tester);
 
-      expect(find.text('Pananakop ng Espanya'), findsOneWidget, reason: 'the era, once, as the title');
+      expect(find.text('Pananakop ng Espanya'), findsOneWidget,
+          reason: 'the era, once, as the title');
       expect(find.text('PANAHON 2 NG 6'), findsNothing);
       expect(find.textContaining('Ako si '), findsNothing);
       expect(find.textContaining('i-tap'), findsNothing);
@@ -165,9 +198,131 @@ void main() {
     });
   });
 
-  group('the sealed terms', () {
-    testWidgets('are shut, each with its name and no meaning yet', (tester) async {
+  group('reading the story first', () {
+    testWidgets(
+        'the terms start locked, with a note of how many events are read',
+        (tester) async {
       await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+
+      expect(find.text('Basahin muna ang kuwento (0 ng ${beats.length})'),
+          findsOneWidget);
+      expect(find.byIcon(Icons.lock_rounded), findsNWidgets(3));
+      expect(find.byKey(BackgroundHistoryScreen.ringKey), findsNothing,
+          reason: 'nothing to point at yet');
+      expect(find.byKey(BackgroundHistoryScreen.readBarKey), findsOneWidget);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.termKey(0)));
+      await _settle(tester);
+      expect(find.text(keyTermsFor('spanish')[0]['def']!), findsNothing,
+          reason: 'locked');
+      expect(find.byIcon(Icons.check_rounded), findsNothing);
+    });
+
+    testWidgets('jumping straight to the last event does not unlock them',
+        (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+      for (var i = 1; i < beats.length; i++) {
+        await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(i)));
+        await tester.pump(const Duration(milliseconds: 300));
+      }
+
+      expect(find.byIcon(Icons.lock_rounded), findsNWidgets(3));
+      await tester.tap(find.byKey(BackgroundHistoryScreen.termKey(0)));
+      await _settle(tester);
+      expect(find.text(keyTermsFor('spanish')[0]['def']!), findsNothing);
+    });
+
+    testWidgets(
+        'an event counts once it has stayed up for its time, and the note counts them',
+        (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+
+      // _open has already let one second go by.
+      await tester.pump(BackgroundHistoryScreen.readTimeFor(beats[0]) -
+          const Duration(seconds: 2));
+      expect(find.text('Basahin muna ang kuwento (0 ng ${beats.length})'),
+          findsOneWidget,
+          reason: 'not long enough yet');
+
+      await tester.pump(const Duration(seconds: 1, milliseconds: 100));
+      expect(find.text('Basahin muna ang kuwento (1 ng ${beats.length})'),
+          findsOneWidget);
+    });
+
+    testWidgets('leaving an event early does not count it', (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+
+      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+      await tester.pump(const Duration(seconds: 1));
+
+      expect(find.text('Basahin muna ang kuwento (0 ng ${beats.length})'),
+          findsOneWidget,
+          reason:
+              'the first event was left after a second, and the second is not done');
+    });
+
+    testWidgets(
+        'after the whole story is read the terms wake up and can be opened',
+        (tester) async {
+      await _open(tester);
+      await _readStory(tester);
+
+      expect(find.byKey(BackgroundHistoryScreen.lockNoteKey), findsNothing);
+      expect(find.byIcon(Icons.lock_rounded), findsNothing);
+      expect(find.byKey(BackgroundHistoryScreen.ringKey), findsOneWidget);
+
+      await _openTerm(tester, 0);
+      expect(find.text(keyTermsFor('spanish')[0]['def']!), findsOneWidget);
+    });
+
+    testWidgets('it works with the phone animations off too', (tester) async {
+      await _open(tester, animations: false);
+      await _readStory(tester);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.termKey(0)));
+      await tester.pump();
+      expect(find.text(keyTermsFor('spanish')[0]['def']!), findsOneWidget);
+    });
+
+    test(
+        'the time to read an event is 2.5 to 7 seconds and grows with its words',
+        () {
+      for (final story in eraStories.values) {
+        for (final beat in story.beats) {
+          final t = BackgroundHistoryScreen.readTimeFor(beat);
+          expect(t, greaterThanOrEqualTo(const Duration(milliseconds: 2500)),
+              reason: beat.label);
+          expect(t, lessThanOrEqualTo(const Duration(seconds: 7)),
+              reason: beat.label);
+        }
+      }
+      expect(
+        BackgroundHistoryScreen.readTimeFor(const StoryBeat('A',
+            'isa dalawa tatlo apat lima anim pito walo siyam sampu labing-isa')),
+        greaterThan(BackgroundHistoryScreen.readTimeFor(
+            const StoryBeat('A', 'isa dalawa'))),
+      );
+    });
+
+    test('every era tells its story in five or six events', () {
+      for (final entry in eraStories.entries) {
+        expect(entry.value.beats.length, inInclusiveRange(5, 6),
+            reason: entry.key);
+      }
+    });
+  });
+
+  group('the sealed terms', () {
+    testWidgets('are shut, each with its name and no meaning yet',
+        (tester) async {
+      await _open(tester);
+      await _readStory(tester);
       final terms = keyTermsFor('spanish');
 
       for (var i = 0; i < terms.length; i++) {
@@ -178,38 +333,58 @@ void main() {
       expect(find.text('?'), findsNWidgets(terms.length));
     });
 
-    testWidgets('there is no hand: the first shut card rings instead, then the next, then none',
+    testWidgets(
+        'there is no hand: the first shut card rings instead, then the next, then none',
         (tester) async {
       await _open(tester);
+      await _readStory(tester);
       final ring = find.byKey(BackgroundHistoryScreen.ringKey);
       double ringY() => tester.getCenter(ring).dy;
-      double cardY(int i) => tester.getCenter(find.byKey(BackgroundHistoryScreen.termKey(i))).dy;
+      double cardY(int i) =>
+          tester.getCenter(find.byKey(BackgroundHistoryScreen.termKey(i))).dy;
 
-      expect(find.byType(PixelIcon).evaluate().where((e) => (e.widget as PixelIcon).glyph == PixelGlyph.hand),
+      expect(
+          find
+              .byType(PixelIcon)
+              .evaluate()
+              .where((e) => (e.widget as PixelIcon).glyph == PixelGlyph.hand),
           isEmpty);
       expect(ring, findsOneWidget);
-      expect((ringY() - cardY(0)).abs(), lessThan(40), reason: 'at the first card');
+      expect((ringY() - cardY(0)).abs(), lessThan(40),
+          reason: 'at the first card');
 
       await _openTerm(tester, 0);
       expect(ring, findsOneWidget);
-      expect((ringY() - cardY(1)).abs(), lessThan(40), reason: 'now at the second');
+      expect((ringY() - cardY(1)).abs(), lessThan(40),
+          reason: 'now at the second');
 
       await _openTerm(tester, 1);
       await _openTerm(tester, 2);
       expect(ring, findsNothing, reason: 'nothing left to open');
     });
 
-    testWidgets('the shut cards shimmer, so something moves across each of them', (tester) async {
+    testWidgets(
+        'the shut cards shimmer, so something moves across each of them',
+        (tester) async {
       await _open(tester);
+      await _readStory(tester);
       // One slanted band of light per shut card.
-      final bands = find.byWidgetPredicate((w) => w is Transform && w.child is Container && (w.child as Container).decoration is BoxDecoration && ((w.child as Container).decoration as BoxDecoration).gradient is LinearGradient && (w.child as Container).constraints?.maxWidth == 34);
+      final bands = find.byWidgetPredicate((w) =>
+          w is Transform &&
+          w.child is Container &&
+          (w.child as Container).decoration is BoxDecoration &&
+          ((w.child as Container).decoration as BoxDecoration).gradient
+              is LinearGradient &&
+          (w.child as Container).constraints?.maxWidth == 34);
       expect(bands, findsNWidgets(3));
       await _openTerm(tester, 0);
       expect(bands, findsNWidgets(2), reason: 'an open card stops shimmering');
     });
 
-    testWidgets('tapping one flips it open to its meaning with a green seal', (tester) async {
+    testWidgets('tapping one flips it open to its meaning with a green seal',
+        (tester) async {
       await _open(tester);
+      await _readStory(tester);
       final terms = keyTermsFor('spanish');
 
       await _openTerm(tester, 0);
@@ -217,10 +392,12 @@ void main() {
       expect(find.text(terms[0]['def']!), findsOneWidget);
       expect(find.byIcon(Icons.check_rounded), findsOneWidget);
       expect(find.text('?'), findsNWidgets(terms.length - 1));
-      expect(find.text(terms[1]['def']!), findsNothing, reason: 'the others stay sealed');
+      expect(find.text(terms[1]['def']!), findsNothing,
+          reason: 'the others stay sealed');
     });
 
-    testWidgets('they glow and wobble while shut, and settle when the phone removes animations',
+    testWidgets(
+        'they glow and wobble while shut, and settle when the phone removes animations',
         (tester) async {
       await _open(tester);
       expect(tester.hasRunningAnimations, isTrue);
@@ -229,9 +406,11 @@ void main() {
       expect(tester.hasRunningAnimations, isFalse);
     });
 
-    testWidgets('with animations off a tap opens it at once, and the first card still rings',
+    testWidgets(
+        'with animations off a tap opens it at once, and the first card still rings',
         (tester) async {
       await _open(tester, animations: false);
+      await _readStory(tester);
       final terms = keyTermsFor('spanish');
       expect(find.byKey(BackgroundHistoryScreen.ringKey), findsOneWidget);
 
@@ -243,23 +422,29 @@ void main() {
   });
 
   group('HANDA NA AKO', () {
-    testWidgets('opens only after every term is read, and fills a dot for each', (tester) async {
+    testWidgets('opens only after every term is read, and fills a dot for each',
+        (tester) async {
       await _open(tester);
+      await _readStory(tester);
 
       expect(_ready(tester).onPressed, isNull);
       for (var i = 0; i < 3; i++) {
-        expect(find.byKey(BackgroundHistoryScreen.termDotKey(i)), findsOneWidget);
+        expect(
+            find.byKey(BackgroundHistoryScreen.termDotKey(i)), findsOneWidget);
       }
 
       for (var i = 0; i < 3; i++) {
         await _openTerm(tester, i);
-        expect(_ready(tester).onPressed, i < 2 ? isNull : isNotNull, reason: 'after term $i');
+        expect(_ready(tester).onPressed, i < 2 ? isNull : isNotNull,
+            reason: 'after term $i');
       }
-      expect(find.text('Sistema ng pagbibigay ng lupain sa mga Espanyol'), findsOneWidget);
+      expect(find.text('Sistema ng pagbibigay ng lupain sa mga Espanyol'),
+          findsOneWidget);
     });
 
     testWidgets('goes on to the levels of the era', (tester) async {
       await _open(tester);
+      await _readStory(tester);
       for (var i = 0; i < 3; i++) {
         await _openTerm(tester, i);
       }
@@ -271,25 +456,31 @@ void main() {
     });
   });
 
-  testWidgets('every era fits a small phone, with all its terms and the button reachable',
+  testWidgets(
+      'every era fits a small phone, with all its terms and the button reachable',
       (tester) async {
     for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
       for (final era in allEras) {
         await tester.binding.setSurfaceSize(size);
         tester.view.devicePixelRatio = 1.0;
         tester.view.physicalSize = size;
-        await tester.pumpWidget(MaterialApp(home: BackgroundHistoryScreen(eraId: era.id)));
+        await tester.pumpWidget(
+            MaterialApp(home: BackgroundHistoryScreen(eraId: era.id)));
         await tester.pump(const Duration(milliseconds: 300));
         expect(tester.takeException(), isNull, reason: '${era.id} at $size');
 
         final terms = keyTermsFor(era.id);
         for (var i = 0; i < terms.length; i++) {
-          await tester.ensureVisible(find.byKey(BackgroundHistoryScreen.termKey(i)));
-          expect(find.byKey(BackgroundHistoryScreen.termKey(i)).hitTestable(), findsOneWidget,
+          await tester
+              .ensureVisible(find.byKey(BackgroundHistoryScreen.termKey(i)));
+          expect(find.byKey(BackgroundHistoryScreen.termKey(i)).hitTestable(),
+              findsOneWidget,
               reason: '${era.id} term $i at $size');
         }
-        await tester.ensureVisible(find.byKey(BackgroundHistoryScreen.readyButtonKey));
-        expect(find.byKey(BackgroundHistoryScreen.readyButtonKey).hitTestable(), findsOneWidget,
+        await tester
+            .ensureVisible(find.byKey(BackgroundHistoryScreen.readyButtonKey));
+        expect(find.byKey(BackgroundHistoryScreen.readyButtonKey).hitTestable(),
+            findsOneWidget,
             reason: '${era.id} button at $size');
       }
     }

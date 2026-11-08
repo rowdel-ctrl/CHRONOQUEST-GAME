@@ -45,12 +45,12 @@ const List<LoginFact> loginFacts = [
   ),
   LoginFact(
     'Noong Hulyo 4, 1946, nakamit ng Pilipinas ang kalayaan.',
-    label: '1935 - 1946',
-    proof: 'Noong Hulyo 4, 1946, nakamit ang kalayaan',
+    label: '1946',
+    proof: 'Noong Hulyo 4, 1946, opisyal na nakamit ng Pilipinas ang kalayaan',
   ),
   LoginFact(
     'Ang EDSA Revolution ay naging simbolo ng kapangyarihan ng mamamayan.',
-    label: '1986',
+    label: 'EDSA',
     proof:
         'Ang EDSA Revolution ay naging simbolo ng kapangyarihan ng mamamayan',
   ),
