@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:tiled/tiled.dart';
 
 import '../core/combat_constants.dart';
+import '../models/artifact_art.dart' show artifactIconsPerEra;
 import '../models/level.dart';
 import 'components/artifact_component.dart';
 import 'components/coin_component.dart';
@@ -262,7 +263,7 @@ class LevelEntity {
   /// `patrol` — how far this enemy paces, in px.
   final double? patrol;
 
-  /// `art` — which `artifact_N.png` an artifact uses.
+  /// `art` — which of the era's ten artifact icons (1..10) an artifact uses.
   final String? art;
 
   const LevelEntity({
@@ -583,7 +584,13 @@ class LevelBuilder {
           world.add(
             ArtifactComponent(
               worldX: e.x,
-              spriteIndex: _artifactIndex(e.art),
+              spriteIndex: artifactIconFor(
+                e.art,
+                // This artifact's place among the level's artifacts, left to right.
+                level.entities
+                    .where((o) => o.type == 'artifact' && o.x < e.x)
+                    .length,
+              ),
               // The map puts each artifact on the ground under it; the base
               // ground is the default, so older maps behave as they did.
               surfaceY: e.y > 0 && e.y < groundY - 1 ? e.y : null,
@@ -639,13 +646,21 @@ class LevelBuilder {
     return extras;
   }
 
-  /// Maps an `art` property ("artifact_3") to the 1-5 sprite index
-  /// ArtifactComponent takes. Only five sprites exist for six eras (Section
-  /// 6), so they repeat, distinguished by the per-era tint.
-  static int _artifactIndex(String? art) {
+  /// The icon number (1..10) for an artifact with map property [art]
+  /// ("artifact_3") that is the [order]-th artifact of its level (0-based, left
+  /// to right). The picture itself comes from the level's era.
+  ///
+  /// The generated maps only write art 1-5 (and cycle through them twice per
+  /// level), but each era has ten icons. So the second five artifacts of a level
+  /// show icons 6-10: a level then shows all ten icons of its era, each once.
+  /// An art value of 6-10 in a hand-made map is taken as it is.
+  @visibleForTesting
+  static int artifactIconFor(String? art, int order) {
     if (art == null) return 1;
     final n = int.tryParse(art.replaceAll(RegExp(r'[^0-9]'), ''));
     if (n == null || n < 1) return 1;
-    return ((n - 1) % 5) + 1;
+    final base = ((n - 1) % artifactIconsPerEra) + 1;
+    if (base <= 5 && order >= 5) return base + 5;
+    return base;
   }
 }

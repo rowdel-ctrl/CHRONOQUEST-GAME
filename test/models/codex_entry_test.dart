@@ -30,9 +30,17 @@ void main() {
   });
 
   group('asset path', () {
-    test('points at the sprite it was claimed with', () {
+    test('points at the era icon it was claimed with', () {
       expect(_entry(sprite: 3).assetPath,
-          'assets/collectibles/artifact_3.png');
+          'assets/collectibles/artifact_spanish_3.png');
+      expect(_entry(sprite: 10).assetPath,
+          'assets/collectibles/artifact_spanish_10.png');
+    });
+
+    test('an entry saved with an unknown era shows the old generic picture',
+        () {
+      final e = CodexEntry.fromJson({'eraId': 'atlantis', 'artifactSprite': 7});
+      expect(e.assetPath, 'assets/collectibles/artifact_2.png');
     });
   });
 
@@ -42,8 +50,23 @@ void main() {
       // Image.asset on a nonexistent path throws at render time, inside the
       // Codex screen — worse than quietly showing the wrong artwork.
       expect(CodexEntry.fromJson({'artifactSprite': 99}).artifactSprite, 1);
+      expect(CodexEntry.fromJson({'artifactSprite': 11}).artifactSprite, 1);
       expect(CodexEntry.fromJson({'artifactSprite': 0}).artifactSprite, 1);
       expect(CodexEntry.fromJson({'artifactSprite': -4}).artifactSprite, 1);
+    });
+
+    test('every index 1..10 is kept, so the ten era icons all survive a save',
+        () {
+      for (var i = 1; i <= 10; i++) {
+        expect(CodexEntry.fromJson({'artifactSprite': i}).artifactSprite, i);
+      }
+    });
+
+    test('an old saved entry (index 1-5) now shows its era icon', () {
+      final e = CodexEntry.fromJson(
+          {'eraId': 'ww2', 'questionId': 'q', 'artifactSprite': 4});
+      expect(e.artifactSprite, 4);
+      expect(e.assetPath, 'assets/collectibles/artifact_ww2_4.png');
     });
 
     test('a missing or wrong-typed sprite index falls back to 1', () {

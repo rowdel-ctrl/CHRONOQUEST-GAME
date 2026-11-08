@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import '../core/combat_constants.dart';
 import '../core/constants.dart';
 import '../data/question_pool.dart';
+import '../models/artifact_art.dart';
 import 'chrono_game.dart';
 import 'components/artifact_component.dart';
 import 'components/enemy_spawner.dart';
@@ -135,9 +136,8 @@ extension GameSpawning on ChronoGame {
       world.add(
         ArtifactComponent(
           worldX: x,
-          // Cycle the five sprites; only 5 exist for 6 eras (Section 6), so
-          // they repeat, distinguished by the per-era tint.
-          spriteIndex: (i % 5) + 1,
+          // Cycle the era's ten icons (artifact_<era>_<1..10>.png).
+          spriteIndex: (i % artifactIconsPerEra) + 1,
         ),
       );
     }

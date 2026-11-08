@@ -1,3 +1,5 @@
+import 'artifact_art.dart';
+
 /// One artifact a student has claimed by answering its question correctly
 /// (GAMEPLAY-V2.md Section 6, "The Codex").
 ///
@@ -14,9 +16,10 @@ class CodexEntry {
   /// not create a duplicate tile.
   final String questionId;
 
-  /// 1-5, picking one of `assets/collectibles/artifact_<n>.png`. Stored
-  /// rather than derived so a tile keeps the art it was claimed with, even
-  /// if the sprite-picking rule changes later.
+  /// 1-10, picking one of the era's ten icons,
+  /// `assets/collectibles/artifact_<eraId>_<n>.png`. Stored rather than derived
+  /// so a tile keeps the art it was claimed with, even if the sprite-picking
+  /// rule changes later. Entries saved before the era icons (1-5) stay valid.
   final int artifactSprite;
 
   /// The question text, shown as the tile's title.
@@ -37,7 +40,7 @@ class CodexEntry {
     required this.claimedAtMs,
   });
 
-  String get assetPath => 'assets/collectibles/artifact_$artifactSprite.png';
+  String get assetPath => artifactAsset(eraId, artifactSprite);
 
   Map<String, dynamic> toJson() => {
         'eraId': eraId,
@@ -62,7 +65,6 @@ class CodexEntry {
 
   static int _clampSprite(Object? raw) {
     final n = raw is int ? raw : 1;
-    if (n < 1 || n > 5) return 1;
-    return n;
+    return clampArtifactIndex(n);
   }
 }

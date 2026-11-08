@@ -191,7 +191,7 @@ class _CodexTile extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(entry.assetPath, width: 40, height: 40),
+              Image.asset(entry.assetPath, width: 48, height: 48),
               const SizedBox(height: 6),
               Flexible(
                 child: Text(
@@ -229,7 +229,7 @@ class _CodexDetailDialog extends StatelessWidget {
       ),
       title: Row(
         children: [
-          Image.asset(entry.assetPath, width: 36, height: 36),
+          Image.asset(entry.assetPath, width: 44, height: 44),
           const SizedBox(width: 10),
           Expanded(
             child: Text(

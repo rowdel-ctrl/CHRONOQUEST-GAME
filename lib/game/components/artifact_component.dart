@@ -7,6 +7,7 @@ import 'package:flame/rendering.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/combat_constants.dart';
+import '../../models/artifact_art.dart';
 import '../../models/question.dart';
 import '../chrono_game.dart';
 
@@ -23,9 +24,9 @@ class ArtifactComponent extends SpriteComponent
   /// World x this artifact was placed at by the spawner.
   final double worldX;
 
-  /// Which of the five artifact sprites this shows. Only 5 exist for 6 eras
-  /// (Section 6), so they repeat across eras, distinguished by the per-era
-  /// tint applied in [onLoad].
+  /// Which of the era's ten artifact icons this shows (1..10). The picture is
+  /// chosen by the level's era and this number: see [artifactAsset]. Old maps
+  /// and saved entries that use 1..5 stay valid.
   final int spriteIndex;
 
   /// True once claimed — it is being removed and must not re-open a
@@ -79,7 +80,7 @@ class ArtifactComponent extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
-    sprite = await game.loadSprite('collectibles/artifact_$spriteIndex.png');
+    sprite = await game.loadSprite(artifactImageKey(game.currentEra, spriteIndex));
     size = Vector2.all(CombatConstants.artifactSize);
     position = Vector2(
       worldX,
