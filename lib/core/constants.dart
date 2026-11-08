@@ -491,7 +491,8 @@ class CharacterData {
 
 // The first character with unlockCost 0 is the free default hero.
 // The order is the order on the hero screen: the two free heroes, then the others from the
-// cheapest to the dearest (Del Pilar and Bonifacio tie, Bonifacio first).
+// cheapest to the dearest (Del Pilar and Bonifacio tie, Bonifacio first; Maria Clara, 300, comes
+// between Del Pilar and Luna).
 // 'boy' and 'girl' are Juan and Maria (ids stay boy and girl: they name the picture files).
 const List<CharacterData> allCharacters = [
   CharacterData(
@@ -533,6 +534,14 @@ const List<CharacterData> allCharacters = [
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
     unlockCost: 250,
+  ),
+  CharacterData(
+    id: 'mariaclara',
+    name: 'Maria Clara',
+    shortName: 'Maria Clara',
+    era: 'Pananakop ng Espanya',
+    description: 'Bida ng Noli Me Tangere',
+    unlockCost: 300,
   ),
   CharacterData(
     id: 'luna',

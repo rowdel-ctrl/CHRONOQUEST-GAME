@@ -13,9 +13,9 @@ void main() {
     expect([...paid]..sort(), paid, reason: 'cheapest to dearest');
   });
 
-  test('the order is Juan, Maria, Lapu-Lapu, Bonifacio, Del Pilar, Luna, Rizal', () {
+  test('the order is Juan, Maria, Lapu-Lapu, Bonifacio, Del Pilar, Maria Clara, Luna, Rizal', () {
     expect(allCharacters.map((c) => c.id).toList(),
-        ['boy', 'girl', 'lapu', 'bonifacio', 'delpilar', 'luna', 'rizal']);
+        ['boy', 'girl', 'lapu', 'bonifacio', 'delpilar', 'mariaclara', 'luna', 'rizal']);
   });
 
   test('looking a hero up by id does not depend on the order', () {

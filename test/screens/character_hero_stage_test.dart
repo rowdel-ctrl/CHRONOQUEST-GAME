@@ -1,5 +1,5 @@
 // Pick your hero: one big hero with light in its own colour, a short name, one
-// button, and a row of all seven to tap or swipe between.
+// button, and a row of all eight to tap or swipe between.
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/providers/game_provider.dart';
@@ -105,7 +105,7 @@ void main() {
     testWidgets(
         'the right arrow shows the next hero and the left one the one before',
         (tester) async {
-      await _pump(tester, selected: 'bonifacio'); // the fourth of seven
+      await _pump(tester, selected: 'bonifacio'); // the fourth of eight
       await tester.tap(find.byKey(CharacterSelectionScreen.nextKey));
       await tester.pump();
       expect(_name(tester), 'Del Pilar');

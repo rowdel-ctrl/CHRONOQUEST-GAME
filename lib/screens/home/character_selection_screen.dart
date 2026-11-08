@@ -31,6 +31,8 @@ Color characterColor(String id) {
       return const Color(0xFFD45B5B);
     case 'delpilar':
       return const Color(0xFFD4C44A);
+    case 'mariaclara':
+      return const Color(0xFFCF5C7E);
     default:
       return AppColors.accent;
   }
@@ -243,9 +245,9 @@ class _CharacterSelectionScreenState
                         child: wide
                             ? Row(
                                 children: [
-                                  Expanded(flex: 5, child: stage),
+                                  Expanded(flex: 3, child: stage),
                                   const SizedBox(width: 12),
-                                  Expanded(flex: 6, child: info),
+                                  Expanded(flex: 5, child: info),
                                 ],
                               )
                             : Column(
@@ -1186,8 +1188,8 @@ class _Info extends StatelessWidget {
                   dx: -16,
                 ),
                 const SizedBox(height: 16),
-                // Seven heroes: the tiles get narrower when the row would not
-                // fit (a 320 wide phone), down to 34 wide.
+                // Eight heroes: the tiles get narrower when the row would not fit
+                // (a 320 wide phone), down to 30 wide.
                 LayoutBuilder(builder: (context, box) {
                   final n = allCharacters.length;
                   // 6 apart when all fit at 48 wide, else closer, then thinner.
@@ -1196,7 +1198,7 @@ class _Info extends StatelessWidget {
                       ? 6.0
                       : 3.0;
                   final tileW = box.maxWidth.isFinite
-                      ? ((box.maxWidth - gap * (n - 1)) / n).clamp(34.0, 48.0)
+                      ? ((box.maxWidth - gap * (n - 1)) / n).clamp(30.0, 48.0)
                       : 48.0;
                   return Row(
                     mainAxisSize: MainAxisSize.min,

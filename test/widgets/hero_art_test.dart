@@ -10,7 +10,8 @@ void main() {
       'luna',
       'rizal',
       'bonifacio',
-      'delpilar'
+      'delpilar',
+      'mariaclara'
     ]) {
       expect(heroWalkFrameCount(id), 4);
     }

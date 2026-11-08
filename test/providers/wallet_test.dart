@@ -250,6 +250,7 @@ void main() {
 
     const prices = {
       'rizal': 600,
+      'mariaclara': 300,
       'luna': 400,
       'bonifacio': 250,
       'delpilar': 250,

@@ -1,4 +1,4 @@
-// A development tool, not a test of behaviour: draws the hero selection screen (7 heroes) at
+// A development tool, not a test of behaviour: draws the hero selection screen (8 heroes) at
 // a few phone sizes and writes a PNG for each, so the new art in it can be reviewed without
 // a device.
 //
@@ -20,6 +20,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const _out = String.fromEnvironment('SHOT_OUT');
+// Optional: comma-separated hero ids to draw as already bought (e.g. SHOT_UNLOCKED=mariaclara).
+const _unlocked = String.fromEnvironment('SHOT_UNLOCKED');
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
   _FakeGame(String selected)
@@ -37,7 +39,8 @@ class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
 
   @override
   bool isCharacterUnlocked(String id) =>
-      allCharacters.firstWhere((c) => c.id == id).unlockCost == 0;
+      allCharacters.firstWhere((c) => c.id == id).unlockCost == 0 ||
+      _unlocked.split(',').contains(id);
 
   @override
   void selectCharacter(String id) {}
@@ -56,29 +59,40 @@ void main() {
       (const Size(640, 360), 'lapu'),
       (const Size(400, 700), 'girl'),
       (const Size(320, 640), 'delpilar'),
+      (const Size(320, 640), 'mariaclara'),
+      (const Size(732, 320), 'mariaclara'),
+      (const Size(400, 700), 'mariaclara'),
     ]) {
       final game = _FakeGame(hero);
       final key = GlobalKey();
       tester.view.devicePixelRatio = 1.0;
       tester.view.physicalSize = size;
       final router = GoRouter(routes: [
-        GoRoute(path: '/', builder: (_, __) => const CharacterSelectionScreen()),
+        GoRoute(
+            path: '/', builder: (_, __) => const CharacterSelectionScreen()),
       ]);
       await tester.pumpWidget(ProviderScope(
         overrides: [gameProvider.overrideWith((ref) => game)],
-        child: RepaintBoundary(key: key, child: MaterialApp.router(routerConfig: router)),
+        child: RepaintBoundary(
+            key: key, child: MaterialApp.router(routerConfig: router)),
       ));
+      // The fake state does not carry the chosen hero into the screen, so tap the tile.
+      await tester.pump(const Duration(milliseconds: 2500));
+      await tester.tap(find.byKey(CharacterSelectionScreen.rosterKey(hero)));
       for (var i = 0; i < 12; i++) {
-        await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 40)));
+        await tester.runAsync(
+            () => Future<void>.delayed(const Duration(milliseconds: 40)));
         await tester.pump(const Duration(milliseconds: 60));
       }
-      final boundary = tester.renderObject<RenderRepaintBoundary>(find.byKey(key));
+      final boundary =
+          tester.renderObject<RenderRepaintBoundary>(find.byKey(key));
       final bytes = await tester.runAsync(() async {
         final image = await boundary.toImage(pixelRatio: 1.5);
         final data = await image.toByteData(format: ui.ImageByteFormat.png);
         return data!.buffer.asUint8List();
       });
-      File('${_out}_${hero}_${size.width.toInt()}x${size.height.toInt()}.png').writeAsBytesSync(bytes!);
+      File('${_out}_${hero}_${size.width.toInt()}x${size.height.toInt()}.png')
+          .writeAsBytesSync(bytes!);
     }
     addTearDown(tester.view.reset);
   });
