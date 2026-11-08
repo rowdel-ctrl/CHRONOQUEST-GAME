@@ -7,7 +7,7 @@
 const sharp = require('sharp');
 const fs = require('fs');
 
-const SRC = 'C:/Users/PC/Downloads/NEW ASSETS/NEW ARTIFACTS.png';
+const SRC = require('path').join(__dirname,'../../new-assets/NEW ARTIFACTS.png');
 const DST = 'F:/CHRONO/CHRONO-GAMEAPP/assets/collectibles';
 const SHEET = 'C:/temp/artifacts_sheet.png';
 const ERAS = ['pre-colonial', 'spanish', 'nationalism', 'american', 'ww2', 'modern'];

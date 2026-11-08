@@ -4,7 +4,7 @@
 // 256 colours straight into assets/characters/ (same palette settings as quant.js).
 const sharp=require('sharp');const fs=require('fs');const path=require('path');
 const {place,extents,rawOf,mainBlob,bbox,feetX}=require('F:/CHRONO/CHRONO-GAMEAPP/tools/art-import/build.js');
-const SRC='C:/Users/PC/Downloads/NEW ASSETS/MARIA CLARA.png';
+const SRC=require('path').join(__dirname,'../../new-assets/MARIA CLARA.png');
 const ASSETS='F:/CHRONO/CHRONO-GAMEAPP/assets/characters/';
 const ID='mariaclara';
 // bottom block: [y0,y1] of each row, [x0,x1] of each of the 6 columns (found by projecting the alpha channel)

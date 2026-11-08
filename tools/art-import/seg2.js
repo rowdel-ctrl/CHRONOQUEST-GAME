@@ -1,4 +1,4 @@
-const sharp=require('sharp');const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const sharp=require('sharp');const D=require('path').join(__dirname,'../../new-assets')+'/';
 function runs(proj,minGap,thr=0){const out=[];let s=-1,last=-1;for(let i=0;i<proj.length;i++){if(proj[i]>thr){if(s<0)s=i;else if(i-last>minGap){out.push([s,last+1]);s=i;}last=i;}}if(s>=0)out.push([s,last+1]);return out;}
 async function load(name){
   const {data,info}=await sharp(D+name+'.png').raw().toBuffer({resolveWithObject:true});

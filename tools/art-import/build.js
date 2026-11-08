@@ -1,5 +1,5 @@
 const sharp=require('sharp');const fs=require('fs');const path=require('path');
-const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const D=require('path').join(__dirname,'../../new-assets')+'/';
 const {cutSheet,NAME}=require('./cut.js');
 const {bandsFor}=require('./cutEB2.js');
 const OUT='out';

@@ -1,4 +1,4 @@
-const sharp=require('sharp');const fs=require('fs');const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const sharp=require('sharp');const fs=require('fs');const D=require('path').join(__dirname,'../../new-assets')+'/';
 const {bandsFor}=require('./cutEB2.js');
 const {prepFrame,place,extents,OUT}=require('./build.js');
 fs.mkdirSync('cells_eb',{recursive:true});

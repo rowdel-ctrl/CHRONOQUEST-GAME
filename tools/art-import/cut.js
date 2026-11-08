@@ -1,4 +1,4 @@
-const sharp=require('sharp');const fs=require('fs');const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const sharp=require('sharp');const fs=require('fs');const D=require('path').join(__dirname,'../../new-assets')+'/';
 const {runs}=require('./seg2.js');
 const BANDS={
  BOY:[[936,1272],[1464,1812]],GIRL:[[896,1210],[1420,1744]],LAPU:[[786,1096],[1184,1454]],LUNA:[[672,982],[1068,1378]],

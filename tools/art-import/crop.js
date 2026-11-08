@@ -1,4 +1,4 @@
-const sharp=require('sharp');const fs=require('fs');const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const sharp=require('sharp');const fs=require('fs');const D=require('path').join(__dirname,'../../new-assets')+'/';
 const {cutSheet,NAME}=require('./cut.js');
 const PAD=6;
 (async()=>{

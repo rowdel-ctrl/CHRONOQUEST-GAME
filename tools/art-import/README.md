@@ -2,8 +2,8 @@
 
 How the new hero, enemy and boss pictures in `assets/` were cut from the Canva sheets
 (`BOY.png`, `GIRL.png`, `LAPU.png` ... `ENEMIES.png`, `BOSSES.png`). A record, not a build step:
-the scripts use Node and the `sharp` package, and point at the folder the sheets were in
-(`C:/Users/PC/Downloads/NEW ASSETS/`).
+the scripts use Node and the `sharp` package, and read the sheets from `new-assets/` in the game folder
+(git-ignored, 84 MB; copied from the Downloads folder NEW ASSETS on 2026-11-08, the Downloads copy can go).
 
 Order: `crop.js` (hero cells) -> `heroes.js`; `eb.js` -> `ebbuild.js` (enemies, bosses); `quant.js`
 (shrinks the PNGs to 256 colours and writes them into `assets/`).

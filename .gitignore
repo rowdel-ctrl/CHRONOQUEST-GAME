@@ -46,3 +46,6 @@ app.*.map.json
 
 # AI Generated Context
 repomix-output.md
+
+# Original Canva art sheets for tools/art-import (84 MB, not for git)
+/new-assets/

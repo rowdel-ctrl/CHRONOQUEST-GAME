@@ -1,4 +1,4 @@
-const sharp=require('sharp');const D='C:/Users/PC/Downloads/NEW ASSETS/';
+const sharp=require('sharp');const D=require('path').join(__dirname,'../../new-assets')+'/';
 const {runs}=require('./seg2.js');
 async function bandsFor(sheet,{rowThr=100,colThr=200,rowGap=24,colGap=16,expectRows}={}){
   const {data,info}=await sharp(D+sheet+'.png').raw().toBuffer({resolveWithObject:true});const W=info.width,H=info.height;
