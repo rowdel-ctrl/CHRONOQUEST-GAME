@@ -66,6 +66,11 @@ Future<void> _settle(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 600));
 }
 
+/// Lets [beat] stay on screen for its whole reading time, so it counts as read.
+Future<void> _stay(WidgetTester tester, StoryBeat beat) =>
+    tester.pump(BackgroundHistoryScreen.readTimeFor(beat) +
+        const Duration(milliseconds: 100));
+
 /// Stays on each event for its reading time and turns with the arrow, so the whole
 /// story counts as read and the terms unlock.
 Future<void> _readStory(WidgetTester tester, [String era = 'spanish']) async {
@@ -118,6 +123,7 @@ void main() {
             find.byKey(BackgroundHistoryScreen.beatDotKey(i)), findsOneWidget);
       }
 
+      await _stay(tester, beats[0]);
       await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(1)));
       await _settle(tester);
       expect(find.text(beats[1].label), findsOneWidget);
@@ -126,9 +132,11 @@ void main() {
     });
 
     testWidgets(
-        'the card shows it can be turned: a curling corner and an arrow',
+        'the card shows it can be turned once read: a curling corner and an arrow',
         (tester) async {
       await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+      await _stay(tester, beats[0]);
       expect(find.byKey(BackgroundHistoryScreen.curlKey), findsOneWidget);
       expect(find.byKey(BackgroundHistoryScreen.nextKey), findsOneWidget);
       expect(tester.getSize(find.byKey(BackgroundHistoryScreen.nextKey)).width,
@@ -141,14 +149,17 @@ void main() {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
 
+      await _stay(tester, beats[0]);
       await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
       await _settle(tester);
       expect(find.text(beats[1].label), findsOneWidget);
 
+      await _stay(tester, beats[1]);
       await tester.tap(find.byKey(BackgroundHistoryScreen.beatKey));
       await _settle(tester);
       expect(find.text(beats[2].label), findsOneWidget);
 
+      await _stay(tester, beats[2]);
       await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey),
           const Offset(-200, 0), 800);
       await _settle(tester);
@@ -164,10 +175,7 @@ void main() {
     testWidgets('on the last event the hint goes away: nothing more to turn to',
         (tester) async {
       await _open(tester);
-      final beats = eraStories['spanish']!.beats;
-      await tester.tap(
-          find.byKey(BackgroundHistoryScreen.beatDotKey(beats.length - 1)));
-      await _settle(tester);
+      await _readStory(tester);
 
       expect(find.byKey(BackgroundHistoryScreen.nextKey), findsNothing);
       expect(find.byKey(BackgroundHistoryScreen.curlKey), findsNothing);
@@ -219,7 +227,7 @@ void main() {
       expect(find.byIcon(Icons.check_rounded), findsNothing);
     });
 
-    testWidgets('jumping straight to the last event does not unlock them',
+    testWidgets('jumping with the dots to the last event does not unlock them',
         (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
@@ -228,6 +236,8 @@ void main() {
         await tester.pump(const Duration(milliseconds: 300));
       }
 
+      expect(find.text(beats[0].label), findsOneWidget,
+          reason: 'the dots could not skip the first event');
       expect(find.byIcon(Icons.lock_rounded), findsNWidgets(3));
       await tester.tap(find.byKey(BackgroundHistoryScreen.termKey(0)));
       await _settle(tester);
@@ -252,19 +262,59 @@ void main() {
           findsOneWidget);
     });
 
-    testWidgets('leaving an event early does not count it', (tester) async {
+    testWidgets(
+        'the arrow, the card, a swipe and the dots do nothing until the event is read',
+        (tester) async {
       await _open(tester);
       final beats = eraStories['spanish']!.beats;
+      expect(find.byKey(BackgroundHistoryScreen.curlKey), findsNothing,
+          reason: 'nothing to turn to yet');
 
-      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatKey));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.fling(find.byKey(BackgroundHistoryScreen.beatKey),
+          const Offset(-200, 0), 800);
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(1)));
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text(beats[0].label), findsOneWidget,
+          reason: 'still on the first event');
+      expect(find.text('Basahin muna ang kuwento (0 ng ${beats.length})'),
+          findsOneWidget);
+
+      await _stay(tester, beats[0]);
+      expect(find.byKey(BackgroundHistoryScreen.curlKey), findsOneWidget);
       await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
       await _settle(tester);
-      await tester.pump(const Duration(seconds: 1));
+      expect(find.text(beats[1].label), findsOneWidget,
+          reason: 'read, so it turns');
+    });
 
-      expect(find.text('Basahin muna ang kuwento (0 ng ${beats.length})'),
-          findsOneWidget,
-          reason:
-              'the first event was left after a second, and the second is not done');
+    testWidgets(
+        'going back is always allowed, and the next one has to be read again',
+        (tester) async {
+      await _open(tester);
+      final beats = eraStories['spanish']!.beats;
+      await _stay(tester, beats[0]);
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatDotKey(0)));
+      await _settle(tester);
+      expect(find.text(beats[0].label), findsOneWidget);
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+      expect(find.text(beats[1].label), findsOneWidget,
+          reason: 'the first was read');
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.beatKey));
+      await _settle(tester);
+      expect(find.text(beats[1].label), findsOneWidget,
+          reason: 'the second has not stayed up long enough yet');
     });
 
     testWidgets(

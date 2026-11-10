@@ -94,9 +94,21 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
     });
   }
 
+  /// The furthest event the reader may turn to: the first one not read yet. Going
+  /// back is always allowed; going past an event that has not stayed up for its
+  /// time is not.
+  int get _reach {
+    final n = _beats.length;
+    for (var i = 0; i < n; i++) {
+      if (!_read.contains(i)) return i;
+    }
+    return n - 1;
+  }
+
   void _goTo(int i) {
-    final last = _beats.length - 1;
-    setState(() => _beat = i.clamp(0, last));
+    final to = i.clamp(0, _beats.length - 1);
+    if (to > _reach) return;
+    setState(() => _beat = to);
     _startDwell();
   }
 
@@ -128,6 +140,7 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
       current: current,
       read: _read,
       readTime: BackgroundHistoryScreen.readTimeFor(beat),
+      canNext: current < beats.length - 1 && current + 1 <= _reach,
       onPick: _goTo,
       onStep: (forward) => _goTo(current + (forward ? 1 : -1)),
       scrolls: story == null,
@@ -311,6 +324,9 @@ class _StoryCard extends StatefulWidget {
   /// The events already read, and how long the one showing must stay up.
   final Set<int> read;
   final Duration readTime;
+
+  /// The next event can be turned to: this one has been read for its time.
+  final bool canNext;
   final ValueChanged<int> onPick;
 
   /// One step on: true for the next event, false for the one before.
@@ -325,6 +341,7 @@ class _StoryCard extends StatefulWidget {
     required this.current,
     required this.read,
     required this.readTime,
+    required this.canNext,
     required this.onPick,
     required this.onStep,
     required this.scrolls,
@@ -384,7 +401,7 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
           // Tap the card to go on; swipe it either way.
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: _hasNext ? () => widget.onStep(true) : null,
+            onTap: widget.canNext ? () => widget.onStep(true) : null,
             onHorizontalDragEnd: (d) {
               final v = d.primaryVelocity ?? 0;
               if (v.abs() > 200) widget.onStep(v < 0);
@@ -461,8 +478,9 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                // The corner of the page, curling up: there is more to turn to.
-                if (_hasNext)
+                // The corner of the page, curling up: there is more to turn to, and
+                // this event has been read.
+                if (widget.canNext)
                   Positioned(
                     right: 3,
                     bottom: 3,
@@ -499,7 +517,9 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                       key: BackgroundHistoryScreen.beatDotKey(i),
                       on: i == widget.current,
                       read: widget.read.contains(i),
-                      ring: i == widget.current + 1 ? _ring : null,
+                      ring: widget.canNext && i == widget.current + 1
+                          ? _ring
+                          : null,
                       label: '${i + 1} ng ${widget.beatCount}',
                       onTap: () => widget.onPick(i),
                     ),
@@ -510,40 +530,51 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Semantics(
-                    button: true,
-                    label: 'Susunod na pangyayari',
+                    button: widget.canNext,
+                    label: widget.canNext
+                        ? 'Susunod na pangyayari'
+                        : 'Sandali pa, binabasa pa',
                     child: GestureDetector(
                       key: BackgroundHistoryScreen.nextKey,
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => widget.onStep(true),
+                      onTap: widget.canNext ? () => widget.onStep(true) : null,
                       child: SizedBox(
                         width: 48,
                         height: 32,
-                        child: AnimatedBuilder(
-                          animation: _hint,
-                          builder: (context, child) => Transform.translate(
-                            offset: Offset(
-                                4 * Curves.easeInOut.transform(_hint.value), 0),
-                            child: child,
-                          ),
-                          child: Center(
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.accent,
-                                border: Border.all(
-                                    color: AppColors.primaryDark, width: 2.5),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: AppColors.primaryDark,
-                                      offset: Offset(0, 2)),
-                                ],
+                        // Waiting for the event to be read: dim and still.
+                        child: Opacity(
+                          opacity: widget.canNext ? 1 : 0.35,
+                          child: AnimatedBuilder(
+                            animation: _hint,
+                            builder: (context, child) => Transform.translate(
+                              offset: Offset(
+                                  widget.canNext
+                                      ? 4 *
+                                          Curves.easeInOut
+                                              .transform(_hint.value)
+                                      : 0,
+                                  0),
+                              child: child,
+                            ),
+                            child: Center(
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.accent,
+                                  border: Border.all(
+                                      color: AppColors.primaryDark, width: 2.5),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: AppColors.primaryDark,
+                                        offset: Offset(0, 2)),
+                                  ],
+                                ),
+                                child: const PixelIcon(PixelGlyph.chevron,
+                                    size: 16, color: AppColors.primaryDark),
                               ),
-                              child: const PixelIcon(PixelGlyph.chevron,
-                                  size: 16, color: AppColors.primaryDark),
                             ),
                           ),
                         ),
