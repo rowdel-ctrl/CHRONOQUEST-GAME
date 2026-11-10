@@ -142,6 +142,11 @@ class LoadedLevel {
   /// pairs, left to right.
   final List<({double x, double y})> minionSpawns;
 
+  /// Where a boss arena's question scroll may appear (`scroll_spot` objects): x is the
+  /// platform's centre, y its top surface (a tower top, for instance). Empty on a map
+  /// without any, which then uses [minionSpawns] for the scroll as before.
+  final List<({double x, double y})> scrollSpots;
+
   /// Whether this map is a boss arena.
   bool get isArena => boss != null;
 
@@ -157,6 +162,7 @@ class LoadedLevel {
     this.mapWidth = 0,
     this.boss,
     this.minionSpawns = const [],
+    this.scrollSpots = const [],
   });
 
   /// True when [worldX] sits over a gap rather than solid ground. Used by
@@ -341,6 +347,7 @@ class LevelLoader {
       mapWidth: map.width * tileWidth,
       boss: _firstSpot(map, 'boss'),
       minionSpawns: _spots(map, 'minion_spawn'),
+      scrollSpots: _spots(map, 'scroll_spot'),
     );
   }
 
@@ -454,7 +461,8 @@ class LevelLoader {
           type == 'spawn' ||
           type == 'exit' ||
           type == 'boss' ||
-          type == 'minion_spawn') {
+          type == 'minion_spawn' ||
+          type == 'scroll_spot') {
         continue;
       }
 

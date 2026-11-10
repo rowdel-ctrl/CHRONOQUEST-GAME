@@ -106,7 +106,9 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   /// In an arena the boss paces slowly round the place the map gave it. It never chases.
   double _homeX = 0;
   double _paceTime = 0;
-  static const double _paceRange = 100;
+  /// How far it paces either side of its place. The arena maps give the boss a stage at
+  /// least 14 tiles (336 units) wide, centred on it, so this plus half its width (60) fits.
+  static const double paceRange = 100;
   static const double _paceSpeed = 0.5; // radians per second: 50 units/s at the widest
 
   final math.Random _random = math.Random();
@@ -209,7 +211,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   void _pace(double dt) {
     _paceTime += dt;
-    position.x = _homeX + math.sin(_paceTime * _paceSpeed) * _paceRange;
+    position.x = _homeX + math.sin(_paceTime * _paceSpeed) * paceRange;
   }
 
   /// The scroll: opens its question when the student touches it, and keeps the arrow right.
@@ -526,8 +528,9 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   void _dropScroll(Question q) {
     final room = arena!;
     final p = game.player;
+    // The scroll goes on a tower top (scroll_spot) when the map has any, else on a minion spot.
     final spot = BossPlan.scrollSpot(
-      room.minionSpawns,
+      room.scrollSpots.isNotEmpty ? room.scrollSpots : room.minionSpawns,
       p.position.x + p.size.x / 2,
       [for (final m in _minions) if (m.isMounted) m.position.x],
       _random,

@@ -28,6 +28,11 @@ function draw(eraId) {
   const boss = sprite(`bosses/${BOSS[eraId]}_idle.png`);
   const b = level.arena.boss;
   cv.blit(boss, 0, 0, boss.width, boss.height, b.x - 60, b.y - 140, 120, 140);
+  // the scroll spots, small gold squares on the platform top where the scroll appears
+  for (const sc of level.arena.scrolls || []) {
+    cv.rect(sc.x - 8, sc.y - 18, 16, 16, [40, 24, 8]);
+    cv.rect(sc.x - 6, sc.y - 16, 12, 12, [255, 197, 49]);
+  }
   return { cv, level };
 }
 

@@ -43,6 +43,14 @@ void main() {
       }
     });
 
+    test('it takes the list it is given, and gives back that spot with its own height', () {
+      final towers = [(x: 200.0, y: 444.0), (x: 1600.0, y: 432.0)];
+      for (var seed = 0; seed < 20; seed++) {
+        final s = BossPlan.scrollSpot(towers, 150, const [], Random(seed))!;
+        expect(s, (x: 1600.0, y: 432.0), reason: 'the only tower 450 or more away');
+      }
+    });
+
     test('with no spot far enough it takes the farthest; with no spots at all, none', () {
       final near = [(x: 100.0, y: 660.0), (x: 300.0, y: 660.0)];
       expect(BossPlan.scrollSpot(near, 120, const [], Random(1))!.x, 300);

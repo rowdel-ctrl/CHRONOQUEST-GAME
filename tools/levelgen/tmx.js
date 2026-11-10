@@ -51,6 +51,8 @@ function write(level) {
     // A boss arena has no gate and no exit: the level ends when the boss is beaten.
     add(`<object id="${id++}" name="boss" type="boss" x="${level.arena.boss.x}" y="${level.arena.boss.y}"/>`);
     for (const x of level.arena.minions) add(`<object id="${id++}" type="minion_spawn" x="${x.x}" y="${x.y}"/>`);
+    // Where the question scroll may appear: the top of a tower (x the platform's centre, y its surface).
+    for (const x of level.arena.scrolls || []) add(`<object id="${id++}" type="scroll_spot" x="${x.x}" y="${x.y}"/>`);
   } else {
     for (const gx of level.gates) add(`<object id="${id++}" type="gate" x="${gx}" y="${physics.groundSurfaceY}"/>`);
     add(`<object id="${id++}" name="finish" type="exit" x="${level.exitX}" y="${physics.groundSurfaceY}"/>`);
@@ -136,8 +138,9 @@ function read(xml) {
     const x = Number(attr(a, 'x'));
     const y = Number(attr(a, 'y'));
     const p = readProps(m[2] || '');
-    if (type === 'boss') { level.arena = level.arena || { boss: null, minions: [] }; level.arena.boss = { x, y }; }
-    else if (type === 'minion_spawn') { level.arena = level.arena || { boss: null, minions: [] }; level.arena.minions.push({ x, y }); }
+    if (type === 'boss') { level.arena = level.arena || { boss: null, minions: [], scrolls: [] }; level.arena.boss = { x, y }; }
+    else if (type === 'minion_spawn') { level.arena = level.arena || { boss: null, minions: [], scrolls: [] }; level.arena.minions.push({ x, y }); }
+    else if (type === 'scroll_spot') { level.arena = level.arena || { boss: null, minions: [], scrolls: [] }; level.arena.scrolls.push({ x, y }); }
     else if (type === 'spawn') level.spawnX = x;
     else if (type === 'exit') level.exitX = x;
     else if (type === 'gate') level.gates.push(x);

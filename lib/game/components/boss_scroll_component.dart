@@ -11,7 +11,7 @@ import '../chrono_game.dart';
 /// student, who walks to it; touching it opens the question. The boss component checks the
 /// touch itself, so this has no hitbox and cannot be mistaken for an artifact.
 class BossScrollComponent extends SpriteComponent with HasGameReference<ChronoGame> {
-  /// World x of its middle, and the world y of the surface it stands over.
+  /// World x of its middle, and the world y of the surface it sits on (its bottom edge).
   final double centerX;
   final double surfaceY;
 
@@ -28,8 +28,9 @@ class BossScrollComponent extends SpriteComponent with HasGameReference<ChronoGa
     sprite = await game.loadSprite('collectibles/artifact_1.png');
     size = Vector2.all(CombatConstants.artifactSize);
     anchor = Anchor.center;
-    // Hovering just above the floor, low enough to be touched while standing.
-    _baseY = surfaceY - 100;
+    // Sitting on the surface (the floor or a tower top): its bottom edge is at [surfaceY], so a
+    // student standing there touches it. The bob only lifts it, never sinks it.
+    _baseY = surfaceY - size.y / 2;
     position = Vector2(centerX, _baseY);
     // It pops into being rather than just appearing.
     scale = Vector2.all(0.01);
@@ -40,7 +41,7 @@ class BossScrollComponent extends SpriteComponent with HasGameReference<ChronoGa
   void update(double dt) {
     super.update(dt);
     _time += dt;
-    position.y = _baseY + sin(_time * CombatConstants.artifactBobSpeed) * CombatConstants.artifactBobAmplitude;
+    position.y = _baseY - (1 - cos(_time * CombatConstants.artifactBobSpeed)) * CombatConstants.artifactBobAmplitude;
   }
 
   @override

@@ -424,6 +424,7 @@ test('an arena is the same on both sides, with a wall at each end', () => {
     for (let c = 0; c < arenas.COLS; c++) assert.strictEqual(level.H[c], level.H[arenas.COLS - 1 - c], `${era.id} column ${c}`);
     for (const c of [0, 1, arenas.COLS - 2, arenas.COLS - 1]) assert.strictEqual(level.H[c], arenas.WALL);
     assert.ok(level.arena.boss && level.arena.minions.length >= 4);
+    assert.strictEqual(level.arena.scrolls.length, 2, `${era.id} has a scroll spot on each tower`);
     assert.strictEqual(level.gates.length, 0);
   }
 });
@@ -440,4 +441,49 @@ test('the arena check catches a platform nobody can reach, a trap and a minion s
   // A minion spot on ground that is not flat
   const bad = { ...level, arena: { ...level.arena, minions: [...level.arena.minions, { x: 12 * 24, y: 660 }] } };
   assert.ok(arenas.validateArena(bad).some((p) => /flat ground/.test(p)));
+});
+
+test('every arena is towers and a stage: a 14-wide stage, two platforms a tower, a scroll on each top', () => {
+  for (const era of eras) {
+    const level = arenas.buildArena(era.id);
+    const bc = arenas.COLS / 2;
+    let w = 0;
+    for (let c = 0; c < arenas.COLS; c++) if (level.H[c] === level.H[bc] && Math.abs(c - (bc - 0.5)) < 8) w++;
+    assert.ok(w >= arenas.STAGE_MIN_TOP, `${era.id} stage top`);
+    assert.strictEqual(level.H[bc], 2, `${era.id} stage is 2 tiers high`);
+    assert.strictEqual(level.arena.boss.y, 660 - 48);
+    const ys = [...new Set(level.platforms.map((p) => p.y))].sort((a, b) => b - a);
+    assert.strictEqual(ys.length, 2, `${era.id} has P1 and P2 only`);
+    assert.ok(ys[0] <= 660 - 104 && ys[1] <= ys[0] - 104, `${era.id} tower heights ${ys}`);
+    for (const s of level.arena.scrolls) {
+      const p = level.platforms.find((q) => q.y === s.y && s.x === q.x + q.width / 2);
+      assert.ok(p && p.y === ys[1], `${era.id} scroll spot ${s.x} is the centre of a top platform`);
+    }
+    // the scroll_spot objects survive the write and read round trip
+    const back = tmx.read(tmx.write(level));
+    assert.deepStrictEqual(back.arena.scrolls, level.arena.scrolls);
+    assert.match(tmx.write(level), /<object id="\d+" type="scroll_spot" x="\d+" y="\d+"\/>/);
+  }
+});
+
+test('the arena check catches a narrow stage, a scroll spot off a platform or in one jump, and a minion on a platform', () => {
+  const level = arenas.buildArena('pre-colonial');
+  // a stage top 12 wide
+  const narrow = { ...level, H: Int8Array.from(level.H) };
+  for (const c of [31, 32, 43, 44]) narrow.H[c] = 1;
+  assert.ok(arenas.validateArena(narrow).some((p) => /stage top is \d+ tiles wide/.test(p)));
+  // a scroll spot in the air, and on the lower platform (reachable from the ground in one jump)
+  const air = { ...level, arena: { ...level.arena, scrolls: [{ x: 700, y: 400 }, ...level.arena.scrolls.slice(1)] } };
+  assert.ok(arenas.validateArena(air).some((p) => /not on a platform top/.test(p)));
+  const p1 = level.platforms.find((p) => p.y === 556);
+  const low = { ...level, arena: { ...level.arena, scrolls: [{ x: p1.x + p1.width / 2, y: p1.y }, ...level.arena.scrolls.slice(1)] } };
+  assert.ok(arenas.validateArena(low).some((p) => /in one jump/.test(p)));
+  // no scroll spots at all
+  assert.ok(arenas.validateArena({ ...level, arena: { ...level.arena, scrolls: [] } }).some((p) => /scroll spots/.test(p)));
+  // a minion spot on a platform top
+  const m = { ...level, arena: { ...level.arena, minions: [...level.arena.minions, { x: p1.x + 60, y: p1.y }] } };
+  assert.ok(arenas.validateArena(m).some((p) => /on a platform|not on the ground/.test(p)));
+  // a platform too high to reach (a tower with no middle step)
+  const gap = { ...level, platforms: level.platforms.map((p) => (p.y === 556 ? { ...p, y: 452 } : p)) };
+  assert.ok(arenas.validateArena(gap).length > 0);
 });

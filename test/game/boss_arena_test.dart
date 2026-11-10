@@ -64,6 +64,13 @@ void main() {
         expect(level.blockAt(level.spawnX + 48), isNotNull);
         expect(level.blockAt(level.boss!.x), isNotNull);
         expect(level.blockAt(level.boss!.x)!.topY, level.boss!.y);
+        // The boss paces +-100 round its place (its half width is 60): the ground under that
+        // whole range, and a margin, must be one level piece, or it walks off its stage.
+        final stage = level.blockAt(level.boss!.x)!;
+        expect(stage.startX, lessThanOrEqualTo(level.boss!.x - 160), reason: 'stage ends too near the boss on the left');
+        expect(stage.endX, greaterThanOrEqualTo(level.boss!.x + 160), reason: 'stage ends too near the boss on the right');
+        expect(stage.endX - stage.startX, greaterThanOrEqualTo(336), reason: 'a stage is at least 14 tiles wide');
+        expect(BossComponent.paceRange + 60, lessThanOrEqualTo(160), reason: 'the pacing fits the documented stage');
         expect(level.minionSpawns.length, greaterThanOrEqualTo(4));
         for (final m in level.minionSpawns) {
           expect(level.blockAt(m.x)?.topY, m.y, reason: 'a minion at ${m.x} is not on ground');

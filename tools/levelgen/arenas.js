@@ -7,62 +7,76 @@
 //   node tools/levelgen/arenas.js              write assets/tiles/levels/era<N>_<boss>.tmx and the manifest
 //   node tools/levelgen/arenas.js --check      only check them
 //
-// An arena has a start, a boss, a few `minion_spawn` spots and platforms, and no gate and no exit: the
-// level ends when the boss is beaten. Two walls (7 tiles high, past a jump's 5.3 tiles) close the sides.
-// Before a map is written the solver (solve.js) plays it: every platform, every minion spot and the
-// ground around the boss must be reachable, and nothing may be a place you can reach but not leave.
+// Every arena has the same plan ("towers and a stage"), dressed in the era's own obstacle:
+//   * a STAGE in the exact middle for the boss: ground 2 tiers (48) above the base, with a top 14 tiles
+//     wide (the boss paces 100 each side of its place and is 120 wide) and a one-tile step down each side;
+//   * on each side a TOWER of two platforms: P1 about 104 above the ground beside it (a plain jump), P2
+//     another 104 above P1, too high to reach from the ground, so you climb via P1;
+//   * `minion_spawn` spots on the ground in front of the towers, two a side, never on a platform;
+//   * `scroll_spot` objects, one on top of each P2: the question scroll appears there (x is the platform's
+//     centre, y its top surface, written like a `minion_spawn`);
+//   * a start, no gate and no exit: the level ends when the boss is beaten. Two walls (7 tiles high, past a
+//     jump's 5.3 tiles) close the sides.
+// Before a map is written the solver (solve.js) plays it: every platform, every minion spot, every scroll
+// spot and the ground around the boss must be reachable, no scroll spot may be reachable from the ground in
+// a single jump, and nothing may be a place you can reach but not leave.
 const fs = require('fs');
 const path = require('path');
 const { physics, rules, eras, eraNumber } = require('./rules');
 const T = require('./terrain');
 const tmx = require('./tmx');
 const { solve } = require('./solve');
+const { real } = require('./sim');
 const { writeManifest } = require('./generate');
 
 const COLS = 76;
 const WALL = 7; // tiles; 168 units, over the 128-unit jump peak
+const STAGE_TIERS = 2; // the boss stands this many tiles (24 units each) above the base ground
+const STAGE_HALF = 7; // columns of stage top each side of the middle: 14 in all (336 units)
+const STAGE_MIN_TOP = 14; // the narrowest stage top allowed, in columns
+const TOWER_COLS = 5; // every tower platform is 5 tiles wide
+const TOWER_STEP = 104; // P1 over the ground, P2 over P1: rules.platformHeights[0], out of every minion's reach
+const MINION_SPACING = 4; // columns between the two minion spots of a side
 const OUT = path.join(__dirname, '..', '..', 'assets', 'tiles', 'levels');
 
-const tier = (n) => physics.groundSurfaceY - n * T.TILE; // top of a platform n tiles above the base ground
-
-// Left half, 38 columns: runs of [columns, height]; -1 is a pit. Platforms as [col, columns, tiers up].
-// startCol / minion columns are for the left half; the right half is the mirror image.
+// Left half, 38 columns. `left` gives columns 0 to 29 as runs of [columns, height]; -1 is a pit. The last
+// 8 columns are the stage and are added by buildArena: one step (STAGE_TIERS - 1) and STAGE_HALF columns of
+// top. `towers` are the first columns of P1 and P2 (P2 sits nearer the stage). `startCol` and `minions`
+// are columns of the left half; the right half is the mirror image.
+//
+// The obstacle of each era sits in columns 8 to 12 so the ground from column 13 to the stage is flat: a
+// minion paces 150 (6 tiles) each way and stays on one height, so its spot needs 6 flat columns either
+// side (columns 19 and 23 are the first and last that have them).
 const SPECS = {
-  // Bakunawa, on a shore: two tide pools, rocks to climb to a safe ledge.
+  // Bakunawa, on a shore: a tide pool by each wall.
   'pre-colonial': {
-    left: [[2, WALL], [10, 0], [5, -1], [21, 0]],
-    platforms: [[13, 3, 2], [21, 4, 3], [26, 4, 6]],
-    startCol: 5, minions: [25, 32],
+    left: [[2, WALL], [6, 0], [5, -1], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
-  // The Governor in the courtyard of a fort: a bastion at each end with a balcony over it.
+  // The Governor in the courtyard of a fort: a bastion at each end.
   spanish: {
-    left: [[2, WALL], [7, 0], [2, 1], [6, 2], [2, 1], [19, 0]],
-    platforms: [[12, 4, 6], [22, 4, 3], [27, 4, 6]],
-    startCol: 5, minions: [26, 33],
+    left: [[2, WALL], [6, 0], [1, 1], [3, 2], [1, 1], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
   // The plaza bowl: start on the high terrace and drop in.
   nationalism: {
-    left: [[2, WALL], [8, 2], [4, 1], [24, 0]],
-    platforms: [[3, 4, 5], [18, 4, 3], [24, 4, 6]],
-    startCol: 5, minions: [21, 30],
+    left: [[2, WALL], [8, 2], [3, 1], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
-  // The trench line: sandbag mounds break the floor into short stretches.
+  // The trench line: a sandbag mound with a trench behind it.
   american: {
-    left: [[2, WALL], [7, 0], [3, 1], [4, 0], [3, 1], [19, 0]],
-    platforms: [[13, 4, 4], [21, 4, 7], [27, 4, 4]],
-    startCol: 5, minions: [26, 33],
+    left: [[2, WALL], [6, 0], [2, 1], [2, 0], [1, 1], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
-  // The broken bridge: two gaps over water, a stepping stone in each.
+  // The broken bridge: a gap over water and the stump of the bridge beyond it.
   ww2: {
-    left: [[2, WALL], [8, 0], [6, -1], [22, 0]],
-    platforms: [[12, 2, 2], [18, 4, 4], [24, 4, 7]],
-    startCol: 5, minions: [23, 31],
+    left: [[2, WALL], [6, 0], [4, -1], [1, 1], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
-  // The palace steps: a staircase up to a wide dais, the boss at the top.
+  // The palace steps: a short staircase up, then down to the courtyard.
   modern: {
-    left: [[2, WALL], [9, 0], [4, 1], [5, 2], [18, 3]],
-    platforms: [[12, 4, 5], [22, 4, 6]],
-    startCol: 5, minions: [27, 33],
+    left: [[2, WALL], [6, 0], [2, 1], [3, 2], [17, 0]],
+    towers: [18, 25], startCol: 5, minions: [19, 23],
   },
 };
 
@@ -75,7 +89,9 @@ const mirrorCol = (c) => COLS - 1 - c;
 function buildArena(eraId) {
   const spec = SPECS[eraId];
   const left = expand(spec.left);
-  if (left.length !== COLS / 2) throw new Error(`${eraId}: the left half has ${left.length} columns, not ${COLS / 2}`);
+  const stageCols = 1 + STAGE_HALF;
+  if (left.length !== COLS / 2 - stageCols) throw new Error(`${eraId}: the left half has ${left.length} columns before the stage, not ${COLS / 2 - stageCols}`);
+  left.push(STAGE_TIERS - 1, ...Array(STAGE_HALF).fill(STAGE_TIERS));
   const H = Int8Array.from([...left, ...[...left].reverse()]);
 
   // A platform is out of every minion's reach: a student standing on it is above the
@@ -87,13 +103,21 @@ function buildArena(eraId) {
     for (let c = Math.max(0, col - 4); c <= Math.min(COLS - 1, col + cols + 3); c++) top = Math.min(top, T.surfaceY(H[c]));
     return Math.min(tier(tiers), top - rules.platformHeights[0]);
   };
+  const tier = (n) => physics.groundSurfaceY - n * T.TILE; // top of a platform n tiles above the base ground
+
+  // The tower: P1 over the ground beside it, P2 a step above P1 (never lower than the platform rule).
+  const [c1, c2] = spec.towers;
+  const y1 = platformY(c1, TOWER_COLS, 0);
+  const y2 = Math.min(y1 - TOWER_STEP, platformY(c2, TOWER_COLS, 0));
   const platforms = [];
-  for (const [col, cols, tiers] of spec.platforms) {
-    const y = platformY(col, cols, tiers);
-    platforms.push({ x: col * T.TILE, y, width: cols * T.TILE });
-    platforms.push({ x: mirrorCol(col + cols - 1) * T.TILE, y, width: cols * T.TILE });
+  const scrolls = [];
+  for (const [col, y] of [[c1, y1], [c2, y2]]) {
+    platforms.push({ x: col * T.TILE, y, width: TOWER_COLS * T.TILE });
+    platforms.push({ x: mirrorCol(col + TOWER_COLS - 1) * T.TILE, y, width: TOWER_COLS * T.TILE });
   }
+  for (const p of platforms) if (p.y === y2) scrolls.push({ x: p.x + p.width / 2, y: p.y });
   platforms.sort((a, b) => a.x - b.x);
+  scrolls.sort((a, b) => a.x - b.x);
 
   const surface = (col) => T.surfaceY(H[col]);
   const centre = (col) => col * T.TILE + T.TILE / 2;
@@ -112,13 +136,14 @@ function buildArena(eraId) {
     spawnX: spec.startCol * T.TILE,
     exitX: COLS * T.TILE,
     seed: 0,
-    arena: { boss: { x: bossX, y: surface(COLS / 2) }, minions },
+    arena: { boss: { x: bossX, y: surface(COLS / 2) }, minions, scrolls },
   };
 }
 
 // ── checks ──────────────────────────────────────────────────────────────────
 
 const standsOn = (spot, y, x0, x1) => Math.abs(spot.top - y) < 1 && spot.x + 48 >= x0 && spot.x + 48 <= x1;
+const onPlatform = (o, p) => Math.abs(o.y - p.y) < 1 && o.x >= p.x && o.x <= p.x + p.width;
 
 function validateArena(level) {
   const problems = [];
@@ -134,10 +159,22 @@ function validateArena(level) {
   const bc = COLS / 2;
   for (let c = bc - 3; c <= bc + 2; c++) if (H[c] !== H[bc]) problems.push('the ground under the boss is not level');
 
-  for (const m of level.arena.minions) {
+  // The stage: the boss's ground is a wide top, at least 2 tiers above the base ground.
+  let l = bc - 1, r = bc;
+  while (l > 0 && H[l - 1] === H[bc]) l--;
+  while (r < COLS - 1 && H[r + 1] === H[bc]) r++;
+  const top = r - l + 1;
+  if (top < STAGE_MIN_TOP) problems.push(`the stage top is ${top} tiles wide, under ${STAGE_MIN_TOP} (the boss would walk off it)`);
+  if (H[bc] < STAGE_TIERS) problems.push(`the stage is ${H[bc]} tiles high, under ${STAGE_TIERS}`);
+  if (Math.abs(boss.y - T.surfaceY(H[bc])) > 1) problems.push('the boss is not on the stage surface');
+
+  const minions = level.arena.minions;
+  for (const m of minions) {
     const c = Math.floor(m.x / T.TILE);
     // A minion paces 150 each way from where it stands; keep all of that on one height.
-    for (let k = c - 7; k <= c + 7; k++) if (H[k] !== H[c]) problems.push(`the minion spot at ${m.x} does not have flat ground 7 tiles either side`);
+    for (let k = c - 6; k <= c + 6; k++) if (H[k] !== H[c]) problems.push(`the minion spot at ${m.x} does not have flat ground 6 tiles either side`);
+    if (Math.abs(m.y - surface(m.x)) > 1) problems.push(`the minion spot at ${m.x} is not on the ground`);
+    if (platforms.some((p) => onPlatform(m, p))) problems.push(`the minion spot at ${m.x} is on a platform`);
   }
   for (const p of platforms) {
     const c0 = Math.floor(p.x / T.TILE), c1 = Math.floor((p.x + p.width - 1) / T.TILE);
@@ -146,16 +183,29 @@ function validateArena(level) {
     }
   }
 
-  const r = solve(level, { margin: 0 });
-  if (r.traps.length) problems.push(`${r.traps.length} spots can be reached but not left, first at x ${Math.round(r.traps[0].x)}`);
-  const spots = r.spots;
+  const r0 = solve(level, { margin: 0 });
+  if (r0.traps.length) problems.push(`${r0.traps.length} spots can be reached but not left, first at x ${Math.round(r0.traps[0].x)}`);
+  const spots = r0.spots;
   for (const p of platforms) {
     if (!spots.some((s) => standsOn(s, p.y, p.x, p.x + p.width))) problems.push(`the platform at ${p.x}, ${p.y} cannot be reached`);
   }
-  for (const m of level.arena.minions) {
+  for (const m of minions) {
     if (!spots.some((s) => standsOn(s, m.y, m.x - 100, m.x + 100))) problems.push(`the minion spot at ${m.x} cannot be reached`);
   }
   if (!spots.some((s) => standsOn(s, boss.y, boss.x - 400, boss.x + 400))) problems.push('the ground around the boss cannot be reached');
+
+  // The scroll spots: on a platform top, reachable, and not in one jump from the ground (the real jump,
+  // a little higher than the one the solver assumes, played with only that platform on the map).
+  const scrolls = level.arena.scrolls || [];
+  if (scrolls.length < 2) problems.push(`there are ${scrolls.length} scroll spots, not one on each side`);
+  for (const s of scrolls) {
+    const p = platforms.find((q) => onPlatform(s, q));
+    if (!p) { problems.push(`the scroll spot at ${s.x}, ${s.y} is not on a platform top`); continue; }
+    if (!spots.some((q) => standsOn(q, p.y, p.x, p.x + p.width))) { problems.push(`the scroll spot at ${s.x} cannot be reached`); continue; }
+    const alone = solve({ ...level, platforms: [p] }, { phys: real, margin: 0 });
+    if (alone.spots.some((q) => standsOn(q, p.y, p.x, p.x + p.width))) problems.push(`the scroll spot at ${s.x} can be reached from the ground in one jump`);
+  }
+
   // At least one ledge a student can stand on out of every enemy's reach.
   const safe = platforms.filter((p) => p.y <= physics.groundSurfaceY - 100 && spots.some((s) => standsOn(s, p.y, p.x, p.x + p.width)));
   if (safe.length < 2) problems.push('there is no ledge out of the minions\' reach on each side');
@@ -181,15 +231,16 @@ function main(argv) {
     // What is written must be what was checked: read the file text back and check that.
     const xml = tmx.write(level);
     const back = tmx.read(xml);
-    if (back.H.join() !== level.H.join() || !back.arena || back.arena.minions.length !== level.arena.minions.length) {
+    if (back.H.join() !== level.H.join() || !back.arena || back.arena.minions.length !== level.arena.minions.length ||
+        JSON.stringify(back.arena.scrolls) !== JSON.stringify(level.arena.scrolls)) {
       throw new Error(`${era.id}: the written map differs from the model`);
     }
     if (!check) fs.writeFileSync(fileFor(era.id), xml);
-    console.log(`${era.id}: ok  ${path.basename(fileFor(era.id))}  platforms ${level.platforms.length}  minion spots ${level.arena.minions.length}`);
+    console.log(`${era.id}: ok  ${path.basename(fileFor(era.id))}  platforms ${level.platforms.length}  minion spots ${level.arena.minions.length}  scroll spots ${level.arena.scrolls.length}`);
   }
   if (bad) process.exit(1);
   if (!check) console.log(`manifest: ${writeManifest(OUT)} generated levels`);
 }
 
 if (require.main === module) main(process.argv.slice(2));
-module.exports = { SPECS, COLS, WALL, buildArena, validateArena, fileFor };
+module.exports = { SPECS, COLS, WALL, STAGE_MIN_TOP, buildArena, validateArena, fileFor };
