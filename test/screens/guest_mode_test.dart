@@ -42,7 +42,8 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
                   classCode: '',
                   gradeLevel: 'grade5',
                 )
-              : Student.fromJson({'id': 's', 'name': 'Rodel', 'gradeLevel': 'grade5'}),
+              : Student.fromJson(
+                  {'id': 's', 'name': 'Rodel', 'gradeLevel': 'grade5'}),
           isLoggedIn: true,
         ));
 
@@ -64,14 +65,17 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
 }
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
-  _FakeGame() : super(GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
+  _FakeGame()
+      : super(
+            GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
   @override
   Duration? get heartCountdown => null;
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _FakeProgress extends StateNotifier<ProgressState> implements ProgressNotifier {
+class _FakeProgress extends StateNotifier<ProgressState>
+    implements ProgressNotifier {
   _FakeProgress(this.bossDown) : super(const ProgressState());
   final Set<String> bossDown;
   @override
@@ -95,7 +99,8 @@ class _FakeUnlock extends StateNotifier<bool> implements UnlockAllNotifier {
   Future<void> set(bool value) async => state = value;
 }
 
-class _FakeScheme extends StateNotifier<ControlScheme> implements ControlSchemeNotifier {
+class _FakeScheme extends StateNotifier<ControlScheme>
+    implements ControlSchemeNotifier {
   _FakeScheme() : super(ControlScheme.joystick);
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -135,7 +140,9 @@ void main() {
             lastSignIn: () => null,
           ),
         ),
-        GoRoute(path: '/character-selection', builder: (_, __) => _stand('hero stand-in')),
+        GoRoute(
+            path: '/character-selection',
+            builder: (_, __) => _stand('hero stand-in')),
       ]);
       await tester.pumpWidget(ProviderScope(
         overrides: [authProvider.overrideWith((ref) => auth)],
@@ -145,15 +152,21 @@ void main() {
       return auth;
     }
 
-    testWidgets('has "Play as a guest" under the two ways into a class', (tester) async {
+    testWidgets('has "Play as a guest" under the two ways into a class',
+        (tester) async {
       await openLogin(tester);
       expect(find.text('PLAY AS A GUEST'), findsOneWidget);
       expect(find.text('Subukan muna ang laro'), findsOneWidget);
       final guest = tester.getRect(find.byKey(LoginScreen.guestKey));
-      expect(guest.top, greaterThan(tester.getRect(find.byKey(LoginScreen.returningKey)).bottom));
-      expect(guest.height, lessThan(tester.getRect(find.byKey(LoginScreen.newKey)).height),
+      expect(
+          guest.top,
+          greaterThan(
+              tester.getRect(find.byKey(LoginScreen.returningKey)).bottom));
+      expect(guest.height,
+          lessThan(tester.getRect(find.byKey(LoginScreen.newKey)).height),
           reason: 'slimmer than the two main buttons');
-      expect(guest.height, greaterThanOrEqualTo(44), reason: 'big enough to hit');
+      expect(guest.height, greaterThanOrEqualTo(44),
+          reason: 'big enough to hit');
     });
 
     testWidgets('asks first, and BUMALIK changes nothing', (tester) async {
@@ -164,7 +177,8 @@ void main() {
 
       expect(find.byKey(GuestConfirmCard.cardKey), findsOneWidget);
       expect(find.text('Play as a guest?'), findsOneWidget);
-      expect(find.text('Unang panahon lang: Sinaunang Pilipinas'), findsOneWidget);
+      expect(
+          find.text('Unang panahon lang: Sinaunang Pilipinas'), findsOneWidget);
       expect(find.text('Hindi ito makikita ng teacher mo'), findsOneWidget);
 
       await tester.tap(find.byKey(GuestConfirmCard.backKey));
@@ -172,10 +186,12 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.byKey(GuestConfirmCard.cardKey), findsNothing);
       expect(auth.started, 0);
-      expect(find.byKey(LoginScreen.guestKey), findsOneWidget, reason: 'still on the first screen');
+      expect(find.byKey(LoginScreen.guestKey), findsOneWidget,
+          reason: 'still on the first screen');
     });
 
-    testWidgets('MAGLARO starts a guest and goes to the hero screen', (tester) async {
+    testWidgets('MAGLARO starts a guest and goes to the hero screen',
+        (tester) async {
       final auth = await openLogin(tester);
       await tester.tap(find.byKey(LoginScreen.guestKey));
       await tester.pump();
@@ -224,30 +240,46 @@ void main() {
       return auth;
     }
 
-    testWidgets('a guest has the Guest tag and no profile chip', (tester) async {
+    testWidgets('a guest has the Guest tag and no profile chip',
+        (tester) async {
       await openEras(tester);
       expect(find.byKey(GuestTag.tagKey), findsOneWidget);
       expect(find.text('GUEST'), findsOneWidget);
       expect(find.byTooltip('Profile'), findsNothing);
-      expect(find.byTooltip('Tindahan'), findsOneWidget, reason: 'the shop still works on the phone');
+      expect(find.byTooltip('Tindahan'), findsOneWidget,
+          reason: 'the shop still works on the phone');
       expect(find.byTooltip('Settings'), findsOneWidget);
     });
 
-    testWidgets('only the first era opens; the others say they are for signed-in students',
+    testWidgets(
+        'only the first era opens; the others say they are for signed-in students',
         (tester) async {
       final landed = <String>[];
       await openEras(tester, landedOn: landed);
-      expect(find.text('PARA SA NAKA-SIGN IN'), findsNWidgets(2));
+      // The first era is in front; the second peeks in beside it and says so.
+      expect(find.text('PARA SA NAKA-SIGN IN'), findsOneWidget);
 
       final grade5 = allEras.where((e) => e.grade == 5).toList();
-      await tester.tap(find.byKey(EraSelectionScreen.cardKey(grade5[1].id)), warnIfMissed: false);
-      await tester.pump();
-      expect(landed, isEmpty, reason: 'the second era does nothing');
-
       await tester.tap(find.byKey(EraSelectionScreen.cardKey(grade5[0].id)));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(landed, ['/background/${GuestMode.eraId}']);
+    });
+
+    testWidgets(
+        'a shut era in front says it is for signed-in students and does nothing',
+        (tester) async {
+      final landed = <String>[];
+      await openEras(tester, landedOn: landed);
+      final grade5 = allEras.where((e) => e.grade == 5).toList();
+
+      await tester.tap(find.byKey(EraSelectionScreen.nextKey));
+      await tester.pump(const Duration(milliseconds: 400));
+      // The second era is the big one now and the third peeks in: both say it.
+      expect(find.text('PARA SA NAKA-SIGN IN'), findsNWidgets(2));
+      await tester.tap(find.byKey(EraSelectionScreen.cardKey(grade5[1].id)));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(landed, isEmpty, reason: 'the second era does nothing');
     });
 
     testWidgets('a signed-in student sees none of it', (tester) async {
@@ -258,7 +290,8 @@ void main() {
       expect(find.byKey(GuestDoneCard.cardKey), findsNothing);
     });
 
-    testWidgets('finishing the first era asks the guest to sign in, which logs out',
+    testWidgets(
+        'finishing the first era asks the guest to sign in, which logs out',
         (tester) async {
       final auth = await openEras(tester, bossDown: {GuestMode.eraId});
       expect(find.byKey(GuestDoneCard.cardKey), findsOneWidget);
@@ -280,7 +313,8 @@ void main() {
       expect(auth.started, 1);
     });
 
-    testWidgets('a signed-in student who finished the first era gets no guest card',
+    testWidgets(
+        'a signed-in student who finished the first era gets no guest card',
         (tester) async {
       await openEras(tester, guest: false, bossDown: {GuestMode.eraId});
       expect(find.byKey(GuestDoneCard.cardKey), findsNothing);
@@ -288,7 +322,8 @@ void main() {
   });
 
   group('settings', () {
-    Future<_FakeAuth> openSettings(WidgetTester tester, {required bool guest}) async {
+    Future<_FakeAuth> openSettings(WidgetTester tester,
+        {required bool guest}) async {
       await _size(tester, const Size(800, 360));
       final auth = _FakeAuth(guest: guest);
       final router = GoRouter(routes: [
@@ -308,7 +343,8 @@ void main() {
       return auth;
     }
 
-    testWidgets('a guest has a gold EXIT GUEST MODE tile instead of I-LOGOUT', (tester) async {
+    testWidgets('a guest has a gold EXIT GUEST MODE tile instead of I-LOGOUT',
+        (tester) async {
       final auth = await openSettings(tester, guest: true);
       expect(find.text('EXIT GUEST MODE'), findsOneWidget);
       expect(find.text('I-LOGOUT'), findsNothing);
@@ -318,7 +354,8 @@ void main() {
       // CANCEL keeps the guest where they are.
       await tester.tap(find.byKey(const Key('guest_sign_in_button')));
       await tester.pumpAndSettle();
-      expect(find.text('Are you sure you want to exit Guest Mode?'), findsOneWidget);
+      expect(find.text('Are you sure you want to exit Guest Mode?'),
+          findsOneWidget);
       await tester.tap(find.byKey(GuestExitCard.cancelKey));
       await tester.pumpAndSettle();
       expect(auth.loggedOut, 0);
@@ -341,7 +378,8 @@ void main() {
   });
 
   group('nothing reaches the server', () {
-    final dir = Directory.systemTemp.createTempSync('chronoquest_guest_test_').path;
+    final dir =
+        Directory.systemTemp.createTempSync('chronoquest_guest_test_').path;
 
     setUpAll(() async {
       Hive.init(dir);
@@ -356,7 +394,9 @@ void main() {
       } catch (_) {}
     });
 
-    test('a guest\'s result is dropped: not sent and not queued for the next account', () async {
+    test(
+        'a guest\'s result is dropped: not sent and not queued for the next account',
+        () async {
       GuestMode.active = true;
       const result = QuizResult(
         era: GuestMode.eraId,
@@ -393,7 +433,8 @@ void main() {
 
       await StorageService.saveLevelCompleted(era.id, era.levels.length, 3);
       await progress.loadProgress();
-      expect(progress.getEraProgress(era.id).isCompleted, isTrue, reason: 'the boss is the last level');
+      expect(progress.getEraProgress(era.id).isCompleted, isTrue,
+          reason: 'the boss is the last level');
     });
 
     test('clearing the guest empties the wallet and hearts', () async {
@@ -405,16 +446,22 @@ void main() {
       expect(StorageService.hasHeartsFor(GuestMode.studentId), isFalse);
     });
 
-    test('starting a guest signs in as "guest", with no token, and starts fresh', () async {
+    test(
+        'starting a guest signs in as "guest", with no token, and starts fresh',
+        () async {
       TestWidgetsFlutterBinding.ensureInitialized();
       // The secure store has no plugin in a test: answer every call with nothing.
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(
         const MethodChannel('plugins.it_nomads.com/flutter_secure_storage'),
         (call) async => null,
       );
-      addTearDown(() => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      addTearDown(() => TestDefaultBinaryMessengerBinding
+          .instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-              const MethodChannel('plugins.it_nomads.com/flutter_secure_storage'), null));
+              const MethodChannel(
+                  'plugins.it_nomads.com/flutter_secure_storage'),
+              null));
       await StorageService.saveWallet(GuestMode.studentId, {'coins': 99});
       await StorageService.saveLevelCompleted(GuestMode.eraId, 1, 3);
 
@@ -425,7 +472,8 @@ void main() {
       expect(auth.state.isLoggedIn, isTrue);
       expect(auth.state.student!.id, GuestMode.studentId);
       expect(GuestMode.active, isTrue);
-      expect(StorageService.getWallet(GuestMode.studentId), isNull, reason: 'a fresh start');
+      expect(StorageService.getWallet(GuestMode.studentId), isNull,
+          reason: 'a fresh start');
       expect(StorageService.getCompletedLevels(GuestMode.eraId), isEmpty);
 
       await auth.logout();

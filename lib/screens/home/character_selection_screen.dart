@@ -85,6 +85,9 @@ class CharacterSelectionScreen extends ConsumerStatefulWidget {
   static const unlockKey = ValueKey('unlock_character');
   static const prevKey = ValueKey('character_prev');
   static const nextKey = ValueKey('character_next');
+  static const helpKey = ValueKey('character_help');
+  static const coinsKey = ValueKey('character_coins');
+  static const shopKey = ValueKey('character_shop');
   static ValueKey<String> rosterKey(String id) => ValueKey('roster_$id');
 
   /// Makes the next opening walk the hero in again, as on the first visit: for tests.
@@ -163,7 +166,8 @@ class _CharacterSelectionScreenState
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(gameProvider); // redraw when a character is bought
+    final coins =
+        ref.watch(gameProvider).coins; // redraw when a character is bought
     final notifier = ref.read(gameProvider.notifier);
     final char = allCharacters[_selected];
     final locked = !notifier.isCharacterUnlocked(char.id);
@@ -198,6 +202,8 @@ class _CharacterSelectionScreenState
       color: color,
       centered: !wide,
       selected: _selected,
+      coins: coins,
+      onShop: () => context.push('/shop'),
       isLocked: (id) => !notifier.isCharacterUnlocked(id),
       onPick: _show,
       motion: motion,
@@ -285,11 +291,7 @@ class _CharacterSelectionScreenState
                         children: [
                           const HeartsPill(),
                           const SizedBox(width: 4),
-                          MenuChip(
-                            icon: PixelGlyph.book,
-                            tooltip: 'Paano Laruin',
-                            onTap: () => context.push('/tutorial'),
-                          ),
+                          _HelpChip(onTap: () => context.push('/tutorial')),
                           MenuChip(
                             icon: PixelGlyph.profile,
                             tooltip: 'Profile',
@@ -1018,6 +1020,134 @@ class _Arrow extends StatelessWidget {
   }
 }
 
+/// How to play, top right: a round gold ? with the small word PAANO under it. It
+/// was a book icon that said nothing. 48 wide and tall to hit, like the menu chips.
+class _HelpChip extends StatelessWidget {
+  final VoidCallback onTap;
+  const _HelpChip({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: 'Paano Laruin',
+      child: Semantics(
+        button: true,
+        label: 'Paano Laruin',
+        child: GestureDetector(
+          key: CharacterSelectionScreen.helpKey,
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: SizedBox(
+            width: 48,
+            height: 48,
+            child: ExcludeSemantics(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 30,
+                    height: 30,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.accent,
+                      shape: BoxShape.circle,
+                      border:
+                          Border.all(color: AppColors.primaryDark, width: 2),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: AppColors.primaryDark, offset: Offset(0, 2))
+                      ],
+                    ),
+                    child: Text(
+                      '?',
+                      style: GoogleFonts.poppins(
+                          fontSize: 17,
+                          height: 1.1,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryDark),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    'PAANO',
+                    maxLines: 1,
+                    style: GoogleFonts.poppins(
+                        fontSize: 8.5,
+                        height: 1.1,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.4,
+                        color: AppColors.surface),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The last row under the heroes: the coins in a dark pill and a gold TINDAHAN
+/// button, so a student who sees a price they cannot pay knows where to get coins.
+class _ShopRow extends StatelessWidget {
+  final int coins;
+  final VoidCallback onShop;
+  const _ShopRow({required this.coins, required this.onShop});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Semantics(
+          label: 'Coins mo: $coins',
+          child: ExcludeSemantics(
+            child: Container(
+              key: CharacterSelectionScreen.coinsKey,
+              height: 34,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.primaryDark.withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(17),
+                border: Border.all(color: const Color(0xFF3A2D52), width: 2),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/collectibles/coin.png',
+                      width: 18, height: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                    '$coins',
+                    style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Flexible(
+          child: GameButton(
+            key: CharacterSelectionScreen.shopKey,
+            label: 'TINDAHAN',
+            fontSize: 8,
+            minHeight: 38,
+            horizontalPadding: 14,
+            leading: const PixelIcon(PixelGlyph.cart,
+                size: 16, color: AppColors.primaryDark),
+            onPressed: onShop,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 // ── Name, price, button and the roster ────────────────────────────────────────
 class _Info extends StatelessWidget {
   final CharacterData char;
@@ -1025,6 +1155,10 @@ class _Info extends StatelessWidget {
   final Color color;
   final bool centered;
   final int selected;
+
+  /// The wallet, and where the shop button goes: the last row under the heroes.
+  final int coins;
+  final VoidCallback onShop;
   final bool Function(String id) isLocked;
   final ValueChanged<int> onPick;
   final VoidCallback onChoose;
@@ -1036,6 +1170,8 @@ class _Info extends StatelessWidget {
     required this.color,
     required this.centered,
     required this.selected,
+    required this.coins,
+    required this.onShop,
     required this.isLocked,
     required this.onPick,
     required this.onChoose,
@@ -1210,6 +1346,13 @@ class _Info extends StatelessWidget {
                     ],
                   );
                 }),
+                const SizedBox(height: 10),
+                _enterOut(
+                  _ShopRow(coins: coins, onShop: onShop),
+                  from: 0.7,
+                  to: 0.85,
+                  dy: 12,
+                ),
               ],
             ),
             if (ce > 0.2 && ce < 0.85)

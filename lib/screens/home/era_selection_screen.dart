@@ -61,21 +61,31 @@ Color eraCardColor(String id) {
   }
 }
 
-/// Choose an era: a tall card for each, with its number, one of its enemies, its
-/// name and a pip for every level. The open one that is next to play glows and
-/// stands a little forward with light behind it; a finished one has a gold edge and
-/// a star; a locked one is grey with a lock.
+/// Choose an era: one big card at a time, with the two neighbours peeking in on
+/// each side. The big card shows the era's colour, its number, the era's boss
+/// (a dark shape while the era is locked), a star or a lock, the full name, a
+/// progress bar and a gold button. Arrows, a tap on a neighbour or a swipe move
+/// to the next card; dots at the bottom show all the eras.
 class EraSelectionScreen extends ConsumerStatefulWidget {
   const EraSelectionScreen({super.key});
 
   static Key cardKey(String eraId) => ValueKey('era_card_$eraId');
-  static Key pipKey(String eraId, int i) => ValueKey('era_pip_${eraId}_$i');
+  static Key progressKey(String eraId) => ValueKey('era_progress_$eraId');
+  static Key dotKey(int i) => ValueKey('era_dot_$i');
+  static const Key prevKey = Key('era_prev');
+  static const Key nextKey = Key('era_next');
+  static const Key playKey = Key('era_play');
+  static const Key lockedNoteKey = Key('era_locked_note');
 
   @override
   ConsumerState<EraSelectionScreen> createState() => _EraSelectionScreenState();
 }
 
 class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
+  /// The card the student moved to. Until they move, the card in front is the
+  /// era that is next to play (so it follows the progress as it loads).
+  int? _picked;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +94,12 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
       // The score changes on the server after every level.
       ref.read(authProvider.notifier).refreshProfile();
     });
+  }
+
+  void _focusOn(int i, int count) {
+    final next = i.clamp(0, count - 1);
+    if (next == (_picked ?? -1)) return;
+    setState(() => _picked = next);
   }
 
   @override
@@ -113,6 +129,13 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
     final current = visibleEras.indexWhere(
       (e) => unlocked(e) && !notifier.getEraProgress(e.id).isCompleted,
     );
+    final count = visibleEras.length;
+    // Nothing left to play: stand on the last era that is open.
+    final focus = count == 0
+        ? 0
+        : (_picked ??
+                (current < 0 ? visibleEras.lastIndexWhere(unlocked) : current))
+            .clamp(0, count - 1);
     final lit = current < 0 ? null : visibleEras[current];
 
     return Scaffold(
@@ -166,18 +189,20 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                             child: CircularProgressIndicator(
                                 color: AppColors.accent))
                         : LayoutBuilder(
-                            builder: (context, box) => _buildShelf(
+                            builder: (context, box) => _buildStage(
                               box,
                               visibleEras,
+                              focus,
                               current,
                               unlocked,
+                              isGuest,
                             ),
                           ),
                   ),
 
-                  // Who is playing, and the score: a face and a number.
+                  // Who is playing and the score, then the dots for the eras.
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 8),
                     child: Row(
                       children: [
                         CharacterPortrait(
@@ -202,6 +227,19 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                             fontSize: 15,
                           ),
                         ),
+                        Expanded(
+                          child: Center(
+                            child: _Dots(
+                              eras: visibleEras,
+                              focus: focus,
+                              done: (e) =>
+                                  notifier.getEraProgress(e.id).isCompleted,
+                              onTap: (i) => _focusOn(i, count),
+                            ),
+                          ),
+                        ),
+                        // Balances the score side so the dots stay near the middle.
+                        const SizedBox(width: 32),
                       ],
                     ),
                   ),
@@ -244,97 +282,230 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
     if (mounted) ref.read(progressProvider.notifier).loadProgress();
   }
 
-  static const double _gap = 14;
-  static const double _sidePadding = 16;
-  static const double _maxCardWidth = 180;
-  static const double _fullCardHeight = 200;
+  /// The size a big card is drawn at, before it is scaled to the screen.
+  static const double _designW = 236;
+  static const double _designH = 252;
 
-  /// Vertical breathing room kept free above and below the cards, so a full
-  /// shelf does not touch the title or the student bar. (The open card also
-  /// stands 8 forward, so it needs a little more.)
-  static const double _shelfMargin = 28;
+  /// How big a card beside the big one is, compared with the big one.
+  static const double _sideScale = 0.72;
 
-  /// Below this height a card cannot carry the tall layout (picture over name over
-  /// pips), so it switches to the compact one (picture beside the text).
-  static const double _compactBelow = 150;
-
-  /// Lays the era cards out in the space the screen actually has.
-  ///
-  /// Cards are at most three across and sized from the space available: full
-  /// height when everything fits, otherwise a compact card. (A landscape phone has
-  /// only about 230px between the title and the bottom bar, and the six cards the
-  /// testing switch shows must all stay on screen and tappable: children drawn
-  /// outside their parent are not hit-testable.)
-  Widget _buildShelf(
+  /// Lays the cards out in the space the screen has: the big card as large as
+  /// fits (never more than its design size), the two neighbours behind it.
+  Widget _buildStage(
     BoxConstraints box,
-    List<EraData> visibleEras,
+    List<EraData> eras,
+    int focus,
     int current,
     bool Function(EraData) unlocked,
+    bool isGuest,
   ) {
-    final count = visibleEras.length;
+    final count = eras.length;
     if (count == 0) return const SizedBox.shrink();
 
-    final columns = math.min(count, 3);
-    final rows = (count / columns).ceil();
-
-    final usableWidth = box.maxWidth - _sidePadding * 2;
-    // Floored so three cards never add up to a hair more than the row and
-    // wrap the last one onto its own line.
-    final cardWidth = math
-        .min(_maxCardWidth, (usableWidth - _gap * (columns - 1)) / columns)
-        .floorToDouble();
-    final cardHeight = math.min(
-      _fullCardHeight,
-      (box.maxHeight - _gap * (rows - 1) - _shelfMargin) / rows,
-    );
-    final compact = cardHeight < _compactBelow;
     final notifier = ref.read(progressProvider.notifier);
-    final isGuest = ref.read(authProvider).isGuest;
+    final scale = math.max(
+      0.3,
+      math.min(
+        1.0,
+        math.min(
+            (box.maxHeight - 10) / _designH, box.maxWidth * 0.62 / _designW),
+      ),
+    );
+    final bigW = _designW * scale;
+    final bigH = _designH * scale;
+    final sideW = bigW * _sideScale;
+    final sideH = bigH * _sideScale;
+    final step = (bigW + sideW) / 2 + 8;
+    final cx = box.maxWidth / 2;
+    final cy = box.maxHeight / 2;
+    final duration = motionAllowed(context)
+        ? const Duration(milliseconds: 260)
+        : Duration.zero;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: _sidePadding),
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: _gap,
-          runSpacing: _gap,
-          children: [
-            for (var i = 0; i < count; i++)
-              SizedBox(
-                width: cardWidth,
-                height: cardHeight,
-                child: _EraCard(
-                  key: EraSelectionScreen.cardKey(visibleEras[i].id),
-                  era: visibleEras[i],
-                  number: eraNumberFor(visibleEras[i].id),
-                  progress: notifier.getEraProgress(visibleEras[i].id),
-                  isUnlocked: unlocked(visibleEras[i]),
-                  guestLocked: isGuest && !unlocked(visibleEras[i]),
-                  isCurrent: i == current,
-                  compact: compact,
-                  onTap: unlocked(visibleEras[i])
-                      ? () {
-                          if (notifier
-                                  .getEraProgress(visibleEras[i].id)
-                                  .levelsCompleted >
-                              0) {
-                            context.go('/level-select/${visibleEras[i].id}');
-                          } else {
-                            context.go('/background/${visibleEras[i].id}');
-                          }
-                        }
-                      : null,
-                ),
+    Widget card(int i) {
+      final era = eras[i];
+      final d = i - focus;
+      final big = d == 0;
+      final w = big ? bigW : sideW;
+      final h = big ? bigH : sideH;
+      final progress = notifier.getEraProgress(era.id);
+      final open = unlocked(era);
+      return AnimatedPositioned(
+        key: EraSelectionScreen.cardKey(era.id),
+        duration: duration,
+        curve: Curves.easeOutCubic,
+        left: cx + d * step - w / 2,
+        top: cy - h / 2,
+        width: w,
+        height: h,
+        child: _EraCard(
+          era: era,
+          number: eraNumberFor(era.id),
+          progress: progress,
+          isUnlocked: open,
+          guestLocked: isGuest && !open,
+          previousName: i > 0 ? eras[i - 1].name : null,
+          big: big,
+          breathing: big && i == current,
+          designSize: const Size(_designW, _designH),
+          onTap: big
+              ? (open
+                  ? () {
+                      if (progress.levelsCompleted > 0) {
+                        context.go('/level-select/${era.id}');
+                      } else {
+                        context.go('/background/${era.id}');
+                      }
+                    }
+                  : null)
+              : () => _focusOn(i, count),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragEnd: (details) {
+        final v = details.primaryVelocity ?? 0;
+        if (v < -250) _focusOn(focus + 1, count);
+        if (v > 250) _focusOn(focus - 1, count);
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Neighbours first, so the big card is drawn over them.
+          if (focus > 0) card(focus - 1),
+          if (focus < count - 1) card(focus + 1),
+          card(focus),
+          if (focus > 0)
+            Positioned(
+              left: 6,
+              top: cy - 24,
+              child: _Arrow(
+                key: EraSelectionScreen.prevKey,
+                forward: false,
+                onTap: () => _focusOn(focus - 1, count),
               ),
-          ],
+            ),
+          if (focus < count - 1)
+            Positioned(
+              right: 6,
+              top: cy - 24,
+              child: _Arrow(
+                key: EraSelectionScreen.nextKey,
+                forward: true,
+                onTap: () => _focusOn(focus + 1, count),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A round arrow chip beside the cards: 48 to hit, 38 to look at.
+class _Arrow extends StatelessWidget {
+  final bool forward;
+  final VoidCallback onTap;
+  const _Arrow({super.key, required this.forward, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: forward ? 'Susunod na panahon' : 'Nakaraang panahon',
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: Center(
+            child: Container(
+              width: 38,
+              height: 38,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(19),
+                border: Border.all(color: AppColors.primaryDark, width: 2),
+                boxShadow: const [
+                  BoxShadow(color: AppColors.primaryDark, offset: Offset(2, 2))
+                ],
+              ),
+              child: Transform.scale(
+                scaleX: forward ? 1 : -1,
+                child: const PixelIcon(PixelGlyph.chevron,
+                    size: 22, color: AppColors.accent),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-/// One era: its number, an enemy on its colour, its name and a pip per level.
+/// One dot per era; the one in front is a long gold pill, a finished one is a
+/// dull gold, the rest dark.
+class _Dots extends StatelessWidget {
+  final List<EraData> eras;
+  final int focus;
+  final bool Function(EraData) done;
+  final ValueChanged<int> onTap;
+  const _Dots({
+    required this.eras,
+    required this.focus,
+    required this.done,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 0; i < eras.length; i++)
+            Semantics(
+              button: true,
+              selected: i == focus,
+              label: 'Panahon ${i + 1} ng ${eras.length}',
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onTap(i),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: AnimatedContainer(
+                    key: EraSelectionScreen.dotKey(i),
+                    duration: const Duration(milliseconds: 200),
+                    width: i == focus ? 22 : 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: i == focus
+                          ? AppColors.accent
+                          : done(eras[i])
+                              ? const Color(0xFFB98A22)
+                              : const Color(0xFF3A2E52),
+                      borderRadius: BorderRadius.circular(5),
+                      border:
+                          Border.all(color: AppColors.primaryDark, width: 2),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One era card. It is always laid out at [designSize] (the big card) and scaled
+/// to the box it is given, so it never overflows while it grows or shrinks. The
+/// big card also shows the progress and the button; the neighbours show only the
+/// colour, the boss and the name.
 class _EraCard extends StatefulWidget {
   final EraData era;
   final int number;
@@ -343,21 +514,26 @@ class _EraCard extends StatefulWidget {
 
   /// Shut for a guest: says it is for signed-in students.
   final bool guestLocked;
-  final bool isCurrent;
 
-  /// The picture beside the text, for when the card is too short for the tall layout.
-  final bool compact;
+  /// The era before this one, named in the line that says what to finish first.
+  final String? previousName;
+  final bool big;
+
+  /// The big card of the era that is next to play: it breathes.
+  final bool breathing;
+  final Size designSize;
   final VoidCallback? onTap;
 
   const _EraCard({
-    super.key,
     required this.era,
     required this.number,
     required this.progress,
     required this.isUnlocked,
-    this.guestLocked = false,
-    required this.isCurrent,
-    required this.compact,
+    required this.guestLocked,
+    required this.previousName,
+    required this.big,
+    required this.breathing,
+    required this.designSize,
     required this.onTap,
   });
 
@@ -367,14 +543,14 @@ class _EraCard extends StatefulWidget {
 
 class _EraCardState extends State<_EraCard>
     with SingleTickerProviderStateMixin {
-  /// The open card breathes: a slow swell and back.
+  /// The card that is next to play breathes: a slow swell and back.
   late final AnimationController _breath = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 1100));
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final on = widget.isCurrent && motionAllowed(context);
+    final on = widget.breathing && motionAllowed(context);
     if (on && !_breath.isAnimating) {
       _breath.repeat(reverse: true);
     } else if (!on && _breath.isAnimating) {
@@ -399,123 +575,68 @@ class _EraCardState extends State<_EraCard>
     final era = widget.era;
     final done = widget.progress.isCompleted;
     final locked = !widget.isUnlocked;
-    final color = eraCardColor(era.id);
-    final levels = era.levels.length;
-    final filled =
-        done ? levels : widget.progress.levelsCompleted.clamp(0, levels);
-
-    final art = _Art(
-      era: era,
-      number: widget.number,
-      color: color,
-      locked: locked,
-      done: done,
-      compact: widget.compact,
-    );
-    final text = _Name(
-        era: era, levels: levels, filled: filled, compact: widget.compact);
+    final glow = widget.big && !locked;
 
     Widget card = Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1530),
-        borderRadius: BorderRadius.circular(7),
+        color: const Color(0xFF241A36),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: widget.isCurrent || done
-              ? AppColors.accent
-              : AppColors.primaryDark,
+          color: glow ? AppColors.accent : const Color(0xFF1B1230),
           width: 3,
         ),
         boxShadow: [
-          if (widget.isCurrent)
+          if (glow)
             BoxShadow(
-              color: AppColors.accent.withValues(alpha: 0.45),
+              color: AppColors.accent.withValues(alpha: 0.35),
               blurRadius: 22,
-              spreadRadius: 2,
             ),
-          const BoxShadow(color: AppColors.primaryDark, offset: Offset(0, 4)),
+          const BoxShadow(color: Color(0xFF1B1230), offset: Offset(0, 4)),
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: widget.compact
-          ? Row(
-              children: [
-                SizedBox(width: 62, child: art),
-                Expanded(child: text),
-              ],
-            )
-          : Column(
-              children: [
-                Expanded(flex: 5, child: art),
-                Expanded(flex: 4, child: text),
-              ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 124,
+            child: _Art(
+              era: era,
+              number: widget.number,
+              locked: locked,
+              done: done,
             ),
-    );
-
-    if (locked) {
-      card = ColorFiltered(
-        colorFilter: const ColorFilter.matrix(<double>[
-          0.25,
-          0.5,
-          0.1,
-          0,
-          0,
-          0.25,
-          0.5,
-          0.1,
-          0,
-          0,
-          0.25,
-          0.5,
-          0.1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-        ]),
-        child: Opacity(opacity: 0.75, child: card),
-      );
-      if (widget.guestLocked) {
-        card = Stack(
-          children: [
-            Positioned.fill(child: card),
-            Positioned(
-              left: 4,
-              right: 4,
-              bottom: widget.compact ? 4 : 12,
-              child: Center(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF231838),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.accent, width: 2),
-                  ),
-                  child: Text(
-                    'PARA SA NAKA-SIGN IN',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      fontSize: 8.5,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.6,
-                      color: AppColors.accent,
-                    ),
-                  ),
-                ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+              child: _Lower(
+                era: era,
+                progress: widget.progress,
+                locked: locked,
+                guestLocked: widget.guestLocked,
+                previousName: widget.previousName,
+                big: widget.big,
               ),
             ),
-          ],
-        );
-      }
-    }
+          ),
+        ],
+      ),
+    );
 
-    // The open card stands forward and swells a little.
+    // Drawn at the design size, then scaled to whatever box the carousel gives.
+    card = FittedBox(
+      fit: BoxFit.fill,
+      child: SizedBox(
+        width: widget.designSize.width,
+        height: widget.designSize.height,
+        child: card,
+      ),
+    );
+
     return Semantics(
       button: widget.onTap != null,
+      selected: widget.big,
       label: locked
           ? (widget.guestLocked
               ? '${era.name}, para sa naka-sign in'
@@ -526,13 +647,14 @@ class _EraCardState extends State<_EraCard>
         onTap: widget.onTap,
         child: AnimatedBuilder(
           animation: _breath,
-          child: card,
-          builder: (context, child) => Transform.translate(
-            offset: Offset(0, widget.isCurrent ? -8 : 0),
-            child: Transform.scale(
-              scale: 1 + 0.03 * Curves.easeInOut.transform(_breath.value),
-              child: child,
-            ),
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 200),
+            opacity: widget.big ? 1 : 0.78,
+            child: card,
+          ),
+          builder: (context, child) => Transform.scale(
+            scale: 1 + 0.03 * Curves.easeInOut.transform(_breath.value),
+            child: child,
           ),
         ),
       ),
@@ -540,84 +662,94 @@ class _EraCardState extends State<_EraCard>
   }
 }
 
-/// The top of a card: the era's colour, its number, an enemy and (locked or
+/// The top of a card: the era's colour, its number, the era's boss and (locked or
 /// finished) a lock or a star.
 class _Art extends StatelessWidget {
   final EraData era;
   final int number;
-  final Color color;
   final bool locked;
   final bool done;
-  final bool compact;
   const _Art({
     required this.era,
     required this.number,
-    required this.color,
     required this.locked,
     required this.done,
-    required this.compact,
   });
 
   @override
   Widget build(BuildContext context) {
+    final base = eraCardColor(era.id);
+    final color =
+        locked ? Color.lerp(base, const Color(0xFF3A3548), 0.55)! : base;
+    Widget boss = Image.asset(
+      'assets/bosses/${era.bossName}_idle.png',
+      fit: BoxFit.contain,
+      alignment: Alignment.bottomCenter,
+      filterQuality: FilterQuality.none,
+      errorBuilder: (_, __, ___) => const SizedBox(),
+    );
+    if (locked) {
+      // A dark shape: the boss is not known yet.
+      boss = ColorFiltered(
+        colorFilter: const ColorFilter.mode(Color(0x80000000), BlendMode.srcIn),
+        child: boss,
+      );
+    }
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color.lerp(color, Colors.black, 0.3)!,
-            Color.lerp(color, const Color(0xFF140E1F), 0.7)!,
-          ],
+          colors: [color, const Color(0xFF1E1530)],
         ),
       ),
       child: Stack(
         children: [
-          Positioned(
-            left: 8,
-            top: 4,
-            child: Text(
-              '$number',
-              style: GoogleFonts.poppins(
-                fontSize: compact ? 18 : 26,
-                height: 1.1,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: const [
-                  Shadow(color: Colors.black54, offset: Offset(0, 2))
-                ],
-              ),
-            ),
-          ),
           Positioned.fill(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  compact ? 6 : 16, compact ? 18 : 28, compact ? 6 : 16, 6),
-              child: Image.asset(
-                eraSprite(era.id),
-                fit: BoxFit.contain,
-                alignment: Alignment.bottomCenter,
-                filterQuality: FilterQuality.medium,
-                errorBuilder: (_, __, ___) => const SizedBox(),
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 6),
+              child: boss,
+            ),
+          ),
+          Positioned(
+            left: 8,
+            top: 6,
+            child: Container(
+              width: 26,
+              height: 26,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryDark,
+                border: Border.all(color: AppColors.accent, width: 2),
+              ),
+              child: Text(
+                '$number',
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  height: 1.1,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.accent,
+                ),
               ),
             ),
           ),
           if (locked)
-            Center(
+            Positioned(
+              right: 8,
+              top: 6,
               child: Image.asset('assets/ui/lock_icon.png',
-                  width: compact ? 20 : 34,
-                  height: compact ? 20 : 34,
+                  width: 24,
+                  height: 24,
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.none),
             ),
           if (done)
             Positioned(
-              right: 6,
+              right: 8,
               top: 6,
               child: Image.asset('assets/ui/star_full.png',
-                  width: compact ? 16 : 24,
-                  height: compact ? 16 : 24,
-                  filterQuality: FilterQuality.none),
+                  width: 24, height: 24, filterQuality: FilterQuality.none),
             ),
         ],
       ),
@@ -625,63 +757,160 @@ class _Art extends StatelessWidget {
   }
 }
 
-/// The bottom of a card: the era's name and a pip for every level.
-class _Name extends StatelessWidget {
+/// The bottom of a card: the full name, then (on the big card) the progress, the
+/// line about the next level and the gold button, or why the era is locked. It is
+/// scaled down as a whole if the name is long, instead of overflowing.
+class _Lower extends StatelessWidget {
   final EraData era;
-  final int levels;
-  final int filled;
-  final bool compact;
-  const _Name(
-      {required this.era,
-      required this.levels,
-      required this.filled,
-      required this.compact});
+  final EraProgress progress;
+  final bool locked;
+  final bool guestLocked;
+  final String? previousName;
+  final bool big;
+  const _Lower({
+    required this.era,
+    required this.progress,
+    required this.locked,
+    required this.guestLocked,
+    required this.previousName,
+    required this.big,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-          compact ? 8 : 9, compact ? 4 : 8, compact ? 8 : 9, compact ? 6 : 9),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Flexible(
+    final levels = era.levels.length;
+    final done = progress.isCompleted;
+    final filled =
+        done ? levels : progress.levelsCompleted.clamp(0, levels).toInt();
+    final next = (filled + 1).clamp(1, levels);
+
+    final children = <Widget>[
+      Text(
+        era.name,
+        style: GoogleFonts.poppins(
+          fontSize: 14.5,
+          height: 1.25,
+          fontWeight: FontWeight.bold,
+          color: AppColors.surface,
+        ),
+      ),
+    ];
+
+    if (guestLocked) {
+      children.addAll([
+        const SizedBox(height: 6),
+        Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFF231838),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.accent, width: 2),
+            ),
             child: Text(
-              era.name,
-              // Era titles run up to 47 characters.
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
+              'PARA SA NAKA-SIGN IN',
+              maxLines: 1,
               style: GoogleFonts.poppins(
-                fontSize: compact ? 11 : 12,
+                fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                height: 1.2,
+                letterSpacing: 0.6,
+                color: AppColors.accent,
               ),
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              for (var i = 0; i < levels; i++) ...[
-                if (i > 0) const SizedBox(width: 2),
-                Expanded(
-                  child: Container(
-                    key: EraSelectionScreen.pipKey(era.id, i),
-                    height: compact ? 5 : 7,
-                    decoration: BoxDecoration(
-                      color: i < filled
-                          ? AppColors.success
-                          : const Color(0xFF3A2E52),
-                      border:
-                          Border.all(color: AppColors.primaryDark, width: 1),
-                    ),
+        ),
+      ]);
+    } else if (big && locked) {
+      final previous = previousName;
+      children.addAll([
+        const SizedBox(height: 6),
+        Text.rich(
+          previous == null
+              ? const TextSpan(text: 'Naka-lock pa ang era na ito.')
+              : TextSpan(children: [
+                  const TextSpan(text: 'Tapusin muna ang '),
+                  TextSpan(
+                    text: previous,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: AppColors.surface),
                   ),
-                ),
-              ],
+                  const TextSpan(text: ' para mabuksan ito.'),
+                ]),
+          key: EraSelectionScreen.lockedNoteKey,
+          style: GoogleFonts.poppins(
+            fontSize: 11.5,
+            height: 1.4,
+            color: const Color(0xFFC9BEDB),
+          ),
+        ),
+      ]);
+    } else if (big) {
+      children.addAll([
+        const SizedBox(height: 6),
+        Container(
+          key: EraSelectionScreen.progressKey(era.id),
+          height: 10,
+          decoration: BoxDecoration(
+            color: const Color(0xFF3A2E52),
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: const Color(0xFF1B1230), width: 2),
+          ),
+          clipBehavior: Clip.antiAlias,
+          alignment: Alignment.centerLeft,
+          child: FractionallySizedBox(
+            widthFactor: levels == 0 ? 0 : filled / levels,
+            heightFactor: 1,
+            child: ColoredBox(
+              color: done ? AppColors.accent : const Color(0xFFE0A52B),
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          done
+              ? 'Tapos na · $levels ng $levels level'
+              : 'Level $next na ang susunod · $filled ng $levels',
+          style: GoogleFonts.poppins(
+            fontSize: 11.5,
+            color: const Color(0xFFC9BEDB),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          key: EraSelectionScreen.playKey,
+          height: 30,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColors.accent,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: AppColors.primaryDark, width: 3),
+            boxShadow: const [
+              BoxShadow(color: AppColors.primaryDark, offset: Offset(0, 3)),
             ],
           ),
-        ],
+          child: Text(
+            done ? 'BALIKAN' : 'MAGLARO',
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+              color: AppColors.primaryDark,
+            ),
+          ),
+        ),
+      ]);
+    }
+
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        width: 216,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
       ),
     );
   }

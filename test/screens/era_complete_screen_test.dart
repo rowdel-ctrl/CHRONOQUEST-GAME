@@ -2,17 +2,31 @@
 // chips, the coins, and one button. It says plainly when the scores cannot be shown.
 import 'dart:async';
 
+import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/badge_defs.dart';
+import 'package:chronoquest/models/hearts_state.dart';
 import 'package:chronoquest/models/quiz_result.dart';
+import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/screens/game/era_complete_screen.dart';
 import 'package:chronoquest/widgets/era_medal.dart';
 import 'package:chronoquest/widgets/new_badge.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-QuizResult _result(String era, String type, int percentage, {int level = 1}) => QuizResult(
+class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
+  _FakeGame(String hero)
+      : super(GameState(
+            selectedCharacterId: hero,
+            hearts: const HeartsState(count: 3, regenStartMs: null)));
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+QuizResult _result(String era, String type, int percentage, {int level = 1}) =>
+    QuizResult(
       era: era,
       level: level,
       type: type,
@@ -31,6 +45,7 @@ Future<void> _open(
   Size size = const Size(732, 320),
   bool animations = true,
   List<EarnedBadge> badges = const [],
+  String hero = 'boy',
 }) async {
   tester.platformDispatcher.accessibilityFeaturesTestValue =
       FakeAccessibilityFeatures(disableAnimations: !animations);
@@ -65,13 +80,17 @@ Future<void> _open(
       builder: (_, __) => const Scaffold(body: Text('eras stand-in')),
     ),
   ]);
-  await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+  await tester.pumpWidget(ProviderScope(
+    overrides: [gameProvider.overrideWith((ref) => _FakeGame(hero))],
+    child: MaterialApp.router(routerConfig: router),
+  ));
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 600));
 }
 
 String _text(WidgetTester tester, Key chip) => tester
-    .widgetList<Text>(find.descendant(of: find.byKey(chip), matching: find.byType(Text)))
+    .widgetList<Text>(
+        find.descendant(of: find.byKey(chip), matching: find.byType(Text)))
     .single
     .data!;
 
@@ -84,7 +103,9 @@ void main() {
       return EarnedBadge(f, f.steps.firstWhere((s) => s.id == id));
     }
 
-    testWidgets('a boss medal gets a pop-up once the scores are in, and TULOY closes it', (tester) async {
+    testWidgets(
+        'a boss medal gets a pop-up once the scores are in, and TULOY closes it',
+        (tester) async {
       await _open(tester, badges: [badge('era:spanish'), badge('perfect:1')]);
       await tester.pump(const Duration(milliseconds: 400));
 
@@ -94,7 +115,8 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(find.byKey(BossBadgeCard.cardKey), findsNothing);
-      expect(find.text('TAPOS!'), findsOneWidget, reason: 'the era screen is still there');
+      expect(find.text('TAPOS!'), findsOneWidget,
+          reason: 'the era screen is still there');
     });
 
     testWidgets('other badges are a strip, not a pop-up', (tester) async {
@@ -113,47 +135,118 @@ void main() {
     });
 
     testWidgets('a pop-up fits a short landscape phone', (tester) async {
-      await _open(tester,
-          size: const Size(640, 320),
-          badges: [badge('era:spanish'), badge('perfect:1'), badge('stars3:1'), badge('bossclean')]);
+      await _open(tester, size: const Size(640, 320), badges: [
+        badge('era:spanish'),
+        badge('perfect:1'),
+        badge('stars3:1'),
+        badge('bossclean')
+      ]);
       await tester.pump(const Duration(milliseconds: 400));
       expect(tester.takeException(), isNull);
     });
   });
 
-  testWidgets('shows the era medal with this era\'s number, TAPOS! and the era name', (tester) async {
+  testWidgets(
+      'shows the era medal with this era\'s number, TAPOS! and the era name',
+      (tester) async {
     await _open(tester, eraId: 'spanish');
 
     expect(find.text('TAPOS!'), findsOneWidget);
     expect(find.text('Pananakop ng Espanya'), findsOneWidget);
-    expect(tester.widget<EraMedal>(find.byKey(EraCompleteScreen.medalKey)).number, 2);
+    expect(
+        tester.widget<EraMedal>(find.byKey(EraCompleteScreen.medalKey)).number,
+        2);
 
     await _open(tester, eraId: 'modern');
-    expect(tester.widget<EraMedal>(find.byKey(EraCompleteScreen.medalKey)).number, 6);
+    expect(
+        tester.widget<EraMedal>(find.byKey(EraCompleteScreen.medalKey)).number,
+        6);
   });
 
-  testWidgets('the two scores and the gain are round chips with one number each', (tester) async {
+  group('the hero and the beaten boss', () {
+    String assetOf(Image i) => (i.image as AssetImage).assetName;
+
+    testWidgets(
+        'the hero cheers in its win pose on the left, the defeated boss of the era is on the right',
+        (tester) async {
+      await _open(tester, eraId: 'spanish', hero: 'girl');
+
+      final heroImages = tester.widgetList<Image>(find.descendant(
+          of: find.byKey(EraCompleteScreen.heroKey),
+          matching: find.byType(Image)));
+      expect(heroImages.map(assetOf), ['assets/characters/girl_win.png']);
+      final boss = find.byKey(EraCompleteScreen.defeatedBossKey);
+      expect(assetOf(tester.widget<Image>(boss)),
+          'assets/bosses/${getEraById('spanish').bossName}_defeated.png');
+
+      final heroRect = tester.getRect(find.byKey(EraCompleteScreen.heroKey));
+      final bossRect = tester.getRect(boss);
+      expect(
+          heroRect.right,
+          lessThan(
+              tester.getRect(find.byKey(EraCompleteScreen.medalKey)).left));
+      expect(
+          bossRect.left,
+          greaterThan(
+              tester.getRect(find.byKey(EraCompleteScreen.medalKey)).right));
+      expect(heroRect.bottom, closeTo(bossRect.bottom, 0.5),
+          reason: 'both stand on one ground line');
+    });
+
+    testWidgets('each era shows its own boss', (tester) async {
+      for (final era in allEras) {
+        await tester.pumpWidget(const SizedBox());
+        await _open(tester, eraId: era.id);
+        expect(
+            assetOf(tester
+                .widget<Image>(find.byKey(EraCompleteScreen.defeatedBossKey))),
+            'assets/bosses/${era.bossName}_defeated.png');
+      }
+    });
+
+    testWidgets(
+        'on a narrow screen both are still there, smaller, and the button is reachable',
+        (tester) async {
+      await _open(tester, size: const Size(400, 700));
+      expect(find.byKey(EraCompleteScreen.heroKey), findsOneWidget);
+      expect(find.byKey(EraCompleteScreen.defeatedBossKey), findsOneWidget);
+      expect(tester.getSize(find.byKey(EraCompleteScreen.heroKey)).height,
+          lessThan(120));
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  testWidgets(
+      'the two scores and the gain are round chips with one number each',
+      (tester) async {
     await _open(tester);
 
-    expect(_text(tester, EraCompleteScreen.levelsKey), '85%', reason: 'the average of 80 and 90');
+    expect(_text(tester, EraCompleteScreen.levelsKey), '85%',
+        reason: 'the average of 80 and 90');
     expect(_text(tester, EraCompleteScreen.bossKey), '95%');
-    expect(_text(tester, EraCompleteScreen.gainKey), '+10%', reason: 'the boss, 95, less 85');
+    expect(_text(tester, EraCompleteScreen.gainKey), '+10%',
+        reason: 'the boss, 95, less 85');
   });
 
   testWidgets('only this era\'s results count', (tester) async {
     await _open(tester, eraId: 'spanish');
-    expect(_text(tester, EraCompleteScreen.levelsKey), '85%', reason: 'not dragged down by the other era');
+    expect(_text(tester, EraCompleteScreen.levelsKey), '85%',
+        reason: 'not dragged down by the other era');
   });
 
-  testWidgets('a boss worse than the levels shows a negative gain, not a made-up plus', (tester) async {
-    await _open(tester, load: () async => [
-          _result('spanish', 'pre_test', 90),
-          _result('spanish', 'post_test', 70),
-        ]);
+  testWidgets(
+      'a boss worse than the levels shows a negative gain, not a made-up plus',
+      (tester) async {
+    await _open(tester,
+        load: () async => [
+              _result('spanish', 'pre_test', 90),
+              _result('spanish', 'post_test', 70),
+            ]);
     expect(_text(tester, EraCompleteScreen.gainKey), '-20%');
   });
 
-  testWidgets('shows the coins the boss paid, and no chip when there are none', (tester) async {
+  testWidgets('shows the coins the boss paid, and no chip when there are none',
+      (tester) async {
     await _open(tester, coins: 30);
     expect(_text(tester, EraCompleteScreen.coinsKey), '+30');
 
@@ -162,16 +255,21 @@ void main() {
   });
 
   group('when the scores are not there', () {
-    testWidgets('no boss result yet: no chips for them, and it says so', (tester) async {
-      await _open(tester, load: () async => [_result('spanish', 'pre_test', 80)]);
+    testWidgets('no boss result yet: no chips for them, and it says so',
+        (tester) async {
+      await _open(tester,
+          load: () async => [_result('spanish', 'pre_test', 80)]);
 
       expect(find.byKey(EraCompleteScreen.levelsKey), findsNothing);
       expect(find.byKey(EraCompleteScreen.gainKey), findsNothing);
       expect(find.text('Kulang pa ang data sa scores mo.'), findsOneWidget);
-      expect(find.byKey(EraCompleteScreen.goKey), findsOneWidget, reason: 'the student can still go on');
+      expect(find.byKey(EraCompleteScreen.goKey), findsOneWidget,
+          reason: 'the student can still go on');
     });
 
-    testWidgets('the server cannot be reached: it says that, with no made-up numbers', (tester) async {
+    testWidgets(
+        'the server cannot be reached: it says that, with no made-up numbers',
+        (tester) async {
       await _open(tester, load: () async => throw Exception('offline'));
 
       expect(find.text('Hindi ma-load ang scores mo ngayon.'), findsOneWidget);
@@ -184,7 +282,10 @@ void main() {
       await _open(tester, load: () => wait.future);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      wait.complete([_result('spanish', 'pre_test', 80), _result('spanish', 'post_test', 90)]);
+      wait.complete([
+        _result('spanish', 'pre_test', 80),
+        _result('spanish', 'post_test', 90)
+      ]);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(CircularProgressIndicator), findsNothing);
@@ -192,7 +293,8 @@ void main() {
     });
   });
 
-  testWidgets('has few words: no learning-gain essay, no explanations', (tester) async {
+  testWidgets('has few words: no learning-gain essay, no explanations',
+      (tester) async {
     await _open(tester);
     expect(find.textContaining('Natuto'), findsNothing);
     expect(find.textContaining('Napakagaling'), findsNothing);
@@ -207,13 +309,16 @@ void main() {
     expect(find.text('eras stand-in'), findsOneWidget);
   });
 
-  testWidgets('with animations off nothing moves and there is no confetti', (tester) async {
+  testWidgets('with animations off nothing moves and there is no confetti',
+      (tester) async {
     await _open(tester, animations: false);
     expect(tester.hasRunningAnimations, isFalse);
   });
 
   for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
-    testWidgets('fits ${size.width.toInt()}x${size.height.toInt()}, button on screen', (tester) async {
+    testWidgets(
+        'fits ${size.width.toInt()}x${size.height.toInt()}, button on screen',
+        (tester) async {
       await _open(tester, size: size);
 
       expect(tester.takeException(), isNull);

@@ -130,10 +130,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
       // Navigate, carrying the attempt's real result so the completion
       // screen reports what the player actually scored.
+      // Which questions were won, in the order they were first asked (the best try of
+      // each), so the completion screen can light the right artifact pictures.
+      final wonByQuestion = <String, bool>{};
+      for (final a in answers) {
+        wonByQuestion[a.questionId] =
+            (wonByQuestion[a.questionId] ?? false) || a.isCorrect;
+      }
       final result = LevelCompleteResult(
         score: score,
         correct: correct,
         total: total,
+        answers: wonByQuestion.values.toList(),
         coins: game.playerCoins,
         powerUps: freeUps,
         // What this attempt earned in badges, with the coin gift already paid.

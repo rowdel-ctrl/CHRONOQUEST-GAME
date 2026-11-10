@@ -3,6 +3,7 @@
 // is the same either way: open Settings, open Kontrol, pick a card, go back.
 import 'package:chronoquest/models/control_scheme.dart';
 import 'package:chronoquest/providers/control_scheme_provider.dart';
+import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/providers/unlock_all_provider.dart';
 import 'package:chronoquest/screens/settings/controls_screen.dart';
 import 'package:chronoquest/screens/settings/settings_screen.dart';
@@ -34,6 +35,14 @@ class _FakeUnlockAll extends StateNotifier<bool> implements UnlockAllNotifier {
 
   @override
   Future<void> set(bool value) async => state = value;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+/// The Controls pictures show the chosen hero; the real notifier reads Hive.
+class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
+  _FakeGame() : super(GameState());
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -76,6 +85,7 @@ Future<_FakeScheme> _pumpApp(
     ProviderScope(
       overrides: [
         controlSchemeProvider.overrideWith((ref) => fake),
+        gameProvider.overrideWith((ref) => _FakeGame()),
         unlockAllProvider.overrideWith((ref) => unlock),
         testBuildProvider.overrideWithValue(testBuild),
       ],
@@ -95,7 +105,8 @@ Future<void> _openControls(WidgetTester tester) async {
 
 void main() {
   group('the testing switch and logout live in Settings', () {
-    testWidgets('both are there, and the switch turns on and off', (tester) async {
+    testWidgets('both are there, and the switch turns on and off',
+        (tester) async {
       final unlock = _FakeUnlockAll();
       await _pumpApp(tester, unlockAll: unlock);
       await tester.tap(find.text('OPEN_SETTINGS'));
@@ -112,7 +123,8 @@ void main() {
       expect(unlock.state, isTrue);
     });
 
-    testWidgets('the student build has no Test Mode, only logout', (tester) async {
+    testWidgets('the student build has no Test Mode, only logout',
+        (tester) async {
       await _pumpApp(tester, testBuild: false);
       await tester.tap(find.text('OPEN_SETTINGS'));
       await tester.pumpAndSettle();
@@ -122,7 +134,8 @@ void main() {
       expect(find.text('Test Mode'), findsNothing);
     });
 
-    testWidgets('the switch says hearts are not lost while it is on', (tester) async {
+    testWidgets('the switch says hearts are not lost while it is on',
+        (tester) async {
       await _pumpApp(tester);
       await tester.tap(find.text('OPEN_SETTINGS'));
       await tester.pumpAndSettle();
@@ -169,7 +182,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(fake.saved, [ControlScheme.arrows]);
-    expect(find.text('NAKAPILI'), findsOneWidget, reason: 'only one card is marked');
+    expect(find.text('NAKAPILI'), findsOneWidget,
+        reason: 'only one card is marked');
     final badge = tester.getCenter(find.text('NAKAPILI')).dx;
     final arrows = tester.getCenter(find.text('MGA ARROW')).dx;
     final joystick = tester.getCenter(find.text('JOYSTICK')).dx;

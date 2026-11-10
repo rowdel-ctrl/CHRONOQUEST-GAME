@@ -1,5 +1,6 @@
 // Destination in your repo: lib/screens/game/era_complete_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
@@ -17,7 +18,7 @@ import '../../widgets/pixel_icon.dart';
 /// The end of an era: the era's gold medal, "TAPOS!", the two scores (the average
 /// of the levels and the boss) and the learning gain between them as small round
 /// chips, the coins the boss paid, and one button.
-class EraCompleteScreen extends StatefulWidget {
+class EraCompleteScreen extends ConsumerStatefulWidget {
   final String eraId;
 
   /// The coins picked up in the boss fight, now in the wallet. Zero hides the line.
@@ -50,12 +51,14 @@ class EraCompleteScreen extends StatefulWidget {
   static const gainKey = Key('era_complete_gain');
   static const goKey = Key('era_complete_go');
   static const noDataKey = Key('era_complete_no_data');
+  static const heroKey = Key('era_complete_hero');
+  static const defeatedBossKey = Key('era_complete_defeated_boss');
 
   @override
-  State<EraCompleteScreen> createState() => _EraCompleteScreenState();
+  ConsumerState<EraCompleteScreen> createState() => _EraCompleteScreenState();
 }
 
-class _EraCompleteScreenState extends State<EraCompleteScreen> {
+class _EraCompleteScreenState extends ConsumerState<EraCompleteScreen> {
   // Baseline is now the average of Levels 1-9 ("pre_test" type results),
   // not a separate cold pre-test. Both are nullable so we can tell the
   // difference between "0%" and "no data yet" instead of faking numbers.
@@ -118,16 +121,55 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
   Widget build(BuildContext context) {
     final era = getEraById(widget.eraId);
     final wide = MediaQuery.sizeOf(context).width >= 560;
+    final heroId = ref.watch(gameProvider).selectedCharacterId;
 
     final medal = Bob(
       height: 6,
       child: EraMedal(
         key: EraCompleteScreen.medalKey,
         number: eraNumberFor(era.id),
-        width: wide ? 124 : 104,
+        width: wide ? 88 : 104,
       ),
     );
-    final words = _words(era, wide);
+    final words = _words(era);
+    Widget centre = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [medal, const SizedBox(height: 4), words],
+    );
+    // A fixed width on a wide screen, so a long era name and the chips wrap.
+    if (wide) centre = SizedBox(width: 260, child: centre);
+
+    // The hero cheers on the left and the boss it beat lies on the right, both on
+    // one ground line (the bottom of the row).
+    final Widget body = wide
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _WinHero(heroId: heroId, height: 170),
+              const SizedBox(width: 20),
+              centre,
+              const SizedBox(width: 20),
+              _DefeatedBoss(bossName: era.bossName, height: 140),
+            ],
+          )
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              centre,
+              const SizedBox(height: 12),
+              // Smaller on a narrow screen, side by side under the button.
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _WinHero(heroId: heroId, height: 100),
+                  const SizedBox(width: 16),
+                  _DefeatedBoss(bossName: era.bossName, height: 84),
+                ],
+              ),
+            ],
+          );
 
     return Scaffold(
       body: GameBackdrop(
@@ -143,26 +185,19 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
                   ? const Center(
                       child: CircularProgressIndicator(color: AppColors.accent))
                   : Center(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.all(20),
-                        child: wide
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  medal,
-                                  const SizedBox(width: 40),
-                                  Flexible(child: words)
-                                ],
-                              )
-                            : Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  medal,
-                                  const SizedBox(height: 12),
-                                  words
-                                ],
+                      child: wide
+                          // Shrinks a little on a screen too short for it.
+                          ? FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: body,
                               ),
-                      ),
+                            )
+                          : SingleChildScrollView(
+                              padding: const EdgeInsets.all(20),
+                              child: body,
+                            ),
                     ),
             ),
             // Badges that are not a boss medal slide in over the top.
@@ -176,11 +211,10 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
     );
   }
 
-  Widget _words(EraData era, bool wide) {
+  Widget _words(EraData era) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:
-          wide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'TAPOS!',
@@ -197,7 +231,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
         const SizedBox(height: 4),
         Text(
           era.name,
-          textAlign: wide ? TextAlign.start : TextAlign.center,
+          textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -208,7 +242,7 @@ class _EraCompleteScreenState extends State<EraCompleteScreen> {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          alignment: wide ? WrapAlignment.start : WrapAlignment.center,
+          alignment: WrapAlignment.center,
           children: [
             if (hasCompleteData) ...[
               _Stat(
@@ -306,6 +340,97 @@ class _Stat extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The hero's win pose, standing on its feet (the picture is a padded canvas with
+/// the feet at the bottom middle) with warm light behind it. It rises and settles
+/// slowly, unless the phone removes animations.
+class _WinHero extends StatelessWidget {
+  final String heroId;
+  final double height;
+  const _WinHero({required this.heroId, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    final glow = height * 1.15;
+    return SizedBox(
+      key: EraCompleteScreen.heroKey,
+      width: height * 0.8,
+      height: height,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // The warm light.
+          Positioned.fill(
+            child: OverflowBox(
+              alignment: Alignment.bottomCenter,
+              minWidth: 0,
+              minHeight: 0,
+              maxWidth: double.infinity,
+              maxHeight: double.infinity,
+              child: Container(
+                width: glow,
+                height: glow,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.accent.withValues(alpha: 0.4),
+                      AppColors.accent.withValues(alpha: 0),
+                    ],
+                    stops: const [0, 0.65],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: OverflowBox(
+              alignment: Alignment.bottomCenter,
+              minWidth: 0,
+              minHeight: 0,
+              maxWidth: double.infinity,
+              maxHeight: height,
+              child: Bob(
+                height: 4,
+                child: Image.asset(
+                  'assets/characters/${heroId}_win.png',
+                  height: height,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomCenter,
+                  filterQuality: FilterQuality.none,
+                  errorBuilder: (_, __, ___) => SizedBox(height: height),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The boss the student beat, lying defeated.
+class _DefeatedBoss extends StatelessWidget {
+  final String bossName;
+  final double height;
+  const _DefeatedBoss({required this.bossName, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.9,
+      child: Image.asset(
+        'assets/bosses/${bossName}_defeated.png',
+        key: EraCompleteScreen.defeatedBossKey,
+        height: height,
+        fit: BoxFit.contain,
+        alignment: Alignment.bottomCenter,
+        filterQuality: FilterQuality.none,
+        errorBuilder: (_, __, ___) => SizedBox(height: height),
       ),
     );
   }

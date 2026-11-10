@@ -55,8 +55,7 @@ class _FakeProgress extends StateNotifier<ProgressState>
     // One completed era and one in progress, so the star and the "n/total
     // levels" line are laid out too, not just the plain cards.
     if (eraId == 'pre-colonial') {
-      return EraProgress(
-          eraId: eraId, bossDefeated: true, levelsCompleted: 10);
+      return EraProgress(eraId: eraId, bossDefeated: true, levelsCompleted: 10);
     }
     if (eraId == 'spanish') {
       return EraProgress(eraId: eraId, levelsCompleted: 3);
@@ -117,7 +116,8 @@ void main() {
     expect(gear.hitTestable(), findsOneWidget);
   });
 
-  testWidgets('asks the server for the score again when it opens', (tester) async {
+  testWidgets('asks the server for the score again when it opens',
+      (tester) async {
     _FakeAuth.refreshes = 0;
     await _pump(tester, const Size(800, 360), unlockAll: false);
     expect(_FakeAuth.refreshes, 1);
@@ -135,22 +135,38 @@ void main() {
   });
 
   for (final entry in sizes.entries) {
-    testWidgets('all six eras are on screen and tappable at ${entry.key}',
+    testWidgets(
+        'all six eras can be reached and tapped one by one at ${entry.key}',
         (tester) async {
       await _pump(tester, entry.value, unlockAll: true);
 
-      expect(tester.takeException(), isNull,
-          reason: 'a layout overflow was reported at ${entry.key}');
       final screen = Offset.zero & entry.value;
-      for (final era in allEras) {
-        final name = find.text(era.name);
-        expect(name, findsOneWidget, reason: '${era.name} is missing');
-        expect(screen.contains(tester.getRect(name).center), isTrue,
-            reason: '${era.name} is drawn off screen');
-        expect(name.hitTestable(), findsOneWidget,
-            reason: '${era.name} is not tappable: it sits outside its '
-                'parent (behind the bottom bar), so touches never reach it');
+      // It opens on the era in progress; go back to the first.
+      while (tester.any(find.byKey(EraSelectionScreen.prevKey))) {
+        await tester.tap(find.byKey(EraSelectionScreen.prevKey));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 400));
       }
+      for (var i = 0; i < allEras.length; i++) {
+        final era = allEras[i];
+        expect(tester.takeException(), isNull,
+            reason: 'a layout overflow was reported at ${entry.key}');
+        final card = find.byKey(EraSelectionScreen.cardKey(era.id));
+        expect(card, findsOneWidget, reason: '${era.name} is missing');
+        expect(find.text(era.name), findsWidgets,
+            reason: '${era.name} shows its full name');
+        expect(screen.contains(tester.getRect(card).center), isTrue,
+            reason: '${era.name} is drawn off screen');
+        expect(card.hitTestable(), findsOneWidget,
+            reason: '${era.name} is not tappable');
+        if (i < allEras.length - 1) {
+          await tester.tap(find.byKey(EraSelectionScreen.nextKey));
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 400));
+        }
+      }
+      expect(find.byKey(EraSelectionScreen.nextKey), findsNothing,
+          reason: 'the sixth is the last');
     });
 
     testWidgets('the normal three-era view still fits at ${entry.key}',
@@ -162,14 +178,22 @@ void main() {
       final screen = Offset.zero & entry.value;
       final grade5 = allEras.where((e) => e.grade == 5);
       expect(grade5.length, 3);
+      // The first is finished and the second is not open in this fake, so it stands
+      // on the first, with the second peeking in.
       for (final era in grade5) {
-        final name = find.text(era.name);
-        expect(name, findsOneWidget);
-        expect(screen.contains(tester.getRect(name).center), isTrue);
-        expect(name.hitTestable(), findsOneWidget);
+        final card = find.byKey(EraSelectionScreen.cardKey(era.id));
+        // The first is in front; the one after it peeks in; the third is out of sight.
+        if (era == grade5.last) {
+          expect(card, findsNothing);
+          continue;
+        }
+        expect(card, findsOneWidget);
+        expect(screen.contains(tester.getRect(card).center), isTrue);
+        expect(card.hitTestable(), findsOneWidget);
       }
       // Grade 6 eras stay hidden when the switch is off.
       for (final era in allEras.where((e) => e.grade == 6)) {
+        expect(find.byKey(EraSelectionScreen.cardKey(era.id)), findsNothing);
         expect(find.text(era.name), findsNothing);
       }
     });

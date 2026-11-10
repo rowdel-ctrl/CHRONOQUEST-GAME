@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import '../../widgets/menu_chip.dart';
 import '../../widgets/pixel_icon.dart';
 import '../../widgets/qr_scan_panel.dart';
 import '../../widgets/update_card.dart';
+import '../splash/splash_screen.dart';
 import 'auth_widgets.dart';
 import 'forgot_password_screen.dart';
 
@@ -388,8 +390,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: size.width,
                           onChoose: _choose,
                           onGuest: _playAsGuest,
-                          connection:
-                              widget.connection ?? ServerClock.instance.reachable,
+                          connection: widget.connection ??
+                              ServerClock.instance.reachable,
                           checkConnection: widget.checkConnection ??
                               ServerClock.instance.syncIfNeeded,
                         )
@@ -877,38 +879,6 @@ class _ChoiceViewState extends State<_ChoiceView> {
   Widget build(BuildContext context) {
     final width = widget.width;
     final row = width >= 560;
-    final title = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            'CHRONOQUEST',
-            style: GoogleFonts.poppins(
-              fontSize: 34,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.4,
-              color: AppColors.accent,
-              shadows: const [
-                Shadow(color: AppColors.primaryDark, offset: Offset(0, 4))
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Bob(
-          child: Image.asset(
-            'assets/characters/luna_walk_1.png',
-            width: row ? 132 : 84,
-            height: row ? 132 : 84,
-            fit: BoxFit.contain,
-            alignment: Alignment.bottomCenter,
-            filterQuality: FilterQuality.medium,
-            errorBuilder: (_, __, ___) => const SizedBox(width: 84, height: 84),
-          ),
-        ),
-      ],
-    );
     final choices = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -934,32 +904,46 @@ class _ChoiceViewState extends State<_ChoiceView> {
     );
     return Stack(
       children: [
-        // The light comes from behind the hero, wherever the hero is.
+        // The light comes from behind the heroes, wherever they are.
         const Positioned.fill(
           child: LivingBackdrop(
             key: ChoiceKeys.backdrop,
           ),
         ),
-        Center(
-          child: SingleChildScrollView(
-            // Room at the foot for the "Alam mo ba?" line.
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 72),
-            child: row
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(child: title),
-                      const SizedBox(width: 36),
-                      SizedBox(width: 330, child: choices),
-                    ],
-                  )
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [title, const SizedBox(height: 20), choices],
-                  ),
+        if (row) ...[
+          // Wide: the name and both heroes on the left, standing on the deck of the
+          // backdrop; the three buttons on the right, as they have always been.
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: math.max(0, width - _choicesWidth - _choicesGap),
+            child: const _TitleAndHeroes(),
           ),
-        ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SingleChildScrollView(
+              // Room at the foot for the "Alam mo ba?" line.
+              padding: const EdgeInsets.fromLTRB(0, 24, _choicesGap, 72),
+              child: SizedBox(width: _choicesWidth, child: choices),
+            ),
+          ),
+        ] else
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 72),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const _TitleBlock(centered: true),
+                  const SizedBox(height: 8),
+                  const _HeroPair(height: 112, shadow: true),
+                  const SizedBox(height: 16),
+                  choices,
+                ],
+              ),
+            ),
+          ),
         Positioned(
           top: 8,
           right: 8,
@@ -977,12 +961,219 @@ class _ChoiceViewState extends State<_ChoiceView> {
       ],
     );
   }
+
+  static const double _choicesWidth = 330;
+  static const double _choicesGap = 36;
+}
+
+/// CHRONOQUEST with the line from the splash screen under it.
+class _TitleBlock extends StatelessWidget {
+  final bool centered;
+  const _TitleBlock({required this.centered});
+
+  @override
+  Widget build(BuildContext context) {
+    final align =
+        centered ? CrossAxisAlignment.center : CrossAxisAlignment.start;
+    final edge = centered ? Alignment.center : Alignment.topLeft;
+    // Each line scales down on its own, so the small line stays readable when the
+    // name has to shrink to fit a narrow space.
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: align,
+      children: [
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: edge,
+          child: Text(
+            SplashScreen.name,
+            style: GoogleFonts.poppins(
+              fontSize: 38,
+              height: 1.1,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.4,
+              color: AppColors.accent,
+              shadows: const [
+                Shadow(color: AppColors.primaryDark, offset: Offset(0, 4))
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: edge,
+          child: Text(
+            SplashScreen.tagline,
+            style: GoogleFonts.poppins(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 2.6,
+              color: const Color(0xFFE9D9B0),
+              shadows: const [
+                Shadow(color: AppColors.primaryDark, offset: Offset(0, 2))
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The left half of the wide first screen: the name at the top and Juan and Maria
+/// standing close together on the deck of the backdrop, a little onto the planks.
+class _TitleAndHeroes extends StatelessWidget {
+  const _TitleAndHeroes();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, box) {
+      final w = box.maxWidth, h = box.maxHeight;
+      final left = (w * 0.09).clamp(16.0, 34.0);
+      final top = (h * 0.1).clamp(24.0, 34.0);
+      // The backdrop is drawn on a grid 144 high (never narrower than 200 wide) with
+      // a deck 29 of those units tall at the foot of the screen.
+      final screenW = MediaQuery.sizeOf(context).width;
+      final s = math.min(h / 144, screenW / 200);
+      final deckTop = h - 29 * s;
+      final feetY = deckTop + h * 2 / 340;
+      final titleBottom = top + 66;
+      // Both heroes side by side: about 1.4 times as wide as one is tall.
+      final pairRatio =
+          (_idleArt['boy']!.w + _idleArt['girl']!.w) / _idleArt['boy']!.h +
+              0.03;
+      final heroH = math.max(
+        60.0,
+        math.min(
+          math.min(h * 0.465, feetY - titleBottom - 6),
+          (w - 24) / pairRatio,
+        ),
+      );
+      return Stack(
+        children: [
+          Positioned(
+            left: left,
+            top: top,
+            width: math.max(0, w - left - 12),
+            child: const _TitleBlock(centered: false),
+          ),
+          Positioned(
+            left: 0,
+            width: w,
+            top: feetY - heroH,
+            height: heroH,
+            child: Center(child: _HeroPair(height: heroH)),
+          ),
+        ],
+      );
+    });
+  }
+}
+
+typedef _IdleBox = ({
+  double cw,
+  double ch,
+  double x,
+  double y,
+  double w,
+  double h
+});
+
+/// Where the standing figure is inside each hero's `_idle.png` canvas, in pixels.
+/// The canvases are large and padded (and not the same size), so each figure is
+/// cut to its own box and drawn at one shared scale, feet on the bottom edge.
+const Map<String, _IdleBox> _idleArt = {
+  'boy': (cw: 460, ch: 309, x: 161, y: 12, w: 173, h: 297),
+  'girl': (cw: 634, ch: 303, x: 174, y: 7, w: 240, h: 296),
+};
+
+/// Juan and Maria, both facing right, close together, breathing as one. Each one is
+/// [height] tall from its feet to the top of its head.
+class _HeroPair extends StatelessWidget {
+  final double height;
+
+  /// A soft shadow under the feet, for when there is no deck to stand on.
+  final bool shadow;
+  const _HeroPair({required this.height, this.shadow = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final pair = Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _IdleHero(key: ChoiceKeys.juan, id: 'boy', height: height),
+        SizedBox(width: height * 0.025),
+        _IdleHero(key: ChoiceKeys.maria, id: 'girl', height: height),
+      ],
+    );
+    return ExcludeSemantics(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        clipBehavior: Clip.none,
+        children: [
+          if (shadow)
+            Positioned(
+              left: height * 0.1,
+              right: height * 0.1,
+              bottom: -height * 0.03,
+              height: height * 0.09,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.35),
+                  borderRadius: BorderRadius.circular(height),
+                ),
+              ),
+            ),
+          Bob(child: pair),
+        ],
+      ),
+    );
+  }
+}
+
+/// One hero's standing picture, cut to the figure and [height] tall.
+class _IdleHero extends StatelessWidget {
+  final String id;
+  final double height;
+  const _IdleHero({super.key, required this.id, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    final a = _idleArt[id]!;
+    final k = height / a.h;
+    return SizedBox(
+      width: a.w * k,
+      height: height,
+      child: OverflowBox(
+        alignment: Alignment.topLeft,
+        minWidth: 0,
+        minHeight: 0,
+        maxWidth: a.cw * k,
+        maxHeight: a.ch * k,
+        child: Transform.translate(
+          offset: Offset(-a.x * k, -a.y * k),
+          child: Image.asset(
+            'assets/characters/${id}_idle.png',
+            width: a.cw * k,
+            height: a.ch * k,
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.none,
+            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// Keys the tests look the first screen's extras up by.
 class ChoiceKeys {
   static const backdrop = ValueKey('choice_backdrop');
   static const fact = ValueKey('choice_fact');
+  static const juan = ValueKey('choice_hero_juan');
+  static const maria = ValueKey('choice_hero_maria');
 }
 
 /// The third choice, for demos: a slimmer wooden button, so it is easy to find

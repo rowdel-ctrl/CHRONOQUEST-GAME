@@ -10,7 +10,6 @@ import '../../providers/badge_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/progress_provider.dart';
 import '../../providers/unlock_all_provider.dart';
-import '../../services/storage_service.dart';
 import '../../widgets/living_backdrop.dart';
 import '../../widgets/menu_chip.dart';
 import '../../widgets/menu_top_bar.dart';
@@ -19,9 +18,10 @@ import '../home/character_selection_screen.dart';
 import '../home/era_selection_screen.dart';
 import 'codex_screen.dart';
 
-/// The student's own page: their hero in its own light, their name, the two
-/// totals (points and coins) as round chips, a number and a row of pips for each
-/// of the six eras, the power-ups they carry, and two tiles: the Kodeks and the
+/// The student's own page: their hero standing idle in a warm light, their name,
+/// the two totals (points and coins) as round chips, a number, a thin bar and
+/// "n/10" for each of the six eras (a star when finished, a lock when not yet
+/// open), the power-ups they carry, and three tiles: the Kodeks, the badges and the
 /// shop. The era titles are on the era screen; here an era is its number.
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -37,7 +37,8 @@ class ProfileScreen extends ConsumerStatefulWidget {
   static const Key scoreKey = Key('profile_score');
   static const Key coinsKey = Key('profile_coins');
   static Key eraKey(String eraId) => ValueKey('profile_era_$eraId');
-  static Key pipKey(String eraId, int i) => ValueKey('profile_pip_${eraId}_$i');
+  static Key barKey(String eraId) => ValueKey('profile_bar_$eraId');
+  static Key countKey(String eraId) => ValueKey('profile_count_$eraId');
   static Key powerKey(String name) => ValueKey('profile_power_$name');
 
   @override
@@ -171,15 +172,7 @@ class _Identity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(
-          'assets/characters/${characterId}_walk_1.png',
-          key: ProfileScreen.heroKey,
-          height: compact ? 96 : 120,
-          fit: BoxFit.contain,
-          alignment: Alignment.bottomCenter,
-          filterQuality: FilterQuality.medium,
-          errorBuilder: (_, __, ___) => SizedBox(height: compact ? 96 : 120),
-        ),
+        _IdleHero(characterId: characterId, height: compact ? 110 : 140),
         const SizedBox(height: 8),
         Text(
           name,
@@ -364,7 +357,7 @@ class _Journey extends ConsumerWidget {
   }
 }
 
-/// One era: its number in its colour, a pip for every level, and a star when
+/// One era: its number in its colour, a thin bar and "n/10", and a star when
 /// finished or a lock when not yet open.
 class _EraRow extends StatelessWidget {
   final EraData era;
@@ -418,28 +411,46 @@ class _EraRow extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Row(
-                  children: [
-                    for (var i = 0; i < levels; i++) ...[
-                      if (i > 0) const SizedBox(width: 2),
-                      Expanded(
-                        child: Container(
-                          key: ProfileScreen.pipKey(era.id, i),
-                          height: 7,
-                          decoration: BoxDecoration(
-                            color: i < filled
-                                ? AppColors.success
-                                : const Color(0xFF3A2E52),
-                            border: Border.all(
-                                color: AppColors.primaryDark, width: 1),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
+                child: Container(
+                  key: ProfileScreen.barKey(era.id),
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF3A2E52),
+                    borderRadius: BorderRadius.circular(5),
+                    border:
+                        Border.all(color: const Color(0xFF1B1230), width: 2),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: levels == 0 ? 0 : filled / levels,
+                    heightFactor: 1,
+                    child: ColoredBox(
+                      color: completed
+                          ? AppColors.accent
+                          : const Color(0xFFE0A52B),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 6),
+              SizedBox(
+                width: 44,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    // A shut era that was never started has nothing to count yet.
+                    locked && filled == 0 ? '' : '$filled/$levels',
+                    key: ProfileScreen.countKey(era.id),
+                    style: GoogleFonts.poppins(
+                      fontSize: 11,
+                      color: const Color(0xFFC9BEDB),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
               SizedBox(
                 width: 16,
                 child: completed
@@ -488,12 +499,12 @@ class _PowerUps extends ConsumerWidget {
   }
 }
 
-/// A wooden tile with an icon on the left and a number or nothing on the right. A
+/// A wooden tile with an icon on the left and a label with a line under it (or no line). A
 /// [tag] is a small red label on its corner ("BAGO 3").
 class _Tile extends StatelessWidget {
   final Widget icon;
   final String label;
-  final String? trailing;
+  final String? subtitle;
   final String? tag;
   final Key? tagKey;
   final String semantics;
@@ -505,7 +516,7 @@ class _Tile extends StatelessWidget {
     required this.label,
     required this.semantics,
     required this.onTap,
-    this.trailing,
+    this.subtitle,
     this.tag,
     this.tagKey,
   });
@@ -541,26 +552,33 @@ class _Tile extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        label,
-                        maxLines: 1,
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.accent,
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label,
+                            maxLines: 1,
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.accent,
+                            ),
+                          ),
+                          if (subtitle != null)
+                            Text(
+                              subtitle!,
+                              maxLines: 1,
+                              style: GoogleFonts.poppins(
+                                fontSize: 11.5,
+                                height: 1.3,
+                                color: Colors.white,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                   ),
-                  if (trailing != null)
-                    Text(
-                      trailing!,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
                   const SizedBox(width: 4),
                   const PixelIcon(PixelGlyph.chevron,
                       size: 16, color: AppColors.accent),
@@ -612,7 +630,7 @@ class _BadgesTile extends ConsumerWidget {
       icon:
           const PixelIcon(PixelGlyph.trophy, size: 26, color: AppColors.accent),
       label: 'MGA BADGE',
-      trailing: '${badges.earnedCount}/${allBadgeSteps.length}',
+      subtitle: '${badges.earnedCount} ng ${allBadgeSteps.length} badge',
       tag: badges.unseenCount > 0 ? 'BAGO ${badges.unseenCount}' : null,
       tagKey: ProfileScreen.badgesNewKey,
       semantics: badges.unseenCount > 0
@@ -651,10 +669,79 @@ class _Kodeks extends StatelessWidget {
       icon: Image.asset('assets/collectibles/artifact_1.png',
           width: 26, height: 26, filterQuality: FilterQuality.none),
       label: 'KODEKS',
-      trailing: '${StorageService.getCodexTotal()}',
+      // Of the 60 artifacts (ten in each era): the pictures claimed so far.
+      subtitle: '${codexClaimedTotal()} ng 60 artifact',
       semantics: 'Buksan ang Codex',
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(builder: (_) => const CodexScreen()),
+      ),
+    );
+  }
+}
+
+/// The hero standing idle (the picture is a padded canvas with the feet at the
+/// bottom middle) in a warm light. It breathes slowly, unless the phone removes
+/// animations.
+class _IdleHero extends StatelessWidget {
+  final String characterId;
+  final double height;
+  const _IdleHero({required this.characterId, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    final glow = height * 1.3;
+    return SizedBox(
+      height: height,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.bottomCenter,
+        children: [
+          // The warm light.
+          Positioned.fill(
+            child: OverflowBox(
+              alignment: Alignment.bottomCenter,
+              minWidth: 0,
+              minHeight: 0,
+              maxWidth: double.infinity,
+              maxHeight: double.infinity,
+              child: Container(
+                width: glow,
+                height: glow,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.accent.withValues(alpha: 0.4),
+                      AppColors.accent.withValues(alpha: 0),
+                    ],
+                    stops: const [0, 0.66],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: OverflowBox(
+              alignment: Alignment.bottomCenter,
+              minWidth: 0,
+              minHeight: 0,
+              maxWidth: double.infinity,
+              maxHeight: height,
+              child: Bob(
+                height: 4,
+                child: Image.asset(
+                  'assets/characters/${characterId}_idle.png',
+                  key: ProfileScreen.heroKey,
+                  height: height,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomCenter,
+                  filterQuality: FilterQuality.none,
+                  errorBuilder: (_, __, ___) => SizedBox(height: height),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
-// The era cards: a number, an enemy, the name and a pip per level. The open card
-// that is next to play stands forward and glows; a finished one has a star; a
-// locked one is grey with a lock and does nothing when tapped.
+// The era carousel: one big card at a time (number, boss, full name, a progress
+// bar, a line and a gold button) with the neighbours peeking in on each side.
+// Arrows, a tap on a neighbour and a swipe move it; the dots show every era. A
+// finished era has a star; a locked one a lock and a line saying what to finish.
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/models/era_progress.dart';
 import 'package:chronoquest/models/hearts_state.dart';
@@ -18,7 +19,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
-  _FakeGame() : super(GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
+  _FakeGame()
+      : super(
+            GameState(hearts: const HeartsState(count: 3, regenStartMs: null)));
   @override
   Duration? get heartCountdown => null;
   @override
@@ -28,7 +31,12 @@ class _FakeGame extends StateNotifier<GameState> implements GameNotifier {
 class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
   _FakeAuth()
       : super(AuthState(
-          student: Student.fromJson({'id': 's', 'name': 'Rodel', 'gradeLevel': 'grade5', 'score': 1240}),
+          student: Student.fromJson({
+            'id': 's',
+            'name': 'Rodel',
+            'gradeLevel': 'grade5',
+            'score': 1240
+          }),
           isLoggedIn: true,
         ));
   @override
@@ -38,15 +46,18 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
 }
 
 /// [done] is how many levels of each era are finished; [bossDown] the finished eras.
-class _FakeProgress extends StateNotifier<ProgressState> implements ProgressNotifier {
+class _FakeProgress extends StateNotifier<ProgressState>
+    implements ProgressNotifier {
   _FakeProgress(this.done, this.bossDown) : super(const ProgressState());
   final Map<String, int> done;
   final Set<String> bossDown;
   @override
   Future<void> loadProgress() async {}
   @override
-  EraProgress getEraProgress(String eraId) =>
-      EraProgress(eraId: eraId, levelsCompleted: done[eraId] ?? 0, bossDefeated: bossDown.contains(eraId));
+  EraProgress getEraProgress(String eraId) => EraProgress(
+      eraId: eraId,
+      levelsCompleted: done[eraId] ?? 0,
+      bossDefeated: bossDown.contains(eraId));
   @override
   bool isEraUnlocked(String eraId, List<String> visibleEraIds) {
     final i = visibleEraIds.indexOf(eraId);
@@ -115,105 +126,206 @@ Future<void> _open(
 
 final _grade5 = allEras.where((e) => e.grade == 5).toList();
 
-/// Where each card's number sits: the card itself does not move, its picture does.
-List<double> _numberTops(WidgetTester tester) => [
-      for (final e in _grade5)
-        tester
-            .getTopLeft(find.descendant(
-              of: find.byKey(EraSelectionScreen.cardKey(e.id)),
-              matching: find.text('${eraNumberFor(e.id)}'),
-            ))
-            .dy,
-    ];
-
 String _assetOf(Image i) => (i.image as AssetImage).assetName;
 
 Iterable<String> _assetsIn(WidgetTester tester, Finder within) => tester
-    .widgetList<Image>(find.descendant(of: within, matching: find.byType(Image)))
+    .widgetList<Image>(
+        find.descendant(of: within, matching: find.byType(Image)))
     .map(_assetOf);
+
+Finder _card(int i) => find.byKey(EraSelectionScreen.cardKey(_grade5[i].id));
+
+/// The width of a card: the big one is wider than a neighbour.
+double _width(WidgetTester tester, int i) => tester.getSize(_card(i)).width;
+
+Future<void> _next(WidgetTester tester) async {
+  await tester.tap(find.byKey(EraSelectionScreen.nextKey));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 400));
+}
+
+Future<void> _prev(WidgetTester tester) async {
+  await tester.tap(find.byKey(EraSelectionScreen.prevKey));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 400));
+}
 
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
-  testWidgets('three cards, one per era of the grade, each with its number, name and enemy',
+  group('the big card', () {
+    testWidgets(
+        'starts on the era that is next to play, with its number, boss, full name and a gold MAGLARO',
+        (tester) async {
+      await _open(tester);
+      final first = _grade5[0];
+
+      expect(_width(tester, 0), greaterThan(_width(tester, 1)),
+          reason: 'the first era is in front');
+      expect(find.byKey(EraSelectionScreen.prevKey), findsNothing,
+          reason: 'nothing before the first');
+      final card = _card(0);
+      expect(
+          find.descendant(
+              of: card, matching: find.text('${eraNumberFor(first.id)}')),
+          findsOneWidget);
+      expect(find.descendant(of: card, matching: find.text(first.name)),
+          findsOneWidget,
+          reason: 'the full name');
+      expect(_assetsIn(tester, card),
+          contains('assets/bosses/${first.bossName}_idle.png'));
+      expect(find.text('MAGLARO'), findsOneWidget);
+      expect(find.text('BALIKAN'), findsNothing);
+    });
+
+    testWidgets(
+        'a started era says which level is next and how many are done, with a bar',
+        (tester) async {
+      await _open(tester, done: {'pre-colonial': 4});
+      final levels = _grade5[0].levels.length;
+
+      expect(
+          find.text('Level 5 na ang susunod · 4 ng $levels'), findsOneWidget);
+      final bar = find.byKey(EraSelectionScreen.progressKey(_grade5[0].id));
+      expect(bar, findsOneWidget);
+      final fill = tester.widget<FractionallySizedBox>(find.descendant(
+          of: bar, matching: find.byType(FractionallySizedBox)));
+      expect(fill.widthFactor, closeTo(4 / levels, 0.001));
+    });
+
+    testWidgets('a finished era has a star, says Tapos na and offers BALIKAN',
+        (tester) async {
+      await _open(tester,
+          done: {'pre-colonial': 10}, bossDown: {'pre-colonial'});
+      // The next era is the one in front; go back to the finished one.
+      await _prev(tester);
+      final levels = _grade5[0].levels.length;
+
+      expect(_assetsIn(tester, _card(0)), contains('assets/ui/star_full.png'));
+      expect(find.text('Tapos na · $levels ng $levels level'), findsOneWidget);
+      expect(find.text('BALIKAN'), findsOneWidget);
+      expect(find.text('MAGLARO'), findsNothing);
+    });
+
+    testWidgets(
+        'a locked era shows a lock, a dark boss and what to finish first',
+        (tester) async {
+      await _open(tester);
+      await _next(tester);
+
+      expect(_assetsIn(tester, _card(1)), contains('assets/ui/lock_icon.png'));
+      expect(_assetsIn(tester, _card(1)),
+          contains('assets/bosses/${_grade5[1].bossName}_idle.png'));
+      expect(
+          find.descendant(of: _card(1), matching: find.byType(ColorFiltered)),
+          findsWidgets,
+          reason: 'the boss is a dark shape');
+      final note =
+          tester.widget<Text>(find.byKey(EraSelectionScreen.lockedNoteKey));
+      expect(note.textSpan!.toPlainText(),
+          'Tapusin muna ang ${_grade5[0].name} para mabuksan ito.');
+      expect(find.text('MAGLARO'), findsNothing);
+      expect(find.byKey(EraSelectionScreen.progressKey(_grade5[1].id)),
+          findsNothing);
+    });
+  });
+
+  group('moving between the cards', () {
+    testWidgets('the arrows step one card at a time and stop at the ends',
+        (tester) async {
+      await _open(tester);
+      expect(find.byKey(EraSelectionScreen.prevKey), findsNothing);
+
+      await _next(tester);
+      expect(_width(tester, 1), greaterThan(_width(tester, 0)));
+      expect(find.byKey(EraSelectionScreen.prevKey), findsOneWidget);
+
+      await _next(tester);
+      expect(_width(tester, 2), greaterThan(_width(tester, 1)));
+      expect(find.byKey(EraSelectionScreen.nextKey), findsNothing,
+          reason: 'nothing after the last');
+
+      await _prev(tester);
+      expect(_width(tester, 1), greaterThan(_width(tester, 2)));
+    });
+
+    testWidgets('a tap on a neighbour brings it to the front', (tester) async {
+      await _open(tester);
+      await tester.tap(_card(1));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(_width(tester, 1), greaterThan(_width(tester, 0)));
+    });
+
+    testWidgets('a swipe to the left goes on, a swipe to the right goes back',
+        (tester) async {
+      await _open(tester);
+      await tester.fling(_card(0), const Offset(-300, 0), 1200);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(_width(tester, 1), greaterThan(_width(tester, 0)));
+
+      await tester.fling(_card(1), const Offset(300, 0), 1200);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(_width(tester, 0), greaterThan(_width(tester, 1)));
+    });
+
+    testWidgets(
+        'the dots show every era and the one in front is a long gold pill',
+        (tester) async {
+      await _open(tester);
+      double dotWidth(int i) =>
+          tester.getSize(find.byKey(EraSelectionScreen.dotKey(i))).width;
+
+      expect(find.byKey(EraSelectionScreen.dotKey(_grade5.length - 1)),
+          findsOneWidget);
+      expect(
+          find.byKey(EraSelectionScreen.dotKey(_grade5.length)), findsNothing);
+      expect(dotWidth(0), greaterThan(dotWidth(1)));
+      await _next(tester);
+      expect(dotWidth(1), greaterThan(dotWidth(0)));
+      final pill = tester
+          .widget<AnimatedContainer>(find.byKey(EraSelectionScreen.dotKey(1)));
+      expect((pill.decoration as BoxDecoration).color, AppColors.accent);
+    });
+
+    testWidgets('it starts on the era in progress, not the first',
+        (tester) async {
+      await _open(tester,
+          done: {'pre-colonial': 10, 'spanish': 3}, bossDown: {'pre-colonial'});
+      expect(_width(tester, 1), greaterThan(_width(tester, 0)));
+      expect(_width(tester, 1), greaterThan(_width(tester, 2)));
+      expect(
+          find.text(
+              'Level 4 na ang susunod · 3 ng ${_grade5[1].levels.length}'),
+          findsOneWidget);
+    });
+  });
+
+  testWidgets('the screen has few words: the era names, one title, a score',
       (tester) async {
-    await _open(tester);
-
-    for (var i = 0; i < _grade5.length; i++) {
-      final era = _grade5[i];
-      final card = find.byKey(EraSelectionScreen.cardKey(era.id));
-      expect(card, findsOneWidget, reason: era.id);
-      expect(find.descendant(of: card, matching: find.text('${eraNumberFor(era.id)}')), findsOneWidget);
-      expect(find.descendant(of: card, matching: find.text(era.name)), findsOneWidget);
-      expect(_assetsIn(tester, card), contains(eraSprite(era.id)), reason: '${era.id} shows an enemy');
-    }
-  });
-
-  testWidgets('each card has a pip for every level, filled for the levels done', (tester) async {
-    await _open(tester, done: {'pre-colonial': 3});
-    final first = _grade5.first;
-
-    for (final era in _grade5) {
-      for (var i = 0; i < era.levels.length; i++) {
-        expect(find.byKey(EraSelectionScreen.pipKey(era.id, i)), findsOneWidget, reason: '${era.id} pip $i');
-      }
-      expect(find.byKey(EraSelectionScreen.pipKey(era.id, era.levels.length)), findsNothing);
-    }
-    Color? colorOf(String id, int i) =>
-        (tester.widget<Container>(find.byKey(EraSelectionScreen.pipKey(id, i))).decoration as BoxDecoration).color;
-    expect(colorOf(first.id, 2), AppColors.success, reason: 'the third level is done');
-    expect(colorOf(first.id, 3), isNot(AppColors.success), reason: 'the fourth is not');
-  });
-
-  testWidgets('the screen has few words: the era names, one title, a number', (tester) async {
     await _open(tester);
 
     expect(find.text('PANAHON'), findsOneWidget);
     expect(find.text('PILIIN ANG PANAHON'), findsNothing);
-    for (final era in _grade5) {
-      expect(find.text(era.subtitle), findsNothing, reason: 'no English subtitle');
-    }
-    expect(find.textContaining('levels'), findsNothing);
-    expect(find.text('Rodel'), findsNothing, reason: 'a face and a score, not a name line');
+    expect(find.text(_grade5[0].subtitle), findsNothing,
+        reason: 'no English subtitle');
+    expect(find.text('Rodel'), findsNothing,
+        reason: 'a face and a score, not a name line');
     expect(find.text('1240'), findsOneWidget);
     expect(find.textContaining('pts'), findsNothing);
+    expect(find.text('TINDAHAN'), findsNothing,
+        reason: 'the shop is only the small cart chip here');
+    expect(find.byTooltip('Tindahan'), findsOneWidget);
   });
 
-  group('which card is open', () {
-    testWidgets('a new student: the first is open and stands forward; the others are locked',
-        (tester) async {
-      await _open(tester);
-      final top = _numberTops(tester);
-
-      expect(top[0], top[1] - 8, reason: 'the open card stands 8 forward');
-      expect(top[1], top[2]);
-
-      expect(_assetsIn(tester, find.byKey(EraSelectionScreen.cardKey(_grade5[0].id))),
-          isNot(contains('assets/ui/lock_icon.png')));
-      for (final e in _grade5.skip(1)) {
-        expect(_assetsIn(tester, find.byKey(EraSelectionScreen.cardKey(e.id))), contains('assets/ui/lock_icon.png'),
-            reason: e.id);
-      }
-    });
-
-    testWidgets('a finished era has a star and the next one is open', (tester) async {
-      await _open(tester, done: {'pre-colonial': 10}, bossDown: {'pre-colonial'});
-
-      expect(_assetsIn(tester, find.byKey(EraSelectionScreen.cardKey(_grade5[0].id))),
-          contains('assets/ui/star_full.png'));
-      final top = _numberTops(tester);
-      expect(top[1], top[0] - 8, reason: 'now the second era stands forward');
-      expect(_assetsIn(tester, find.byKey(EraSelectionScreen.cardKey(_grade5[1].id))),
-          isNot(contains('assets/ui/lock_icon.png')));
-    });
-  });
-
-  group('tapping', () {
+  group('tapping the big card', () {
     testWidgets('an era not started goes to its history', (tester) async {
       final landed = <String>[];
       await _open(tester, landedOn: landed);
 
-      await tester.tap(find.byKey(EraSelectionScreen.cardKey(_grade5[0].id)));
+      await tester.tap(_card(0));
       await tester.pumpAndSettle();
       expect(landed, ['/background/${_grade5[0].id}']);
     });
@@ -222,7 +334,20 @@ void main() {
       final landed = <String>[];
       await _open(tester, done: {'pre-colonial': 4}, landedOn: landed);
 
-      await tester.tap(find.byKey(EraSelectionScreen.cardKey(_grade5[0].id)));
+      await tester.tap(_card(0));
+      await tester.pumpAndSettle();
+      expect(landed, ['/level-select/${_grade5[0].id}']);
+    });
+
+    testWidgets('a finished era goes to its levels (BALIKAN)', (tester) async {
+      final landed = <String>[];
+      await _open(tester,
+          done: {'pre-colonial': 10},
+          bossDown: {'pre-colonial'},
+          landedOn: landed);
+      await _prev(tester);
+
+      await tester.tap(find.byKey(EraSelectionScreen.playKey));
       await tester.pumpAndSettle();
       expect(landed, ['/level-select/${_grade5[0].id}']);
     });
@@ -230,15 +355,17 @@ void main() {
     testWidgets('a locked era does nothing', (tester) async {
       final landed = <String>[];
       await _open(tester, landedOn: landed);
+      await _next(tester);
 
-      await tester.tap(find.byKey(EraSelectionScreen.cardKey(_grade5[2].id)));
+      await tester.tap(_card(1));
       await tester.pump(const Duration(milliseconds: 300));
       expect(landed, isEmpty);
       expect(find.byType(EraSelectionScreen), findsOneWidget);
     });
   });
 
-  testWidgets('the open card breathes, and nothing moves when the phone removes animations',
+  testWidgets(
+      'the card next to play breathes, and nothing moves when the phone removes animations',
       (tester) async {
     await _open(tester, animations: true);
     expect(tester.hasRunningAnimations, isTrue);
@@ -248,17 +375,28 @@ void main() {
   });
 
   for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
-    testWidgets('fits ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
-      await _open(tester, size: size, animations: true, done: {'pre-colonial': 5});
+    testWidgets(
+        'fits ${size.width.toInt()}x${size.height.toInt()} on every card',
+        (tester) async {
+      await _open(tester,
+          size: size, animations: true, done: {'pre-colonial': 5});
       await tester.pump(const Duration(seconds: 1));
 
-      expect(tester.takeException(), isNull);
-      for (final era in _grade5) {
-        final card = find.byKey(EraSelectionScreen.cardKey(era.id));
-        final r = tester.getRect(card);
-        expect(r.right, lessThanOrEqualTo(size.width), reason: era.id);
-        expect(r.bottom, lessThanOrEqualTo(size.height), reason: era.id);
-        expect(card.hitTestable(), findsOneWidget, reason: era.id);
+      for (var i = 0; i < _grade5.length; i++) {
+        expect(tester.takeException(), isNull, reason: 'card $i');
+        final finder = _card(i);
+        final r = tester.getRect(finder);
+        expect(r.top, greaterThanOrEqualTo(0));
+        expect(r.bottom, lessThanOrEqualTo(size.height), reason: 'card $i');
+        expect(r.left, greaterThanOrEqualTo(0),
+            reason: 'the big card is all on screen');
+        expect(r.right, lessThanOrEqualTo(size.width));
+        expect(finder.hitTestable(), findsOneWidget);
+        if (i < _grade5.length - 1) {
+          await tester.tap(find.byKey(EraSelectionScreen.nextKey));
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 400));
+        }
       }
     });
   }

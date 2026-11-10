@@ -3,6 +3,7 @@
 import 'package:chronoquest/core/app_info.dart';
 import 'package:chronoquest/data/login_facts.dart';
 import 'package:chronoquest/providers/auth_provider.dart';
+import 'package:chronoquest/screens/splash/splash_screen.dart';
 import 'package:chronoquest/screens/auth/login_screen.dart';
 import 'package:chronoquest/widgets/connection_corner.dart';
 import 'package:chronoquest/widgets/fact_ticker.dart';
@@ -74,24 +75,89 @@ void main() {
       await tester.tap(find.byKey(LoginScreen.newKey));
       await tester.pump();
       expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
-      expect(find.byKey(ChoiceKeys.backdrop), findsNothing, reason: 'the questions stay as they are');
+      expect(find.byKey(ChoiceKeys.backdrop), findsNothing,
+          reason: 'the questions stay as they are');
       expect(find.byType(FactTicker), findsNothing);
     });
 
-    testWidgets('stands still when the phone removes animations', (tester) async {
+    testWidgets('stands still when the phone removes animations',
+        (tester) async {
       await _open(tester);
       expect(tester.hasRunningAnimations, isFalse);
     });
   });
 
+  group('the left side', () {
+    testWidgets('has the name, the tagline and both free heroes facing right',
+        (tester) async {
+      await _open(tester);
+
+      expect(find.text('CHRONOQUEST'), findsOneWidget);
+      expect(find.text(SplashScreen.tagline), findsOneWidget);
+      expect(find.byKey(ChoiceKeys.juan), findsOneWidget);
+      expect(find.byKey(ChoiceKeys.maria), findsOneWidget);
+      String? asset(Key k) {
+        final image = tester.widget<Image>(
+            find.descendant(of: find.byKey(k), matching: find.byType(Image)));
+        return (image.image as AssetImage).assetName;
+      }
+
+      expect(asset(ChoiceKeys.juan), 'assets/characters/boy_idle.png');
+      expect(asset(ChoiceKeys.maria), 'assets/characters/girl_idle.png');
+      expect(
+          find.byType(Transform).evaluate().where((e) {
+            final t = e.widget as Transform;
+            return t.transform.entry(0, 0) < 0;
+          }),
+          isEmpty,
+          reason: 'nobody is mirrored: both face right');
+      // Juan on the left, close to Maria.
+      final j = tester.getRect(find.byKey(ChoiceKeys.juan));
+      final m = tester.getRect(find.byKey(ChoiceKeys.maria));
+      expect(j.right, lessThanOrEqualTo(m.left));
+      expect(m.left - j.right, lessThan(12));
+      // Luna no longer walks here.
+      expect(
+          find.byWidgetPredicate((w) =>
+              w is Image &&
+              w.image is AssetImage &&
+              (w.image as AssetImage).assetName.contains('luna')),
+          findsNothing);
+    });
+
+    testWidgets('the heroes stand left of the buttons and keep the three words',
+        (tester) async {
+      await _open(tester);
+      final maria = tester.getRect(find.byKey(ChoiceKeys.maria));
+      expect(maria.right,
+          lessThan(tester.getRect(find.byKey(LoginScreen.newKey)).left));
+      expect(find.text('BAGO AKO'), findsOneWidget);
+      expect(find.text('BALIK NA AKO'), findsOneWidget);
+      expect(find.text('PLAY AS A GUEST'), findsOneWidget);
+    });
+
+    testWidgets(
+        'on a narrow phone the heroes sit between the name and the buttons',
+        (tester) async {
+      await _open(tester, size: const Size(400, 700));
+      final title = tester.getRect(find.text('CHRONOQUEST'));
+      final hero = tester.getRect(find.byKey(ChoiceKeys.juan));
+      final buttons = tester.getRect(find.byKey(LoginScreen.newKey));
+      expect(hero.top, greaterThanOrEqualTo(title.bottom));
+      expect(hero.bottom, lessThanOrEqualTo(buttons.top));
+    });
+  });
+
   group('the "Alam mo ba?" line', () {
-    testWidgets('is at the foot of the first screen with a real fact', (tester) async {
+    testWidgets('is at the foot of the first screen with a real fact',
+        (tester) async {
       await _open(tester);
 
       expect(find.byKey(ChoiceKeys.fact), findsOneWidget);
       expect(find.textContaining('Alam mo ba?'), findsOneWidget);
       expect(
-        loginFacts.where((f) => find.textContaining(f.text).evaluate().isNotEmpty),
+        loginFacts
+            .where((f) => find.textContaining(f.text).evaluate().isNotEmpty),
         hasLength(1),
       );
     });
@@ -103,7 +169,9 @@ void main() {
       expect(find.text('v$appVersion'), findsOneWidget);
     });
 
-    testWidgets('the connection icon says "Walang internet" only when it cannot connect', (tester) async {
+    testWidgets(
+        'the connection icon says "Walang internet" only when it cannot connect',
+        (tester) async {
       final status = ValueNotifier<bool?>(true);
       await _open(tester, connection: status);
       expect(find.byKey(ConnectionCorner.chipKey), findsOneWidget);
@@ -126,7 +194,9 @@ void main() {
       expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
     });
 
-    testWidgets('asks for the connection when it opens, then every 20 seconds, not after', (tester) async {
+    testWidgets(
+        'asks for the connection when it opens, then every 20 seconds, not after',
+        (tester) async {
       var asked = 0;
       await _open(tester, check: () => asked++);
       expect(asked, 1);
@@ -147,9 +217,13 @@ void main() {
   });
 
   for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
-    testWidgets('fits ${size.width.toInt()}x${size.height.toInt()} with nothing overlapping the buttons',
+    testWidgets(
+        'fits ${size.width.toInt()}x${size.height.toInt()} with nothing overlapping the buttons',
         (tester) async {
-      await _open(tester, size: size, animations: true, connection: ValueNotifier<bool?>(false));
+      await _open(tester,
+          size: size,
+          animations: true,
+          connection: ValueNotifier<bool?>(false));
       await tester.pump(const Duration(seconds: 1));
 
       expect(tester.takeException(), isNull);
@@ -158,7 +232,8 @@ void main() {
       expect(fact.top, greaterThanOrEqualTo(buttons.bottom),
           reason: 'the fact line sits under the second button');
       expect(fact.bottom, lessThanOrEqualTo(size.height));
-      expect(tester.getRect(find.byKey(ConnectionCorner.chipKey)).right, lessThanOrEqualTo(size.width));
+      expect(tester.getRect(find.byKey(ConnectionCorner.chipKey)).right,
+          lessThanOrEqualTo(size.width));
     });
   }
 }
