@@ -455,28 +455,33 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   /// Flat floor on both sides of the boss's stage where a rune or a minion may stand: base
   /// ground only (not the stage, its steps or the walls), away from the ends of each stretch.
-  List<({double x, double y})> floorSpots() {
+  List<({double x, double y})> floorSpots() => [for (final run in floorRuns()) ...run];
+
+  /// The same spots grouped by stretch of floor: one stretch is ground you can walk along from
+  /// end to end (a pool, a gap or the stage cuts the floor in two). A minion can only reach a
+  /// student on its own stretch.
+  List<List<({double x, double y})>> floorRuns() {
     final room = arena;
     final spot = room?.boss;
-    final out = <({double x, double y})>[];
     if (room == null || spot == null) {
       // The old open-ground fight: the floor in view.
       final left = game.cameraLeftEdgeX + 80;
-      for (var x = left; x <= left + game.size.x - 160; x += 24) {
-        out.add((x: x, y: game.groundY));
-      }
-      return out;
+      return [
+        [for (var x = left; x <= left + game.size.x - 160; x += 24) (x: x, y: game.groundY)]
+      ];
     }
+    final runs = <List<({double x, double y})>>[];
     final base = game.groundY;
     const margin = BossAttackConstants.runeEdgeMargin;
     for (final b in room.blocks) {
       if ((b.topY - base).abs() > 1) continue;
       if (b.startX < spot.x + 168 && b.startX + b.width > spot.x - 168) continue; // on or beside the stage
-      for (var x = b.startX + margin; x <= b.startX + b.width - margin; x += 24) {
-        out.add((x: x, y: b.topY));
-      }
+      final run = <({double x, double y})>[
+        for (var x = b.startX + margin; x <= b.startX + b.width - margin; x += 24) (x: x, y: b.topY)
+      ];
+      if (run.isNotEmpty) runs.add(run);
     }
-    return out;
+    return runs;
   }
 
   /// A fallen minion pays one Kaalaman charge back.
@@ -542,13 +547,18 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     _waveClear = 0;
     _minions.clear();
     final n = math.min(BossAttackConstants.waveMaxAlive, BossAttackConstants.waveSizes[phase - 1]);
-    var spots = floorSpots();
-    final bossSpot = arena?.boss;
-    if (bossSpot != null) {
-      // Minions walk on the floor: they start on the hero's side, so they can reach him.
-      final right = _heroCentre >= bossSpot.x;
-      final same = [for (final s in spots) if ((s.x >= bossSpot.x) == right) s];
-      if (same.isNotEmpty) spots = same;
+    // Minions walk on the floor and cannot cross a pool, a gap or the stage: they start on the
+    // stretch of floor nearest to the hero, so they can reach him (and he them).
+    final runs = floorRuns();
+    double gapTo(List<({double x, double y})> run) {
+      final lo = run.first.x, hi = run.last.x;
+      return _heroCentre < lo ? lo - _heroCentre : (_heroCentre > hi ? _heroCentre - hi : 0.0);
+    }
+    var spots = <({double x, double y})>[];
+    if (runs.isNotEmpty) {
+      final byDistance = runs.toList()..sort((a, b) => gapTo(a).compareTo(gapTo(b)));
+      // The nearest stretch that is long enough for the wave (else simply the nearest).
+      spots = byDistance.firstWhere((r) => r.length >= 6, orElse: () => byDistance.first);
     }
     final near = [
       for (final s in spots)
@@ -775,7 +785,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     final kind = a?.kind ?? _kind!;
     final p = game.player;
     final before = game.hearts;
-    p.takeHazardHit(knockbackDirection: -1);
+    p.takeHazardHit(knockbackDirection: _side); // away from the boss: left if he is on its left, right if on its right
     final at = _heroPoint(kind);
     game.world.add(BossBurstComponent(
         kind: _burstOf(kind), at: at, seed: _questions.asked * 977 + 13));

@@ -62,6 +62,7 @@ class _TestPlayer extends PlayerComponent {
   Vector2? lastTarget;
   VoidCallback? pending;
   int hazardHits = 0;
+  int? lastKnockback;
 
   @override
   void playCounter({required Vector2 target, required VoidCallback onImpact}) {
@@ -79,6 +80,7 @@ class _TestPlayer extends PlayerComponent {
   @override
   void takeHazardHit({required int knockbackDirection}) {
     hazardHits++;
+    lastKnockback = knockbackDirection;
     super.takeHazardHit(knockbackDirection: knockbackDirection);
   }
 }
@@ -1214,6 +1216,22 @@ void main() {
       expect(p.position.x + p.size.x / 2, level.boss!.x - BossAttackConstants.heroBossGap);
       expect(boss.facesRight, isFalse);
       await _flush(tester);
+    });
+
+    testWidgets('the hit knocks the hero back away from the boss, on whichever side he is',
+        (tester) async {
+      for (final (heroX, dir) in [(300.0, -1), (1500.0, 1)]) {
+        final level = _arena('era2_5');
+        final (game, boss) = await _start(tester, arena: level);
+        game.player.position.x = heroX;
+        boss.startRoundNow();
+        _untilAsking(game, boss);
+        game.handleAnswer(_wrong(game));
+        _step(game, 2);
+        expect(_hero(game).hazardHits, 1, reason: 'hero at $heroX');
+        expect(_hero(game).lastKnockback, dir, reason: 'hero at $heroX');
+        await _flush(tester);
+      }
     });
 
     testWidgets('a hero on the right: the boss and its attack are turned to him and fly the other way',

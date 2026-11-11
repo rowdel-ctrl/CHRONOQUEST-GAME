@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 
 import '../../core/boss_attack_constants.dart';
+import '../chrono_game.dart';
 import 'boss_attack_paint.dart' show star;
 
 /// The purple rune of a boss fight: it appears on the floor away from the student, and walking
@@ -12,7 +13,7 @@ import 'boss_attack_paint.dart' show star;
 /// room, a ring on the floor and a few sparks. Not the golden artifact: that one is a reward.
 ///
 /// Counted in [update] with the frame's `dt`, and gone by itself once [collect]ed.
-class BossRuneComponent extends PositionComponent {
+class BossRuneComponent extends PositionComponent with HasGameReference<ChronoGame> {
   /// [x] is the rune's middle, [surfaceY] the floor it stands on (both in world units).
   BossRuneComponent({required double x, required this.surfaceY})
       : super(position: Vector2(x, surfaceY), priority: 8);
@@ -62,8 +63,46 @@ class BossRuneComponent extends PositionComponent {
   static const _light = Color(0xFFB58BFF);
   static const _pale = Color(0xFFE4D3FF);
 
+  /// When the rune is off screen, a round arrow on the edge of the view points to it, with the
+  /// distance (the room is wider than the screen, so the student would not know which way to go).
+  void _paintGuide(Canvas canvas) {
+    if (collected) return;
+    final left = game.cameraLeftEdgeX, right = game.cameraRightEdgeX;
+    final dir = position.x < left ? -1 : (position.x > right ? 1 : 0);
+    if (dir == 0) return;
+    final p = game.player;
+    final dist = ((p.position.x + p.size.x / 2) - position.x).abs().round();
+    final cx = (dir < 0 ? left + 60 : right - 60) - position.x; // local x
+    const cy = -190.0;
+    final pulse = 0.75 + 0.25 * math.sin(_age * 5);
+    canvas.drawCircle(Offset(cx, cy), 26, Paint()..color = const Color.fromRGBO(20, 14, 31, .75));
+    canvas.drawCircle(
+      Offset(cx, cy),
+      26,
+      Paint()
+        ..color = _light.withValues(alpha: pulse)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3,
+    );
+    final tip = dir * 14.0;
+    canvas.drawPath(
+      Path()
+        ..moveTo(cx + tip, cy)
+        ..lineTo(cx - tip * .5, cy - 12)
+        ..lineTo(cx - tip * .5, cy + 12)
+        ..close(),
+      Paint()..color = _pale.withValues(alpha: pulse),
+    );
+    final label = ParagraphBuilder(ParagraphStyle(textAlign: TextAlign.center))
+      ..pushStyle(TextStyle(color: _pale, fontSize: 15, fontWeight: FontWeight.w700))
+      ..addText('$dist');
+    final para = label.build()..layout(const ParagraphConstraints(width: 70));
+    canvas.drawParagraph(para, Offset(cx - 35, cy + 30));
+  }
+
   @override
   void render(Canvas canvas) {
+    _paintGuide(canvas);
     final sc = scale01;
     if (sc <= 0) return;
     // Local (0, 0) is where the rune touches the floor.
