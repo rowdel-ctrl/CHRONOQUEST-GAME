@@ -80,7 +80,7 @@
   <object id="13" type="enemy" x="3795" y="516">
    <properties>
     <property name="kind" value="spanish_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="chaser"/>
     <property name="patrol" type="float" value="60"/>
    </properties>
   </object>
@@ -122,7 +122,7 @@
   <object id="35" type="enemy" x="9003" y="476">
    <properties>
     <property name="kind" value="spanish_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="chaser"/>
     <property name="patrol" type="float" value="36"/>
    </properties>
   </object>
@@ -163,7 +163,7 @@
   <object id="56" type="enemy" x="13792" y="588">
    <properties>
     <property name="kind" value="spanish_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="chaser"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
@@ -173,6 +173,7 @@
   <object id="60" type="artifact" x="14508" y="588">
    <properties>
     <property name="art" value="artifact_4"/>
+    <property name="golden" type="bool" value="true"/>
    </properties>
   </object>
   <object id="61" type="coin" x="15003" y="450"/>
@@ -200,7 +201,7 @@
   <object id="73" type="enemy" x="17763" y="612">
    <properties>
     <property name="kind" value="spanish_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="chaser"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
@@ -240,7 +241,7 @@
   <object id="93" type="enemy" x="22203" y="564">
    <properties>
     <property name="kind" value="spanish_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="chaser"/>
     <property name="patrol" type="float" value="60"/>
    </properties>
   </object>

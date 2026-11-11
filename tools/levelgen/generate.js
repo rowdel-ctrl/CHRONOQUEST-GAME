@@ -15,6 +15,9 @@ const { mulberry32, hashString } = require('./rng');
 const { buildLevel } = require('./build');
 const { validate } = require('./validate');
 const tmx = require('./tmx');
+const { markChasers } = require('./chasers');
+const { markSurprises } = require('./surprises');
+const { markGolden, goldenProblems } = require('./golden');
 
 const DEFAULT_OUT = path.join(__dirname, '..', '..', 'assets', 'tiles', 'levels');
 const MANIFEST = path.join(__dirname, '..', '..', 'lib', 'game', 'generated_level_manifest.dart');
@@ -67,10 +70,19 @@ function generateLevel({ eraId, levelIndex, candidates = 60 }) {
     const why = Object.entries(rejected).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${n}x ${k}`).join('; ');
     throw new Error(`no valid candidate for ${eraId} level ${levelIndex}: ${why}`);
   }
+  // Every second soldier chases in the eras that have chaser soldiers (see chasers.js).
+  markChasers(best.level.enemies, eraId, levelIndex);
+  // Hoppers, throwers, the golden runner, ground pops and falling rocks (see surprises.js).
+  markSurprises(best.level, eraId, levelIndex);
+  // The middle artifact is golden from level 2 on (see golden.js).
+  markGolden(best.level.artifacts, levelIndex, era.levelWeeks.length);
   // What gets written must be what was validated: read the file text back and
   // check that, not just the in-memory model.
   const written = tmx.read(tmx.write(best.level));
-  const problems = validate(written, { generated: true });
+  const problems = [
+    ...validate(written, { generated: true }),
+    ...goldenProblems(written.artifacts, levelIndex, era.levelWeeks.length),
+  ];
   if (problems.length) {
     throw new Error(`${eraId} ${levelIndex} fails after writing:\n  ${problems.join('\n  ')}`);
   }

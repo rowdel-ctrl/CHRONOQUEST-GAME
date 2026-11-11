@@ -6,6 +6,7 @@
 const { physics, rules, eras } = require('./rules');
 const T = require('./terrain');
 const { solve } = require('./solve');
+const { checkSurprises } = require('./surprises');
 
 const ENEMY_INSET = (physics.enemyWidth * (1 - physics.footSpanFraction)) / 2; // 22.5
 const DEFAULT_PATROL = 150;
@@ -136,7 +137,7 @@ function validate(level, { generated = level.generated !== false, play = true } 
   const supports = new Map();
   for (const e of enemies) {
     if (!era.enemyTypes.includes(e.kind)) problems.push(`enemy at ${e.x} is "${e.kind}", not one of ${era.enemyTypes}`);
-    if (e.behavior !== (heavy.has(e.kind) ? 'heavy' : 'walker')) problems.push(`enemy "${e.kind}" at ${e.x} has behavior ${e.behavior}`);
+    if (heavy.has(e.kind) ? !['heavy', 'thrower'].includes(e.behavior) : !['walker', 'chaser', 'hopper', 'golden'].includes(e.behavior)) problems.push(`enemy "${e.kind}" at ${e.x} has behavior ${e.behavior}`);
     if (!enemyStaysOnSupport(e, blocks, level.platforms)) problems.push(`enemy at ${e.x} patrols off its ground`);
     else supports.set(e, supportOf(e, blocks, level.platforms));
     if (generated && e.x - enemyRange(e) < rules.safeStart) problems.push(`enemy at ${e.x} patrols into the safe start`);
@@ -147,6 +148,9 @@ function validate(level, { generated = level.generated !== false, play = true } 
     const need = generated && (isPlatformEnemy(enemies[i]) || isPlatformEnemy(enemies[i - 1])) ? rules.fightEnemySpacing : spacing;
     if (enemies[i].x - enemies[i - 1].x < need) problems.push(`enemies at ${enemies[i - 1].x} and ${enemies[i].x} are under ${need} apart`);
   }
+
+  // ── the surprises: hoppers, throwers, the golden runner, ground pops, falling rocks ──
+  problems.push(...checkSurprises(level));
 
   // ── fairness and coins (generated levels only) ──
   if (generated) {

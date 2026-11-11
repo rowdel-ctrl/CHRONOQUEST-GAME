@@ -221,7 +221,11 @@ List<String> lintLevel(String xml, {required int eraNumber, required int levelIn
     }
     final want = enemyTypeTable[e.kind]?.behavior;
     final isHeavy = want == EnemyBehavior.heavy;
-    if (e.behavior != (isHeavy ? 'heavy' : 'walker')) {
+    // A soldier a map marks "chaser" chases and dashes; every other non-heavy is a walker.
+    // A heavy may be a "thrower" (surprise); a walker kind may be a "hopper" or "golden".
+    if (isHeavy
+        ? !const ['heavy', 'thrower'].contains(e.behavior)
+        : !const ['walker', 'chaser', 'hopper', 'golden'].contains(e.behavior)) {
       problems.add('enemy "${e.kind}" at ${e.x.toInt()} has behavior ${e.behavior}');
     }
     if (!level.enemyStaysOnSupport(e)) {

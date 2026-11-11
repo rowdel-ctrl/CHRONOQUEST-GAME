@@ -15,6 +15,7 @@ import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
 import 'answer_point_handler.dart';
+import 'bonus/bonus_session.dart';
 import 'components/artifact_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
@@ -174,6 +175,9 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// What happened in this try, for the rules and badges that look back over it.
   final RunStats stats = RunStats();
 
+  /// The golden artifact's portal and bonus round (bonus_handler.dart).
+  final BonusSession bonus = BonusSession();
+
   /// Called for every coin picked up, so the wallet gets it at once and quitting or
   /// closing the game cannot lose it.
   void Function()? onCoinCollected;
@@ -262,6 +266,20 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   bool questionShowing = false;
   bool bossPhase = false;
   bool shieldActive = false;
+
+  /// Switches the Shield on (one charge from the wallet copy): the next hit, from an enemy, a
+  /// minion or a boss attack, or the next wrong answer, is turned away. Does nothing without a
+  /// charge or when it is already on. Returns whether it switched on.
+  bool activateShield() {
+    if (playerPowerUps.shield <= 0 || shieldActive) return false;
+    shieldActive = true;
+    playerPowerUps.shield--;
+    onPowerUpUsed?.call('shield');
+    stats.powerUpsUsed++;
+    audioService.playPowerup();
+    notifyState();
+    return true;
+  }
   Question? currentQuestion;
   BossComponent? boss;
 
@@ -342,10 +360,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // virtual resolution along with the world, and it stays put as the
     // camera moves — which is what a parallax layer wants. A direct child
     // would be drawn in raw canvas pixels and no longer line up.
-    camera.backdrop = WorldBackdrop();
-    // The leaves, grass, mist and darker corners that pass in front of the player.
-    // In the viewport (drawn over the world), under the on-screen controls.
-    camera.viewport.add(WorldForeground());
+    installBackdrop();
 
     // Player — lives in world space so the camera transform applies to it.
     player = PlayerComponent(characterId: selectedCharacterId);
@@ -362,7 +377,7 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // Tiled path repositions the player onto the map's `spawn` object, and
     // EnemySpawner seeds its distance tracking from the player's worldX.
     // Awaited so no frame can run against a half-built level.
-    await setupSpawning();
+    await buildLevelContent();
 
     // Start timer
     _stopwatch.start();
@@ -370,7 +385,28 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     // Get the sound effects ready, then play the BGM. Not awaited: audio must
     // never hold up the level.
     unawaited(audioService.preloadSfx());
-    // A boss level has its own music, not the era's.
+    startMusic();
+  }
+
+  // The three steps of onLoad that the bonus round (bonus/bonus_game.dart)
+  // replaces with its own. For a level they are exactly what onLoad did before.
+
+  /// The level's content: an authored map or the procedural spawner.
+  @protected
+  Future<void> buildLevelContent() => setupSpawning();
+
+  /// What is drawn behind and in front of the world: the era's backdrop, and the
+  /// leaves, grass, mist and darker corners that pass in front of the player (in
+  /// the viewport, drawn over the world, under the on-screen controls).
+  @protected
+  void installBackdrop() {
+    camera.backdrop = WorldBackdrop();
+    camera.viewport.add(WorldForeground());
+  }
+
+  /// The music: a boss level has its own, not the era's.
+  @protected
+  void startMusic() {
     if (isBossLevel) {
       audioService.playBossBgm();
     } else {

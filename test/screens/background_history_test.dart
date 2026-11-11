@@ -11,6 +11,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// What the screen under test is told about the era having been read before, and
+/// what it calls when the story is read through (set per test).
+bool _alreadyRead = false;
+final List<String> _marked = [];
+
 GoRouter _router() => GoRouter(
       initialLocation: '/background/spanish',
       routes: [
@@ -27,7 +32,11 @@ GoRouter _router() => GoRouter(
         GoRoute(
           path: '/background/:eraId',
           builder: (context, state) =>
-              BackgroundHistoryScreen(eraId: state.pathParameters['eraId']!),
+              BackgroundHistoryScreen(
+            eraId: state.pathParameters['eraId']!,
+            alreadyRead: _alreadyRead,
+            onStoryRead: _marked.add,
+          ),
         ),
       ],
     );
@@ -91,6 +100,58 @@ GameButton _ready(WidgetTester tester) => tester
 
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
+  setUp(() {
+    _alreadyRead = false;
+    _marked.clear();
+  });
+
+  group('an era read before', () {
+    testWidgets('the first time there is no skip button and the terms are locked',
+        (tester) async {
+      await _open(tester);
+      expect(find.byKey(BackgroundHistoryScreen.skipKey), findsNothing);
+      expect(find.byKey(BackgroundHistoryScreen.lockNoteKey), findsOneWidget);
+    });
+
+    testWidgets('shows LAKTAWAN, has nothing locked, and skips to the levels',
+        (tester) async {
+      _alreadyRead = true;
+      await _open(tester);
+      expect(find.byKey(BackgroundHistoryScreen.skipKey), findsOneWidget);
+      expect(find.text('LAKTAWAN'), findsOneWidget);
+      expect(find.byKey(BackgroundHistoryScreen.lockNoteKey), findsNothing,
+          reason: 'no waiting to read it again');
+
+      await tester.tap(find.byKey(BackgroundHistoryScreen.skipKey));
+      await tester.pumpAndSettle();
+      expect(find.text('levels stand-in'), findsOneWidget);
+    });
+
+    testWidgets('a read before story can still be turned and read again',
+        (tester) async {
+      _alreadyRead = true;
+      await _open(tester);
+      await tester.tap(find.byKey(BackgroundHistoryScreen.nextKey));
+      await _settle(tester);
+      expect(find.byKey(BackgroundHistoryScreen.beatKey), findsWidgets);
+    });
+
+    testWidgets('reading every event the first time is saved once',
+        (tester) async {
+      await _open(tester);
+      await _readStory(tester);
+      expect(_marked, ['spanish']);
+      await tester.pump(const Duration(seconds: 10));
+      expect(_marked, ['spanish'], reason: 'only once');
+    });
+
+    testWidgets('a story already read is not saved again', (tester) async {
+      _alreadyRead = true;
+      await _open(tester);
+      await tester.pump(const Duration(seconds: 10));
+      expect(_marked, isEmpty);
+    });
+  });
 
   testWidgets('has a back button that returns to the era list', (tester) async {
     await _open(tester);
@@ -360,9 +421,9 @@ void main() {
       );
     });
 
-    test('every era tells its story in five or six events', () {
+    test('every era tells its story in five to eight events, one per topic', () {
       for (final entry in eraStories.entries) {
-        expect(entry.value.beats.length, inInclusiveRange(5, 6),
+        expect(entry.value.beats.length, inInclusiveRange(5, 8),
             reason: entry.key);
       }
     });

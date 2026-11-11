@@ -9,7 +9,7 @@
   column with no tiles is a pit. Row 27 is the base ground (y 660); the layer is
   drawn 12 units lower than row * 16 so raised ground lands on 660 - 16 * n.
 -->
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="1042" height="30" tilewidth="24" tileheight="24" infinite="0" nextlayerid="3" nextobjectid="99">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="1042" height="30" tilewidth="24" tileheight="24" infinite="0" nextlayerid="3" nextobjectid="101">
  <properties>
   <property name="era" value="pre-colonial"/>
   <property name="level" type="int" value="5"/>
@@ -61,7 +61,7 @@
   <object id="4" type="enemy" x="1851" y="540">
    <properties>
     <property name="kind" value="tribal_warrior"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="hopper"/>
     <property name="patrol" type="float" value="60"/>
    </properties>
   </object>
@@ -104,154 +104,157 @@
   <object id="21" type="coin" x="6231" y="476"/>
   <object id="22" type="coin" x="6345" y="476"/>
   <object id="23" type="coin" x="6987" y="548"/>
-  <object id="24" type="coin" x="7444" y="572"/>
-  <object id="25" type="coin" x="7484" y="572"/>
-  <object id="26" type="coin" x="7524" y="572"/>
-  <object id="27" type="artifact" x="7596" y="612">
+  <object id="24" type="ground_pop" x="7008" y="588"/>
+  <object id="25" type="coin" x="7444" y="572"/>
+  <object id="26" type="coin" x="7484" y="572"/>
+  <object id="27" type="coin" x="7524" y="572"/>
+  <object id="28" type="artifact" x="7596" y="612">
    <properties>
     <property name="art" value="artifact_3"/>
    </properties>
   </object>
-  <object id="28" type="enemy" x="8248" y="588">
+  <object id="29" type="enemy" x="8248" y="588">
    <properties>
     <property name="kind" value="dark_spirit"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
-  <object id="29" type="platform" x="8712" y="484" width="96" height="24"/>
-  <object id="30" type="coin" x="8739" y="444"/>
-  <object id="31" type="platform" x="8976" y="484" width="96" height="24"/>
-  <object id="32" type="coin" x="9003" y="444"/>
-  <object id="33" type="platform" x="9240" y="484" width="96" height="24"/>
-  <object id="34" type="coin" x="9267" y="444"/>
-  <object id="35" type="coin" x="9748" y="548"/>
-  <object id="36" type="coin" x="9788" y="548"/>
-  <object id="37" type="coin" x="9828" y="548"/>
-  <object id="38" type="artifact" x="9900" y="588">
+  <object id="30" type="platform" x="8712" y="484" width="96" height="24"/>
+  <object id="31" type="coin" x="8739" y="444"/>
+  <object id="32" type="platform" x="8976" y="484" width="96" height="24"/>
+  <object id="33" type="coin" x="9003" y="444"/>
+  <object id="34" type="platform" x="9240" y="484" width="96" height="24"/>
+  <object id="35" type="coin" x="9267" y="444"/>
+  <object id="36" type="coin" x="9748" y="548"/>
+  <object id="37" type="coin" x="9788" y="548"/>
+  <object id="38" type="coin" x="9828" y="548"/>
+  <object id="39" type="artifact" x="9900" y="588">
    <properties>
     <property name="art" value="artifact_4"/>
    </properties>
   </object>
-  <object id="39" type="platform" x="10456" y="476" width="96" height="24"/>
-  <object id="40" type="coin" x="10480" y="436"/>
-  <object id="41" type="coin" x="10947" y="524"/>
-  <object id="42" type="platform" x="11352" y="484" width="240" height="24"/>
-  <object id="43" type="enemy" x="11427" y="484">
+  <object id="40" type="platform" x="10456" y="476" width="96" height="24"/>
+  <object id="41" type="coin" x="10480" y="436"/>
+  <object id="42" type="coin" x="10947" y="524"/>
+  <object id="43" type="platform" x="11352" y="484" width="240" height="24"/>
+  <object id="44" type="enemy" x="11427" y="484">
    <properties>
     <property name="kind" value="dark_spirit"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="36"/>
    </properties>
   </object>
-  <object id="44" type="coin" x="12052" y="548"/>
-  <object id="45" type="coin" x="12092" y="548"/>
-  <object id="46" type="coin" x="12132" y="548"/>
-  <object id="47" type="artifact" x="12204" y="588">
+  <object id="45" type="coin" x="12052" y="548"/>
+  <object id="46" type="coin" x="12092" y="548"/>
+  <object id="47" type="coin" x="12132" y="548"/>
+  <object id="48" type="artifact" x="12204" y="588">
    <properties>
     <property name="art" value="artifact_5"/>
    </properties>
   </object>
-  <object id="48" type="coin" x="12687" y="474"/>
-  <object id="49" type="coin" x="13269" y="476"/>
-  <object id="50" type="enemy" x="13359" y="516">
+  <object id="49" type="coin" x="12687" y="474"/>
+  <object id="50" type="coin" x="13269" y="476"/>
+  <object id="51" type="enemy" x="13359" y="516">
    <properties>
     <property name="kind" value="dark_spirit"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
-  <object id="51" type="coin" x="13383" y="476"/>
-  <object id="52" type="coin" x="13497" y="476"/>
-  <object id="53" type="coin" x="14356" y="572"/>
-  <object id="54" type="coin" x="14396" y="572"/>
-  <object id="55" type="coin" x="14436" y="572"/>
-  <object id="56" type="artifact" x="14508" y="612">
+  <object id="52" type="coin" x="13383" y="476"/>
+  <object id="53" type="coin" x="13497" y="476"/>
+  <object id="54" type="coin" x="14356" y="572"/>
+  <object id="55" type="coin" x="14396" y="572"/>
+  <object id="56" type="coin" x="14436" y="572"/>
+  <object id="57" type="artifact" x="14508" y="612">
    <properties>
     <property name="art" value="artifact_1"/>
+    <property name="golden" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="57" type="platform" x="15096" y="484" width="96" height="24"/>
-  <object id="58" type="coin" x="15123" y="444"/>
-  <object id="59" type="platform" x="15360" y="484" width="240" height="24"/>
-  <object id="60" type="enemy" x="15435" y="484">
+  <object id="58" type="platform" x="15096" y="484" width="96" height="24"/>
+  <object id="59" type="coin" x="15123" y="444"/>
+  <object id="60" type="platform" x="15360" y="484" width="240" height="24"/>
+  <object id="61" type="enemy" x="15435" y="484">
    <properties>
     <property name="kind" value="tribal_warrior"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="36"/>
    </properties>
   </object>
-  <object id="61" type="platform" x="15768" y="484" width="96" height="24"/>
-  <object id="62" type="coin" x="15795" y="444"/>
-  <object id="63" type="coin" x="16263" y="450"/>
-  <object id="64" type="coin" x="16660" y="548"/>
-  <object id="65" type="coin" x="16700" y="548"/>
-  <object id="66" type="coin" x="16740" y="548"/>
-  <object id="67" type="artifact" x="16812" y="588">
+  <object id="62" type="platform" x="15768" y="484" width="96" height="24"/>
+  <object id="63" type="coin" x="15795" y="444"/>
+  <object id="64" type="coin" x="16263" y="450"/>
+  <object id="65" type="ground_pop" x="16512" y="588"/>
+  <object id="66" type="coin" x="16660" y="548"/>
+  <object id="67" type="coin" x="16700" y="548"/>
+  <object id="68" type="coin" x="16740" y="548"/>
+  <object id="69" type="artifact" x="16812" y="588">
    <properties>
     <property name="art" value="artifact_2"/>
    </properties>
   </object>
-  <object id="68" type="coin" x="17307" y="426"/>
-  <object id="69" type="platform" x="17728" y="484" width="96" height="24"/>
-  <object id="70" type="coin" x="17752" y="444"/>
-  <object id="71" type="platform" x="18228" y="476" width="240" height="24"/>
-  <object id="72" type="enemy" x="18303" y="476">
+  <object id="70" type="coin" x="17307" y="426"/>
+  <object id="71" type="platform" x="17728" y="484" width="96" height="24"/>
+  <object id="72" type="coin" x="17752" y="444"/>
+  <object id="73" type="platform" x="18228" y="476" width="240" height="24"/>
+  <object id="74" type="enemy" x="18303" y="476">
    <properties>
     <property name="kind" value="tribal_warrior"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="36"/>
    </properties>
   </object>
-  <object id="73" type="coin" x="18964" y="548"/>
-  <object id="74" type="coin" x="19004" y="548"/>
-  <object id="75" type="coin" x="19044" y="548"/>
-  <object id="76" type="artifact" x="19116" y="588">
+  <object id="75" type="coin" x="18964" y="548"/>
+  <object id="76" type="coin" x="19004" y="548"/>
+  <object id="77" type="coin" x="19044" y="548"/>
+  <object id="78" type="artifact" x="19116" y="588">
    <properties>
     <property name="art" value="artifact_3"/>
    </properties>
   </object>
-  <object id="77" type="coin" x="19875" y="476"/>
-  <object id="78" type="enemy" x="19947" y="516">
+  <object id="79" type="coin" x="19875" y="476"/>
+  <object id="80" type="enemy" x="19947" y="516">
    <properties>
     <property name="kind" value="dark_spirit"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="60"/>
    </properties>
   </object>
-  <object id="79" type="coin" x="19971" y="476"/>
-  <object id="80" type="coin" x="20067" y="476"/>
-  <object id="81" type="coin" x="20607" y="498"/>
-  <object id="82" type="coin" x="21268" y="596"/>
-  <object id="83" type="coin" x="21308" y="596"/>
-  <object id="84" type="coin" x="21348" y="596"/>
-  <object id="85" type="artifact" x="21420" y="636">
+  <object id="81" type="coin" x="19971" y="476"/>
+  <object id="82" type="coin" x="20067" y="476"/>
+  <object id="83" type="coin" x="20607" y="498"/>
+  <object id="84" type="coin" x="21268" y="596"/>
+  <object id="85" type="coin" x="21308" y="596"/>
+  <object id="86" type="coin" x="21348" y="596"/>
+  <object id="87" type="artifact" x="21420" y="636">
    <properties>
     <property name="art" value="artifact_4"/>
    </properties>
   </object>
-  <object id="86" type="coin" x="22047" y="596"/>
-  <object id="87" type="coin" x="22155" y="482"/>
-  <object id="88" type="coin" x="22263" y="572"/>
-  <object id="89" type="coin" x="22371" y="458"/>
-  <object id="90" type="coin" x="22479" y="548"/>
-  <object id="91" type="coin" x="22611" y="458"/>
-  <object id="92" type="enemy" x="23016" y="660">
+  <object id="88" type="coin" x="22047" y="596"/>
+  <object id="89" type="coin" x="22155" y="482"/>
+  <object id="90" type="coin" x="22263" y="572"/>
+  <object id="91" type="coin" x="22371" y="458"/>
+  <object id="92" type="coin" x="22479" y="548"/>
+  <object id="93" type="coin" x="22611" y="458"/>
+  <object id="94" type="enemy" x="23016" y="660">
    <properties>
     <property name="kind" value="dark_spirit"/>
     <property name="behavior" value="walker"/>
     <property name="patrol" type="float" value="60"/>
    </properties>
   </object>
-  <object id="93" type="coin" x="23572" y="620"/>
-  <object id="94" type="coin" x="23612" y="620"/>
-  <object id="95" type="coin" x="23652" y="620"/>
-  <object id="96" type="artifact" x="23724" y="660">
+  <object id="95" type="coin" x="23572" y="620"/>
+  <object id="96" type="coin" x="23612" y="620"/>
+  <object id="97" type="coin" x="23652" y="620"/>
+  <object id="98" type="artifact" x="23724" y="660">
    <properties>
     <property name="art" value="artifact_5"/>
    </properties>
   </object>
-  <object id="97" type="gate" x="24848" y="660"/>
-  <object id="98" name="finish" type="exit" x="24888" y="660"/>
+  <object id="99" type="gate" x="24848" y="660"/>
+  <object id="100" name="finish" type="exit" x="24888" y="660"/>
  </objectgroup>
 </map>

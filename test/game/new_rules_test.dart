@@ -7,7 +7,6 @@ import 'dart:ui' as ui;
 import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
-import 'package:chronoquest/game/components/boss_shockwave.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/halfway_flag_component.dart';
@@ -192,7 +191,7 @@ void main() {
   });
 
   group('the new pictures draw', () {
-    test('the flag (grey, then gold), the shockwave both ways, and the shield bubble',
+    test('the flag (grey, then gold) and the shield bubble',
         () async {
       final game = await _bareGame();
       void draw(Component c) {
@@ -207,10 +206,6 @@ void main() {
       flag.reached = true;
       flag.update(0.5);
       draw(flag);
-
-      for (final dir in [1, -1]) {
-        draw(BossShockwave(direction: dir, start: Vector2(100, 600))..game = game);
-      }
 
       game.shieldActive = true;
       draw(game.player);

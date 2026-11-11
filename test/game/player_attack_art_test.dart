@@ -1,7 +1,8 @@
 // The 2026-11 hero art: pictures of different sizes drawn at pixels / 2.5 with
 // the middle of the bottom edge on the feet (lib/game/art_scale.dart), and a
-// 0.25 s attack picture sequence that is only a picture: the hit box, the
-// timing and the cooldown are exactly what they were.
+// 0.25 s attack picture sequence that is only a picture: the move itself (hero_moves_test.dart)
+// does not depend on it. The old short swing (the 80x90 box) still exists: it is what a
+// dash hero does in the air, so the tests of the box use Bonifacio in the air.
 //
 // Loads a real hero from assets/characters/ (plain test(), so real file I/O
 // works), without mounting a GameWidget.
@@ -13,6 +14,7 @@ import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/art_scale.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/attack_hitbox_component.dart';
+import 'package:chronoquest/game/components/hero_projectile_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
 import 'package:chronoquest/game/game_input.dart';
 
@@ -115,7 +117,10 @@ void main() {
       player.update(0.02); // 0.26 s
       expect(player.attackPictureNumber, isNull);
       expect(player.animation, same(player.walkAnimation));
-      expect(game.world.children.whereType<AttackHitboxComponent>(), isNotEmpty);
+      // Rizal throws pages now, not a box.
+      await game.ready();
+      expect(game.world.children.whereType<HeroProjectileComponent>(), isNotEmpty);
+      expect(game.world.children.whereType<AttackHitboxComponent>(), isEmpty);
     });
 
     test('in the air: attack_2, then attack_3, then back to the jump pose',
@@ -134,25 +139,44 @@ void main() {
       expect(player.animation, same(player.jumpAnim));
     });
 
-    test('a hero with 3 attack pictures (Lapu) shows attack_1 for the whole swing',
+    test('a hero with 3 attack pictures (Lapu) shows attack_1 for the whole dash',
         () async {
       final (_, player) = await _loadedPlayer('lapu');
       expect(player.hasAttackArt, isTrue);
 
+      // Lapu's dash lasts 0.22 s and the picture stays 0.14 s after it.
       player.attack();
       expect(player.attackPictureNumber, 1);
       player.update(0.20);
       expect(player.attackPictureNumber, 1);
-      player.update(0.06);
+      player.update(0.10);
+      expect(player.attackPictureNumber, 1);
+      player.update(0.07); // 0.37 s
       expect(player.attackPictureNumber, isNull);
     });
 
-    test('Lapu in the air still gets attack_2 then attack_3', () async {
-      final (_, player) = await _loadedPlayer('lapu', onGround: false);
+    test('a dash with 4 pictures (Bonifacio): attack_1 during it, attack_4 after',
+        () async {
+      final (_, player) = await _loadedPlayer('bonifacio');
+      player.attack();
+      expect(player.attackPictureNumber, 1);
+      player.update(0.10);
+      expect(player.attackPictureNumber, 1);
+      player.update(0.07); // 0.17 s: the 0.16 s dash is over
+      expect(player.attackPictureNumber, 4);
+      player.update(0.14); // 0.31 s: past 0.16 + 0.14
+      expect(player.attackPictureNumber, isNull);
+    });
+
+    test('Lapu in the air still gets attack_2 then attack_3 (the old short swing)',
+        () async {
+      final (game, player) = await _loadedPlayer('lapu', onGround: false);
       player.attack();
       expect(player.attackPictureNumber, 2);
       player.update(0.12);
       expect(player.attackPictureNumber, 3);
+      await game.ready();
+      expect(_hitbox(game).size, Vector2(80, 90));
     });
 
     test('hurt wins over the attack picture', () async {
@@ -163,8 +187,9 @@ void main() {
       expect(player.attackPictureNumber, isNull);
     });
 
-    test('the hit box, its lifetime and the cooldown are unchanged', () async {
-      final (game, player) = await _loadedPlayer('rizal');
+    test('the short swing (a dash hero in the air): box, lifetime and the hero\'s cooldown',
+        () async {
+      final (game, player) = await _loadedPlayer('bonifacio', onGround: false);
       player.attack();
       await game.ready();
 
@@ -173,24 +198,24 @@ void main() {
       expect(box.drawSlash, isFalse,
           reason: 'the art draws its own slash, so no white crescent on top');
 
-      // Inside the 0.4 s cooldown a second swing does nothing, picture included.
+      // Inside Bonifacio's own 0.55 s cooldown a second swing does nothing.
       player.update(0.30);
       player.attack();
       await game.ready();
       expect(game.world.children.whereType<AttackHitboxComponent>().length, 1);
 
-      // The picture is over at 0.25 s, the next swing is allowed after 0.4 s.
+      // The picture is over at 0.25 s, the next swing is allowed after 0.55 s.
       expect(player.attackPictureNumber, isNull);
-      player.update(0.11);
-      player.isOnGround = true;
+      player.update(0.26);
+      player.isOnGround = false;
       player.attack();
-      expect(player.attackPictureNumber, 1);
+      expect(player.attackPictureNumber, 2);
     });
 
     test('a hero without attack art keeps the old white slash', () async {
       final game = ChronoGame();
       game.onGameResize(Vector2(800, 450));
-      final player = PlayerComponent(characterId: 'rizal')
+      final player = PlayerComponent(characterId: 'bonifacio')
         ..size = Vector2(96, 120)
         ..position = Vector2(400, game.groundY - 120);
       player.game = game;

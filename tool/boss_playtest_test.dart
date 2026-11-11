@@ -9,10 +9,11 @@
 // BOSS_ERA is 1 to 6. Without it the test does nothing, so it is safe in a full
 // `flutter test tool` run.
 //
-// It plays the whole fight: every question of the level once, a wave of minions after every
-// second one (cleared at once), the third answered wrong so that question comes back at the
-// end. Pictures: the arena, the first question of each phase, each banner, the first wave of
-// each phase, and the end.
+// It plays the whole fight (2026-11 flow: wind-up, an attack that flies at the hero while the
+// question card is open, the hero's counter or the hit): every round answered right except the
+// third, whose question comes back at the end. Pictures: the arena, the wind-up, the first
+// question of each phase (at the throw and half way), the result of the first right and the first
+// wrong answer, and the end.
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -20,7 +21,7 @@ import 'package:chronoquest/core/theme.dart';
 import 'package:chronoquest/data/question_bank.dart';
 import 'package:chronoquest/game/answer_point_handler.dart';
 import 'package:chronoquest/game/chrono_game.dart';
-import 'package:chronoquest/game/components/enemy_component.dart';
+import 'package:chronoquest/game/components/boss_component.dart';
 import 'package:chronoquest/game/overlays/gate_locked_overlay.dart';
 import 'package:chronoquest/game/overlays/hud_overlay.dart';
 import 'package:chronoquest/game/overlays/question_overlay.dart';
@@ -81,24 +82,10 @@ void main() {
       print('wrote ${file.path}');
     }
 
-    String? lastBanner;
-    Future<void> run(double seconds, {bool stopOnQuestion = true}) async {
+    Future<void> run(double seconds, {bool Function()? until}) async {
       for (var t = 0.0; t < seconds; t += 0.1) {
-        if (stopOnQuestion && game.questionShowing) break;
-        // Since 1.6.3 a question waits on a scroll in the arena: the student walks to it.
-        final scroll = game.boss?.scroll;
-        if (scroll != null && !game.questionShowing && scroll.isLoaded) {
-          game.player.position
-            ..x = scroll.position.x - game.player.size.x / 2
-            ..y = scroll.position.y - game.player.size.y / 2;
-        }
+        if (until != null && until()) break;
         game.update(0.1);
-        final banner = game.boss?.banner;
-        if (banner != null && banner != lastBanner) {
-          lastBanner = banner;
-          await tester.pump(const Duration(milliseconds: 100));
-          await shot('banner_${banner.replaceAll(' ', '_')}');
-        }
         if ((t * 10).round() % 3 == 0) {
           await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 5)));
           await tester.pump(const Duration(milliseconds: 16));
@@ -140,42 +127,44 @@ void main() {
     }
 
     await shot('arena_start');
-    game.startBossFight();
-    await run(25);
+    // (the arena starts the fight by itself as soon as the level is up)
+    await run(8, until: () => game.boss?.state == BossRoundState.windup);
+    await run(0.5);
+    await shot('windup');
 
     var lastSeconds = -1;
-    for (var round = 1; round <= 45; round++) {
+    for (var round = 1; round <= 25; round++) {
       final boss = game.boss;
-      if (boss == null || boss.isDefeated || !game.questionShowing) {
+      if (boss == null || boss.isDefeated) {
         // ignore: avoid_print
-        print('stopped at round $round: boss ${boss == null ? 'gone' : boss.isDefeated ? 'defeated' : 'alive, health ${boss.health}'}, question up: ${game.questionShowing}, minions ${game.world.children.whereType<EnemyComponent>().length}');
+        print('stopped at round $round: boss ${boss == null ? 'gone' : 'defeated'}');
         break;
       }
-      if (boss.answerSeconds.round() != lastSeconds) {
-        lastSeconds = boss.answerSeconds.round();
-        await shot('question_${lastSeconds}s_${boss.maxHealth - boss.health}_of_${boss.maxHealth}');
+      await run(8, until: () => boss.asking);
+      if (!boss.asking) {
+        // ignore: avoid_print
+        print('stopped at round $round: no question (${boss.state})');
+        break;
+      }
+      final seconds = boss.answerSeconds.round();
+      final first = seconds != lastSeconds;
+      if (first) {
+        lastSeconds = seconds;
+        await run(0.4);
+        await shot('throw_${seconds}s_${boss.maxHealth - boss.health}_of_${boss.maxHealth}');
+        await run(boss.answerSeconds * 0.45);
+        await shot('flight_${seconds}s');
       }
       // ignore: avoid_print
-      print('round $round: ${boss.maxHealth - boss.health}/${boss.maxHealth} right, ${boss.answerSeconds}s, banner ${boss.banner}');
+      print('round ${boss.round}: ${boss.maxHealth - boss.health}/${boss.maxHealth} right, ${boss.answerSeconds}s, ${boss.attackKind?.name}');
       final q = game.currentQuestion!;
       final wrongOne = q.options.map((o) => o.label).firstWhere((l) => l != q.correctAnswer);
       final right = round != 3;
       game.handleAnswer(right ? q.correctAnswer : wrongOne);
-      await tester.pump(const Duration(milliseconds: 300));
-      // Until the next question is up: a wave that has arrived is cleared (the first of each
-      // phase is pictured), one still loading is waited for.
-      for (var wait = 0; wait < 12 && !game.questionShowing; wait++) {
-        await run(1.0);
-        final minions = game.world.children.whereType<EnemyComponent>().toList();
-        if (minions.isNotEmpty && minions.every((m) => m.isLoaded)) {
-          if (round == 2 || round == 12 || round == 18) await shot('wave_after_round$round');
-          for (final e in minions) {
-            e.removeFromParent();
-          }
-        }
-      }
+      await run(right ? 0.9 : 1.2);
+      if (round <= 3) await shot('result_round${round}_${right ? 'right' : 'wrong'}');
     }
-    await tester.pump(const Duration(seconds: 4));
+    await run(4);
     await shot('end');
   });
 }

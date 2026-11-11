@@ -15,31 +15,52 @@ import 'kaalaman_handler.dart';
 /// see PlayerComponent). `showQuestion()`/the enemy-linked branches this
 /// used to have are gone with it, not just their `currentEnemy?.defeat()`
 /// calls — nothing else ever called `showQuestion()`.
+///
+/// The boss question does not pause the game any more: the boss's attack flies towards
+/// the hero while the card is open, and its flight is the answer timer (BossComponent),
+/// so the game has to keep running. Pausing from the pause button still stops it all.
 extension QuizHandler on ChronoGame {
   void showBossQuestion(Question q, BossComponent bossRef) {
     currentQuestion = q;
     questionShowing = true;
-    pauseEngine();
+    // A card still up from the last round makes way for the new one.
+    overlays.remove('QuestionOverlay');
     overlays.add('QuestionOverlay');
   }
 
+  /// Takes the question card down (the round is over, or the fight is).
+  void closeBossQuestion() {
+    questionShowing = false;
+    overlays.remove('QuestionOverlay');
+  }
+
+  /// The student answered the boss question. [answer] is empty when the time ran out (the
+  /// boss calls it that way, once, when its attack arrives).
   void handleAnswer(String answer) {
-    final isCorrect = answer == currentQuestion!.correctAnswer;
+    final q = currentQuestion;
+    if (q == null) return;
+    // Only the first answer of a round counts: a tap in the same moment as the timeout, or
+    // one after the question has gone, is ignored.
+    final fight = boss;
+    if (fight != null && !fight.asking) return;
+    if (fight != null) q.elapsedSeconds = fight.elapsedSeconds;
+
+    final isCorrect = answer == q.correctAnswer;
 
     answers.add(QuestionSnapshot(
-      questionId: currentQuestion!.id,
-      questionText: currentQuestion!.questionText,
+      questionId: q.id,
+      questionText: q.questionText,
       studentAnswer: answer,
-      correctAnswer: currentQuestion!.correctAnswer,
+      correctAnswer: q.correctAnswer,
       isCorrect: isCorrect,
-      timeTaken: currentQuestion!.elapsedSeconds,
+      timeTaken: q.elapsedSeconds,
     ));
 
     // The streak counts boss answers too, the wrong ones ending it.
     final streakBonus = noteAnswer(correct: isCorrect);
+    questionShowing = false;
 
     if (isCorrect) {
-      overlays.remove('QuestionOverlay');
       player.triggerCheer();
       if (streakBonus) audioService.playStreak();
       if (streakBonus && player.isMounted) {
@@ -48,22 +69,13 @@ extension QuizHandler on ChronoGame {
       }
       score += 10;
       // Speed bonus
-      if (currentQuestion!.elapsedSeconds < 10) {
+      if (q.elapsedSeconds < 10) {
         score += 5;
       }
-
-      boss?.takeDamage();
-      questionShowing = false;
-      resumeEngine();
-      notifyState(); // score changed, and possibly boss health
-    } else {
-      // Wrong answer: no HP lost (GAMEPLAY-V2.md Section 6/8) — just close
-      // the question. A Shield is not spent here: there is nothing to absorb, and it
-      // stays for a minion's hit or the boss's shockwave.
-      overlays.remove('QuestionOverlay');
-      questionShowing = false;
-      resumeEngine();
-      boss?.missed();
+      notifyState(); // score changed
     }
+    // A wrong answer costs the boss nothing and the hero a heart, when the attack arrives
+    // (the boss does that); a Shield is spent only then, by the hit itself.
+    fight?.answered(correct: isCorrect, timedOut: answer.isEmpty, answer: answer);
   }
 }

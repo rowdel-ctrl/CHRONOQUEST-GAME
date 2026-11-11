@@ -5,14 +5,21 @@ import 'package:flame/effects.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import '../../core/combat_constants.dart';
+import '../../core/surprise_constants.dart';
 import '../art_scale.dart';
 import '../chrono_game.dart';
 import '../enemy_behavior.dart';
+import '../enemy_moves.dart';
 import '../game_collision.dart';
+import '../surprise_rules.dart';
 import 'coin_component.dart';
+import 'enemy_burst_component.dart';
 import 'player_component.dart';
+import 'praise_component.dart';
 
 enum _HeavyState { idle, windup, lunge, recover }
+
+enum _ChaserState { chase, fuse, crouch, dash, tired }
 
 /// Enemy encountered as the player advances through the world. Spawns at a
 /// fixed world position ahead of the camera; the camera moving past it (as
@@ -87,6 +94,19 @@ class EnemyComponent extends SpriteAnimationComponent
   /// a Kaalaman charge for each minion.
   final VoidCallback? onDefeated;
 
+  /// Makes this enemy act as another kind than its table entry says. The map's
+  /// `behavior="chaser"` on a soldier uses it: that soldier then chases and dashes.
+  final EnemyBehavior? behaviorOverride;
+
+  /// False keeps a chaser plain: it chases but never fuses, bursts or dashes. The
+  /// first two levels of each era and the boss rooms turn it off.
+  final bool blasts;
+
+  /// A surprise move this enemy has on top of its kind's behaviour (the map's
+  /// `behavior="hopper"`, `"thrower"` or `"golden"`, or [EnemySurprise.popper] for an
+  /// enemy a ground pop raised). See enemy_moves.dart.
+  final EnemySurprise surprise;
+
   EnemyComponent({
     required this.eraId,
     this.enemyTypeOverride,
@@ -94,7 +114,40 @@ class EnemyComponent extends SpriteAnimationComponent
     this.patrolRangeOverride,
     this.surfaceY,
     this.onDefeated,
+    this.behaviorOverride,
+    this.blasts = true,
+    this.surprise = EnemySurprise.none,
   });
+
+  EnemyMove? _move;
+
+  /// The surprise move, for tests.
+  @visibleForTesting
+  EnemyMove? get move => _move;
+
+  /// What the surprise moves (enemy_moves.dart) need from this enemy.
+  String get kind => _enemyType;
+  PlayerComponent? get student => _playerOrNull;
+  PlayerComponent? studentWithin(double range) => _playerWithin(range);
+  int get facing => _direction;
+  set facing(int direction) => _direction = direction >= 0 ? 1 : -1;
+  double get homeX => _spawnX;
+
+  /// Makes where it stands now the place it paces round (the golden runner, after a run).
+  void rehome() => _spawnX = position.x;
+  double get patrolLimit => _patrolRange;
+  bool canStandAt(double x) => _isSupportedAt(x);
+
+  /// How tall the picture is drawn, in game units (what a "!" or the dizzy stars
+  /// sit above).
+  double get drawnHeight {
+    final sprite = _frames.isEmpty ? null : _frames.first;
+    return sprite == null ? spriteHeight : artSizeOf(sprite).y;
+  }
+
+  /// Whether touching this enemy costs the student a heart right now. False while a
+  /// surprise move says so (a dizzy hopper, a rising enemy, a golden runner).
+  bool get hurtsOnTouch => _move?.hurtsOnTouch ?? true;
 
   /// Effective patrol range: the authored override when there is one, else
   /// the global default.
@@ -105,8 +158,22 @@ class EnemyComponent extends SpriteAnimationComponent
   Future<void> onLoad() async {
     _enemyType = enemyTypeOverride ?? _getEnemyTypeForEra(eraId);
     final typeData = enemyTypeDataFor(_enemyType);
-    _behavior = typeData.behavior;
-    _hp = typeData.maxHp;
+    // A walker-made surprise (hopper, popper, golden) walks whatever its kind is.
+    final walks = surprise == EnemySurprise.hopper ||
+        surprise == EnemySurprise.popper ||
+        surprise == EnemySurprise.golden;
+    _behavior = behaviorOverride ??
+        (walks ? EnemyBehavior.walker : typeData.behavior);
+    _hp = surprise == EnemySurprise.thrower
+        ? SurpriseConstants.throwerHits
+        : typeData.maxHp;
+    _move = switch (surprise) {
+      EnemySurprise.hopper => HopperMove(),
+      EnemySurprise.popper => RiseMove(),
+      EnemySurprise.thrower => ThrowerMove(),
+      EnemySurprise.golden => GoldenMove(),
+      EnemySurprise.none => null,
+    };
 
     _typeData = typeData;
 
@@ -117,9 +184,11 @@ class EnemyComponent extends SpriteAnimationComponent
       final frame = await _tryLoad('${_enemyType}_$i');
       if (frame != null) frames.add(frame);
     }
+    _frames = frames;
     animation = SpriteAnimation.spriteList(frames, stepTime: 0.2);
     _hurtSprite = await _tryLoad('${_enemyType}_hurt');
     _attackSprite = await _tryLoad('${_enemyType}_attack');
+    if (_move != null) _idleSprite = await _tryLoad('${_enemyType}_idle');
 
     // The box stays 90x108 for physics and level layout; only the drawing
     // follows the picture's own size (see [render] and art_scale.dart).
@@ -145,6 +214,11 @@ class EnemyComponent extends SpriteAnimationComponent
   EnemyTypeData? _typeData;
   Sprite? _hurtSprite;
   Sprite? _attackSprite;
+
+  /// The standing picture a surprise move shows (dizzy, out of breath), and the
+  /// walking pictures it picks from.
+  Sprite? _idleSprite;
+  List<Sprite> _frames = const [];
 
   /// Seconds the hurt picture still shows after a hit that did not defeat it.
   double _hurtLeft = 0;
@@ -192,6 +266,32 @@ class EnemyComponent extends SpriteAnimationComponent
   /// A chaser growls once each time a student comes into its range.
   bool _growled = false;
 
+  /// Chaser only: where it is in its warning-then-attack move. [_ChaserState.chase] is
+  /// the plain chase. A blast kind (a [BurstStyle]) goes chase, fuse, then bursts (and is
+  /// gone); a soldier made a chaser goes chase, crouch, dash, tired, chase.
+  _ChaserState _chaserState = _ChaserState.chase;
+  double _chaserTime = 0;
+  int _dashDirection = 1;
+  double _dashTravelled = 0;
+
+  /// Whether this chaser is in its fuse (stopped, flashing) right now.
+  @visibleForTesting
+  bool get isFusing => _chaserState == _ChaserState.fuse;
+
+  /// Whether this chaser is crouching before its dash right now.
+  @visibleForTesting
+  bool get isCrouching => _chaserState == _ChaserState.crouch;
+
+  /// Whether this chaser is mid-dash right now.
+  @visibleForTesting
+  bool get isDashing => _chaserState == _ChaserState.dash;
+
+  /// Whether this chaser is standing tired after a dash right now.
+  @visibleForTesting
+  bool get isTired => _chaserState == _ChaserState.tired;
+
+  BurstStyle? get _burstStyle => _typeData?.burst;
+
   /// Whether this Heavy is in its wind-up flash right now.
   @visibleForTesting
   bool get isWindingUp => _heavyState == _HeavyState.windup;
@@ -234,6 +334,9 @@ class EnemyComponent extends SpriteAnimationComponent
     super.update(dt);
     if (_hurtLeft > 0) _hurtLeft -= dt;
     if (defeated) return;
+
+    // A surprise move may take over the whole frame (a squat, a hop, a throw, a run).
+    if (_move?.update(this, dt) ?? false) return;
 
     switch (_behavior) {
       case EnemyBehavior.walker:
@@ -288,6 +391,18 @@ class EnemyComponent extends SpriteAnimationComponent
   /// Walks towards a student who comes close, slower than they walk, never past
   /// its leash and never off a ledge. Out of range it walks home and paces.
   void _updateChaser(double dt) {
+    switch (_chaserState) {
+      case _ChaserState.fuse:
+        return _updateFuse(dt);
+      case _ChaserState.crouch:
+        return _updateCrouch(dt);
+      case _ChaserState.dash:
+        return _updateDash(dt);
+      case _ChaserState.tired:
+        return _updateTired(dt);
+      case _ChaserState.chase:
+        break;
+    }
     final target = _playerWithin(CombatConstants.chaserNoticeRange);
     if (target == null) {
       _growled = false;
@@ -298,6 +413,7 @@ class EnemyComponent extends SpriteAnimationComponent
     if (target != null) {
       final dir = _towards(target);
       _direction = dir;
+      if (blasts && _armIfClose()) return;
       final dx = (target.position.x + target.size.x / 2) -
           (position.x + size.x / 2);
       if (dx.abs() < 8) return; // right on top: no jitter
@@ -315,6 +431,111 @@ class EnemyComponent extends SpriteAnimationComponent
       return;
     }
     _patrol(dt);
+  }
+
+  /// Starts the warning move when a student is close enough: a blast kind fuses, any
+  /// other chaser crouches. Returns true when it did, so the chase step is skipped.
+  bool _armIfClose() {
+    final style = _burstStyle;
+    if (style != null) {
+      final near = _playerWithin(CombatConstants.blastArmRange);
+      if (near == null) return false;
+      _direction = _towards(near);
+      _chaserState = _ChaserState.fuse;
+      _chaserTime = 0;
+      game.audioService.playHeavyWindup();
+      return true;
+    }
+    final near = _playerWithin(CombatConstants.dashArmRange);
+    if (near == null) return false;
+    _direction = _towards(near);
+    _chaserState = _ChaserState.crouch;
+    _chaserTime = 0;
+    return true;
+  }
+
+  /// Stopped and flashing. When the fuse runs out it bursts by itself.
+  void _updateFuse(double dt) {
+    _chaserTime += dt;
+    if (_chaserTime >= CombatConstants.blastFuse) _selfBurst();
+  }
+
+  /// How far through its fuse, 0 to 1.
+  double get _fuseProgress =>
+      (_chaserTime / CombatConstants.blastFuse).clamp(0.0, 1.0);
+
+  /// The fuse ran out: one heart off a student inside the ring and not jumping clear of
+  /// it (the same hit a touch does, so the safe moment and the Shield count), then
+  /// gone. A blast pays nothing: no coins, and it does not count as beaten.
+  void _selfBurst() {
+    _chaserState = _ChaserState.chase;
+    final p = _playerOrNull;
+    if (p != null) {
+      final dx =
+          (p.position.x + p.size.x / 2) - (position.x + size.x / 2);
+      final feetAbove = (position.y + size.y) - (p.position.y + p.size.y);
+      if (dx.abs() <= CombatConstants.blastRadius &&
+          feetAbove < CombatConstants.blastHeight) {
+        p.takeHazardHit(knockbackDirection: dx >= 0 ? 1 : -1);
+      }
+    }
+    _spawnBurst(1);
+    game.audioService.playShockwave();
+    defeated = true;
+    removeFromParent();
+  }
+
+  void _spawnBurst(double scale) {
+    final style = _burstStyle;
+    if (style == null) return;
+    game.world.add(EnemyBurstComponent(
+      style: style,
+      centre: Vector2(position.x + size.x / 2, position.y + size.y - 46),
+      burstScale: scale,
+      seed: _random.nextInt(1000),
+    ));
+  }
+
+  /// Squatting, the warning. Stopped; then it dashes.
+  void _updateCrouch(double dt) {
+    _chaserTime += dt;
+    if (_chaserTime >= CombatConstants.dashCrouch) {
+      _chaserState = _ChaserState.dash;
+      _chaserTime = 0;
+      _dashTravelled = 0;
+      _dashDirection = _direction;
+    }
+  }
+
+  /// A short fast run the way it faces, never past its leash and never off a ledge.
+  void _updateDash(double dt) {
+    _chaserTime += dt;
+    const speed = CombatConstants.dashDistance / CombatConstants.dashDuration;
+    final step =
+        min(speed * dt, CombatConstants.dashDistance - _dashTravelled);
+    final nextX = position.x + step * _dashDirection;
+    final withinLeash = (nextX - _spawnX).abs() <= CombatConstants.chaserLeash;
+    final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
+    if (withinLeash && ledgeOk) {
+      position.x = nextX;
+      _dashTravelled += step;
+    } else {
+      _dashTravelled = CombatConstants.dashDistance; // stopped short: spent
+    }
+    if (_chaserTime >= CombatConstants.dashDuration ||
+        _dashTravelled >= CombatConstants.dashDistance - 0.001) {
+      _chaserState = _ChaserState.tired;
+      _chaserTime = 0;
+    }
+  }
+
+  /// Out of breath after a dash: stands still, then chases again.
+  void _updateTired(double dt) {
+    _chaserTime += dt;
+    if (_chaserTime >= CombatConstants.dashTired) {
+      _chaserState = _ChaserState.chase;
+      _chaserTime = 0;
+    }
   }
 
   /// Stands still until a student comes close; then flashes for a moment (the
@@ -403,12 +624,62 @@ class EnemyComponent extends SpriteAnimationComponent
   @visibleForTesting
   String get shownPicture {
     if (_hurtSprite != null && (defeated || _hurtLeft > 0)) return 'hurt';
+    final moved = defeated ? null : _move?.look(this).picture;
+    if (moved == 'idle' && _idleSprite != null) return 'idle';
+    if (moved == 'hop' && _frames.length >= 3) return 'hop';
+    if (moved == 'attack' && _attackSprite != null) return 'attack';
     if (_attackSprite != null &&
         (_heavyState == _HeavyState.windup ||
-            _heavyState == _HeavyState.lunge)) {
+            _heavyState == _HeavyState.lunge ||
+            _chaserState == _ChaserState.dash ||
+            // The flyer keeps its walking picture while the fuse burns.
+            (_chaserState == _ChaserState.fuse &&
+                _burstStyle != BurstStyle.paper))) {
       return 'attack';
     }
     return 'walk';
+  }
+
+  /// Fuse flicker: white, rising from [CombatConstants.blastFlashFrom] to
+  /// [CombatConstants.blastFlashTo] flashes a second over the fuse.
+  @visibleForTesting
+  double get fuseFlashAlpha => _fuseFlash;
+
+  double get _fuseFlash {
+    final u = _fuseProgress;
+    const from = CombatConstants.blastFlashFrom;
+    const to = CombatConstants.blastFlashTo;
+    final phase = 2 * pi * CombatConstants.blastFuse *
+        (from * u + (to - from) / 2 * u * u);
+    return 0.3 + 0.55 * (0.5 + 0.5 * sin(phase));
+  }
+
+  final Paint _tintPaint = Paint();
+
+  /// A dashed red ellipse on the ground (the blast's reach) with a faint red fill that
+  /// grows over the fuse. The feet are at the bottom middle of the box.
+  void _drawBlastRing(Canvas canvas) {
+    const rx = CombatConstants.blastRadius;
+    const ry = rx * 0.2;
+    final oval = Rect.fromCenter(
+        center: Offset(size.x / 2, size.y + 4), width: rx * 2, height: ry * 2);
+    final fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xFFFF4A3D)
+          .withValues(alpha: 0.08 + 0.22 * _fuseProgress);
+    canvas.drawOval(oval, fill);
+    final line = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..color = const Color(0xFFFF6A5A).withValues(alpha: 0.9);
+    final path = Path()..addOval(oval);
+    for (final metric in path.computeMetrics()) {
+      var d = 0.0;
+      while (d < metric.length) {
+        canvas.drawPath(metric.extractPath(d, min(d + 8, metric.length)), line);
+        d += 14;
+      }
+    }
   }
 
   Sprite? get _shownSprite {
@@ -417,6 +688,10 @@ class EnemyComponent extends SpriteAnimationComponent
         return _hurtSprite;
       case 'attack':
         return _attackSprite;
+      case 'idle':
+        return _idleSprite;
+      case 'hop':
+        return _frames[2];
       default:
         return animationTicker?.getSprite();
     }
@@ -439,14 +714,84 @@ class EnemyComponent extends SpriteAnimationComponent
     // avoids it: that method compensates a non-center anchor by nudging
     // `position.x`, which here is world-authoritative state read by the
     // despawn check and by the patrol anchor (`_spawnX`) every frame.
+    // The warning moves squash or swell the picture about its feet and tint it.
+    var sx = 1.0, sy = 1.0;
+    Color? tint;
+    var tintAlpha = 0.0;
+    if (_chaserState == _ChaserState.fuse) {
+      final s = 1 + (CombatConstants.blastSwell - 1) * _fuseProgress;
+      sx = s;
+      sy = s;
+      tint = Colors.white;
+      tintAlpha = _fuseFlash;
+      _drawBlastRing(canvas);
+    } else if (_chaserState == _ChaserState.crouch) {
+      final u = (_chaserTime / CombatConstants.dashCrouch).clamp(0.0, 1.0);
+      final pulse = sin(u * pi);
+      sy = 1 - (1 - CombatConstants.dashSquashY) * pulse;
+      sx = 1 + (CombatConstants.dashSquashX - 1) * pulse;
+      tint = const Color(0xFFFFB84A);
+      tintAlpha = 0.25 + 0.4 * (0.5 + 0.5 * sin(u * 22));
+    }
+    // A surprise move squashes, flashes, tints, lifts or cuts the picture too.
+    final look = _move?.look(this);
+    var lift = 0.0;
+    var clip = false;
+    if (look != null) {
+      if (!defeated) {
+        sx *= look.scaleX;
+        sy *= look.scaleY;
+        lift = look.lift;
+        clip = look.clipAtGround;
+        if (look.flash > 0) {
+          tint = Colors.white;
+          tintAlpha = look.flash;
+        }
+      }
+      if (look.gold && tint == null) {
+        tint = const Color(0xFFFFCC33);
+        tintAlpha = 0.5;
+      }
+    }
+    var drawPaint = paint;
+    if (tint != null) {
+      _tintPaint
+        ..color = paint.color
+        ..colorFilter =
+            ColorFilter.mode(tint.withValues(alpha: tintAlpha), BlendMode.srcATop);
+      drawPaint = _tintPaint;
+    }
+    final move = defeated ? null : _move;
+    if (move != null) {
+      canvas.save();
+      canvas.translate(size.x / 2, size.y);
+      move.paintBehind(canvas, this);
+      canvas.restore();
+    }
+    canvas.save();
+    // Cut at the ground line first (an enemy rising out of the ground), then lift.
+    if (clip) {
+      canvas.clipRect(Rect.fromLTRB(-300, -600, size.x + 300, size.y + 2));
+    }
+    canvas.translate(0, -lift);
+    canvas.translate(size.x / 2, size.y);
+    canvas.scale(sx, sy);
+    canvas.translate(-size.x / 2, -size.y);
     paintArt(
       canvas,
       sprite,
       footX: size.x / 2,
       footY: size.y,
       flip: _direction >= 0,
-      overridePaint: paint,
+      overridePaint: drawPaint,
     );
+    canvas.restore();
+    if (move != null) {
+      canvas.save();
+      canvas.translate(size.x / 2, size.y);
+      move.paintOver(canvas, this);
+      canvas.restore();
+    }
   }
 
   /// Called when the player's attack hitbox connects. Decrements HP and
@@ -454,6 +799,11 @@ class EnemyComponent extends SpriteAnimationComponent
   /// registers but leaves it alive and still a threat.
   void takeHit() {
     if (defeated) return;
+    // A hit during the fuse pops it harmlessly: a small burst, no blast, and then the
+    // normal defeat (coins, onDefeated). Whatever warning it was in ends here.
+    if (_chaserState == _ChaserState.fuse) _spawnBurst(CombatConstants.popBurstScale);
+    _chaserState = _ChaserState.chase;
+    _move?.onHit(this);
     _hp--;
     if (_hp <= 0) {
       _die();
@@ -598,6 +948,7 @@ class EnemyComponent extends SpriteAnimationComponent
   Vector2 _deathSpot = Vector2.zero();
 
   void _dropCoins() {
+    if (surprise == EnemySurprise.golden) return _dropGoldenCoins();
     final count = CombatConstants.coinDropMin +
         _random.nextInt(
           CombatConstants.coinDropMax - CombatConstants.coinDropMin + 1,
@@ -607,6 +958,38 @@ class EnemyComponent extends SpriteAnimationComponent
         CoinComponent(spawnPosition: _deathSpot + Vector2(i * 10.0, 0)),
       );
     }
+  }
+
+  /// How many bonus coins the golden runner drops, and where: 8 to 10 in two rows over
+  /// about 130 units, with a word of praise over them.
+  @visibleForTesting
+  int goldenCoinCount() =>
+      SurpriseConstants.goldenCoinsMin +
+      _random.nextInt(SurpriseConstants.goldenCoinsMax -
+          SurpriseConstants.goldenCoinsMin +
+          1);
+
+  void _dropGoldenCoins() {
+    final count = goldenCoinCount();
+    final perRow = (count + 1) ~/ 2;
+    for (var i = 0; i < count; i++) {
+      final row = i < perRow ? 0 : 1;
+      final inRow = row == 0 ? i : i - perRow;
+      final n = row == 0 ? perRow : count - perRow;
+      final x = (inRow - (n - 1) / 2) * 30.0;
+      game.world.add(
+        CoinComponent(
+            spawnPosition: _deathSpot + Vector2(x + 24, row == 0 ? 40 : -10)),
+      );
+    }
+    game.world.add(PraiseComponent(word: 'Bonus coins!')
+      ..position = _deathSpot + Vector2(size.x / 2, -20));
+  }
+
+  @override
+  void onRemove() {
+    _move?.onRemoved(this);
+    super.onRemove();
   }
 
   String _getEnemyTypeForEra(String era) {

@@ -31,7 +31,10 @@ function write(level) {
       x: o.x,
       xml: (i) =>
         `<object id="${i}" type="artifact" x="${o.x}" y="${o.y ?? physics.groundSurfaceY}">\n` +
-        `   <properties>\n    <property name="art" value="${o.art}"/>\n   </properties>\n  </object>`,
+        `   <properties>\n    <property name="art" value="${o.art}"/>\n` +
+        // The level's one golden artifact (see golden.js): it opens the bonus portal.
+        (o.golden ? `    <property name="golden" type="bool" value="true"/>\n` : '') +
+        `   </properties>\n  </object>`,
     })),
     ...level.enemies.map((o) => ({
       x: o.x,
@@ -44,6 +47,11 @@ function write(level) {
     ...level.platforms.map((o) => ({
       x: o.x,
       xml: (i) => `<object id="${i}" type="platform" x="${o.x}" y="${o.y}" width="${o.width}" height="${physics.platformTile}"/>`,
+    })),
+    // The surprises that are objects of their own: a crack (ground_pop) and a rock (falling_rock).
+    ...(level.surprises || []).map((o) => ({
+      x: o.x,
+      xml: (i) => `<object id="${i}" type="${o.type}" x="${o.x}" y="${o.y}"/>`,
     })),
   ].sort((a, b) => a.x - b.x);
   for (const it of items) add(it.xml(id++));
@@ -125,7 +133,7 @@ function read(xml) {
 
   const level = {
     mapWidth: width * TILE, H, grid, enemies: [], platforms: [], coins: [], artifacts: [], gates: [],
-    spawnX: 0, exitX: width * TILE, props: {}, arena: null,
+    spawnX: 0, exitX: width * TILE, props: {}, arena: null, surprises: [],
     generated: /name="generator"/.test(xml),
   };
   const mapProps = readProps(xml.slice(0, xml.indexOf('<tileset')));
@@ -145,8 +153,9 @@ function read(xml) {
     else if (type === 'exit') level.exitX = x;
     else if (type === 'gate') level.gates.push(x);
     else if (type === 'coin') level.coins.push({ x, y });
-    else if (type === 'artifact') level.artifacts.push({ x, y, art: p.art });
+    else if (type === 'artifact') level.artifacts.push({ x, y, art: p.art, ...(p.golden === 'true' ? { golden: true } : {}) });
     else if (type === 'platform') level.platforms.push({ x, y, width: Number(attr(a, 'width')) });
+    else if (type === 'ground_pop' || type === 'falling_rock') level.surprises.push({ type, x, y });
     else if (type === 'enemy') level.enemies.push({ x, y, kind: p.kind, behavior: p.behavior, patrol: Number(p.patrol) });
   }
   return level;

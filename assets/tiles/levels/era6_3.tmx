@@ -171,6 +171,7 @@
   <object id="58" type="artifact" x="14508" y="588">
    <properties>
     <property name="art" value="artifact_3"/>
+    <property name="golden" type="bool" value="true"/>
    </properties>
   </object>
   <object id="59" type="coin" x="15039" y="476"/>

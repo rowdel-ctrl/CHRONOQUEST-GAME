@@ -6,9 +6,17 @@
 /// - heavy: stands still until a student comes close, then flashes and lunges. 2 hits.
 enum EnemyBehavior { walker, chaser, heavy }
 
+/// How a blast chaser looks when it bursts (EnemyBurstComponent).
+enum BurstStyle { smoke, paper, storm }
+
 class EnemyTypeData {
   final EnemyBehavior behavior;
   final int maxHp;
+
+  /// Set for the kinds that fuse and burst when they chase (the spirit, the flyers,
+  /// the cloud). Null for the rest: a chaser without one (a soldier the map made a
+  /// chaser) crouches and dashes instead.
+  final BurstStyle? burst;
 
   /// The part of this enemy that hurts and can be hit, in game units
   /// (width x height). Null means the old rule: a centred
@@ -22,6 +30,7 @@ class EnemyTypeData {
   const EnemyTypeData({
     required this.behavior,
     required this.maxHp,
+    this.burst,
     this.hitWidth,
     this.hitHeight,
   });
@@ -42,11 +51,17 @@ const Map<String, EnemyTypeData> enemyTypeTable = {
   'japanese_soldier': EnemyTypeData(
       behavior: EnemyBehavior.walker, maxHp: 1, hitWidth: 50, hitHeight: 86),
   // Chasers — 1 hit. The three that used to run as Walkers until this existed.
-  'dark_spirit': EnemyTypeData(behavior: EnemyBehavior.chaser, maxHp: 1),
-  'propaganda': EnemyTypeData(behavior: EnemyBehavior.chaser, maxHp: 1),
+  'dark_spirit': EnemyTypeData(
+      behavior: EnemyBehavior.chaser, maxHp: 1, burst: BurstStyle.smoke),
+  'propaganda': EnemyTypeData(
+      behavior: EnemyBehavior.chaser, maxHp: 1, burst: BurstStyle.paper),
   // Wide and low (85x69): a body-sized hit area on the ground.
   'misinfo_cloud': EnemyTypeData(
-      behavior: EnemyBehavior.chaser, maxHp: 1, hitWidth: 75, hitHeight: 66),
+      behavior: EnemyBehavior.chaser,
+      maxHp: 1,
+      burst: BurstStyle.storm,
+      hitWidth: 75,
+      hitHeight: 66),
   // Heavies — 2 hits, lunge when you come close.
   // Wide and low (85x60): nothing above 60 units can hurt the student or be hit.
   'tank': EnemyTypeData(

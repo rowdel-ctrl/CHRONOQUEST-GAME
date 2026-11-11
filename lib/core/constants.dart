@@ -166,9 +166,10 @@ class GameConstants {
   static const int bossWarmupQuestions = 10;
   static const int bossFightQuestions = 12;
 
-  // The boss fight (GAMEPLAY-V2.md Section 7): every question of the level's pool is asked
-  // once, each with a countdown, a few minions come after every second question, and a wrong
-  // answer is asked again. The phases are in game/boss_plan.dart.
+  // The boss fight (GAMEPLAY-V2.md Section 7, v2): every question of the level's pool is asked
+  // once (22), each started by walking up to a rune and each with a countdown (the attack's
+  // flight); a wave of minions comes after every second question, and a wrong answer is asked
+  // again. The numbers are in core/boss_attack_constants.dart, the phases in game/boss_plan.dart.
   static const double bossAnswerSeconds = 15;
 
   /// If the minions of a wave are not all beaten after this long, the next
@@ -385,13 +386,34 @@ const List<EraData> allEras = [
         'Hindi ka mauuto ng pangako ng kalayaan, di ba? Patunayan mo!',
     groundColor: Color(0xFF8B6914),
     historicalText:
-        'Noong 1898, pagkatapos ng Digmaang Espanyol-Amerikano, inilipat ang '
-        'Pilipinas sa Estados Unidos. Itinatag ng mga Amerikano ang sistema ng edukasyong '
-        'pampubliko at nagpadala ng mga Thomasites — mga guro mula Amerika. Nagtagal ang '
-        'pananakop ng Amerika at naglunsad ng Philippine-American War na nagkahalaga ng '
-        'maraming buhay ng Pilipino. Noong 1935, naitatag ang Commonwealth ng Pilipinas na '
-        'may Manuel Quezon bilang unang Pangulo, at noong Hulyo 4, 1946, opisyal na nakamit '
-        'ng Pilipinas ang kalayaan.',
+        'Noong 1892, itinatag ni Andres Bonifacio ang Katipunan, ang lihim na samahan '
+        'para sa kalayaan. Ang Kartilya ng Katipunan ay gabay ng mga kasapi, isinulat ni '
+        'Emilio Jacinto. Noong Agosto 1896, nagtipon ang mga Katipunero sa Pugad Lawin at '
+        'pinunit ang kanilang sedula. Noong Disyembre 30, 1896, binitay si Dr. Jose Rizal '
+        'sa Bagumbayan. Noong Marso 1897, nagpulong ang mga rebolusyonaryo sa Tejeros. '
+        'Nahalal si Emilio Aguinaldo na Pangulo, pero hindi tinanggap ni Bonifacio ang '
+        'resulta. Noong Mayo 1897, inaresto at pinatay si Andres Bonifacio. Noong '
+        'Disyembre 1897, pumirma sila sa Kasunduan sa Biak-na-Bato, at napatapon sa Hong '
+        'Kong sina Aguinaldo. Noong Hunyo 12, 1898, ipinahayag ang kasarinlan sa Kawit, '
+        'Cavite. Binasa ni Ambrosio Rianzares Bautista ang Acta. Noong Enero 23, 1899, '
+        'pinasinayaan ang Unang Republika sa Malolos, at si Emilio Aguinaldo ang naging '
+        'unang Pangulo. Maraming babae ang tumulong sa himagsikan. Si Gregoria de Jesus, '
+        'asawa ni Bonifacio, ay kilala bilang Lakambini ng Katipunan. Si Marcela '
+        'Agoncillo at ang kanyang mga kasama ay tumahi ng unang watawat sa Hong Kong. Si '
+        'Teresa Magbanua ay tinawag na Joan of Arc ng Visayas. Ang imperyalismo ay '
+        'pagpapalawak ng kapangyarihan ng isang malakas na bansa sa ibang bansa, para sa '
+        'yaman at kapangyarihan. Ang madalas na dahilan ay tatlong G: Gold, Glory at God. '
+        'Ginamit ng mga Amerikano ang Manifest Destiny at White Man\'s Burden para '
+        'bigyang-katwiran ito. Noong Disyembre 10, 1898, nilagdaan ang Kasunduan sa '
+        'Paris, at ipinasa ng Espanya ang Pilipinas sa Amerika sa halagang \$20 milyon. '
+        'Noong 1899, sumiklab ang Digmaang Pilipino-Amerikano. Noong Disyembre 1899, '
+        'namatay si Gregorio del Pilar sa Tirad Pass habang tinatakpan ang pag-atras ni '
+        'Aguinaldo. Noong Abril 1902, sumuko si Heneral Miguel Malvar, at noong Hulyo 4, '
+        '1902, idineklara ng Amerika na tapos na ang digmaan. Noong Disyembre 21, 1898, '
+        'inilabas ni Pangulong McKinley ang Benevolent Assimilation, ang tinawag nilang '
+        'mapagkawanggawang pagsasanib. Noong 1901, dumating ang mga gurong Thomasites, at '
+        'ginawang midyum ng pagtuturo ang Ingles. Ipinagbawal din ng Batas Sedisyon ng '
+        '1901 ang paghihimagsik laban sa pamahalaan.',
     grade: 6,
     term: 1,
     levelWeeks: [
@@ -415,12 +437,37 @@ const List<EraData> allEras = [
     bossDialogue: 'Hindi ibinibigay ang kalayaan — kinukuha ito!',
     groundColor: Color(0xFF4A4A3A),
     historicalText:
-        'Noong Disyembre 8, 1941, sinalakay ng Hapon ang Pilipinas. Naganap ang '
-        'malupit na Bataan Death March noong Abril 1942. Sa ilalim ng pananakop ng Hapon, '
-        'naghirap ang mga Pilipino. Nabuo ang mga gerilya na lumaban sa Hapon — kabilang '
-        'ang Hukbalahap. Noong Oktubre 1944, bumalik si General Douglas MacArthur at '
-        'nagsimula ang Labanan para sa Pilipinas. Ang Labanan ng Maynila noong 1945 ay '
-        'isa sa pinaka-mapanirang labanan sa lungsod sa buong Ikalawang Digmaang Pandaigdig.',
+        'Noong 1907, nagkaroon ng unang halal na kapulungan ng mga Pilipino, ang '
+        'Philippine Assembly. Noong 1916, ipinangako ng Jones Law ang kalayaan at '
+        'nagtatag ng Senado at Kapulungan ng mga Kinatawan. Sa ilalim ng Filipinization '
+        'ni Gobernador-Heneral Harrison, mas maraming posisyon ang ibinigay sa mga '
+        'Pilipino. Noong 1922, nagpunta sa Amerika ang misyong OsRox nina Osmeña at Roxas '
+        'para humingi ng kalayaan. Noong 1934, ipinasa ng Amerika ang Tydings-McDuffie '
+        'Act, na nagtakda ng sampung taong transisyon. Noong Nobyembre 15, 1935, '
+        'pinasinayaan ang Komonwelt, at si Manuel Quezon ang unang Pangulo. Noong 1937, '
+        'nakaboto na ang mga kababaihan, at ginawang batayan ng pambansang wika ang '
+        'Tagalog. Noong Disyembre 8, 1941, sinalakay ng Hapon ang Pilipinas. Noong Abril '
+        '1942, naganap ang malupit na Bataan Death March. Bago umalis sa Pilipinas noong '
+        '1942, nangako si General Douglas MacArthur ng pagbabalik: Babalik ako. Layunin '
+        'ng Hapon na gamitin ang Pilipinas sa digmaan. Noong Oktubre 14, 1943, itinatag '
+        'nila ang Ikalawang Republika sa ilalim ni Jose P. Laurel. Ang KALIBAPI ang '
+        'nag-iisang partido, at ang Makapili ay grupong pumanig sa Hapon. Nabuo ang mga '
+        'gerilya na lumaban sa Hapon, kabilang ang Hukbalahap. Ang Kempeitai ang militar '
+        'na pulis ng Hapon na nagpahirap sa mga lumalaban. Si Chief Justice Jose Abad '
+        'Santos ay pinatay noong Mayo 1942 dahil tumangging makipagtulungan sa Hapon. Si '
+        'Josefa Llanes Escoda, tagapagtatag ng Girl Scouts of the Philippines, ay '
+        'ikinulong sa Fort Santiago at hindi na nakita pagkatapos ng Enero 1945. Noong '
+        'Hulyo 4, 1946, opisyal na nakamit ng Pilipinas ang kalayaan. Nasira ang mga '
+        'bayan at ang Maynila pagkatapos ng digmaan, at si Manuel Roxas ang unang Pangulo '
+        'ng Ikatlong Republika. Lumakas ang Huk dahil sa kahirapan, at tinawag na Kampeon '
+        'ng Masa si Ramon Magsaysay dahil sa pagtugon dito. Noong 1946, ipinasa ang Bell '
+        'Trade Act, na nagbigay sa mga Amerikano ng parity rights. Noong 1947, pumirma '
+        'ang dalawang bansa ng Military Bases Agreement, na may 99 taong pag-upa ng mga '
+        'base. Noong 1991, tinanggihan ng Senado ang bagong kasunduan, at umalis ang mga '
+        'base noong 1992. Ang colonial mentality ay ugaling mas pinapahalagahan ang '
+        'banyaga kaysa sa sarili. Sinabi ni Renato Constantino sa aklat na The '
+        'Miseducation of the Filipino na may mali sa edukasyong kolonyal. Itinatag ang '
+        'Cultural Center of the Philippines noong 1966 para ipakita ang sariling sining.',
     grade: 6,
     term: 2,
     levelWeeks: [
@@ -444,13 +491,31 @@ const List<EraData> allEras = [
     bossDialogue: 'Ang katotohanan ang sandata mo!',
     groundColor: Color(0xFF555555),
     historicalText:
-        'Noong Hulyo 4, 1946, opisyal na naging malaya ang Pilipinas. Sa mga '
-        'sumunod na dekada, hinarap ng bansa ang maraming pagsubok — mula sa Marcos '
-        'diktadura (1972–1986) hanggang sa People Power Revolution na nagluklok kay Corazon '
-        'Aquino bilang Pangulo noong 1986. Ang EDSA Revolution ay naging simbolo ng '
-        'kapangyarihan ng mamamayan sa buong mundo. Patuloy na lumalago ang Pilipinas '
-        'bilang isang demokratikong bansa na nagtataguyod ng kalayaan, katarungan, at '
-        'pagkakapantay-pantay para sa lahat ng Pilipino.',
+        'Noong Setyembre 21, 1972, pinirmahan ni Ferdinand Marcos ang Proklamasyon 1081, '
+        'ang Batas Militar. Isinara ang mga pahayagan, radyo, at telebisyon, at maraming '
+        'paglabag sa karapatang pantao. Ang mga malapit kay Marcos ay yumaman sa crony '
+        'capitalism. Inalis ang pormal na Batas Militar noong Enero 17, 1981, pero '
+        'nanatili ang kapangyarihan ni Marcos. Noong Agosto 21, 1983, pinatay si Ninoy '
+        'Aquino pagdating niya sa paliparan ng Maynila. Noong Pebrero 7, 1986, nagkaroon '
+        'ng snap election laban kay Marcos at Cory Aquino. Noong Pebrero 22, 1986, '
+        'kumalas sina Juan Ponce Enrile at Fidel Ramos kay Marcos, at nanawagan si '
+        'Cardinal Sin sa Radio Veritas na pumunta sa EDSA. Mapayapang nagtipon ang mga '
+        'tao hanggang Pebrero 25, nang umalis si Marcos. Ang EDSA Revolution ay naging '
+        'simbolo ng kapangyarihan ng mamamayan sa buong mundo. Pagkatapos ng EDSA, '
+        'ipinatupad ni Aquino ang pansamantalang Freedom Constitution. Itinatag ang PCGG '
+        'para habulin ang yamang ninakaw sa panahon ni Marcos. Noong Pebrero 2, 1987, '
+        'niratipikahan ang Saligang Batas ng 1987, na may anim na taong termino ng '
+        'Pangulo at walang reelection. Noong Enero 2001, nagkaroon ng EDSA II na '
+        'nagpatalsik kay Joseph Estrada. Noong 2013, sumabog ang Pork Barrel Scam, isang '
+        'malaking iskandalo sa pondo ng gobyerno. Noong Hulyo 12, 2016, nanalo ang '
+        'Pilipinas sa Permanent Court of Arbitration tungkol sa West Philippine Sea. '
+        'Noong 2018, ipinasa ang Bangsamoro Organic Law. Ang Philippines 2000 ni '
+        'Pangulong Fidel V. Ramos ay plano para sa pag-unlad noong 1990s. Lumago ang BPO '
+        'industry mula 2000s. Noong 2008, inilunsad ang 4Ps, ang tulong para sa mahihirap '
+        'na pamilya. Noong 2018, ipinatupad ang TRAIN Law sa buwis. Noong Nobyembre 8, '
+        '2013, sinalanta ng Yolanda (Haiyan) ang bansa, at noong 2020, pinahirapan ng '
+        'COVID-19 ang ekonomiya. Maraming Pilipino ang nagtatrabaho sa ibang bansa bilang '
+        'OFW.',
     grade: 6,
     term: 3,
     levelWeeks: [

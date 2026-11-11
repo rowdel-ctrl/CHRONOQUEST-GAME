@@ -72,10 +72,17 @@ class ArtifactComponent extends SpriteComponent
   /// each one (the rest areas sit on the level's landscape).
   final double? surfaceY;
 
+  /// The level's one golden artifact (the map's `golden="true"`): drawn gold with a
+  /// bigger, hotter halo and turning rays. Answered right on the first try, it opens
+  /// a portal to the bonus round (see bonus_handler.dart). Otherwise it behaves
+  /// like any artifact.
+  final bool golden;
+
   ArtifactComponent({
     required this.worldX,
     required this.spriteIndex,
     this.surfaceY,
+    this.golden = false,
   });
 
   @override
@@ -87,6 +94,12 @@ class ArtifactComponent extends SpriteComponent
       (surfaceY ?? game.groundY) - CombatConstants.artifactHoverHeight,
     );
     _baseY = position.y;
+    // Gold: a warm wash over the picture itself (a paint filter, so it never
+    // touches the decorator chain that the inert dimming below uses).
+    if (golden) {
+      paint.colorFilter =
+          const ColorFilter.mode(Color(0x80FFC531), BlendMode.srcATop);
+    }
 
     // No era tint any more. It washed the sprite into the (tinted) background,
     // so artifacts were hard to pick out (playtest, 2026-10-06); they are drawn
@@ -141,7 +154,7 @@ class ArtifactComponent extends SpriteComponent
 
   void _renderGlow(Canvas canvas) {
     final centre = Offset(size.x / 2, size.y / 2);
-    final radius = size.x * 1.15;
+    final radius = size.x * (golden ? 1.7 : 1.15);
     final fade = opacity.clamp(0.0, 1.0); // follows the fade-out when claimed
     if (fade <= 0) return;
 
@@ -149,11 +162,16 @@ class ArtifactComponent extends SpriteComponent
       colors: [Color(0xF2FFF0A0), Color(0x8CFFC531), Color(0x00FFC531)],
       stops: [0.0, 0.38, 1.0],
     ).createShader(Rect.fromCircle(center: Offset.zero, radius: 1));
-    _haloPaint.shader = _haloShader;
+    _goldHaloShader ??= const RadialGradient(
+      colors: [Color(0xFFFFF4B0), Color(0xBFFFC531), Color(0x00FF9A1C)],
+      stops: [0.0, 0.42, 1.0],
+    ).createShader(Rect.fromCircle(center: Offset.zero, radius: 1));
+    _haloPaint.shader = golden ? _goldHaloShader : _haloShader;
 
     if (fade < 1) {
       canvas.saveLayer(null, Paint()..color = Colors.white.withValues(alpha: fade));
     }
+    if (golden) _renderGoldenRays(canvas, centre);
     // The halo breathes: 86% to 100% of its size.
     final pulse = 0.86 + 0.14 * sin(_glowTime * 2.6);
     canvas.save();
@@ -174,6 +192,31 @@ class ArtifactComponent extends SpriteComponent
       _drawStar(canvas, x, y, 2.4 + 1.6 * a);
     }
     if (fade < 1) canvas.restore();
+  }
+
+  static Shader? _goldHaloShader;
+  static final Paint _rayPaint = Paint();
+
+  /// The golden artifact's slowly turning fan of light, behind the halo.
+  void _renderGoldenRays(Canvas canvas, Offset centre) {
+    _rayPaint.color = const Color(0x66FFE28A);
+    final reach = size.x * 1.45;
+    final half = size.x * 0.1;
+    canvas.save();
+    canvas.translate(centre.dx, centre.dy);
+    canvas.rotate(_glowTime * 0.6);
+    for (var i = 0; i < 10; i++) {
+      canvas.rotate(2 * pi / 10);
+      canvas.drawPath(
+        Path()
+          ..moveTo(0, 0)
+          ..lineTo(-half, -reach)
+          ..lineTo(half, -reach)
+          ..close(),
+        _rayPaint,
+      );
+    }
+    canvas.restore();
   }
 
   /// A four-pointed twinkle.

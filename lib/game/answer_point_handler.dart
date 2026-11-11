@@ -4,6 +4,7 @@ import '../models/codex_entry.dart';
 import '../models/question.dart';
 import '../models/quiz_result.dart';
 import '../services/storage_service.dart';
+import 'bonus_handler.dart';
 import 'chrono_game.dart';
 import 'components/artifact_component.dart';
 import 'components/gate_component.dart';
@@ -102,6 +103,10 @@ extension AnswerPointHandler on ChronoGame {
     // own flag, not `attempted`: a Shield absorbs a wrong answer without
     // setting `attempted`, which would have counted the same artifact twice.
     var lastArtifactAnswered = false;
+    // The very first answer to this artifact. A golden one opens its bonus portal
+    // only for a right answer on this try (a wrong first try, even one a Shield
+    // absorbed, or a timeout, never does).
+    final firstTry = artifact != null && !artifact.counted;
     if (artifact != null && !artifact.counted) {
       artifact.counted = true;
       artifactsAnswered++;
@@ -129,6 +134,7 @@ extension AnswerPointHandler on ChronoGame {
         _recordCodexEntry(artifact, question);
         artifact.claim();
         artifactsClaimed++;
+        if (firstTry && artifact.golden) openGoldenPortal(artifact);
       }
     } else {
       // A wrong answer loses no HP — Section 6 is explicit. A Shield absorbs the

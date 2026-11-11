@@ -64,13 +64,15 @@ void main() {
         expect(level.blockAt(level.spawnX + 48), isNotNull);
         expect(level.blockAt(level.boss!.x), isNotNull);
         expect(level.blockAt(level.boss!.x)!.topY, level.boss!.y);
-        // The boss paces +-100 round its place (its half width is 60): the ground under that
-        // whole range, and a margin, must be one level piece, or it walks off its stage.
+        // The boss stands on its stage (its half width is 60): the ground under it, with a
+        // margin, must be one level piece. (It used to pace +-100 round its place; it stands
+        // still now, and the old width of the stage is kept.)
         final stage = level.blockAt(level.boss!.x)!;
         expect(stage.startX, lessThanOrEqualTo(level.boss!.x - 160), reason: 'stage ends too near the boss on the left');
         expect(stage.endX, greaterThanOrEqualTo(level.boss!.x + 160), reason: 'stage ends too near the boss on the right');
         expect(stage.endX - stage.startX, greaterThanOrEqualTo(336), reason: 'a stage is at least 14 tiles wide');
-        expect(BossComponent.paceRange + 60, lessThanOrEqualTo(160), reason: 'the pacing fits the documented stage');
+        // (the minion and scroll spots stay in the maps, unused by the boss fight for now: the rooms
+        // are to be redesigned)
         expect(level.minionSpawns.length, greaterThanOrEqualTo(4));
         for (final m in level.minionSpawns) {
           expect(level.blockAt(m.x)?.topY, m.y, reason: 'a minion at ${m.x} is not on ground');
@@ -119,8 +121,8 @@ void main() {
     expect(game.bossPhase, isTrue);
     expect(game.boss, isNotNull);
     expect(game.world.children.whereType<BossComponent>(), hasLength(1));
-    // (it paces a little round that place, never more than its range from it)
-    expect(game.boss!.position.x + 60, closeTo(level.boss!.x, 100.01));
+    // (it stands on that place and does not pace)
+    expect(game.boss!.position.x + 60, closeTo(level.boss!.x, 0.01));
     // And with charges to fight the first wave, since there were no artifacts on the way.
     expect(game.kaalaman, CombatConstants.bossStartCharges);
 

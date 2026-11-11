@@ -16,6 +16,7 @@ import '../screens/settings/settings_screen.dart';
 import '../screens/settings/sound_screen.dart';
 import '../screens/tutorial/tutorial_screen.dart';
 import '../screens/game/background_history_screen.dart';
+import '../screens/game/full_story_screen.dart';
 import '../screens/game/level_select_screen.dart';
 import '../screens/game/game_screen.dart';
 import '../screens/game/level_complete_screen.dart';
@@ -113,6 +114,13 @@ final GoRouter appRouter = GoRouter(
       path: '/background/:eraId',
       builder: (context, state) => BackgroundHistoryScreen(
         eraId: state.pathParameters['eraId']!,
+      ),
+    ),
+    GoRoute(
+      path: '/story/:eraId/:chapter',
+      builder: (context, state) => FullStoryScreen(
+        eraId: state.pathParameters['eraId']!,
+        chapter: int.tryParse(state.pathParameters['chapter'] ?? '') ?? 0,
       ),
     ),
     GoRoute(

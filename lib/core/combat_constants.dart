@@ -60,8 +60,43 @@ class CombatConstants {
   /// level, slower than the student's 250, never further than [chaserLeash] from
   /// where it stood, and never off a ledge. Out of range it walks home and paces.
   static const double chaserNoticeRange = 440;
-  static const double chaserSpeed = 110;
+  static const double chaserSpeed = 140; // 110 until 2026-11-10
   static const double chaserLeash = 380;
+
+  // ─── Blast chasers (dark spirit, propaganda, misinfo cloud) ─────────────
+  /// While chasing, one that gets this close (centre to centre, same level) stops and
+  /// fuses for [blastFuse] seconds, flashing with a red ring on the ground. If the
+  /// fuse runs out it bursts: one heart for a student inside [blastRadius] sideways
+  /// whose feet are less than [blastHeight] above its feet (a jump clears it). A hit
+  /// during the fuse pops it harmlessly. A self-burst pays no coins.
+  static const double blastArmRange = 100;
+  static const double blastFuse = 0.7;
+  static const double blastRadius = 110;
+  static const double blastHeight = 60;
+
+  /// The flicker speeds up from [blastFlashFrom] to [blastFlashTo] flashes a second
+  /// over the fuse, and the body swells from 1.0 to [blastSwell].
+  static const double blastFlashFrom = 4;
+  static const double blastFlashTo = 14;
+  static const double blastSwell = 1.2;
+
+  /// How long a burst picture (EnemyBurstComponent) lives, and how big the harmless
+  /// pop is next to a real burst.
+  static const double burstDuration = 0.8;
+  static const double popBurstScale = 0.5;
+
+  // ─── Dash chasers (a soldier the map made a chaser) ─────────────────────
+  /// Close to a student ([dashArmRange]) it crouches for [dashCrouch] (the warning:
+  /// a squash and an orange flash), dashes [dashDistance] units in [dashDuration],
+  /// then stands tired for [dashTired] before it chases again. Touching a student
+  /// costs a heart as for any enemy; a jump over it avoids that.
+  static const double dashArmRange = 140;
+  static const double dashCrouch = 0.35;
+  static const double dashDuration = 0.3;
+  static const double dashDistance = 130;
+  static const double dashTired = 0.7;
+  static const double dashSquashY = 0.88;
+  static const double dashSquashX = 1.06;
 
   /// How far apart in height two things can be and still count as "on the same
   /// level" (a jump reaches about 128).

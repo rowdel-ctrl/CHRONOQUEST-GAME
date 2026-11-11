@@ -8,11 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/era_progress.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/progress_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/guest_mode.dart';
-import '../../widgets/character_portrait.dart';
 import '../../widgets/guest_card.dart';
 import '../../widgets/living_backdrop.dart';
 import '../../widgets/menu_chip.dart';
@@ -200,47 +198,16 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
                           ),
                   ),
 
-                  // Who is playing and the score, then the dots for the eras.
+                  // The dots for the eras.
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 2, 20, 8),
-                    child: Row(
-                      children: [
-                        CharacterPortrait(
-                          characterId:
-                              ref.watch(gameProvider).selectedCharacterId,
-                          width: 32,
-                          height: 32,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter,
-                        ),
-                        const SizedBox(width: 12),
-                        Image.asset('assets/ui/star_full.png',
-                            width: 18,
-                            height: 18,
-                            filterQuality: FilterQuality.none),
-                        const SizedBox(width: 5),
-                        Text(
-                          '${student?.score ?? 0}',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: _Dots(
-                              eras: visibleEras,
-                              focus: focus,
-                              done: (e) =>
-                                  notifier.getEraProgress(e.id).isCompleted,
-                              onTap: (i) => _focusOn(i, count),
-                            ),
-                          ),
-                        ),
-                        // Balances the score side so the dots stay near the middle.
-                        const SizedBox(width: 32),
-                      ],
+                    child: Center(
+                      child: _Dots(
+                        eras: visibleEras,
+                        focus: focus,
+                        done: (e) => notifier.getEraProgress(e.id).isCompleted,
+                        onTap: (i) => _focusOn(i, count),
+                      ),
                     ),
                   ),
                 ],

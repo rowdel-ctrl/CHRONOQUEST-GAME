@@ -218,7 +218,11 @@ void main() {
 
     test('never goes further than its leash from where it stood', () async {
       final game = _bareGame();
-      final enemy = await _mountEnemy(game, 'dark_spirit');
+      // blasts: false keeps it a plain chaser; a blast kind stops and fuses at 100.
+      final enemy = EnemyComponent(
+          eraId: 'spanish', enemyTypeOverride: 'dark_spirit', blasts: false);
+      game.world.add(enemy);
+      await game.ready();
       final spawn = enemy.position.x;
       placePlayerBeside(game, enemy, -400);
       for (var i = 0; i < 60 * 10; i++) {

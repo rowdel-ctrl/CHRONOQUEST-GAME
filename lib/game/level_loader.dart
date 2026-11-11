@@ -5,21 +5,26 @@ import 'package:flutter/foundation.dart' show debugPrint, visibleForTesting;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:tiled/tiled.dart';
 
+import '../core/bonus_constants.dart';
 import '../core/combat_constants.dart';
 import '../models/artifact_art.dart' show artifactIconsPerEra;
 import '../models/level.dart';
 import 'components/artifact_component.dart';
 import 'components/coin_component.dart';
 import 'components/enemy_component.dart';
+import 'components/falling_rock_component.dart';
 import 'components/gap_component.dart';
 import 'components/gate_component.dart';
+import 'components/ground_pop_component.dart';
 import 'components/halfway_flag_component.dart';
 import 'components/heart_pickup_component.dart';
 import 'components/terrain_component.dart';
+import 'enemy_behavior.dart' show EnemyBehavior;
 import 'components/tile_platform_component.dart';
 import 'generated_level_manifest.dart';
 import 'level_extras.dart';
 import 'game_collision.dart' show footSpanFraction;
+import 'surprise_rules.dart';
 
 /// One run of ground columns that share a surface height. A level's ground is a
 /// row of these: flat stretches, the steps of a hill, a raised mesa, the pillars
@@ -263,7 +268,7 @@ class LevelEntity {
   /// `kind` — which enemy sprite (Section 11's object table).
   final String? kind;
 
-  /// `behavior` — `walker` or `heavy`.
+  /// `behavior` — `walker`, `heavy` or `chaser` (a soldier that chases and dashes).
   final String? behavior;
 
   /// `patrol` — how far this enemy paces, in px.
@@ -271,6 +276,9 @@ class LevelEntity {
 
   /// `art` — which of the era's ten artifact icons (1..10) an artifact uses.
   final String? art;
+
+  /// `golden` — the level's one golden artifact (opens the bonus portal).
+  final bool golden;
 
   const LevelEntity({
     required this.type,
@@ -282,6 +290,7 @@ class LevelEntity {
     this.behavior,
     this.patrol,
     this.art,
+    this.golden = false,
   });
 }
 
@@ -481,11 +490,15 @@ class LevelLoader {
           patrol: o.properties.getValue<double>('patrol') ??
               o.properties.getValue<int>('patrol')?.toDouble(),
           art: o.properties.getValue<String>('art'),
+          golden: _isTrue(o.properties.byName['golden']?.value),
         ),
       );
     }
     return out;
   }
+
+  /// A Tiled bool property (or a hand-typed "true" string): the golden mark.
+  static bool _isTrue(Object? v) => v == true || v == 'true';
 
   static double? _singleObjectX(TiledMap map, String type) {
     for (final layer in map.layers.whereType<ObjectGroup>()) {
@@ -529,6 +542,38 @@ class LevelLoader {
 /// than being silently skipped, because a typo in Tiled is otherwise
 /// invisible until someone notices an enemy missing from a level.
 class LevelBuilder {
+  /// The first level of an era where chasers may fuse, burst and dash. Levels 1 and
+  /// 2 of each era get the plain chase only.
+  static const int firstBlastLevel = 3;
+
+  /// The enemy component for one map `enemy` object. `behavior="chaser"` makes it
+  /// act as a chaser whatever its kind (a soldier then chases); `walker` and
+  /// `heavy` are the kind's own behaviour and need no override. [levelNo] decides
+  /// whether it may blast (see [firstBlastLevel]); without it, it may.
+  @visibleForTesting
+  static EnemyComponent enemyFor(
+    LevelEntity e, {
+    required String eraId,
+    required double groundY,
+    int? levelNo,
+    bool isArena = false,
+  }) =>
+      EnemyComponent(
+        eraId: eraId,
+        enemyTypeOverride: e.kind,
+        worldX: e.x,
+        patrolRangeOverride: e.patrol,
+        // Feet on a platform when the object's y is above the ground.
+        surfaceY: e.y < groundY - 1 ? e.y : null,
+        behaviorOverride:
+            e.behavior == 'chaser' ? EnemyBehavior.chaser : null,
+        blasts: levelNo == null || levelNo >= firstBlastLevel,
+        // `hopper`, `thrower` and `golden` are the surprises (level 4 and later, never
+        // a boss room; see SurpriseRules).
+        surprise: SurpriseRules.enemySurpriseFor(e.behavior,
+            levelNo: levelNo, isArena: isArena),
+      );
+
   /// Builds everything in [level] into [world].
   ///
   /// [groundY] is the world y of the ground surface and [eraId] selects
@@ -577,16 +622,24 @@ class LevelBuilder {
               'ground, or set its y to the top of the platform it stands on.',
             );
           }
-          world.add(
-            EnemyComponent(
+          world.add(enemyFor(e,
               eraId: eraId,
-              enemyTypeOverride: e.kind,
-              worldX: e.x,
-              patrolRangeOverride: e.patrol,
-              // Feet on a platform when the object's y is above the ground.
-              surfaceY: e.y < groundY - 1 ? e.y : null,
-            ),
-          );
+              groundY: groundY,
+              levelNo: levelNo,
+              isArena: level.isArena));
+
+        case 'ground_pop':
+          if (SurpriseRules.allowed(SurpriseKind.groundPop,
+              levelNo: levelNo, isArena: level.isArena)) {
+            world.add(GroundPopComponent(
+                eraId: eraId, spotX: e.x, surfaceY: e.y));
+          }
+
+        case 'falling_rock':
+          if (SurpriseRules.allowed(SurpriseKind.fallingRock,
+              levelNo: levelNo, isArena: level.isArena)) {
+            world.add(FallingRockComponent(spotX: e.x, surfaceY: e.y));
+          }
 
         case 'artifact':
           world.add(
@@ -602,6 +655,9 @@ class LevelBuilder {
               // The map puts each artifact on the ground under it; the base
               // ground is the default, so older maps behave as they did.
               surfaceY: e.y > 0 && e.y < groundY - 1 ? e.y : null,
+              // From level 2 on only (a level number is given when the game plays it).
+              golden: e.golden &&
+                  (levelNo == null || levelNo >= BonusConstants.firstGoldenLevel),
             ),
           );
 

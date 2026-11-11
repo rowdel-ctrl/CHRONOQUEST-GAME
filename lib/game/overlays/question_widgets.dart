@@ -89,6 +89,8 @@ class CountdownBar extends StatelessWidget {
               child: FractionallySizedBox(
                 key: barKey,
                 widthFactor: fraction.clamp(0.0, 1.0),
+                // Without a height the empty ColoredBox is 0 high and the bar never shows.
+                heightFactor: 1,
                 child: ColoredBox(color: color),
               ),
             ),

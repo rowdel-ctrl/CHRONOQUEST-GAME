@@ -118,7 +118,7 @@
   <object id="31" type="enemy" x="8523" y="588">
    <properties>
     <property name="kind" value="american_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="hopper"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
@@ -168,6 +168,7 @@
   <object id="55" type="artifact" x="14508" y="588">
    <properties>
     <property name="art" value="artifact_5"/>
+    <property name="golden" type="bool" value="true"/>
    </properties>
   </object>
   <object id="56" type="coin" x="14967" y="426"/>

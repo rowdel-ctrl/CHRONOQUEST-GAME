@@ -40,6 +40,16 @@ class HudOverlayWidget extends StatelessWidget {
                   child: IgnorePointer(child: LevelProgressBar(game: game)),
                 ),
               ),
+            // The Shield, in the boss fight: on the right edge so it can be switched on any
+            // time (walking to a rune, in a minion wave, or while a question is open).
+            if (game.bossPhase)
+              Align(
+                alignment: const Alignment(1, 0.2),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: BossShieldButton(game: game),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
@@ -87,8 +97,67 @@ class HudOverlayWidget extends StatelessWidget {
   }
 }
 
-/// Boss health bar overlay shown during Level 10 boss fight.
+/// The Shield button of the boss fight: shows how many are left, lights up while the bubble is on,
+/// and switches it on with one tap.
+class BossShieldButton extends StatelessWidget {
+  static const shieldKey = ValueKey('boss-shield');
+
+  final ChronoGame game;
+  const BossShieldButton({super.key, required this.game});
+
+  @override
+  Widget build(BuildContext context) {
+    final on = game.shieldActive;
+    final count = game.playerPowerUps.shield;
+    final usable = !on && count > 0 && !game.levelEnded;
+    return Semantics(
+      button: true,
+      label: 'Shield',
+      child: GestureDetector(
+        key: shieldKey,
+        onTap: usable ? game.activateShield : null,
+        child: Opacity(
+          opacity: usable || on ? 1 : 0.45,
+          child: Container(
+            width: 52,
+            height: 58,
+            decoration: BoxDecoration(
+              color: on ? AppColors.info.withValues(alpha: 0.55) : AppColors.primaryDark,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: on ? Colors.white : AppColors.accent, width: 2),
+              boxShadow: on
+                  ? [BoxShadow(color: AppColors.info.withValues(alpha: 0.7), blurRadius: 12)]
+                  : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.shield, color: Colors.white, size: 24),
+                Text(
+                  '×$count',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The boss fight's top strip: the boss's name, its 22-segment health bar and which round is
+/// being played ("Tanong 3 ng 22"). The hearts are the normal HUD's. The question card sits
+/// just below it (see BossQuestionCard.topInset).
 class BossHealthOverlayWidget extends StatelessWidget {
+  static const nameKey = ValueKey('boss-name');
+  static const roundKey = ValueKey('boss-round');
+
   final ChronoGame game;
   const BossHealthOverlayWidget({super.key, required this.game});
 
@@ -101,88 +170,60 @@ class BossHealthOverlayWidget extends StatelessWidget {
         if (boss == null || boss.maxHealth <= 0) return const SizedBox.shrink();
 
         // Top middle, between the hearts on the left and the score and pause on the right.
-        // Low on the screen it covered the boss's head and the student.
         final screenWidth = MediaQuery.sizeOf(context).width;
-        final barWidth = (screenWidth - 2 * 215).clamp(200.0, 520.0);
-        return Positioned.fill(child: IgnorePointer(child: Stack(children: [
-          if (boss.scrollSide != 0) _scrollArrow(boss.scrollSide),
-          Positioned(
-          top: 10,
-          left: 40,
-          right: 40,
-          child: Column(
-            children: [
-              SizedBox(
-                width: barWidth,
-                child: GameProgressBar(
-                  value: boss.health / boss.maxHealth,
-                  fillColor: boss.health > (boss.maxHealth * 0.2).ceil() ? AppColors.danger : Colors.orange,
-                  backgroundColor: Colors.grey.shade800,
-                  height: 18,
-                  segments: boss.maxHealth,
+        final barWidth = (screenWidth - 2 * 215).clamp(180.0, 300.0);
+        final shadow = [const Shadow(blurRadius: 3, color: Colors.black)];
+        return Positioned.fill(
+          child: IgnorePointer(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      boss.profile.name,
+                      key: nameKey,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                        shadows: shadow,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    SizedBox(
+                      width: barWidth,
+                      child: GameProgressBar(
+                        value: boss.health / boss.maxHealth,
+                        fillColor:
+                            boss.health > (boss.maxHealth * 0.2).ceil() ? AppColors.danger : Colors.orange,
+                        backgroundColor: Colors.grey.shade800,
+                        height: 14,
+                        segments: boss.maxHealth,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      boss.roundTag,
+                      key: roundKey,
+                      style: GoogleFonts.poppins(
+                        color: Colors.yellowAccent,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                        shadows: shadow,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                'Tamang sagot: ${boss.maxHealth - boss.health}/${boss.maxHealth}',
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 10,
-                  height: 1.4,
-                  shadows: const [Shadow(blurRadius: 3, color: Colors.black)],
-                ),
-              ),
-              Text(
-                boss.banner ?? boss.askTag ?? _getBossDialogue(game.currentEra),
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  color: boss.banner != null || boss.askTag != null ? Colors.orangeAccent : Colors.yellowAccent,
-                  fontSize: boss.banner != null ? 20 : (boss.askTag != null ? 17 : 15),
-                  fontWeight: FontWeight.bold,
-                  shadows: const [Shadow(blurRadius: 4, color: Colors.black)],
-                ),
-              ),
-            ],
+            ),
           ),
-          ),
-        ])));
+        );
       },
     );
-  }
-
-  /// Points at the scroll while it is off screen: [side] is -1 for left, 1 for right.
-  Widget _scrollArrow(int side) {
-    return Positioned(
-      top: 0,
-      bottom: 0,
-      left: side < 0 ? 10 : null,
-      right: side > 0 ? 10 : null,
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.55),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.amber, width: 2),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (side < 0) const Icon(Icons.arrow_back_ios_new, color: Colors.amber, size: 22),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(Icons.menu_book, color: Colors.amber, size: 22),
-              ),
-              if (side > 0) const Icon(Icons.arrow_forward_ios, color: Colors.amber, size: 22),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _getBossDialogue(String era) {
-    final eraData = getEraById(era);
-    return '"${eraData.bossDialogue}"';
   }
 }

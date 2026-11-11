@@ -96,6 +96,25 @@ class QuestionLayout {
     powerupMinHeight: 40,
   );
 
+  /// The boss fight's card, which sits at the top of the screen while the boss's attack flies
+  /// below it: small enough to leave the hero, the boss and the attack in view.
+  static const bossTop = QuestionLayout(
+    maxWidth: 520,
+    margin: EdgeInsets.zero,
+    padding: 8,
+    headerGap: 4,
+    questionGap: 5,
+    optionsGap: 0,
+    questionFontSize: 12.5,
+    optionFontSize: 11.5,
+    optionHeight: 32,
+    explanationPadding: 8,
+    explanationFontSize: 12,
+    explanationGap: 6,
+    buttonMinHeight: 36,
+    powerupMinHeight: 30,
+  );
+
   /// Below this overlay height the regular card's worst case (~510 px plus its
   /// margins) no longer fits, so [compact] is used instead.
   static const double compactBelowHeight = 560;

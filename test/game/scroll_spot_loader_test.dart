@@ -1,6 +1,8 @@
 // The `scroll_spot` object of a boss arena map: read into LoadedLevel.scrollSpots, kept apart
 // from the minion spots, and never left over as an ordinary entity. A small inline map, not
-// the real assets, so it holds whatever the arenas look like.
+// the real assets, so it holds whatever the arenas look like. (The boss fight no longer uses the
+// spots, since the scroll and the minion waves are gone: the maps keep the objects for now and
+// the loader still reads them.)
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 

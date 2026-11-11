@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:chronoquest/game/components/enemy_component.dart';
+import 'package:chronoquest/game/enemy_behavior.dart';
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -523,6 +525,125 @@ void main() {
 </map>''';
       final level = LevelLoader.parse(tmx);
       expect(level.entities.single.type, 'treasure_chest');
+    });
+  });
+
+  group('map enemies: chaser marking and blasts', () {
+    String enemyMap(String behavior) => '''
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" orientation="orthogonal" renderorder="right-down"
+     width="20" height="2" tilewidth="16" tileheight="16" infinite="0"
+     nextlayerid="3" nextobjectid="3">
+ <layer id="1" name="ground" width="20" height="2">
+  <data encoding="csv">2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</data>
+ </layer>
+ <objectgroup id="2" name="entities">
+  <object id="2" type="enemy" x="100" y="660">
+   <properties>
+    <property name="kind" value="spanish_soldier"/>
+    <property name="behavior" value="$behavior"/>
+    <property name="patrol" type="float" value="60"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>''';
+
+    LevelEntity soldier(String behavior) =>
+        LevelLoader.parse(enemyMap(behavior)).entities.single;
+
+    EnemyComponent build(String behavior, {int? levelNo}) =>
+        LevelBuilder.enemyFor(soldier(behavior),
+            eraId: 'spanish', groundY: 660, levelNo: levelNo);
+
+    test('the loader keeps behavior="chaser" on the entity', () {
+      expect(soldier('chaser').behavior, 'chaser');
+    });
+
+    test('a chaser soldier is built with the chaser override and its own patrol',
+        () {
+      final e = build('chaser', levelNo: 3);
+      expect(e.behaviorOverride, EnemyBehavior.chaser);
+      expect(e.enemyTypeOverride, 'spanish_soldier');
+      expect(e.patrolRangeOverride, 60);
+    });
+
+    test('walker and heavy keep working as before: no override', () {
+      expect(build('walker', levelNo: 3).behaviorOverride, isNull);
+      expect(build('heavy', levelNo: 3).behaviorOverride, isNull);
+    });
+
+    test('levels 1 and 2 never blast, level 3 and up do', () {
+      expect(build('walker', levelNo: 1).blasts, isFalse);
+      expect(build('chaser', levelNo: 2).blasts, isFalse);
+      expect(build('walker', levelNo: 3).blasts, isTrue);
+      expect(build('chaser', levelNo: 3).blasts, isTrue);
+      expect(build('walker', levelNo: 10).blasts, isTrue);
+    });
+
+    test('without a level number an enemy may blast', () {
+      expect(build('walker').blasts, isTrue);
+    });
+
+    test('a soldier marked chaser is not a patrol-range special case', () {
+      // Same corridor as a walker: only a heavy stands still.
+      final level = LevelLoader.parse(enemyMap('chaser'));
+      final walkerLevel = LevelLoader.parse(enemyMap('walker'));
+      expect(level.enemyStaysOnSupport(level.entities.single),
+          walkerLevel.enemyStaysOnSupport(walkerLevel.entities.single));
+    });
+  });
+
+  group('chaser soldiers in the shipped maps', () {
+    // Era number -> (soldier kind, last non-boss level).
+    const eras = {2: ('spanish_soldier', 4), 3: ('spanish_soldier', 6), 5: ('japanese_soldier', 7)};
+
+    List<LevelEntity> soldiersOf(int era, int level, String kind) {
+      final xml = File('assets/tiles/levels/era${era}_$level.tmx').readAsStringSync();
+      final list = LevelLoader.parse(xml)
+          .entities
+          .where((e) => e.type == 'enemy' && e.kind == kind)
+          .toList()
+        ..sort((a, b) => a.x.compareTo(b.x));
+      return list;
+    }
+
+    test('from level 3, every second soldier chases in eras 2, 3 and 5', () {
+      eras.forEach((era, info) {
+        final (kind, last) = info;
+        for (var level = 3; level <= last; level++) {
+          final soldiers = soldiersOf(era, level, kind);
+          expect(soldiers.length, greaterThanOrEqualTo(2), reason: 'era $era level $level');
+          for (var i = 0; i < soldiers.length; i++) {
+            // The others walk, except the surprises that are walkers too (a hopper from
+            // level 4, the golden runner from level 8): never a chaser.
+            expect(
+                soldiers[i].behavior,
+                i.isOdd
+                    ? 'chaser'
+                    : anyOf('walker', 'hopper', 'golden'),
+                reason: 'era $era level $level soldier ${i + 1}');
+          }
+        }
+      });
+    });
+
+    test('levels 1 and 2 have no chaser soldiers', () {
+      eras.forEach((era, info) {
+        for (var level = 1; level <= 2; level++) {
+          expect(soldiersOf(era, level, info.$1).where((e) => e.behavior == 'chaser'),
+              isEmpty, reason: 'era $era level $level');
+        }
+      });
+    });
+
+    test('other soldiers (tax collectors, tanks) are left alone', () {
+      for (var level = 3; level <= 6; level++) {
+        final xml = File('assets/tiles/levels/era3_$level.tmx').readAsStringSync();
+        final others = LevelLoader.parse(xml)
+            .entities
+            .where((e) => e.type == 'enemy' && e.kind != 'spanish_soldier');
+        expect(others.where((e) => e.behavior == 'chaser'), isEmpty);
+      }
     });
   });
 }

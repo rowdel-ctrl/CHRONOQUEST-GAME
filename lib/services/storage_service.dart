@@ -220,6 +220,24 @@ class StorageService {
     await appBox.put(_tutorialSeenKey, true);
   }
 
+  /// Whether the story of an era was read through on this phone (the background
+  /// screen then shows LAKTAWAN and has no locks).
+  static bool hasReadHistory(String eraId) =>
+      appBox.get('history_read_$eraId', defaultValue: false) as bool;
+
+  static Future<void> markHistoryRead(String eraId) async {
+    await appBox.put('history_read_$eraId', true);
+  }
+
+  /// Whether a chapter of an era's full story was scrolled through to its end on this
+  /// phone (the button on the story card then turns green).
+  static bool hasReadChapter(String eraId, int index) =>
+      appBox.get('history_full_${eraId}_$index', defaultValue: false) as bool;
+
+  static Future<void> markChapterRead(String eraId, int index) async {
+    await appBox.put('history_full_${eraId}_$index', true);
+  }
+
   // ─── HEARTS (persistent, level-attempt gate) ─────────────────────────────
   static const _heartsCountKey = 'hearts_count';
   static const _heartsRegenStartKey = 'hearts_regen_start_ms';

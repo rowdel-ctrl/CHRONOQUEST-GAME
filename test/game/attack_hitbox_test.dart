@@ -2,6 +2,11 @@
 // facing direction, ~0.25s, with a cooldown so it can't be spammed").
 // Covers the charge-cost/cooldown gating on PlayerComponent.attack() and
 // AttackHitboxComponent's own lifetime and enemy-hit wiring.
+//
+// Since the 2026-11 hero moves every hero has its own move (hero_moves_test.dart);
+// the short melee swing is what a DASH hero does in the air. So the player here is
+// Bonifacio, who has not touched the ground (a bare player is never on it), and the
+// cooldown is his own (HeroMove.cooldown), not CombatConstants.attackCooldown.
 import 'dart:ui';
 
 import 'package:flame/components.dart';
@@ -17,7 +22,7 @@ ChronoGame _bareGameWithPlayer({bool facingRight = true}) {
   final game = ChronoGame();
   game.onGameResize(Vector2(800, 450));
   game.images.prefix = 'assets/';
-  final player = PlayerComponent(characterId: 'rizal')
+  final player = PlayerComponent(characterId: 'bonifacio')
     ..size = Vector2(96, 120)
     ..position = Vector2(400, game.groundY - 120)
     ..facingRight = facingRight;
@@ -97,7 +102,13 @@ void main() {
       game.player.attack();
       await game.ready();
 
-      game.player.update(CombatConstants.attackCooldown + 0.01);
+      // In small steps, putting the bare player (there is no ground in this game)
+      // back on its feet each time, so it never falls out of the world.
+      for (var t = 0.0; t < game.player.heroMove.cooldown + 0.01; t += 0.05) {
+        game.player.update(0.05);
+        game.player.position.y = game.groundY - 120;
+        game.player.velocityY = 0;
+      }
       game.player.attack();
       await game.ready();
 

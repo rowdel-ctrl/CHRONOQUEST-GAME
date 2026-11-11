@@ -6,6 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../data/era_story.dart';
+import '../../data/history_full.dart';
+import '../../services/audio_service.dart';
+import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/living_backdrop.dart';
 import '../../widgets/menu_chip.dart';
@@ -26,7 +29,18 @@ import '../../widgets/pixel_icon.dart';
 /// one does not unlock them.
 class BackgroundHistoryScreen extends StatefulWidget {
   final String eraId;
-  const BackgroundHistoryScreen({super.key, required this.eraId});
+
+  /// Whether the story of this era was read through before on this phone. Null
+  /// asks the phone's storage. A story read before has no locks and a LAKTAWAN
+  /// button that goes straight to the levels; the first time it has neither.
+  final bool? alreadyRead;
+
+  /// Called once, the first time every event of the story has been read. Null
+  /// saves it on the phone.
+  final void Function(String eraId)? onStoryRead;
+
+  const BackgroundHistoryScreen(
+      {super.key, required this.eraId, this.alreadyRead, this.onStoryRead});
 
   /// How long an event must stay on screen to count as read: 1.5 s and 0.15 s a
   /// word, never under 2.5 s or over 7 s (a card of 25 words takes about 5 s).
@@ -43,7 +57,9 @@ class BackgroundHistoryScreen extends StatefulWidget {
   static const Key readBarKey = Key('background_read_bar');
   static const Key lockNoteKey = Key('background_lock_note');
   static const Key backButtonKey = Key('background_back_button');
+  static const Key skipKey = Key('background_skip_button');
   static const Key readyButtonKey = Key('background_ready_button');
+  static const Key fullStoryKey = Key('background_full_story');
   static const Key beatKey = Key('background_beat');
   static const Key ringKey = Key('background_ring');
   static const Key nextKey = Key('background_next');
@@ -65,6 +81,12 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
   final Set<int> _read = {};
   Timer? _dwell;
 
+  /// The story was read before: every event counts as read and it can be skipped.
+  late final bool _seen;
+
+  /// The era's full text, a chapter per week or so; the card's button opens one.
+  List<FullChapter> _full = const [];
+
   List<StoryBeat> get _beats {
     final story = eraStories[widget.eraId];
     return story?.beats ??
@@ -74,7 +96,52 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
   @override
   void initState() {
     super.initState();
+    _seen = widget.alreadyRead ?? _storedSeen();
+    if (_seen) _read.addAll([for (var i = 0; i < _beats.length; i++) i]);
     _startDwell();
+    _loadFull();
+  }
+
+  Future<void> _loadFull() async {
+    try {
+      final chapters = await HistoryFull.chapters(widget.eraId);
+      if (mounted) setState(() => _full = chapters);
+    } catch (_) {
+      // No full text: the card simply has no button.
+    }
+  }
+
+  bool _chapterRead(int i) {
+    try {
+      return StorageService.hasReadChapter(widget.eraId, i);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Opens a chapter of the full story, then shows the card again (read or not).
+  Future<void> _openFull(int chapter) async {
+    await context.push('/story/${widget.eraId}/$chapter');
+    if (mounted) setState(() {});
+  }
+
+  bool _storedSeen() {
+    try {
+      return StorageService.hasReadHistory(widget.eraId);
+    } catch (_) {
+      return false; // storage not ready: treat it as not read yet
+    }
+  }
+
+  void _storyRead() {
+    final cb = widget.onStoryRead;
+    if (cb != null) {
+      cb(widget.eraId);
+      return;
+    }
+    try {
+      StorageService.markHistoryRead(widget.eraId);
+    } catch (_) {}
   }
 
   @override
@@ -90,7 +157,9 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
     final i = _beat.clamp(0, beats.length - 1);
     if (_read.contains(i)) return;
     _dwell = Timer(BackgroundHistoryScreen.readTimeFor(beats[i]), () {
-      if (mounted) setState(() => _read.add(i));
+      if (!mounted) return;
+      setState(() => _read.add(i));
+      if (!_seen && _read.length == _beats.length) _storyRead();
     });
   }
 
@@ -134,7 +203,13 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
         .where((i) => !_opened.contains(i));
     final pointAt = locked || first.isEmpty ? -1 : first.first;
 
+    final fullAt = _full.isEmpty
+        ? null
+        : HistoryFull.chapterForBeat(current, beats.length, _full.length);
     final storyCard = _StoryCard(
+      fullLabel: fullAt == null ? null : _full[fullAt].label,
+      fullRead: fullAt != null && _chapterRead(fullAt),
+      onFull: fullAt == null ? null : () => _openFull(fullAt),
       beat: beat,
       beatCount: beats.length,
       current: current,
@@ -235,7 +310,23 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 48),
+                          if (_seen)
+                            TextButton(
+                              key: BackgroundHistoryScreen.skipKey,
+                              onPressed: () =>
+                                  context.go('/level-select/${widget.eraId}'),
+                              child: Text(
+                                'LAKTAWAN',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1,
+                                  color: AppColors.accent,
+                                ),
+                              ),
+                            )
+                          else
+                            const SizedBox(width: 48),
                         ],
                       ),
                     ),
@@ -300,6 +391,77 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
   }
 }
 
+/// The button on a story card that opens the full story of that event: gold, and green
+/// once it has been read to its end.
+class _FullStoryButton extends StatelessWidget {
+  final String label;
+  final bool read;
+  final VoidCallback onTap;
+
+  const _FullStoryButton({
+    super.key,
+    required this.label,
+    required this.read,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final ink = read ? Colors.white : AppColors.primaryDark;
+    return Semantics(
+      button: true,
+      label: 'Basahin ang buong kwento, $label',
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          AudioService().playTap();
+          onTap();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: read ? AppColors.success : AppColors.accent,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: AppColors.primaryDark, width: 2.5),
+            boxShadow: const [
+              BoxShadow(
+                  color: AppColors.primaryDark,
+                  offset: Offset(0, 3),
+                  blurRadius: 0),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(read ? Icons.check_rounded : Icons.menu_book_rounded,
+                  size: 16, color: ink),
+              const SizedBox(width: 6),
+              Flexible(
+                // A narrow card shrinks the words a little rather than cutting them.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    read
+                        ? 'NABASA NA \u00b7 $label'
+                        : 'BASAHIN ANG BUONG KWENTO \u00b7 $label',
+                    maxLines: 1,
+                    style: GoogleFonts.poppins(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.3,
+                      color: ink,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// `**bold**` markers in the story text become bold spans.
 List<TextSpan> _spans(String text, TextStyle base, Color boldColor) {
   final parts = text.split('**');
@@ -335,7 +497,16 @@ class _StoryCard extends StatefulWidget {
   /// The whole paragraph on one card (an era with no cut-up story): it scrolls.
   final bool scrolls;
 
+  /// The button to the full story of this event: its chapter's name ("LINGGO 3"), whether
+  /// it was read, and what it does. Null when the era has no full text.
+  final String? fullLabel;
+  final bool fullRead;
+  final VoidCallback? onFull;
+
   const _StoryCard({
+    this.fullLabel,
+    this.fullRead = false,
+    this.onFull,
     required this.beat,
     required this.beatCount,
     required this.current,
@@ -466,6 +637,15 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
+                          if (widget.onFull != null) ...[
+                            const SizedBox(height: 8),
+                            _FullStoryButton(
+                              key: BackgroundHistoryScreen.fullStoryKey,
+                              label: widget.fullLabel ?? '',
+                              read: widget.fullRead,
+                              onTap: widget.onFull!,
+                            ),
+                          ],
                           const SizedBox(height: 8),
                           _ReadBar(
                             key: ValueKey(
@@ -509,21 +689,25 @@ class _StoryCardState extends State<_StoryCard> with TickerProviderStateMixin {
           Stack(
             alignment: Alignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var i = 0; i < widget.beatCount; i++)
-                    _BeatDot(
-                      key: BackgroundHistoryScreen.beatDotKey(i),
-                      on: i == widget.current,
-                      read: widget.read.contains(i),
-                      ring: widget.canNext && i == widget.current + 1
-                          ? _ring
-                          : null,
-                      label: '${i + 1} ng ${widget.beatCount}',
-                      onTap: () => widget.onPick(i),
-                    ),
-                ],
+              // Eight dots on a small phone shrink to fit instead of overflowing.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (var i = 0; i < widget.beatCount; i++)
+                      _BeatDot(
+                        key: BackgroundHistoryScreen.beatDotKey(i),
+                        on: i == widget.current,
+                        read: widget.read.contains(i),
+                        ring: widget.canNext && i == widget.current + 1
+                            ? _ring
+                            : null,
+                        label: '${i + 1} ng ${widget.beatCount}',
+                        onTap: () => widget.onPick(i),
+                      ),
+                  ],
+                ),
               ),
               // A round arrow beside the dots that bounces the way it points.
               if (_hasNext)

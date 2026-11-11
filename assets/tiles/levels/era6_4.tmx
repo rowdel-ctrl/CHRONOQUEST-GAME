@@ -80,7 +80,7 @@
   <object id="13" type="enemy" x="3640" y="636">
    <properties>
     <property name="kind" value="misinfo_cloud"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="hopper"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>
@@ -179,6 +179,7 @@
   <object id="60" type="artifact" x="14508" y="540">
    <properties>
     <property name="art" value="artifact_2"/>
+    <property name="golden" type="bool" value="true"/>
    </properties>
   </object>
   <object id="61" type="coin" x="15039" y="426"/>
@@ -255,7 +256,7 @@
   <object id="90" type="enemy" x="22287" y="540">
    <properties>
     <property name="kind" value="misinfo_cloud"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="hopper"/>
     <property name="patrol" type="float" value="100"/>
    </properties>
   </object>

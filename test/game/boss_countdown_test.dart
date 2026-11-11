@@ -85,14 +85,40 @@ void main() {
       expect(c.secondsLeft, 0);
     });
 
-    test('Time Freeze stops the clock for the rest of the question', () {
+    test('Time Freeze stops the clock for 8 seconds, then it goes on', () {
       final c = BossCountdown();
       c.tick(10);
       c.freeze();
-      c.tick(100);
       expect(c.frozen, isTrue);
-      expect(c.secondsLeft, closeTo(5, 1e-9));
+      expect(c.frozenLeft, 8);
+      c.tick(7.9);
+      expect(c.frozen, isTrue);
+      expect(c.secondsLeft, closeTo(5, 1e-9), reason: 'nothing ran down while it held');
+      c.tick(0.2);
+      expect(c.frozen, isFalse, reason: 'the freeze is over');
+      expect(c.secondsLeft, closeTo(5, 1e-9), reason: 'the 0.1 s past the end is not counted');
+      c.tick(1);
+      expect(c.secondsLeft, closeTo(4, 1e-9));
       expect(c.expired, isFalse);
+    });
+
+    test('Time Freeze can be used once on a question', () {
+      final c = BossCountdown();
+      c.freeze();
+      expect(c.usedFreeze, isTrue);
+      c.tick(9);
+      c.freeze(); // a second one does nothing
+      expect(c.frozen, isFalse);
+      c.tick(1);
+      expect(c.secondsLeft, closeTo(14, 1e-9));
+    });
+
+    test('a freeze cannot save a clock that has already run out', () {
+      final c = BossCountdown()..tick(20);
+      expect(c.expired, isTrue);
+      c.freeze();
+      expect(c.frozen, isFalse);
+      expect(c.usedFreeze, isFalse);
     });
   });
 

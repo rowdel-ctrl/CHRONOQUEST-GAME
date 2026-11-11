@@ -1,7 +1,10 @@
-// How a boss fight is laid out (boss_plan.dart): every question of the level once, three phases,
-// a wrong answer asked again at the back. Plain Dart, no game.
+// How a boss fight is laid out (boss_plan.dart, boss_attack_profile.dart): 22 rounds, three
+// phases with less time to answer, a wrong answer asked again at the back, and which attack
+// each boss throws in which round. Plain Dart, no game.
 import 'dart:math';
 
+import 'package:chronoquest/core/boss_attack_constants.dart';
+import 'package:chronoquest/game/boss_attack_profile.dart';
 import 'package:chronoquest/game/boss_plan.dart';
 import 'package:chronoquest/models/question.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,103 +24,85 @@ Question _q(int i) => Question(
 List<Question> _pool(int n) => [for (var i = 0; i < n; i++) _q(i)];
 
 void main() {
-  group('BossPlan scroll and lead-in', () {
-    test('the tag counts the answers already right', () {
-      expect(BossPlan.questionTag(0, 22), 'Tanong 1 ng 22');
-      expect(BossPlan.questionTag(6, 22), 'Tanong 7 ng 22');
-    });
-
-    final spots = [for (final x in [100.0, 500.0, 900.0, 1300.0, 1700.0]) (x: x, y: 660.0)];
-
-    test('the scroll is at least 450 from the student', () {
-      for (var seed = 0; seed < 30; seed++) {
-        final s = BossPlan.scrollSpot(spots, 100, const [], Random(seed))!;
-        expect((s.x - 100).abs(), greaterThanOrEqualTo(BossPlan.scrollMinDistance));
-      }
-    });
-
-    test('it keeps away from minions when a spot allows it', () {
-      for (var seed = 0; seed < 30; seed++) {
-        final s = BossPlan.scrollSpot(spots, 100, const [900, 1300], Random(seed))!;
-        expect(s.x, 1700, reason: 'the only far spot with no minion near');
-      }
-    });
-
-    test('it takes the list it is given, and gives back that spot with its own height', () {
-      final towers = [(x: 200.0, y: 444.0), (x: 1600.0, y: 432.0)];
-      for (var seed = 0; seed < 20; seed++) {
-        final s = BossPlan.scrollSpot(towers, 150, const [], Random(seed))!;
-        expect(s, (x: 1600.0, y: 432.0), reason: 'the only tower 450 or more away');
-      }
-    });
-
-    test('with no spot far enough it takes the farthest; with no spots at all, none', () {
-      final near = [(x: 100.0, y: 660.0), (x: 300.0, y: 660.0)];
-      expect(BossPlan.scrollSpot(near, 120, const [], Random(1))!.x, 300);
-      expect(BossPlan.scrollSpot(const [], 0, const [], Random(1)), isNull);
-    });
-  });
-
   group('BossPlan', () {
-    test('a boss level of 22 splits 10, 6 and 6: its own lesson, then the review in two halves', () {
-      expect(BossPlan.phaseSizes(22), [10, 6, 6]);
+    test('a fight is 22 rounds', () {
+      expect(BossPlan.rounds, 22);
+      expect(BossAttackConstants.rounds, 22);
     });
 
-    test('any other size splits in the same proportion and loses nothing', () {
-      for (final n in [1, 2, 3, 5, 12, 21, 22, 30]) {
-        final sizes = BossPlan.phaseSizes(n);
-        expect(sizes.fold<int>(0, (a, b) => a + b), n, reason: 'a pool of $n');
-        expect(sizes.every((s) => s >= 0), isTrue);
-      }
-      expect(BossPlan.phaseSizes(0), [0, 0, 0]);
+    test('rounds 1-7 are phase 1, 8-15 phase 2, 16-22 phase 3', () {
+      expect([for (var r = 1; r <= 22; r++) BossPlan.phaseOfRound(r)], [
+        ...List.filled(7, 1),
+        ...List.filled(8, 2),
+        ...List.filled(7, 3),
+      ]);
     });
 
-    test('the phase of the question at an index', () {
-      expect([for (final i in [0, 9, 10, 15, 16, 21]) BossPlan.phaseOf(i, 22)], [0, 0, 1, 1, 2, 2]);
-    });
-
-    test('later phases give less time and more minions', () {
+    test('the time to answer: 15 s, then 12 s, then 10 s', () {
       expect(BossPlan.answerSeconds, [15, 12, 10]);
-      expect(BossPlan.minionsPerWave, [2, 3, 4]);
-      expect(BossPlan.questionsPerWave, 2);
+      expect([for (var r = 1; r <= 22; r++) BossPlan.secondsForRound(r)], [
+        ...List.filled(7, 15),
+        ...List.filled(8, 12),
+        ...List.filled(7, 10),
+      ]);
+    });
+
+    test('the words on screen', () {
+      expect(BossPlan.roundTag(1, 22), 'Tanong 1 ng 22');
+      expect(BossPlan.roundTag(7, 22), 'Tanong 7 ng 22');
+      expect(BossPlan.phaseTag(1), 'Phase 1 · 15 s');
+      expect(BossPlan.phaseTag(10), 'Phase 2 · 12 s');
+      expect(BossPlan.phaseTag(22), 'Phase 3 · 10 s');
+    });
+
+    test('the extra attack starts in round 16', () {
+      expect(BossPlan.extraFromRound, 16);
+    });
+
+    test('the rune and the waves: 450 away, 15 s of patience, a wave of 2, 3, 4 after every second round', () {
+      expect(BossAttackConstants.runeMinDistance, 450);
+      expect(BossAttackConstants.runeStallSeconds, 15);
+      expect(BossAttackConstants.waveEveryRounds, 2);
+      expect(BossAttackConstants.waveSizes, [2, 3, 4]);
+      expect(BossAttackConstants.waveSizes.every((n) => n <= BossAttackConstants.waveMaxAlive), isTrue);
+      expect(BossAttackConstants.freezeSeconds, 8);
     });
   });
 
   group('BossQuestions', () {
-    test('asks every question once, the lesson\'s own 10 before the review', () {
+    test('asks all 22 questions of a pool of 22, the lesson\'s own first', () {
       final fight = BossQuestions(_pool(22), random: Random(1));
+      expect(fight.total, 22);
       final ids = <String>[];
       for (var q = fight.next(); q != null; q = fight.next()) {
         ids.add(q.id);
       }
+      expect(ids, hasLength(22));
       expect(ids.toSet(), hasLength(22));
-      expect(ids.take(10).toSet(), {for (var i = 0; i < 10; i++) 'q$i'});
-      expect(ids.skip(10).take(6).toSet().every((id) => int.parse(id.substring(1)) >= 10), isTrue);
+      int n(String id) => int.parse(id.substring(1));
+      // A boss pool lists the lesson's own 10 first, then 12 of review.
+      expect(ids.take(10).every((id) => n(id) < 10), isTrue);
+      expect(ids.skip(10).every((id) => n(id) >= 10), isTrue);
     });
 
     test('the order changes from one attempt to the next', () {
       final a = BossQuestions(_pool(22), random: Random(1));
       final b = BossQuestions(_pool(22), random: Random(2));
-      expect([for (var i = 0; i < 10; i++) a.next()!.id], isNot([for (var i = 0; i < 10; i++) b.next()!.id]));
+      expect([for (var i = 0; i < 22; i++) a.next()!.id],
+          isNot([for (var i = 0; i < 22; i++) b.next()!.id]));
     });
 
-    test('the phase follows the question, and the banners come once', () {
+    test('the round counts the answers already right', () {
       final fight = BossQuestions(_pool(22), random: Random(3));
-      final banners = <String?>[];
-      final phases = <int>[];
-      for (var q = fight.next(); q != null; q = fight.next()) {
-        phases.add(fight.phase);
-        banners.add(fight.takeBanner());
-        fight.solve();
-      }
-      expect(phases, [...List.filled(10, 0), ...List.filled(6, 1), ...List.filled(6, 2)]);
-      expect(banners.whereType<String>().toList(), ['PHASE 2', 'PHASE 3', 'FINAL QUESTION']);
-      expect(banners[10], 'PHASE 2', reason: 'the 11th question starts phase 2');
-      expect(banners[21], 'FINAL QUESTION');
-      expect(fight.solved, 22);
+      expect(fight.round, 1);
+      fight.next();
+      expect(fight.round, 1, reason: 'a question served is not yet a round won');
+      fight.solve();
+      expect(fight.round, 2);
+      expect(fight.solved, 1);
     });
 
-    test('a wrong answer goes to the back of the line, into the last phase', () {
+    test('a wrong answer goes to the back of the line, and the fight is still 22 right answers', () {
       final fight = BossQuestions(_pool(22), random: Random(4));
       final first = fight.next()!;
       fight.again(first);
@@ -126,11 +111,11 @@ void main() {
         ids.add(q.id);
         fight.solve();
       }
-      expect(ids, hasLength(22));
+      expect(ids, hasLength(22), reason: 'the 21 others and the missed one again');
       expect(ids.last, first.id);
-      expect(fight.phase, 2);
-      expect(fight.isFinal, isTrue);
+      expect(fight.solved, 22);
       expect(fight.asked, 23);
+      expect(fight.isDone, isTrue);
     });
 
     test('a question missed again goes back again', () {
@@ -138,7 +123,7 @@ void main() {
       var q = fight.next()!;
       final stubborn = q;
       fight.again(q);
-      q = fight.next()!;
+      fight.next();
       fight.solve();
       q = fight.next()!;
       expect(q.id, stubborn.id);
@@ -154,13 +139,69 @@ void main() {
       for (var q = fight.next(); q != null; q = fight.next()) {
         seen.add(q.options.first.text);
       }
-      expect(seen.length, greaterThan(1), reason: 'the right answer does not always sit first');
+      expect(seen.length, greaterThan(1),
+          reason: 'the right answer does not always sit first');
     });
 
-    test('a level with no questions has nothing to ask', () {
-      final fight = BossQuestions(const []);
-      expect(fight.total, 0);
-      expect(fight.next(), isNull);
+    test('a short pool gives a short fight; a pool of none has nothing to ask', () {
+      expect(BossQuestions(_pool(4)).total, 4);
+      expect(BossQuestions(_pool(10)).total, 10);
+      final none = BossQuestions(const []);
+      expect(none.total, 0);
+      expect(none.next(), isNull);
+    });
+  });
+
+  group('BossProfile', () {
+    test('rounds 1-15 throw the main attack, rounds 16-22 the extra one', () {
+      const p = BossProfile.bakunawa;
+      expect([for (var r = 1; r <= 22; r++) p.attackForRound(r)], [
+        ...List.filled(15, BossAttackKind.water),
+        ...List.filled(7, BossAttackKind.whirl),
+      ]);
+    });
+
+    test('each boss has the attacks of its own art', () {
+      expect(BossProfile.forEra('pre-colonial').main, BossAttackKind.water);
+      expect(BossProfile.forEra('pre-colonial').extra, BossAttackKind.whirl);
+      expect(BossProfile.forEra('spanish').main, BossAttackKind.gslash);
+      expect(BossProfile.forEra('spanish').extra, BossAttackKind.knights);
+      expect(BossProfile.forEra('nationalism').main, BossAttackKind.ghost);
+      expect(BossProfile.forEra('american').main, BossAttackKind.pistol);
+      expect(BossProfile.forEra('american').extra, BossAttackKind.sonic);
+      expect(BossProfile.forEra('ww2').main, BossAttackKind.slash);
+      expect(BossProfile.forEra('ww2').extra, BossAttackKind.wind);
+      expect(BossProfile.forEra('modern').main, BossAttackKind.fan);
+      expect(BossProfile.forEra('modern').extra, BossAttackKind.vortex);
+    });
+
+    test('Pag-usbong ng Nasyonalismo has no extra: the ghost knights all the way', () {
+      final p = BossProfile.forEra('nationalism');
+      expect(p.extra, isNull);
+      expect({for (var r = 1; r <= 22; r++) p.attackForRound(r)}, {BossAttackKind.ghost});
+    });
+
+    test('every attack has a start, an end and a trail; only the ghosts are not sent back', () {
+      for (final k in BossAttackKind.values) {
+        expect(k.start.dx, lessThan(0), reason: '$k leaves the boss towards the hero');
+        expect(k.end.up, greaterThanOrEqualTo(0));
+        expect(k.trail.count, greaterThan(0));
+        expect(k.reflects, k != BossAttackKind.ghost);
+      }
+    });
+
+    test('the special picture goes with the phase 3 attacks and the ghost knights', () {
+      for (final k in BossAttackKind.values) {
+        final extra = [
+          BossAttackKind.whirl,
+          BossAttackKind.knights,
+          BossAttackKind.sonic,
+          BossAttackKind.wind,
+          BossAttackKind.vortex,
+          BossAttackKind.ghost,
+        ].contains(k);
+        expect(k.usesSpecialPose, extra, reason: '$k');
+      }
     });
   });
 }

@@ -12,6 +12,7 @@ import 'package:chronoquest/providers/game_provider.dart';
 import 'package:chronoquest/providers/progress_provider.dart';
 import 'package:chronoquest/providers/unlock_all_provider.dart';
 import 'package:chronoquest/screens/home/era_selection_screen.dart';
+import 'package:chronoquest/widgets/character_portrait.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -303,7 +304,7 @@ void main() {
     });
   });
 
-  testWidgets('the screen has few words: the era names, one title, a score',
+  testWidgets('the screen has few words: the era names and one title',
       (tester) async {
     await _open(tester);
 
@@ -311,9 +312,11 @@ void main() {
     expect(find.text('PILIIN ANG PANAHON'), findsNothing);
     expect(find.text(_grade5[0].subtitle), findsNothing,
         reason: 'no English subtitle');
-    expect(find.text('Rodel'), findsNothing,
-        reason: 'a face and a score, not a name line');
-    expect(find.text('1240'), findsOneWidget);
+    expect(find.text('Rodel'), findsNothing, reason: 'no name line');
+    expect(find.text('1240'), findsNothing,
+        reason: 'the score lives on the profile, not here');
+    expect(find.byType(CharacterPortrait), findsNothing,
+        reason: 'no hero face at the bottom');
     expect(find.textContaining('pts'), findsNothing);
     expect(find.text('TINDAHAN'), findsNothing,
         reason: 'the shop is only the small cart chip here');

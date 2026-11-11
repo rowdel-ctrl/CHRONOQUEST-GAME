@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
+import '../../core/hero_move_constants.dart';
 import '../answer_point_handler.dart';
 import '../art_scale.dart';
 import '../chrono_game.dart';
 import '../game_collision.dart';
+import '../hero_move_art.dart';
+import '../hero_move_runner.dart';
 import '../kaalaman_handler.dart';
 import 'artifact_component.dart';
 import 'attack_hitbox_component.dart';
@@ -101,6 +104,21 @@ class PlayerComponent extends SpriteAnimationComponent
   /// Ground swing with 4 pictures: attack_1, then attack_4 from this moment.
   static const double _groundSecondPictureAt = 0.17;
 
+  /// How long the current attack picture sequence lasts, and when its ground
+  /// second picture takes over. A dash sets its own (see [showAttackPicture]).
+  double _attackPictureLength = CombatConstants.attackHitboxDuration;
+  double _secondPictureAt = _groundSecondPictureAt;
+
+  /// Plays this hero's own move (the 2026-11 hero moves): flying things, dashes and
+  /// the counter aimed at a boss attack. See hero_move_runner.dart.
+  late final HeroMoveRunner _moves = HeroMoveRunner(this);
+
+  @visibleForTesting
+  HeroMoveRunner get moves => _moves;
+
+  /// This hero's move (see hero_move_constants.dart).
+  HeroMove get heroMove => heroMoveFor(characterId);
+
   /// Air swing: attack_2, then attack_3 from this moment.
   static const double _airSecondPictureAt = 0.10;
 
@@ -114,17 +132,21 @@ class PlayerComponent extends SpriteAnimationComponent
     if (_attackInAir) {
       number = elapsed < _airSecondPictureAt ? 2 : 3;
     } else if (_attackSprites.containsKey(4)) {
-      number = elapsed < _groundSecondPictureAt ? 1 : 4;
+      number = elapsed < _secondPictureAt ? 1 : 4;
     } else {
       number = 1;
     }
     return _attackSprites.containsKey(number) ? number : null;
   }
 
-  /// Time left before another `attack()` can spawn a new hitbox
-  /// (CombatConstants.attackCooldown) — counted down every frame, not a
-  /// `Future.delayed`, so it can be checked synchronously from `attack()`.
+  /// Time left before another `attack()` can do anything (the hero's own
+  /// [HeroMove.cooldown]) — counted down every frame, not a `Future.delayed`, so it
+  /// can be checked synchronously from `attack()`.
   double _attackCooldownRemaining = 0;
+
+  /// Seconds before the next attack can start.
+  @visibleForTesting
+  double get attackCooldownLeft => _attackCooldownRemaining;
 
   /// True from the moment contact damage lands until
   /// `CombatConstants.invincibilityDuration` elapses — gates *all* further
@@ -144,7 +166,12 @@ class PlayerComponent extends SpriteAnimationComponent
   /// the 2026-10-03 playtest. Real time cannot be banked.
   DateTime? _invincibleUntil;
 
-  bool get invincible =>
+  /// Safe from harm: for the 1.5 s after a hit or a respawn, and for as long as a
+  /// dash move lasts (the dash heroes cannot be hurt while they dash).
+  bool get invincible => _moves.dashing || _windowInvincible;
+
+  /// The wall-clock window only (the one that flashes the sprite).
+  bool get _windowInvincible =>
       _invincibleUntil != null && DateTime.now().isBefore(_invincibleUntil!);
 
   /// Toggled during the invincibility window to flash the sprite. `render()`
@@ -257,12 +284,12 @@ class PlayerComponent extends SpriteAnimationComponent
     super.update(dt);
 
     if (_attackCooldownRemaining > 0) _attackCooldownRemaining -= dt;
+    _moves.updatePages(dt);
 
     final pictureElapsed = _attackPictureElapsed;
     if (pictureElapsed != null) {
       final next = pictureElapsed + dt;
-      _attackPictureElapsed =
-          next >= CombatConstants.attackHitboxDuration ? null : next;
+      _attackPictureElapsed = next >= _attackPictureLength ? null : next;
     }
 
     // Where the middle of the sprite is before any horizontal move this frame:
@@ -276,8 +303,10 @@ class PlayerComponent extends SpriteAnimationComponent
     // Ignored while knocked back: a hit takes the controls for the length of
     // the shove, so the student cannot walk back into the enemy at once and
     // use the invincibility that follows to pass through it.
-    final horizontalInput =
-        _knockbackRemaining > 0 ? 0.0 : game.gameInput.horizontal;
+    // Also ignored during a dash move, which moves the hero itself.
+    final horizontalInput = _knockbackRemaining > 0 || _moves.dashing
+        ? 0.0
+        : game.gameInput.horizontal;
     if (horizontalInput != 0) {
       position.x += forwardSpeed * horizontalInput * dt;
       facingRight = horizontalInput > 0;
@@ -298,10 +327,14 @@ class PlayerComponent extends SpriteAnimationComponent
     // The player cannot steer during it (above). On the ground it stops at the
     // edge of the ledge, so a hit never throws anyone into a gap.
     if (_knockbackRemaining > 0) {
-      position.x = _keepOnGround(position.x + _knockbackVelocityX * dt);
+      position.x = keepOnGround(position.x + _knockbackVelocityX * dt);
       _knockbackRemaining -= dt;
       if (_knockbackRemaining <= 0) _knockbackVelocityX = 0;
     }
+
+    // A dash move (Lapu-Lapu, Bonifacio) carries the hero forward: stopped at a
+    // ledge here, and by a wall or a gate below (afterMove).
+    _moves.stepDash(dt);
 
     // Never walk back past the level's start — there's no ground or
     // background authored to the left of it (Phase 4 gives levels real
@@ -344,6 +377,9 @@ class PlayerComponent extends SpriteAnimationComponent
       }
     }
 
+    // A wall or a gate that pushed the hero back ends a dash.
+    _moves.afterMove();
+
     // Apply gravity
     if (!isOnGround) {
       velocityY += gravity * dt;
@@ -384,7 +420,7 @@ class PlayerComponent extends SpriteAnimationComponent
     // Invincibility-frame flashing (GAMEPLAY-V2.md Section 5: "~1s of
     // invincibility frames (flashing sprite)"). Deliberately independent of
     // isHurt/triggerHurt()'s own timer — see _takeContactDamage().
-    if (invincible) {
+    if (_windowInvincible) {
       _flashTimer -= dt;
       if (_flashTimer <= 0) {
         _flashTimer = CombatConstants.flashInterval;
@@ -431,7 +467,13 @@ class PlayerComponent extends SpriteAnimationComponent
     // render-local: position.x IS worldX (camera, collision, spawner), so it must
     // not move. Restored before children (the hitbox) render.
     final sprite = _currentSprite;
+    final dash = _moves.dashLook; // a dash move: ghosts, a slash and the safe ring
+    final gliding = dash?.gliding ?? false;
     if (sprite != null) {
+      if (dash != null && !gliding) {
+        paintDashAfterimages(canvas, sprite,
+            footX: size.x / 2, footY: size.y, facingRight: facingRight);
+      }
       paintArt(
         canvas,
         sprite,
@@ -440,6 +482,17 @@ class PlayerComponent extends SpriteAnimationComponent
         flip: !facingRight,
         overridePaint: paint,
       );
+    }
+    if (dash != null) {
+      if (!gliding) {
+        paintDashSlash(canvas,
+            footX: size.x / 2,
+            footY: size.y,
+            facingRight: facingRight,
+            progress: dash.progress,
+            distance: dash.distance);
+      }
+      paintSafeRing(canvas, footX: size.x / 2, footY: size.y);
     }
     if (game.shieldActive) _drawBubble(canvas);
   }
@@ -453,18 +506,47 @@ class PlayerComponent extends SpriteAnimationComponent
     }
   }
 
-  /// Swings the attack hitbox in the facing direction (GAMEPLAY-V2.md
-  /// Section 3). Needs at least one charge and an expired cooldown, but the
-  /// charge is only spent when the swing hits an enemy, so a miss is free.
+  /// Starts the attack picture sequence: [seconds] long, with the ground second
+  /// picture (attack_4) from [secondAt]. Which sequence plays (ground or air) is
+  /// decided by where the hero is now. Picture only: movement carries on.
+  void showAttackPicture({
+    double seconds = CombatConstants.attackHitboxDuration,
+    double secondAt = _groundSecondPictureAt,
+  }) {
+    _attackInAir = !isOnGround;
+    _attackPictureElapsed = 0;
+    _attackPictureLength = seconds;
+    _secondPictureAt = secondAt;
+  }
+
+  /// The hero's own move (2026-11, see hero_move_constants.dart): Juan's boomerang
+  /// coin, Maria's net, Del Pilar's long shot, Lapu-Lapu's and Bonifacio's dashes,
+  /// Luna's saber wave, Maria Clara's petals, Rizal's pages. One button, the hero
+  /// decides. Needs at least one charge and an expired cooldown, but the charge is
+  /// only spent when the move hits an enemy, so a miss is free. A dash needs the
+  /// ground under the hero: in the air a dash hero uses the old short swing, so
+  /// jump attacks still work.
   void attack() {
     if (_attackCooldownRemaining > 0) return;
     if (!game.canAttack) return;
+    if (_moves.busyWithCounter) return;
 
-    _attackCooldownRemaining = CombatConstants.attackCooldown;
-    // Picture only: which sequence plays is decided by where the hero is now.
-    _attackInAir = !isOnGround;
-    _attackPictureElapsed = 0;
+    final move = heroMove;
+    _attackCooldownRemaining = move.cooldown;
+    if (move.isDash && isOnGround) {
+      _moves.startDash();
+    } else if (move.isDash) {
+      showAttackPicture();
+      _swingMelee();
+    } else {
+      showAttackPicture();
+      _moves.fire();
+    }
+  }
 
+  /// The old short swing: a box in front of the hero for 0.25 s that hits what it
+  /// touches. What a dash hero does in the air.
+  void _swingMelee() {
     final hitboxSize = Vector2(
       CombatConstants.attackHitboxWidth,
       CombatConstants.attackHitboxHeight,
@@ -481,6 +563,15 @@ class PlayerComponent extends SpriteAnimationComponent
       ),
     );
   }
+
+  /// The hero's own move aimed at a boss attack (a right answer in the boss fight).
+  /// [target] is where the attack is in world coordinates. The move plays its own
+  /// picture and effect and calls [onImpact] at the moment it meets the attack:
+  /// flying things when they reach `target.x` (a burst: its first page), a dash when
+  /// it ends (the hero then glides back to where it stood). Called exactly once,
+  /// whatever happens, and it spends no Kaalaman charge.
+  void playCounter({required Vector2 target, required VoidCallback onImpact}) =>
+      _moves.counter(target: target, onImpact: onImpact);
 
   void triggerHurt() {
     isHurt = true;
@@ -567,6 +658,7 @@ class PlayerComponent extends SpriteAnimationComponent
     // pushed the player into the gap keeps pushing once they are back.
     _knockbackVelocityX = 0;
     _knockbackRemaining = 0;
+    _moves.cancel(); // and any dash or pages still on the way
     animation = walkAnimation;
   }
 
@@ -587,7 +679,8 @@ class PlayerComponent extends SpriteAnimationComponent
     if (other is EnemyComponent && !other.defeated) {
       // The sprite boxes touch; what hurts is the drawn body against the enemy's own
       // hit area (CombatConstants.playerHurtWidthFraction).
-      if (!_hurtBy(other)) return;
+      // A dizzy hopper, a rising enemy and a golden runner cannot hurt (surprises).
+      if (!other.hurtsOnTouch || !_hurtBy(other)) return;
       _takeContactDamage(
         knockbackDirection: worldX < other.position.x ? -1 : 1,
       );
@@ -679,7 +772,9 @@ class PlayerComponent extends SpriteAnimationComponent
   /// the foot span inside it, so a hit never throws anyone into a gap, from a
   /// ledge or from a platform fight. Airborne, or already off the edge, there is
   /// nothing to stay on, so [x] is returned unchanged.
-  double _keepOnGround(double x) {
+  ///
+  /// Public because a dash move stops at a ledge by the same rule (hero_move_runner.dart).
+  double keepOnGround(double x) {
     if (!isOnGround) return x;
     final half = size.x * footSpanFraction / 2;
     final centre = position.x + size.x / 2;
