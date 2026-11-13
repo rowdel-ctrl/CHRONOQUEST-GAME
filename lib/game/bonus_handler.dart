@@ -58,7 +58,8 @@ extension BonusHandler on ChronoGame {
     bonus.away = true;
     bonus.played = true;
     portal.beginEnter();
-    audioService.playPowerup();
+    audioService.playTeleport();
+    audioService.playBonusBgm();
     pauseEngine();
     BonusResult? result;
     try {
@@ -72,6 +73,7 @@ extension BonusHandler on ChronoGame {
     } catch (_) {
       result = null; // the round could not be shown: carry on as normal
     }
+    audioService.playBgm(currentEra); // the era's own music again
     finishBonus(result);
   }
 

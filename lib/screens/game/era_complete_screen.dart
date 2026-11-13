@@ -8,6 +8,7 @@ import '../../models/badge_defs.dart';
 import '../../models/quiz_result.dart';
 import '../../providers/game_provider.dart';
 import '../../services/api_service.dart';
+import '../../services/audio_service.dart';
 import '../../widgets/confetti.dart';
 import '../../widgets/era_medal.dart';
 import '../../widgets/game_ui.dart';
@@ -70,7 +71,15 @@ class _EraCompleteScreenState extends ConsumerState<EraCompleteScreen> {
   @override
   void initState() {
     super.initState();
+    // The boss has fallen: the victory music, off this frame (as the level screen does for stopBgm).
+    Future<void>.microtask(() => AudioService().playVictoryBgm());
     _loadScores();
+  }
+
+  @override
+  void dispose() {
+    Future<void>.microtask(() => AudioService().stopBgm());
+    super.dispose();
   }
 
   Future<void> _loadScores() async {

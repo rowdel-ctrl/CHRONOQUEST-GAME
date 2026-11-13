@@ -41,6 +41,7 @@ class AudioService {
     'land.wav',
     'step.wav',
     'tap.wav',
+    'button.mp3',
   ];
 
   bool _soundEnabled = true;
@@ -98,6 +99,26 @@ class AudioService {
 
   /// True from the moment the boss fight's music starts until any music stops.
   bool _bossMusic = false;
+
+  /// Which boss phase's track is playing (1 to 3), so music switched off and on again mid-fight
+  /// comes back as the same one.
+  int _bossPhase = 1;
+
+  /// The music track now playing and how loud it is next to the others (see [_trackGain]).
+  double _currentGain = 1.0;
+
+  /// The boss's music by phase: 1 an easy start, 2 the middle, 3 the most intense.
+  static const List<String> _bossTracks = ['bgm_boss_1.mp3', 'bgm_boss_2.mp3', 'bgm_boss_3.mp3'];
+
+  /// The tracks were made at different loudness (measured 2026-11-13: about -16 dB, -13 dB and
+  /// -10 dB), so each is turned down to sit with the others. 1.0 is the base music level.
+  static const Map<String, double> _trackGain = {
+    'bgm_boss_1.mp3': 1.0,
+    'bgm_boss_2.mp3': 0.7,
+    'bgm_boss_3.mp3': 0.5,
+    'bgm_victory.mp3': 0.75,
+    'bgm_bonus.mp3': 0.85,
+  };
 
   bool get soundEnabled => _soundEnabled;
   bool get musicEnabled => _musicEnabled;
@@ -193,7 +214,7 @@ class AudioService {
     _save(() => StorageService.setMusicVolume(_musicVolume));
     if (_initialized) {
       try {
-        FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume);
+        FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume * _currentGain);
       } catch (e) {
         debugPrint('AudioService: could not change music volume: $e');
       }
@@ -209,7 +230,7 @@ class AudioService {
     if (_musicEnabled) {
       final era = _currentBgmEra;
       if (_bossMusic) {
-        playBossBgm();
+        playBossBgm(phase: _bossPhase);
       } else if (era != null) {
         playBgm(era);
       }
@@ -220,6 +241,7 @@ class AudioService {
 
   // ─── GAME SFX ─────────────────────────────────────────────────────────────
   Future<void> playJump() => _playSfx('jump.mp3');
+  Future<void> playTeleport() => _playSfx('teleport.mp3');
   Future<void> playCorrect() => _playSfx('correct.mp3');
 
   /// The cheer after a correct answer (assets/sounds/praise.wav, made by
@@ -240,7 +262,7 @@ class AudioService {
   // name dropped over one replaces it.
   Future<void> playLand() => _playSfx('land.wav');
   Future<void> playStep() => _playSfx('step.wav');
-  Future<void> playTap() => _playSfx('tap.wav');
+  Future<void> playTap() => _playSfx('button.mp3');
   Future<void> playArtifactGlow() => _playSfx('artifact.wav');
   Future<void> playGateRumble() => _playSfx('gate_rumble.wav');
   Future<void> playSplash() => _playSfx('splash.wav');
@@ -276,6 +298,7 @@ class AudioService {
   Future<void> playBgm(String eraId) async {
     _currentBgmEra = eraId;
     _bossMusic = false;
+    _currentGain = 1.0;
     if (!_musicEnabled) return;
     try {
       await _ensureInitialized();
@@ -293,17 +316,44 @@ class AudioService {
   /// The boss fight's own music, in place of the era's track until the level
   /// ends. [setMusicEnabled] brings the right one back if music is switched off
   /// and on again mid-fight.
-  Future<void> playBossBgm() async {
+  /// [phase] (1 to 3) picks the track: the fight gets more intense as it goes on.
+  Future<void> playBossBgm({int phase = 1}) async {
     _bossMusic = true;
+    _bossPhase = phase.clamp(1, _bossTracks.length);
+    final file = _bossTracks[_bossPhase - 1];
+    _currentGain = _trackGain[file] ?? 1.0;
     if (!_musicEnabled) return;
     try {
       await _ensureInitialized();
       await FlameAudio.bgm.play(
-        'bgm_boss.wav',
-        volume: _bgmBaseVolume * _musicVolume,
+        file,
+        volume: _bgmBaseVolume * _musicVolume * _currentGain,
       );
     } catch (e) {
       debugPrint('AudioService: failed to play the boss music: $e');
+    }
+  }
+
+  /// The music of the era-complete screen, after the boss has fallen. It is not the era's own
+  /// track and not the boss's, and it stops when the screen is left ([stopBgm]).
+  Future<void> playVictoryBgm() => _playOneOff('bgm_victory.mp3');
+
+  /// The music of the bonus round behind the golden portal. [playBgm] brings the era's own
+  /// track back when the round is over.
+  Future<void> playBonusBgm() => _playOneOff('bgm_bonus.mp3');
+
+  Future<void> _playOneOff(String file) async {
+    _bossMusic = false;
+    _currentGain = _trackGain[file] ?? 1.0;
+    if (!_musicEnabled) return;
+    try {
+      await _ensureInitialized();
+      await FlameAudio.bgm.play(
+        file,
+        volume: _bgmBaseVolume * _musicVolume * _currentGain,
+      );
+    } catch (e) {
+      debugPrint('AudioService: failed to play $file: $e');
     }
   }
 

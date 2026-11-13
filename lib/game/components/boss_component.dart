@@ -611,6 +611,9 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     }
   }
 
+  /// The boss phase whose music is playing (the fight starts in phase 1).
+  int _musicPhase = 1;
+
   void _startRound() {
     _side = _heroCentre >= _bossX ? 1 : -1; // kept for the whole round
     final q = _questions.next();
@@ -619,6 +622,12 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
       return;
     }
     _current = q;
+    if (phase != _musicPhase) {
+      // A harder phase: the cue, and the next, more intense, track.
+      _musicPhase = phase;
+      game.audioService.playBossPhase();
+      game.audioService.playBossBgm(phase: phase);
+    }
     _kind = profile.attackForRound(round);
     _resolved = false;
     lastAnswer = null;
