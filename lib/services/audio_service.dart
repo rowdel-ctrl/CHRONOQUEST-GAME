@@ -75,6 +75,9 @@ class AudioService {
   void resetSfxForTesting() {
     _pools.clear();
     poolFactory = _newPool;
+    _nextWarningAt = DateTime.fromMillisecondsSinceEpoch(0);
+    warningClock = DateTime.now;
+    warningWait = Future<void>.delayed;
   }
 
   /// Effects play over the music rather than pausing it, which is what
@@ -270,9 +273,66 @@ class AudioService {
   Future<void> playFlag() => _playSfx('flag.wav');
   Future<void> playShieldPop() => _playSfx('shield_pop.wav');
   Future<void> playStreak() => _playSfx('streak.wav');
-  Future<void> playChaserNotice() => _playSfx('chaser_notice.wav');
-  Future<void> playHeavyWindup() => _playSfx('heavy_windup.wav');
+  Future<void> playChaserNotice() => _playWarning('chaser_notice.wav');
+  Future<void> playHeavyWindup() => _playWarning('heavy_windup.wav');
   Future<void> playLunge() => _playSfx('lunge.wav');
+
+  // ─── Surprises (2026-11-16). The sounds that warn of something about to happen
+  // (a windup, a crack opening, a rock's ticks, a throw's whirl, a spotted cue) go
+  // through [_playWarning], so two of them never pile up. ─────────────────────────
+  Future<void> playHopper() => _playWarning('hopper.wav');
+  Future<void> playGroundPop() => _playWarning('ground_pop.wav');
+  Future<void> playRockWarn() => _playWarning('rock_warn.wav');
+  Future<void> playRockCrash() => _playSfx('rock_crash.wav');
+  Future<void> playThrowWindup() => _playWarning('throw_windup.wav');
+  Future<void> playThrowFly() => _playSfx('throw_fly.wav');
+  Future<void> playGoldenRun() => _playWarning('golden_run.wav');
+
+  /// The heroes that have an attack sound (`attack_<id>.wav`, one per hero, made to suit
+  /// how they attack). A hero without one, a new hero for example, is silent.
+  static const Set<String> heroesWithAttackSound = {
+    'boy',
+    'girl',
+    'delpilar',
+    'lapu',
+    'bonifacio',
+    'luna',
+    'mariaclara',
+    'rizal',
+  };
+
+  /// The sound of [heroId]'s attack, played the moment the attack starts.
+  Future<void> playHeroAttack(String heroId) async {
+    if (!heroesWithAttackSound.contains(heroId)) return;
+    await _playSfx('attack_$heroId.wav');
+  }
+
+  /// Warning sounds never start closer together than this. One that is due sooner waits
+  /// its turn, so a windup, a crack and a "spotted you" cue are heard one after another
+  /// and not as one loud lump.
+  static const Duration warningGap = Duration(milliseconds: 400);
+
+  /// A warning that would have to wait longer than this is dropped: the moment has passed.
+  static const Duration warningMaxWait = Duration(milliseconds: 900);
+
+  DateTime _nextWarningAt = DateTime.fromMillisecondsSinceEpoch(0);
+
+  /// The clock and the wait the warning rule uses. Replaceable so a test needs no real time.
+  @visibleForTesting
+  DateTime Function() warningClock = DateTime.now;
+  @visibleForTesting
+  Future<void> Function(Duration) warningWait = Future<void>.delayed;
+
+  Future<void> _playWarning(String file) async {
+    if (!_soundEnabled || _sfxVolume <= 0) return;
+    final now = warningClock();
+    final start = _nextWarningAt.isAfter(now) ? _nextWarningAt : now;
+    final wait = start.difference(now);
+    if (wait > warningMaxWait) return;
+    _nextWarningAt = start.add(warningGap);
+    if (wait > Duration.zero) await warningWait(wait);
+    await _playSfx(file);
+  }
   Future<void> playBossWarning({bool short = false}) =>
       _playSfx(short ? 'boss_warning_short.wav' : 'boss_warning.wav');
   Future<void> playShockwave() => _playSfx('shockwave.wav');

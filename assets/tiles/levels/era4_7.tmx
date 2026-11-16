@@ -118,7 +118,7 @@
   <object id="31" type="enemy" x="8586" y="564">
    <properties>
     <property name="kind" value="american_soldier"/>
-    <property name="behavior" value="walker"/>
+    <property name="behavior" value="golden"/>
     <property name="patrol" type="float" value="150"/>
    </properties>
   </object>
@@ -254,7 +254,7 @@
     <property name="art" value="artifact_3"/>
    </properties>
   </object>
-  <object id="93" type="gate" x="24848" y="660"/>
+  <object id="93" type="gate" x="24768" y="660"/>
   <object id="94" name="finish" type="exit" x="24888" y="660"/>
  </objectgroup>
 </map>

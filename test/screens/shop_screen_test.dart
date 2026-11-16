@@ -139,21 +139,21 @@ void main() {
   });
 
   testWidgets('a purchase takes the coins, adds one and says so', (tester) async {
-    await _open(tester);
+    await _open(tester, coins: 100);
 
     await tester.tap(find.byKey(ShopScreen.buyKey(PowerUpKind.shield)));
     await tester.pump();
 
-    expect(_game.state.coins, 28 - GameConstants.shieldPriceCoins);
+    expect(_game.state.coins, 100 - GameConstants.shieldPriceCoins);
     expect(_game.state.powerUps.shield, 2);
     expect(find.text('×2'), findsNWidgets(2), reason: '50/50 and shields both at 2 now');
     expect(find.byKey(ShopScreen.toastKey), findsOneWidget);
     expect(find.text('NABILI! SHIELD ×2'), findsOneWidget);
 
     // The coin number counts down to the new total and a red "-25" drifts off it.
-    expect(find.text('−25'), findsOneWidget);
-    await tester.pump(const Duration(milliseconds: 400));
-    expect(find.text('3'), findsOneWidget);
+    expect(find.text('−${GameConstants.shieldPriceCoins}'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 1500));
+    expect(tester.widget<Text>(find.byKey(ShopScreen.coinsKey)).data, '${100 - GameConstants.shieldPriceCoins}');
 
     // The message goes away on its own.
     await tester.pump(const Duration(seconds: 3));
@@ -163,8 +163,8 @@ void main() {
   testWidgets('what the coins do not cover cannot be bought and says how short', (tester) async {
     await _open(tester);
 
-    // 28 coins against a Time Freeze at 30.
-    expect(find.text('Kulang 2'), findsOneWidget);
+    // 28 coins against a Time Freeze at 60.
+    expect(find.text('Kulang ${GameConstants.timeFreezePriceCoins - 28}'), findsOneWidget);
     await tester.tap(find.byKey(ShopScreen.buyKey(PowerUpKind.timeFreeze)), warnIfMissed: false);
     await tester.pump();
 
@@ -174,23 +174,23 @@ void main() {
   });
 
   testWidgets('buys one heart, or fills the pool at once', (tester) async {
-    await _open(tester, coins: 100, hearts: 2);
+    await _open(tester, coins: 200, hearts: 2);
 
     await tester.tap(find.byKey(ShopScreen.buyHeartKey));
     await tester.pump();
     expect(_game.state.hearts.count, 3);
-    expect(_game.state.coins, 80);
+    expect(_game.state.coins, 160);
     expect(_fullPips(tester), 3);
     expect(find.text('NABILI! +1 PUSO'), findsOneWidget);
 
-    // Two missing now: PUNUIN costs 40.
+    // Two missing now: PUNUIN costs 80.
     expect(find.text('PUNUIN'), findsOneWidget);
-    expect(find.descendant(of: find.byKey(ShopScreen.fillHeartsKey), matching: find.text('40')),
+    expect(find.descendant(of: find.byKey(ShopScreen.fillHeartsKey), matching: find.text('80')),
         findsOneWidget);
     await tester.tap(find.byKey(ShopScreen.fillHeartsKey));
     await tester.pump();
     expect(_game.state.hearts.count, GameConstants.maxHearts);
-    expect(_game.state.coins, 40);
+    expect(_game.state.coins, 80);
     expect(_fullPips(tester), GameConstants.maxHearts);
     expect(find.text('PUNO NA ANG PUSO!'), findsOneWidget);
     expect(find.text('PUNO NA'), findsOneWidget, reason: 'the heart button sleeps');
@@ -205,12 +205,12 @@ void main() {
   });
 
   testWidgets('the fill button waits until all the missing hearts are affordable', (tester) async {
-    await _open(tester, coins: 30, hearts: 2); // 3 missing = 60
+    await _open(tester, coins: 60, hearts: 2); // 3 missing = 120
 
     await tester.tap(find.byKey(ShopScreen.fillHeartsKey), warnIfMissed: false);
     await tester.pump();
     expect(_game.state.hearts.count, 2);
-    expect(_game.state.coins, 30);
+    expect(_game.state.coins, 60);
 
     // One at a time still works.
     await tester.tap(find.byKey(ShopScreen.buyHeartKey));
@@ -220,7 +220,7 @@ void main() {
 
   testWidgets('with too few coins for a heart it says how many are missing', (tester) async {
     await _open(tester, coins: 5, hearts: 3);
-    expect(find.text('Kulang 15'), findsOneWidget);
+    expect(find.text('Kulang 35'), findsOneWidget);
     await tester.tap(find.byKey(ShopScreen.buyHeartKey), warnIfMissed: false);
     await tester.pump();
     expect(_game.state.hearts.count, 3);

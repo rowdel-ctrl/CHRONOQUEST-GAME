@@ -295,6 +295,7 @@ class PlayerComponent extends SpriteAnimationComponent
     // Where the middle of the sprite is before any horizontal move this frame:
     // which side of a wall the player is on, if they run into one.
     final previousCentreX = position.x + size.x / 2;
+    final xAtStart = position.x;
 
     // Player-driven horizontal movement (GAMEPLAY-V2.md Section 3): -1..1,
     // from the joystick's pull or from the arrow buttons, so this both sets
@@ -401,6 +402,17 @@ class PlayerComponent extends SpriteAnimationComponent
       animation = walkAnimation;
     }
     isOnGround = onGround;
+
+    // Legs move only while the hero really moves along the ground. Standing
+    // still (no pull on the joystick, or pushing against a wall or the boss's
+    // side line) shows the first walk picture instead of running on the spot.
+    if ((animation?.frames.length ?? 0) > 1) {
+      final moved = (position.x - xAtStart).abs() > 0.01;
+      if (!moved && playing) animationTicker?.reset();
+      playing = moved;
+    } else {
+      playing = true;
+    }
 
     // Remember the last spot the player could actually stand, for
     // `respawn()` after a fall. Skipped during knockback so being shoved
@@ -536,6 +548,7 @@ class PlayerComponent extends SpriteAnimationComponent
     if (move.isDash && isOnGround) {
       _moves.startDash();
     } else if (move.isDash) {
+      game.audioService.playHeroAttack(characterId);
       showAttackPicture();
       _swingMelee();
     } else {

@@ -19,7 +19,11 @@ class SurpriseConstants {
   static const int firstPopLevel = 5;
   static const int firstRockLevel = 6;
   static const int firstThrowerLevel = 7;
-  static const int firstGoldenLevel = 8;
+  /// The golden runner starts at level 6 in most eras and at level 4 in the two short
+  /// eras (Spanish and Modern, which have only 4 ordinary levels). This is the earliest
+  /// of those; the map generator (tools/levelgen/surprises.js, `goldenFrom`) holds the
+  /// exact level for each era.
+  static const int firstGoldenLevel = 4;
 
   /// No surprise of any kind before this level.
   static const int firstSurpriseLevel = firstHopperLevel;

@@ -71,24 +71,24 @@ void main() {
       await StorageService.saveHeartsState(
         HeartsState(count: 2, regenStartMs: server.millisecondsSinceEpoch - 5000),
       );
-      final n = fresh('h1', coins: 50);
+      final n = fresh('h1', coins: 100);
       expect(n.state.hearts.count, 2);
 
       expect(n.buyHeart(), isTrue);
       expect(n.state.hearts.count, 3);
-      expect(n.state.coins, 50 - GameConstants.heartPriceCoins);
+      expect(n.state.coins, 100 - GameConstants.heartPriceCoins);
       expect(n.state.hearts.regenStartMs, server.millisecondsSinceEpoch - 5000,
           reason: 'the next free heart is still on its way');
       // Kept on the phone, for this student.
       expect(StorageService.getHeartsStateFor('h1').count, 3);
-      expect(StorageService.getWallet('h1')!['coins'], 30);
+      expect(StorageService.getWallet('h1')!['coins'], 100 - GameConstants.heartPriceCoins);
     });
 
     test('the last heart stops the countdown', () async {
       await StorageService.saveHeartsState(
         HeartsState(count: GameConstants.maxHearts - 1, regenStartMs: server.millisecondsSinceEpoch),
       );
-      final n = fresh('h2', coins: 20);
+      final n = fresh('h2', coins: GameConstants.heartPriceCoins);
       expect(n.buyHeart(), isTrue);
       expect(n.state.hearts.count, GameConstants.maxHearts);
       expect(n.state.hearts.regenStartMs, isNull);
@@ -137,7 +137,7 @@ void main() {
 
   group('buying power-ups', () {
     test('each costs its price and adds one, kept for next time', () {
-      final n = fresh('p1', coins: 100);
+      final n = fresh('p1', coins: 200);
       expect(n.buyPowerUp(PowerUpKind.fiftyFifty), isTrue);
       expect(n.buyPowerUp(PowerUpKind.shield), isTrue);
       expect(n.buyPowerUp(PowerUpKind.timeFreeze), isTrue);
@@ -145,14 +145,14 @@ void main() {
       const spent = GameConstants.fiftyFiftyPriceCoins +
           GameConstants.shieldPriceCoins +
           GameConstants.timeFreezePriceCoins;
-      expect(n.state.coins, 100 - spent);
+      expect(n.state.coins, 200 - spent);
       expect(n.state.powerUps.fiftyFifty, 1);
       expect(n.state.powerUps.shield, 1);
       expect(n.state.powerUps.timeFreeze, 1);
 
       final again = GameNotifier(clock: ServerClock.fixed(server))..loadWallet('p1');
       expect(again.state.powerUps.timeFreeze, 1);
-      expect(again.state.coins, 100 - spent);
+      expect(again.state.coins, 200 - spent);
     });
 
     test('is refused when the coins fall short', () {
@@ -268,12 +268,12 @@ void main() {
     });
 
     const prices = {
-      'rizal': 600,
-      'mariaclara': 300,
-      'luna': 400,
-      'bonifacio': 250,
-      'delpilar': 250,
-      'lapu': 150,
+      'rizal': 1200,
+      'mariaclara': 600,
+      'luna': 800,
+      'bonifacio': 500,
+      'delpilar': 500,
+      'lapu': 300,
     };
     for (final e in prices.entries) {
       test('${e.key} is refused until bought and costs ${e.value}', () {

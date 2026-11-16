@@ -16,6 +16,7 @@ import '../services/api_service.dart';
 import '../services/audio_service.dart';
 import 'answer_point_handler.dart';
 import 'bonus/bonus_session.dart';
+import 'cave/cave_session.dart';
 import 'components/artifact_component.dart';
 import 'components/player_component.dart';
 import 'components/boss_component.dart';
@@ -177,6 +178,10 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   /// The golden artifact's portal and bonus round (bonus_handler.dart).
   final BonusSession bonus = BonusSession();
+
+  /// The level's underground cave: whether it is done, whether the student is down
+  /// there, and the pipe that leads to it (cave_handler.dart).
+  final CaveSession cave = CaveSession();
 
   /// Called for every coin picked up, so the wallet gets it at once and quitting or
   /// closing the game cannot lose it.

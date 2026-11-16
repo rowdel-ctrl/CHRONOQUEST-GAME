@@ -11,13 +11,24 @@ const { physics, eras } = require('./rules');
 const T = require('./terrain');
 const { hashString } = require('./rng');
 
-const LADDER = { hopper: 4, pop: 5, rock: 6, thrower: 7, golden: 8 };
+const LADDER = { hopper: 4, pop: 5, rock: 6, thrower: 7, golden: 6 };
 const FIRST_LEVEL = LADDER.hopper;
+
+// The golden runner starts at level 6 in every era. An era with fewer ordinary levels than
+// that (Spanish and Modern have 4) gets it on its last ordinary level instead, so every
+// era has one.
+const goldenFrom = (eraId) => {
+  const era = eras.find((e) => e.id === eraId);
+  // levelWeeks holds every level of the era, the boss level last.
+  return era ? Math.min(LADDER.golden, era.levelWeeks.length - 1) : LADDER.golden;
+};
 
 // Soldier-like walkers: they hop and one of them may be the golden runner. The modern
 // era has no walker, so its cloud (forced to walk in the game) may hop too.
 const SOLDIER_KINDS = new Set(['tribal_warrior', 'spanish_soldier', 'american_soldier', 'japanese_soldier']);
 const HOPPER_KINDS = new Set([...SOLDIER_KINDS, 'misinfo_cloud']);
+// The golden runner may also be the modern era's cloud (that era has no soldier), so every era can have one.
+const GOLDEN_KINDS = HOPPER_KINDS;
 
 // How far, in units, surprises keep from things (see the placement rules in the task).
 const FROM_START_OR_GATE = 400;
@@ -32,14 +43,14 @@ const MAX = { pop: 3, rock: 3, thrower: 2, golden: 1 };
 
 // What each level holds (hoppers and throwers are marks on existing enemies; pops and
 // rocks are new objects). Counts are for levels where the kind is allowed.
-function planFor(levelIndex) {
+function planFor(levelIndex, eraId) {
   const L = levelIndex;
   return {
     hoppers: L >= LADDER.hopper,
     pops: L < LADDER.pop ? 0 : L === LADDER.pop ? 2 : 1,
     rocks: L < LADDER.rock ? 0 : L === LADDER.rock ? 3 : L === 7 ? 2 : L === 8 ? 1 : 2,
     throwers: L >= LADDER.thrower,
-    golden: L >= LADDER.golden ? 1 : 0,
+    golden: L >= (eraId ? goldenFrom(eraId) : LADDER.golden) ? 1 : 0,
   };
 }
 
@@ -119,7 +130,7 @@ function markSurprises(level, eraId, levelIndex) {
   const heavyKinds = new Set(era.heavy);
   const blocks = T.blocksOf(level.H);
   const on = hasSurprises(levelIndex) && !isBoss(eraId, levelIndex);
-  const plan = on ? planFor(levelIndex) : { hoppers: false, pops: 0, rocks: 0, throwers: false, golden: 0 };
+  const plan = on ? planFor(levelIndex, eraId) : { hoppers: false, pops: 0, rocks: 0, throwers: false, golden: 0 };
   const gx = gateX(level);
   const roomy = (e) => e.x >= level.spawnX + FROM_START_OR_GATE && e.x + ENEMY_WIDTH <= gx - FROM_START_OR_GATE && supportBlock(e, blocks);
 
@@ -133,7 +144,7 @@ function markSurprises(level, eraId, levelIndex) {
   if (plan.hoppers) walkers.forEach((e, n) => { if (n % 4 === 1 || walkers.length === 1) hoppers.push(e); });
   hoppers.forEach((e) => { e.behavior = 'hopper'; });
   // The golden runner: a soldier that is not a hopper, about 60% of the way along.
-  const soldiers = walkers.filter((e) => SOLDIER_KINDS.has(e.kind) && e.behavior === 'walker');
+  const soldiers = walkers.filter((e) => GOLDEN_KINDS.has(e.kind) && e.behavior === 'walker');
   const golden = [];
   if (plan.golden && soldiers.length) {
     const pick = soldiers[Math.min(soldiers.length - 1, Math.floor(soldiers.length * 0.6))];
@@ -181,8 +192,8 @@ function checkSurprises(level) {
     if (!HOPPER_KINDS.has(e.kind)) problems.push(`a hopper at ${e.x} is a ${e.kind}`);
   }
   for (const e of kinds('golden')) {
-    note(allowed(`a golden runner at ${e.x}`, LADDER.golden));
-    if (!SOLDIER_KINDS.has(e.kind)) problems.push(`the golden runner at ${e.x} is a ${e.kind}`);
+    note(allowed(`a golden runner at ${e.x}`, goldenFrom(eraId)));
+    if (!GOLDEN_KINDS.has(e.kind)) problems.push(`the golden runner at ${e.x} is a ${e.kind}`);
   }
   for (const e of kinds('thrower')) {
     note(allowed(`a thrower at ${e.x}`, LADDER.thrower));
@@ -223,7 +234,7 @@ function checkSurprises(level) {
 }
 
 module.exports = {
-  LADDER, FIRST_LEVEL, SOLDIER_KINDS, HOPPER_KINDS, MAX,
+  LADDER, FIRST_LEVEL, goldenFrom, SOLDIER_KINDS, HOPPER_KINDS, GOLDEN_KINDS, MAX,
   FROM_START_OR_GATE, FROM_HAZARD_EDGE, FROM_PLATFORM, FROM_ARTIFACT, BETWEEN_SPOTS,
   planFor, hasSurprises, markSurprises, checkSurprises, hazardEdges,
 };

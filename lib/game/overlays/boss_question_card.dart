@@ -293,11 +293,13 @@ class BossQuestionCard extends StatelessWidget {
       );
     }
 
+    // Two columns, read down: A over B on the left, C over D on the right.
     final options = question.options;
+    final rows = (options.length + 1) ~/ 2;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (var i = 0; i < options.length; i += 2) ...[
+        for (var i = 0; i < rows; i++) ...[
           if (i > 0) const SizedBox(height: 6),
           ConstrainedBox(
             constraints: BoxConstraints(minHeight: layout.optionHeight),
@@ -308,8 +310,8 @@ class BossQuestionCard extends StatelessWidget {
                   Expanded(child: cell(options[i])),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: i + 1 < options.length
-                        ? cell(options[i + 1])
+                    child: i + rows < options.length
+                        ? cell(options[i + rows])
                         : const SizedBox.shrink(),
                   ),
                 ],

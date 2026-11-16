@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../widgets/game_ui.dart';
+import '../cave_handler.dart';
 import '../chrono_game.dart';
 
 /// Shown when the student walks into the end gate with artifacts still
@@ -45,7 +46,10 @@ class GateLockedOverlayWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              remaining == 1
+              game.pipeIsTheWay
+                  ? 'May 1 artifact pa: nasa ilalim ito! Pumasok sa pipe '
+                      'para makuha ito.'
+              : remaining == 1
                   ? 'May 1 artifact pang hindi mo nasasagot. Hanapin ito '
                       'para makalabas.'
                   : 'May $remaining artifact pang hindi mo nasasagot. '

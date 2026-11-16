@@ -65,7 +65,7 @@ class GroundPopComponent extends PositionComponent
           _counted = game.surprises;
           phase = GroundPopPhase.warn;
           _t = 0;
-          game.audioService.playHeavyWindup();
+          game.audioService.playGroundPop();
         }
       case GroundPopPhase.warn:
         _t += dt;

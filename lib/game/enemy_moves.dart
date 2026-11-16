@@ -154,7 +154,7 @@ class HopperMove extends EnemyMove {
     _distance = min(SurpriseConstants.hopDistance, dx.abs());
     phase = HopperPhase.squat;
     _t = 0;
-    e.game.audioService.playHeavyWindup();
+    e.game.audioService.playHopper();
     return true;
   }
 
@@ -314,6 +314,7 @@ class ThrowerMove extends EnemyMove {
         if (_t >= SurpriseConstants.throwWindup) {
           phase = ThrowerPhase.flight;
           _t = 0;
+          e.game.audioService.playThrowFly();
         }
       case ThrowerPhase.flight:
         _t += dt;
@@ -356,7 +357,7 @@ class ThrowerMove extends EnemyMove {
     _item = item;
     phase = ThrowerPhase.windup;
     _t = 0;
-    e.game.audioService.playHeavyWindup();
+    e.game.audioService.playThrowWindup();
   }
 
   @override
@@ -435,7 +436,7 @@ class GoldenMove extends EnemyMove {
         e.facing = toward;
         phase = GoldenPhase.alert;
         _t = 0;
-        e.game.audioService.playChaserNotice();
+        e.game.audioService.playGoldenRun();
         return true;
       case GoldenPhase.alert:
         _t += dt;

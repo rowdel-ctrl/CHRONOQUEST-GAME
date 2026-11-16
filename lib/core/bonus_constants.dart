@@ -17,12 +17,14 @@ class BonusConstants {
   static const double portalCloseSeconds = 0.45;
 
   /// Drawn size of the standing portal, feet on the ground under the artifact.
-  static const double portalWidth = 96;
-  static const double portalHeight = 150;
+  static const double portalWidth = 150;
+  static const double portalHeight = 230;
 
   /// The hero is inside when the middle of the body is within this of the
-  /// portal's middle (sideways) and the feet are inside its height.
-  static const double portalEnterHalfWidth = 34;
+  /// portal's middle (sideways) and the feet are inside its height. 50 is about
+  /// two thirds of the vortex's drawn half width (75): the dark violet body inside
+  /// the ring of ticks, the same share as the old oval had (34 of 48).
+  static const double portalEnterHalfWidth = 50;
 
   /// How long the portal glows after the hero is back, then closes.
   static const double portalReturnGlowSeconds = 1.1;

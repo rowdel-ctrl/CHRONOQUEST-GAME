@@ -526,5 +526,31 @@ void main() {
       _walkInto(game, portal);
       expect(portal.heroInside(), isTrue);
     });
+
+    _test('the vortex is 150 x 230 and takes a hero within 50 of its middle',
+        (tester) async {
+      final game = await _mount(tester);
+      final a = await _addArtifact(tester, game);
+      _answer(game, a, 'A');
+      await _settle(tester, frames: 3);
+      final portal = game.bonus.portal!;
+      _run(portal, BonusConstants.portalOpenSeconds + .1);
+      game.bonus.onEnter = (r) async => null;
+
+      expect(portal.size.x, 150);
+      expect(portal.size.y, 230);
+      final middle = portal.position.x + portal.size.x / 2;
+      void heroMiddleAt(double x) {
+        game.player.position = Vector2(
+            x - game.player.size.x / 2, game.groundY - game.player.size.y);
+      }
+
+      heroMiddleAt(middle + 48);
+      expect(portal.heroInside(), isTrue, reason: 'just inside the swirl, right side');
+      heroMiddleAt(middle - 48);
+      expect(portal.heroInside(), isTrue, reason: 'just inside the swirl, left side');
+      heroMiddleAt(middle + 53);
+      expect(portal.heroInside(), isFalse, reason: 'still outside the swirl body');
+    });
   });
 }

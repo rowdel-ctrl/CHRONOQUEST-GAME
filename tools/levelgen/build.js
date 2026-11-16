@@ -266,7 +266,7 @@ function buildLevel({ eraId, levelIndex, rng, seed }) {
     H: new Int8Array(cols), // 0 everywhere: flat base ground until a piece changes it
     S: new Uint8Array(cols),
     C: new Uint8Array(cols), // rows of crates on top of a column
-    platforms: [], coins: [], enemies: [], artifacts: [], gates: [exitX - 40], pieces: [],
+    platforms: [], coins: [], enemies: [], artifacts: [], gates: [exitX - 120], pieces: [],
     spawnX: physics.playerX, exitX, mapWidth, seed, opener, d, generated: true,
     props: { era: eraId, level: levelIndex, grade: era.grade, term: era.term, weeks: era.levelWeeks[levelIndex - 1].join(',') },
   };

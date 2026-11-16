@@ -10,6 +10,7 @@ import '../../core/combat_constants.dart';
 import '../../data/question_bank.dart';
 import '../../game/answer_point_handler.dart';
 import '../../game/bonus/bonus_session.dart';
+import '../../game/cave/cave_session.dart';
 import '../../game/quiz_handler.dart';
 import '../../game/overlays/gate_locked_overlay.dart';
 import '../../game/overlays/hud_overlay.dart';
@@ -24,6 +25,7 @@ import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
 import '../splash/level_splash.dart';
 import 'bonus_round_screen.dart';
+import 'cave_screen.dart';
 import 'level_complete_screen.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -102,6 +104,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       if (!mounted) return Future<BonusResult?>.value(null);
       return Navigator.of(context)
           .push<BonusResult>(BonusRoundScreen.route(request));
+    };
+
+    // The underground cave (cave_handler.dart): its own screen on top of this one,
+    // which stays here, held still, until the student is back up the pipe.
+    game.cave.onEnter = (request) {
+      if (!mounted) return Future<CaveResult?>.value(null);
+      return Navigator.of(context).push<CaveResult>(CaveScreen.route(request));
     };
 
     // A power-up used leaves the wallet, and is saved, the moment it is used.

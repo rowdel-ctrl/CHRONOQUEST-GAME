@@ -47,8 +47,8 @@ Future<void> _pump(WidgetTester tester, {required int hearts}) async {
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
-  test('a heart costs 20 coins for now', () {
-    expect(GameConstants.heartPriceCoins, 20);
+  test('a heart costs 40 coins for now', () {
+    expect(GameConstants.heartPriceCoins, 40);
   });
 
   testWidgets('shows a single count, not a row of hearts', (tester) async {

@@ -66,7 +66,7 @@ class FallingRockComponent extends PositionComponent
           _counted = game.surprises;
           phase = FallingRockPhase.warn;
           _t = 0;
-          game.audioService.playHeavyWindup();
+          game.audioService.playRockWarn();
         }
       case FallingRockPhase.warn:
         _t += dt;
@@ -113,7 +113,7 @@ class FallingRockComponent extends PositionComponent
         s.takeHazardHit(knockbackDirection: centre >= spotX ? 1 : -1);
       }
     }
-    game.audioService.playLand();
+    game.audioService.playRockCrash();
     _shake();
   }
 

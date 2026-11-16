@@ -5,7 +5,7 @@
   "lengthUnits": 25000,
   "artifactsPerLevel": 10,
   "artifactSize": 72,
-  "gateWidth": 144,
+  "gateWidth": 200,
   "playerWidth": 96,
   "enemyWidth": 90,
   "enemyHeight": 108,

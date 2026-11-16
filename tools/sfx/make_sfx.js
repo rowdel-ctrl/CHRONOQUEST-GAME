@@ -19,6 +19,18 @@ const rand = () => {
   return seed / 0x100000000;
 };
 
+// Runs [fn] with its own noise seed and then puts the shared seed back, so a sound made
+// this way never changes the sounds made after it.
+const withSeed = (s, fn) => {
+  const saved = seed;
+  seed = s;
+  try {
+    fn();
+  } finally {
+    seed = saved;
+  }
+};
+
 const buf = (sec, wrap = false) => {
   const b = new Float32Array(Math.round(RATE * sec));
   b.wrap = wrap;
@@ -173,17 +185,40 @@ function write(name, out, peak = 0.85) {
   write('artifact.wav', o, 0.8);
 }
 
-// The stone gate opens: a heavy rumble, grinding, and a thud as it stops.
+// The stone gate opens: a wooden-iron creak as it lifts, a winch ratchet clacking
+// steadily while it rises (the clicks get a little closer together), a low grinding
+// rumble, then a heavy slam as it reaches the top, with dust and a metal ring after.
+// The noise has its own seed here, so the other sounds in this file keep their exact bytes.
 {
-  const o = buf(1.5);
-  const swell = (u, t) => Math.min(1, t / 0.15) * (t < 1.05 ? 1 : Math.exp(-(t - 1.05) / 0.12));
-  noise(o, { dur: 1.45, lp: 0.035, gain: 1.4, env: swell });
-  tone(o, { dur: 1.45, f0: 48, gain: 0.7, env: swell, am: { from: 13, to: 17, depth: 0.45 } });
-  tone(o, { dur: 1.45, f0: 61, gain: 0.35, env: swell });
-  for (let k = 0; k < 11; k++) noise(o, { start: 0.1 + rand() * 0.9, dur: 0.05, lp: 0.6, tau: 0.01, gain: 0.45 });
-  tone(o, { start: 1.1, dur: 0.3, f0: 95, f1: 38, tau: 0.1, gain: 1.1 });
-  noise(o, { start: 1.1, dur: 0.15, lp: 0.2, tau: 0.04, gain: 0.7 });
+  const savedSeed = seed;
+  seed = 777;
+  const o = buf(2.2);
+  // 1. Creak: a wobbling low sweep of wood and iron, rising in volume.
+  noise(o, { start: 0.02, dur: 0.5, lp: 0.12, hp: 0.02, attack: 0.1, gain: 0.5, env: (u) => Math.sin(Math.PI * u) });
+  tone(o, { start: 0.02, dur: 0.5, f0: 150, f1: 230, type: 'saw', attack: 0.1, gain: 0.12, am: { from: 7, to: 11, depth: 0.5 }, env: (u) => Math.sin(Math.PI * u) });
+  // 2. Winch ratchet: a clack about every 0.1 s, each with a low body.
+  let at = 0.35, gap = 0.1;
+  while (at < 1.25) {
+    noise(o, { start: at, dur: 0.02, lp: 0.5, hp: 0.12, attack: 0.001, tau: 0.008, gain: 0.7 });
+    tone(o, { start: at, dur: 0.03, f0: 1800, tau: 0.004, gain: 0.14 });
+    tone(o, { start: at, dur: 0.05, f0: 260, f1: 180, tau: 0.02, gain: 0.25 });
+    at += gap;
+    gap = Math.max(0.075, gap - 0.004);
+  }
+  // 3. Grinding rumble under the ratchet, swelling to the top.
+  const swell = (u, t) => Math.min(1, t / 0.3) * (t < 1.2 ? 1 : Math.exp(-(t - 1.2) / 0.1));
+  noise(o, { start: 0.2, dur: 1.2, lp: 0.05, gain: 1.3, env: swell });
+  tone(o, { start: 0.2, dur: 1.2, f0: 44, gain: 0.7, env: swell, am: { from: 12, to: 16, depth: 0.4 } });
+  // 4. The slam at the top: a click, a deep thud, then stone dust settling.
+  noise(o, { start: 1.3, dur: 0.03, lp: 0.7, hp: 0.05, attack: 0.001, tau: 0.006, gain: 1.0 });
+  tone(o, { start: 1.3, dur: 0.4, f0: 90, f1: 34, tau: 0.16, gain: 1.2 });
+  noise(o, { start: 1.31, dur: 0.9, lp: 0.12, attack: 0.002, tau: 0.25, gain: 0.45 });
+  // 5. The iron bolts ring after the slam.
+  bell(o, 210, 1.34, 0.5, 0.12);
+  bell(o, 310, 1.34, 0.4, 0.08);
+  bell(o, 530, 1.36, 0.25, 0.05);
   write('gate_rumble.wav', o, 0.9);
+  seed = savedSeed;
 }
 
 // Falling into the river: a splash and a few bubbles.
@@ -246,16 +281,21 @@ function write(name, out, peak = 0.85) {
   write('chaser_notice.wav', o, 0.7);
 }
 
-// A heavy enemy winds up: a rising charge that stops short.
-{
+// A heavy enemy winds up: a growl that rises and snarls faster, a breath of air, a
+// tightening scrape, and a small snap at the end that says "now". (2026-11-16: layered
+// and with its own noise seed, so the other sounds keep their bytes.)
+withSeed(4101, () => {
   const o = buf(0.65);
-  const rise = (u) => 0.2 + 0.8 * u;
+  const rise = (u) => 0.25 + 0.75 * u;
   layer(o, 0.2, (t) => {
-    tone(t, { dur: 0.6, f0: 70, f1: 420, type: 'saw', attack: 0.02, env: rise, curve: 1.4 });
-    noise(t, { dur: 0.6, lp: 0.3, env: rise, gain: 0.25 });
+    tone(t, { dur: 0.6, f0: 55, f1: 190, type: 'saw', attack: 0.03, env: rise, curve: 1.3, am: { from: 18, to: 36, depth: 0.55 } });
+    tone(t, { dur: 0.6, f0: 110, f1: 380, type: 'saw', attack: 0.03, env: rise, curve: 1.3, gain: 0.25 });
   });
+  noise(o, { dur: 0.58, lp: [0.1, 0.35], hp: 0.02, attack: 0.1, env: rise, gain: 0.45 });
+  tone(o, { start: 0.25, dur: 0.35, f0: 380, f1: 760, type: 'tri', attack: 0.05, env: rise, gain: 0.08 });
+  noise(o, { start: 0.61, dur: 0.03, lp: 0.5, hp: 0.1, attack: 0.001, tau: 0.008, gain: 0.5 });
   write('heavy_windup.wav', o, 0.7);
-}
+});
 
 // The lunge: a quick whoosh.
 {
@@ -277,41 +317,61 @@ function write(name, out, peak = 0.85) {
 // The warning before a shockwave: a hum that rises and trembles faster, then
 // cuts off as the wave is sent. The first warning lasts 1.0 s, the second 0.6 s.
 function warning(name, sec) {
-  const o = buf(sec + 0.05);
-  const swell = (u) => 0.35 + 0.65 * u;
-  layer(o, 0.13, (t) => {
-    const am = { from: 6, to: 22, depth: 0.6 };
-    tone(t, { dur: sec, f0: 60, f1: 150, type: 'saw', attack: 0.1, env: swell, curve: 1.3, am });
-    tone(t, { dur: sec, f0: 61.5, f1: 153, type: 'saw', attack: 0.1, env: swell, curve: 1.3, am, gain: 0.8 });
-    tone(t, { dur: sec, f0: 120, f1: 300, type: 'sine', attack: 0.1, env: swell, curve: 1.3, gain: 0.3 });
+  withSeed(4201, () => {
+    const o = buf(sec + 0.05);
+    const swell = (u) => 0.35 + 0.65 * u;
+    // The horn: two saws a half step apart so they beat, rising and trembling faster.
+    layer(o, 0.13, (t) => {
+      const am = { from: 6, to: 22, depth: 0.6 };
+      tone(t, { dur: sec, f0: 58, f1: 140, type: 'saw', attack: 0.1, env: swell, curve: 1.3, am });
+      tone(t, { dur: sec, f0: 61.5, f1: 148, type: 'saw', attack: 0.1, env: swell, curve: 1.3, am, gain: 0.8 });
+      tone(t, { dur: sec, f0: 120, f1: 300, type: 'sine', attack: 0.1, env: swell, curve: 1.3, gain: 0.3 });
+    });
+    // A heartbeat of low thumps that comes faster, so it feels like something is closing in.
+    for (let at = 0, gap = 0.3; at < sec - 0.05; at += gap, gap = Math.max(0.17, gap - 0.04)) {
+      tone(o, { start: at, dur: 0.18, f0: 85, f1: 42, tau: 0.06, gain: 0.7 });
+      noise(o, { start: at, dur: 0.03, lp: 0.2, tau: 0.01, gain: 0.25 });
+    }
+    // A thin rising buzz on top: danger.
+    noise(o, { dur: sec, lp: 0.4, hp: 0.15, attack: 0.3, env: swell, gain: 0.12 });
+    write(name, o, 0.8);
   });
-  write(name, o, 0.8);
 }
 warning('boss_warning.wav', 1.0);
 warning('boss_warning_short.wav', 0.6);
 
-// The shockwave runs along the floor: a rumble with a whoosh on top.
-{
+// The shockwave runs along the floor: a sharp impact, a deep boom, a rolling rumble
+// with a whoosh on top and bits of rubble skittering after it.
+withSeed(4301, () => {
   const o = buf(1.0);
-  noise(o, { dur: 0.95, lp: [0.04, 0.02], attack: 0.05, tau: 0.35, gain: 1.2 });
-  tone(o, { dur: 0.95, f0: 65, f1: 35, attack: 0.03, tau: 0.4, gain: 0.9 });
-  noise(o, { dur: 0.6, lp: 0.3, hp: 0.05, attack: 0.15, tau: 0.2, gain: 0.35 });
+  noise(o, { dur: 0.04, lp: 0.6, hp: 0.04, attack: 0.001, tau: 0.01, gain: 1.0 });
+  tone(o, { dur: 0.9, f0: 90, f1: 28, attack: 0.005, tau: 0.3, gain: 1.2 });
+  noise(o, { dur: 0.95, lp: [0.06, 0.02], attack: 0.05, tau: 0.4, gain: 1.1 });
+  noise(o, { dur: 0.6, lp: [0.3, 0.1], hp: 0.03, attack: 0.12, tau: 0.22, gain: 0.4 });
+  for (let k = 0; k < 9; k++) noise(o, { start: 0.12 + rand() * 0.6, dur: 0.03, lp: 0.5, hp: 0.1, attack: 0.001, tau: 0.008, gain: 0.22 });
   write('shockwave.wav', o, 0.9);
-}
+});
 
-// A new boss phase: a deep hit, a dark drone and a sour stab.
-{
+// A new boss phase: a deep hit, a dark drone, a dissonant swell that climbs and then a
+// sour stab, with a shimmer of air under it.
+withSeed(4401, () => {
   const o = buf(1.3);
-  tone(o, { dur: 0.8, f0: 80, f1: 40, tau: 0.3, gain: 1 });
+  tone(o, { dur: 0.8, f0: 80, f1: 38, tau: 0.3, gain: 1 });
   noise(o, { dur: 0.3, lp: 0.1, tau: 0.12, gain: 0.7 });
   layer(o, 0.18, (t) => {
     tone(t, { dur: 1.2, f0: 55, type: 'saw', attack: 0.1, tau: 0.5, gain: 0.3 });
     tone(t, { dur: 1.2, f0: 82.4, type: 'saw', attack: 0.1, tau: 0.5, gain: 0.25 });
-    tone(t, { dur: 0.7, f0: 220, type: 'saw', tau: 0.25, gain: 0.18 });
-    tone(t, { dur: 0.7, f0: 233.1, type: 'saw', tau: 0.25, gain: 0.18 });
+    // The swell: two voices a half step apart climbing an octave.
+    tone(t, { start: 0.1, dur: 0.85, f0: 110, f1: 220, type: 'saw', attack: 0.3, env: (u) => u, gain: 0.3 });
+    tone(t, { start: 0.1, dur: 0.85, f0: 116.5, f1: 233, type: 'saw', attack: 0.3, env: (u) => u, gain: 0.27 });
+    // The stab.
+    tone(t, { start: 0.95, dur: 0.3, f0: 220, type: 'saw', tau: 0.2, gain: 0.2 });
+    tone(t, { start: 0.95, dur: 0.3, f0: 233.1, type: 'saw', tau: 0.2, gain: 0.2 });
   });
+  noise(o, { start: 0.1, dur: 0.95, lp: [0.1, 0.3], hp: 0.04, attack: 0.4, env: (u) => u, gain: 0.18 });
+  noise(o, { start: 0.95, dur: 0.05, lp: 0.4, hp: 0.05, attack: 0.001, tau: 0.015, gain: 0.5 });
   write('boss_phase.wav', o, 0.9);
-}
+});
 
 // The boss is about to ask: a solemn gold chime.
 {

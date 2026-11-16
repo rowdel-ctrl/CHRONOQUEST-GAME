@@ -248,17 +248,19 @@ class CombatConstants {
   /// and 2026-10-04 corrections).
   static const int gatesPerLevel = 1;
 
-  /// How tall the gate is drawn: 180, which snaps to 8 tiles (192). A gate blocks
-  /// the full corridor whatever the student's height (the stop is a sideways
-  /// clamp in PlayerComponent.update, so a jump never goes over it), and 180 is
-  /// well above the highest a jump reaches (about 128). It was 260 until
-  /// 2026-10-29 ("why is the gate so tall"). Still far taller than the old 40x50
-  /// WallComponent it replaces. Widened from 48 to
-  /// 144 (6 tiles) after playtesting: at 48 it was half as wide as the player and
-  /// read as a post, not a gate. The generator leaves 120 of floor past the exit
-  /// so it fits (tools/levelgen/rules.js, exitMargin).
-  static const double gateWidth = 144;
-  static const double gateHeight = 180;
+  /// The gate is drawn exactly 200 wide and 220 tall (the six era gates of
+  /// 2026-11-16, about twice the hero's height; it is no longer snapped to
+  /// 24-unit tiles). A gate blocks the full corridor whatever the student's
+  /// height (the stop is a sideways clamp in PlayerComponent.update, so a jump
+  /// never goes over it), and 220 is far above the highest a jump reaches
+  /// (about 128). It was 144 x 180 before, 260 tall until 2026-10-29 ("why is
+  /// the gate so tall"), and 48 wide at first, which read as a post, not a gate.
+  /// Its 104 x 134 door is centred, so the middle of the doorway is half the
+  /// width from its left edge. The generator puts the gate 120 before the exit
+  /// marker, which leaves 40 of floor past its right edge (tools/levelgen/build.js,
+  /// rules.js exitMargin).
+  static const double gateWidth = 200;
+  static const double gateHeight = 220;
 
   /// How far in front of a gate the player is stopped, so they don't stand
   /// visually inside it while the question is open.

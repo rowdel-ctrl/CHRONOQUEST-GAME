@@ -151,7 +151,7 @@ function renderWindow(level, x0, { width = 1280, height = 720, body = true } = {
     const y = e.y ?? 660;
     cv.blit(img, 0, 0, img.width, img.height, e.x - x0, y - 108, 90, 108, true);
   }
-  for (const g of level.gates) cv.rect(g - x0, 660 - 200, 144, 200, [70, 60, 50]);
+  for (const g of level.gates) cv.rect(g - x0, 660 - 220, 200, 220, [70, 60, 50]);
   const pl = sprite('characters/rizal_walk_1.png');
   const px = level.spawnX - x0;
   if (px > -100 && px < width) cv.blit(pl, 0, 0, pl.width, pl.height, px, 660 - 120, 96, 120);

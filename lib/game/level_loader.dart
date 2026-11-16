@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:tiled/tiled.dart';
 
 import '../core/bonus_constants.dart';
+import '../core/cave_constants.dart';
 import '../core/combat_constants.dart';
 import '../models/artifact_art.dart' show artifactIconsPerEra;
 import '../models/level.dart';
@@ -16,8 +17,10 @@ import 'components/falling_rock_component.dart';
 import 'components/gap_component.dart';
 import 'components/gate_component.dart';
 import 'components/ground_pop_component.dart';
+import 'cave/cave_plan.dart';
 import 'components/halfway_flag_component.dart';
 import 'components/heart_pickup_component.dart';
+import 'components/pipe_component.dart';
 import 'components/terrain_component.dart';
 import 'enemy_behavior.dart' show EnemyBehavior;
 import 'components/tile_platform_component.dart';
@@ -606,6 +609,20 @@ class LevelBuilder {
         ),
       );
     }
+    // A level with a cave: one of its artifacts is the cave's and is not placed, and
+    // a pipe stands on flat ground in the road instead (the level still counts ten).
+    final pipePlan = levelNo != null &&
+            !level.isArena &&
+            CaveConstants.hasPipe(eraId, levelNo)
+        ? CavePlan.plan(level)
+        : null;
+    if (pipePlan != null) {
+      world.add(PipeComponent(
+        centerX: pipePlan.centerX,
+        surfaceY: pipePlan.surfaceY,
+        eraId: eraId,
+      ));
+    }
     final terrain = level.terrain;
     if (terrain != null) {
       world.add(TerrainComponent(grid: terrain, eraId: eraId));
@@ -640,6 +657,9 @@ class LevelBuilder {
               levelNo: levelNo, isArena: level.isArena)) {
             world.add(FallingRockComponent(spotX: e.x, surfaceY: e.y));
           }
+
+        case 'artifact' when identical(e, pipePlan?.artifact):
+          break; // taken to the cave: the pipe above stands for it
 
         case 'artifact':
           world.add(

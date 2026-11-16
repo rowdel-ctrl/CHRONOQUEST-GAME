@@ -216,13 +216,15 @@ class QuestionCard extends StatelessWidget {
       );
     }
 
-    // Two options a row, side by side. A row is as tall as its taller option, so
-    // a long answer is shown whole instead of ending in "...".
+    // Two columns, read down: A over B on the left, C over D on the right (with 3 options: A
+    // over B, then C). A row is as tall as its taller option, so a long answer is shown whole
+    // instead of ending in "...".
     final options = question.options;
+    final rows = (options.length + 1) ~/ 2;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (var i = 0; i < options.length; i += 2) ...[
+        for (var i = 0; i < rows; i++) ...[
           if (i > 0) const SizedBox(height: 10),
           ConstrainedBox(
             // A row where both options were removed (50/50) keeps its height.
@@ -234,8 +236,8 @@ class QuestionCard extends StatelessWidget {
                   Expanded(child: cell(options[i])),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: i + 1 < options.length
-                        ? cell(options[i + 1])
+                    child: i + rows < options.length
+                        ? cell(options[i + rows])
                         : const SizedBox.shrink(),
                   ),
                 ],

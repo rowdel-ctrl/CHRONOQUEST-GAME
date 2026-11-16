@@ -156,7 +156,7 @@ extension AnswerPointHandler on ChronoGame {
     questionShowing = false;
     // The last heart failed the level, which has already stopped the game.
     if (!levelFailed) {
-      if (lastArtifactAnswered) _startGateReveal();
+      if (lastArtifactAnswered) startGateReveal();
       resumeEngine();
     }
     notifyState();
@@ -165,7 +165,7 @@ extension AnswerPointHandler on ChronoGame {
   /// The last artifact is answered: show the end gate opening, then go back to
   /// the student (gate_reveal.dart). Nothing happens when the level has no end
   /// gate to show.
-  void _startGateReveal() {
+  void startGateReveal() {
     if (levelEnded || gateReveal != null) return;
     for (final gate in world.children.whereType<GateComponent>()) {
       if (gate.isLevelExit && gate.isBlocking) {

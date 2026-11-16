@@ -48,8 +48,11 @@ const rules = {
   fightFirstSection: 2, // none in sections 1 and 2 (0-based index of the first allowed)
   enemySpacing: 600, // generated levels; the Dart lint's floor is 400
   artifactClearance: 240,
-  // Floor left past the exit marker. The gate stands 40 before the exit and is 144
-  // wide, so its far edge is 104 past the exit and has to stay on the map.
+  // Floor left past the exit marker. The gate stands 120 before the exit and is 200
+  // wide, so its far edge is 80 past the exit and has to stay on the map (40 of
+  // floor are left after it). The exit marker is past the middle of the doorway
+  // (the gate's x + 100), so the game's "middle of the hero reaches the middle of
+  // the doorway" rule ends the level before the marker does.
   exitMargin: 120,
   safeStart: 1008, // nothing dangerous before this x (Mario 1-1: practise first); a multiple of the 24-unit tile
   groups: 10, // one per question

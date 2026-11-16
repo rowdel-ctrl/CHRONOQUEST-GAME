@@ -21,8 +21,17 @@ const lf = (s) => s.replace(/\r\n/g, '\n');
 const targets = [];
 for (const era of eras) for (let n = 1; n < era.levelWeeks.length; n++) targets.push({ eraId: era.id, n });
 
-test('the ladder: hopper 4, ground pop 5, falling rock 6, thrower 7, golden runner 8', () => {
-  assert.deepStrictEqual(S.LADDER, { hopper: 4, pop: 5, rock: 6, thrower: 7, golden: 8 });
+test('the ladder: hopper 4, ground pop 5, falling rock 6, thrower 7, golden runner 6 (level 4 in the two short eras)', () => {
+  assert.deepStrictEqual(S.LADDER, { hopper: 4, pop: 5, rock: 6, thrower: 7, golden: 6 });
+  assert.strictEqual(S.goldenFrom('pre-colonial'), 6);
+  assert.strictEqual(S.goldenFrom('nationalism'), 6);
+  assert.strictEqual(S.goldenFrom('american'), 6);
+  assert.strictEqual(S.goldenFrom('ww2'), 6);
+  assert.strictEqual(S.goldenFrom('spanish'), 4, 'Spanish has 4 ordinary levels');
+  assert.strictEqual(S.goldenFrom('modern'), 4, 'Modern has 4 ordinary levels');
+  assert.strictEqual(S.planFor(4, 'spanish').golden, 1);
+  assert.strictEqual(S.planFor(4, 'pre-colonial').golden, 0);
+  assert.strictEqual(S.planFor(6, 'pre-colonial').golden, 1);
   assert.deepStrictEqual(S.planFor(3), { hoppers: false, pops: 0, rocks: 0, throwers: false, golden: 0 });
   assert.strictEqual(S.planFor(4).hoppers, true);
   assert.strictEqual(S.planFor(4).pops, 0);
@@ -31,8 +40,8 @@ test('the ladder: hopper 4, ground pop 5, falling rock 6, thrower 7, golden runn
   assert.strictEqual(S.planFor(6).rocks, 3);
   assert.strictEqual(S.planFor(6).throwers, false);
   assert.strictEqual(S.planFor(7).throwers, true);
-  assert.strictEqual(S.planFor(7).golden, 0);
-  assert.strictEqual(S.planFor(8).golden, 1);
+  assert.strictEqual(S.planFor(5).golden, 0);
+  assert.strictEqual(S.planFor(6).golden, 1);
   assert.strictEqual(S.planFor(9).golden, 1);
 });
 
@@ -71,8 +80,15 @@ test('the maps hold what the era can: a thrower only where there is a heavy, the
   const golden = targets.filter((t) => kinds(t, 'golden').length);
   assert.ok(golden.length >= 1);
   for (const t of golden) {
-    assert.ok(t.n >= 8, `${t.eraId} ${t.n}`);
+    assert.ok(t.n >= S.goldenFrom(t.eraId), `${t.eraId} ${t.n}`);
     assert.strictEqual(kinds(t, 'golden').length, 1, 'at most one golden runner a level');
+  }
+  // Every era has the golden runner, and in every level from its first golden level on.
+  for (const era of eras) {
+    const from = S.goldenFrom(era.id);
+    const levels = targets.filter((t) => t.eraId === era.id && t.n >= from);
+    assert.ok(levels.length >= 1, era.id);
+    for (const t of levels) assert.strictEqual(kinds(t, 'golden').length, 1, `${t.eraId} ${t.n} has its golden runner`);
   }
 });
 

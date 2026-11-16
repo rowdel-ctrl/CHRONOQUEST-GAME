@@ -254,7 +254,7 @@
     <property name="art" value="artifact_5"/>
    </properties>
   </object>
-  <object id="99" type="gate" x="24848" y="660"/>
+  <object id="99" type="gate" x="24768" y="660"/>
   <object id="100" name="finish" type="exit" x="24888" y="660"/>
  </objectgroup>
 </map>

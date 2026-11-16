@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../widgets/gate_icon.dart';
+import '../cave_handler.dart';
 import '../chrono_game.dart';
 
 /// World units in one metre on the gate indicator. The player is 120 units
@@ -45,6 +46,7 @@ class _GateHudState extends State<GateHud> {
   bool _messageShown = false;
   bool _messageVisible = false;
   double? _units;
+  bool _toPipe = false;
 
   @override
   void initState() {
@@ -63,7 +65,10 @@ class _GateHudState extends State<GateHud> {
   void _refresh() {
     if (!mounted) return;
     final game = widget.game;
-    final units = game.gateDistanceUnits();
+    final toPipe = game.pipeIsTheWay;
+    final units = game.gateDistanceUnits() ?? game.pipeDistanceUnits();
+    // The pipe and the gate each get their own message, once.
+    if (toPipe != _toPipe) _messageShown = false;
 
     var show = false;
     if (units != null && !_messageShown && !game.questionShowing) {
@@ -74,9 +79,10 @@ class _GateHudState extends State<GateHud> {
         if (mounted) setState(() => _messageVisible = false);
       });
     }
-    if (units != _units || show) {
+    if (units != _units || show || toPipe != _toPipe) {
       setState(() {
         _units = units;
+        _toPipe = toPipe;
         if (show) _messageVisible = true;
       });
     }
@@ -91,14 +97,14 @@ class _GateHudState extends State<GateHud> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _Chip(metres: metres),
+        _Chip(metres: metres, toPipe: _toPipe),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: _messageVisible
               ? Padding(
                   key: const ValueKey('message'),
                   padding: const EdgeInsets.only(top: 8),
-                  child: _Message(metres: metres),
+                  child: _Message(metres: metres, toPipe: _toPipe),
                 )
               : const SizedBox.shrink(key: ValueKey('none')),
         ),
@@ -109,12 +115,15 @@ class _GateHudState extends State<GateHud> {
 
 class _Chip extends StatelessWidget {
   final int metres;
-  const _Chip({required this.metres});
+  final bool toPipe;
+  const _Chip({required this.metres, this.toPipe = false});
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Bukas na ang gate, $metres metro ang layo',
+      label: toPipe
+          ? 'Ang pipe ay $metres metro ang layo'
+          : 'Bukas na ang gate, $metres metro ang layo',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
@@ -147,7 +156,8 @@ class _Chip extends StatelessWidget {
 
 class _Message extends StatelessWidget {
   final int metres;
-  const _Message({required this.metres});
+  final bool toPipe;
+  const _Message({required this.metres, this.toPipe = false});
 
   @override
   Widget build(BuildContext context) {
@@ -170,8 +180,11 @@ class _Message extends StatelessWidget {
           const SizedBox(width: 10),
           Flexible(
             child: Text(
-              'Nasagot na ang lahat ng artifact! Bukas na ang gate, '
-              '$metres m sa unahan.',
+              toPipe
+                  ? 'Isang artifact na lang! Nasa ilalim ito: pumasok sa '
+                      'pipe, $metres m sa unahan.'
+                  : 'Nasagot na ang lahat ng artifact! Bukas na ang gate, '
+                      '$metres m sa unahan.',
               style: GoogleFonts.poppins(
                 color: AppColors.textPrimary,
                 fontSize: 12,

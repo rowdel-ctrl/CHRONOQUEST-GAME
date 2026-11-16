@@ -204,14 +204,14 @@ void main() {
       expect(SurpriseRules.firstLevel(SurpriseKind.groundPop), 5);
       expect(SurpriseRules.firstLevel(SurpriseKind.fallingRock), 6);
       expect(SurpriseRules.firstLevel(SurpriseKind.thrower), 7);
-      expect(SurpriseRules.firstLevel(SurpriseKind.golden), 8);
+      expect(SurpriseRules.firstLevel(SurpriseKind.golden), 4);
       expect(SurpriseRules.allowed(SurpriseKind.hopper, levelNo: 4), true);
       expect(SurpriseRules.allowed(SurpriseKind.groundPop, levelNo: 4), false);
       expect(
           SurpriseRules.allowed(SurpriseKind.fallingRock, levelNo: 5), false);
       expect(SurpriseRules.allowed(SurpriseKind.thrower, levelNo: 6), false);
-      expect(SurpriseRules.allowed(SurpriseKind.golden, levelNo: 7), false);
-      expect(SurpriseRules.allowed(SurpriseKind.golden, levelNo: 8), true);
+      expect(SurpriseRules.allowed(SurpriseKind.golden, levelNo: 3), false);
+      expect(SurpriseRules.allowed(SurpriseKind.golden, levelNo: 4), true);
     });
 
     test(
@@ -223,8 +223,8 @@ void main() {
       expect(s('hopper', 3), EnemySurprise.none);
       expect(s('thrower', 7), EnemySurprise.thrower);
       expect(s('thrower', 6), EnemySurprise.none);
-      expect(s('golden', 8), EnemySurprise.golden);
-      expect(s('golden', 7), EnemySurprise.none);
+      expect(s('golden', 4), EnemySurprise.golden);
+      expect(s('golden', 3), EnemySurprise.none);
       expect(s('hopper', 9, arena: true), EnemySurprise.none);
       expect(s('walker', 9), EnemySurprise.none);
       expect(s('chaser', 9), EnemySurprise.none);
@@ -1158,7 +1158,13 @@ void main() {
           return;
         }
         for (final e in marked) {
-          final first = {'hopper': 4, 'thrower': 7, 'golden': 8}[e.behavior]!;
+          // The golden runner starts at level 6, or at 4 in the two short eras
+          // (era 2 Spanish and era 6 Modern have only 4 ordinary levels).
+          final first = {
+            'hopper': 4,
+            'thrower': 7,
+            'golden': (eraNo == 2 || eraNo == 6) ? 4 : 6,
+          }[e.behavior]!;
           expect(levelNo, greaterThanOrEqualTo(first),
               reason: '${e.behavior} at ${e.x}');
         }

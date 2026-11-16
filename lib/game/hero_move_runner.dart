@@ -56,6 +56,7 @@ class HeroMoveRunner {
   /// burst (the rest follow [HeroMove.gap] seconds apart).
   void fire() {
     final m = move;
+    player.game.audioService.playHeroAttack(player.characterId);
     final dir = player.facingRight ? 1.0 : -1.0;
     final charge = MoveCharge();
     _throw(_Throw(0, dir, charge: charge));
@@ -110,7 +111,7 @@ class HeroMoveRunner {
       seconds: m.dashSeconds + HeroMoveConstants.dashAfterSeconds,
       secondAt: m.dashSeconds,
     );
-    player.game.audioService.playLunge();
+    player.game.audioService.playHeroAttack(player.characterId);
   }
 
   /// Moves the hero along the dash for this frame. Called where the player moves
@@ -261,9 +262,10 @@ class HeroMoveRunner {
           seconds: m.dashSeconds + HeroMoveConstants.dashAfterSeconds,
           secondAt: m.dashSeconds,
         );
-        player.game.audioService.playLunge();
+        player.game.audioService.playHeroAttack(player.characterId);
         return;
       }
+      player.game.audioService.playHeroAttack(player.characterId);
       player.showAttackPicture();
       _throw(_Throw(0, dir, targetX: target.x, once: once));
       for (var i = 1; i < m.count; i++) {

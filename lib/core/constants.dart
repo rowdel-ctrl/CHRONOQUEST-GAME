@@ -151,15 +151,15 @@ class GameConstants {
   static const int maxHearts = 5;
   static const Duration heartRegenInterval = Duration(minutes: 1);
 
-  /// Coins to buy one heart. A placeholder chosen by the user on 2026-10-03
+  /// Coins to buy one heart. A placeholder chosen by the user on 2026-10-03, doubled on 2026-11-16
   /// ("for now we use 20 coins"), now spent through [GameNotifier.buyHeart].
-  static const int heartPriceCoins = 20;
+  static const int heartPriceCoins = 40;
 
   /// Coins for one of each power-up, bought on the Profile screen. Placeholders
-  /// to tune once students have played with coins: a level pays roughly 30 to 60.
-  static const int fiftyFiftyPriceCoins = 15;
-  static const int shieldPriceCoins = 25;
-  static const int timeFreezePriceCoins = 30;
+  /// to tune once students have played with coins (doubled on 2026-11-16, a level pays roughly 85 to 100).
+  static const int fiftyFiftyPriceCoins = 30;
+  static const int shieldPriceCoins = 50;
+  static const int timeFreezePriceCoins = 60;
 
   static const int questionsPerLevel = 10; // levels 1-9
   // The size of a boss level's question pool (own lesson + reused ones).
@@ -577,7 +577,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Lapu-Lapu',
     era: 'Sinaunang Pilipinas',
     description: 'Bayani ng Mactan',
-    unlockCost: 150,
+    unlockCost: 300,
   ),
   CharacterData(
     id: 'bonifacio',
@@ -585,7 +585,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Bonifacio',
     era: 'Pananakop ng Espanya',
     description: 'Ama ng Katipunan',
-    unlockCost: 250,
+    unlockCost: 500,
   ),
   CharacterData(
     id: 'delpilar',
@@ -593,7 +593,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Del Pilar',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Batang Heneral ng Tirad Pass',
-    unlockCost: 250,
+    unlockCost: 500,
   ),
   CharacterData(
     id: 'mariaclara',
@@ -601,7 +601,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Maria Clara',
     era: 'Pananakop ng Espanya',
     description: 'Bida ng Noli Me Tangere',
-    unlockCost: 300,
+    unlockCost: 600,
   ),
   CharacterData(
     id: 'luna',
@@ -609,7 +609,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Luna',
     era: 'Himagsikan at Imperyalismong Amerikano',
     description: 'Heneral ng Hukbong Pilipino',
-    unlockCost: 400,
+    unlockCost: 800,
   ),
   CharacterData(
     id: 'rizal',
@@ -617,7 +617,7 @@ const List<CharacterData> allCharacters = [
     shortName: 'Rizal',
     era: 'Pananakop ng Espanya',
     description: 'Pambansang Bayani',
-    unlockCost: 600,
+    unlockCost: 1200,
   ),
 ];
 

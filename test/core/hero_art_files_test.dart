@@ -23,11 +23,11 @@ void main() {
     });
   }
 
-  test('Maria Clara costs 300 coins, so a new student has her locked', () {
+  test('Maria Clara costs 600 coins, so a new student has her locked', () {
     final c = getCharacterById('mariaclara');
     expect(c.id, 'mariaclara');
     expect(c.shortName, 'Maria Clara');
-    expect(c.unlockCost, 300);
+    expect(c.unlockCost, 600);
     expect(walkFramesOf('mariaclara'), 4);
   });
 }
