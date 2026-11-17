@@ -74,13 +74,15 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   /// The first-play tutorial gates here — the point a student actually
   /// starts a level — rather than on character selection (effectively "on
   /// app open"), which is what the playtest flagged as the wrong trigger.
+  /// The level's lesson card comes next; it opens the game when it has been read
+  /// (or at once when the level has no lesson text).
   void _startLevel(int level) {
     if (!StorageService.hasSeenTutorial()) {
       context.push('/tutorial').then((_) {
-        if (mounted) context.go('/game/${widget.eraId}/$level');
+        if (mounted) context.go('/lesson/${widget.eraId}/$level');
       });
     } else {
-      context.go('/game/${widget.eraId}/$level');
+      context.go('/lesson/${widget.eraId}/$level');
     }
   }
 

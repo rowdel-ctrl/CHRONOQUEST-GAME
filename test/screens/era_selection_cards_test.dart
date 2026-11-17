@@ -324,13 +324,14 @@ void main() {
   });
 
   group('tapping the big card', () {
-    testWidgets('an era not started goes to its history', (tester) async {
+    testWidgets('an era not started goes to its levels (the lesson comes with each level)',
+        (tester) async {
       final landed = <String>[];
       await _open(tester, landedOn: landed);
 
       await tester.tap(_card(0));
       await tester.pumpAndSettle();
-      expect(landed, ['/background/${_grade5[0].id}']);
+      expect(landed, ['/level-select/${_grade5[0].id}']);
     });
 
     testWidgets('an era in progress goes to its levels', (tester) async {

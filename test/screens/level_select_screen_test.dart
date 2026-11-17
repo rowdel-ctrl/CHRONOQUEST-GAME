@@ -74,6 +74,13 @@ Future<void> _open(
   final router = GoRouter(routes: [
     GoRoute(path: '/', builder: (_, __) => const LevelSelectScreen(eraId: _era)),
     GoRoute(
+      path: '/lesson/:eraId/:level',
+      builder: (_, s) {
+        landedOn?.add('/lesson/${s.pathParameters['eraId']}/${s.pathParameters['level']}');
+        return const Scaffold(body: Text('lesson stand-in'));
+      },
+    ),
+    GoRoute(
       path: '/game/:eraId/:level',
       builder: (_, s) {
         landedOn?.add('/game/${s.pathParameters['eraId']}/${s.pathParameters['level']}');
@@ -245,22 +252,22 @@ void main() {
   });
 
   group('tapping', () {
-    testWidgets('the next level starts it', (tester) async {
+    testWidgets('the next level opens its lesson card', (tester) async {
       final landed = <String>[];
       await _open(tester, done: {1: 3}, landedOn: landed);
 
       await tester.tap(find.byKey(LevelSelectScreen.nodeKey(2)));
       await tester.pumpAndSettle();
-      expect(landed, ['/game/$_era/2']);
+      expect(landed, ['/lesson/$_era/2']);
     });
 
-    testWidgets('a finished level can be played again', (tester) async {
+    testWidgets('a finished level can be played again, through its lesson card', (tester) async {
       final landed = <String>[];
       await _open(tester, done: {1: 3}, landedOn: landed);
 
       await tester.tap(find.byKey(LevelSelectScreen.nodeKey(1)));
       await tester.pumpAndSettle();
-      expect(landed, ['/game/$_era/1']);
+      expect(landed, ['/lesson/$_era/1']);
     });
 
     testWidgets('a locked level does nothing', (tester) async {

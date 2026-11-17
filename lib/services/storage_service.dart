@@ -238,6 +238,16 @@ class StorageService {
     await appBox.put('history_full_${eraId}_$index', true);
   }
 
+  /// Whether the lesson card of a level (chapter `index`, 0-based) was finished on this phone:
+  /// the reading time was up and the text was read to its end. Replaying the level then
+  /// opens the start button at once.
+  static bool hasDoneLesson(String eraId, int index) =>
+      appBox.get('lesson_done_${eraId}_$index', defaultValue: false) as bool;
+
+  static Future<void> markLessonDone(String eraId, int index) async {
+    await appBox.put('lesson_done_${eraId}_$index', true);
+  }
+
   // ─── HEARTS (persistent, level-attempt gate) ─────────────────────────────
   static const _heartsCountKey = 'hearts_count';
   static const _heartsRegenStartKey = 'hearts_regen_start_ms';

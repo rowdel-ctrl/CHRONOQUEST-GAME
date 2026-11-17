@@ -317,13 +317,7 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> {
           designSize: const Size(_designW, _designH),
           onTap: big
               ? (open
-                  ? () {
-                      if (progress.levelsCompleted > 0) {
-                        context.go('/level-select/${era.id}');
-                      } else {
-                        context.go('/background/${era.id}');
-                      }
-                    }
+                  ? () => context.go('/level-select/${era.id}')
                   : null)
               : () => _focusOn(i, count),
         ),

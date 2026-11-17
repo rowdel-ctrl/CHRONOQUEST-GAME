@@ -217,10 +217,10 @@ void main() {
       final router = GoRouter(routes: [
         GoRoute(path: '/', builder: (_, __) => const EraSelectionScreen()),
         GoRoute(
-          path: '/background/:eraId',
+          path: '/level-select/:eraId',
           builder: (_, s) {
-            landedOn?.add('/background/${s.pathParameters['eraId']}');
-            return _stand('history stand-in');
+            landedOn?.add('/level-select/${s.pathParameters['eraId']}');
+            return _stand('levels stand-in');
           },
         ),
         GoRoute(path: '/login', builder: (_, __) => _stand('login stand-in')),
@@ -263,7 +263,7 @@ void main() {
       await tester.tap(find.byKey(EraSelectionScreen.cardKey(grade5[0].id)));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
-      expect(landed, ['/background/${GuestMode.eraId}']);
+      expect(landed, ['/level-select/${GuestMode.eraId}']);
     });
 
     testWidgets(
