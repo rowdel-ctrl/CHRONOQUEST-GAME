@@ -3,6 +3,11 @@
 > **Chat nickname: GAME.** This file is for the game app only (`CHRONO-GAMEAPP`). The board that shows all three chats is `../HANDOFF.md`. Dashboard: `../CHRONO-DASHBOARD/HANDOFF.md`. Landing page: `../CHRONO-LANDING/HANDOFF.md`.
 > At the end of a session add a dated entry at the top (automatically, without asking). Keep the newest entry under one page. Keep this file under about 400 lines: when it grows past that, move the oldest entries in full to `docs/handoff-archive/` and leave a one-line pointer under "Older entries" at the bottom.
 
+**Date:** 2026-11-23 (LOCKOUT MESSAGE SHOWS THE MINUTES AND THE TEACHER; UNCOMMITTED, NO APK)
+**From:** Claude Sonnet 5.5
+- **What:** when a student is blocked for wrong passwords (dashboard: 5 wrong in a row, 30 minutes by default), the game now shows "Masyadong maraming mali. Subukan ulit sa loob ng N minuto, o itanong sa teacher mo." The minutes come from the server's own block message ("Try again in N minutes"). A plain rate limit keeps the old text. Code: `lib/utils/login_errors.dart` (429 case). Tests: `test/utils/login_errors_test.dart` (three new); login steps tests pass.
+- **Not changed:** the dashboard side (its message is English, and the game does not show it).
+
 **Date:** 2026-11-20 (256 MISSING EXPLANATIONS WRITTEN IN THE GAME QUESTION FILES; UNCOMMITTED, NO APK; full suite 2,006 pass)
 **From:** Claude Sonnet 5.5 (two helpers wrote the text; I checked it)
 - **What:** the 256 questions that had no `explanation` (Sinaunang Pilipinas 112, Spanish 62, Nationalism 82) now have one in `assets/data/questions_pre-colonial.json`, `questions_spanish.json`, `questions_nationalism.json`. Only those 256 lines changed (the files keep their CRLF format; a write-back test was identical before editing). Every question in the game now has one (502 of 502).

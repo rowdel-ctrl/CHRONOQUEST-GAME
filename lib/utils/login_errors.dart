@@ -71,6 +71,12 @@ String loginErrorMessage(DioException e, {required bool joining}) {
     case 404:
       return 'Mali ang class code. Itanong sa teacher mo ang tamang code.';
     case 429:
+      // The server's block says how long is left; a plain rate limit does not.
+      final wait = RegExp(r'try again in (\d+) minute').firstMatch(server);
+      if (wait != null) {
+        return 'Masyadong maraming mali. Subukan ulit sa loob ng ${wait.group(1)} '
+            'minuto, o itanong sa teacher mo.';
+      }
       return 'Masyadong maraming try. Maghintay sandali bago subukan ulit.';
     default:
       final code = response.statusCode ?? 0;

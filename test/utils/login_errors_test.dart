@@ -130,6 +130,27 @@ void main() {
           contains('Masyadong maraming try'));
     });
 
+    test('a block for wrong passwords says how long to wait and to ask the teacher', () {
+      final msg = loginErrorMessage(
+          _reply(429, 'Too many wrong passwords. Try again in 30 minutes, or ask your teacher.'),
+          joining: false);
+      expect(msg, contains('30 minuto'));
+      expect(msg, contains('teacher mo'));
+      expect(msg, isNot(contains('Masyadong maraming try')));
+    });
+
+    test('a block with one minute left says one minute', () {
+      expect(
+          loginErrorMessage(_reply(429, 'Too many wrong passwords. Try again in 1 minute, or ask your teacher.'),
+              joining: false),
+          contains('1 minuto'));
+    });
+
+    test('a block message that is not understood falls back to the plain message', () {
+      expect(loginErrorMessage(_reply(429, 'Too many wrong passwords.'), joining: false),
+          contains('Masyadong maraming try'));
+    });
+
     test('a server fault', () {
       expect(loginErrorMessage(_reply(500, 'boom'), joining: false),
           contains('May problema sa server'));
