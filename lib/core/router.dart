@@ -18,6 +18,7 @@ import '../screens/tutorial/tutorial_screen.dart';
 import '../screens/game/background_history_screen.dart';
 import '../screens/game/full_story_screen.dart';
 import '../screens/game/lesson_card_screen.dart';
+import '../screens/game/restart_level_screen.dart';
 import '../screens/game/level_select_screen.dart';
 import '../screens/game/game_screen.dart';
 import '../screens/game/level_complete_screen.dart';
@@ -140,6 +141,13 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/game/:eraId/:level',
       builder: (context, state) => GameScreen(
+        eraId: state.pathParameters['eraId']!,
+        level: int.parse(state.pathParameters['level']!),
+      ),
+    ),
+    GoRoute(
+      path: '/restart/:eraId/:level',
+      builder: (context, state) => RestartLevelScreen(
         eraId: state.pathParameters['eraId']!,
         level: int.parse(state.pathParameters['level']!),
       ),

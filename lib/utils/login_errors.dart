@@ -4,6 +4,10 @@ import 'package:dio/dio.dart';
 /// to show: the screen asks "Ikaw ba 'yon?" instead.
 const String nameTakenMessage = 'May kapareho nang pangalan sa klase.';
 
+/// The password was right but this account is open on another phone. Not an error to show:
+/// the screen asks "Ituloy dito?" instead.
+const String sessionActiveMessage = 'Gamit na ang account sa ibang device.';
+
 /// The message a student sees when the login or join request fails.
 ///
 /// The server answers in English and one answer can mean two things, so the raw
@@ -41,6 +45,11 @@ String loginErrorMessage(DioException e, {required bool joining}) {
   // Only the server's own code: it also answers 409 when it could not make a username.
   if (joining && data is Map && data['code'] == 'NAME_TAKEN') {
     return nameTakenMessage;
+  }
+
+  // The server's own code, after the password was checked.
+  if (data is Map && data['code'] == 'SESSION_ACTIVE') {
+    return sessionActiveMessage;
   }
 
   switch (response.statusCode) {
@@ -92,7 +101,7 @@ enum LoginField { classCode, name, username, password }
 /// Which question a message from [loginErrorMessage] is about, or null when it is
 /// about nothing the student typed (no internet, too many tries, a server fault).
 LoginField? loginErrorField(String message) {
-  if (message == nameTakenMessage) return null;
+  if (message == nameTakenMessage || message == sessionActiveMessage) return null;
   if (message.startsWith('Mali ang class code') ||
       message.startsWith('I-type ang class code') ||
       message.startsWith('Puno na ang klase')) {

@@ -18,7 +18,9 @@ class _Call {
   final String classCode, password;
   final String? username, name;
   final bool allowSameName;
-  _Call(this.classCode, this.username, this.name, this.password, this.allowSameName);
+  final bool takeOver;
+  _Call(this.classCode, this.username, this.name, this.password, this.allowSameName,
+      [this.takeOver = false]);
 }
 
 class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
@@ -45,8 +47,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
     String? name,
     required String password,
     bool allowSameName = false,
+    bool takeOver = false,
   }) async {
-    calls.add(_Call(classCode, username, name, password, allowSameName));
+    calls.add(_Call(classCode, username, name, password, allowSameName, takeOver));
     if (failWith != null) {
       state = AuthState(error: failWith);
       return {'success': false};
@@ -583,6 +586,64 @@ void main() {
       }
     });
 
+    group('the account is open on another phone', () {
+      Future<void> askedToTakeOver(WidgetTester tester) async {
+        _auth.failWith = sessionActiveMessage;
+        await _choose(tester, joining: false);
+        await _answer(tester, 'EDG5A1');
+        await _answer(tester, 'juandelacruz');
+        await _answer(tester, 'secret1');
+        await tester.pumpAndSettle();
+      }
+
+      testWidgets('asks "Gamit na ang account mo" instead of showing an error', (tester) async {
+        await _pump(tester);
+        await askedToTakeOver(tester);
+
+        expect(find.text('Gamit na ang account mo sa ibang device.'), findsOneWidget);
+        expect(find.byKey(LoginScreen.sessionActiveGoOnKey), findsOneWidget);
+        expect(find.byKey(LoginScreen.sessionActiveCancelKey), findsOneWidget);
+        expect(find.text(sessionActiveMessage), findsNothing, reason: 'a question, not a red banner');
+        expect(_auth.calls.single.takeOver, isFalse, reason: 'the first try never takes over');
+      });
+
+      testWidgets('"Ituloy dito" signs in again and says to take over', (tester) async {
+        await _pump(tester);
+        await askedToTakeOver(tester);
+        _auth.failWith = null;
+
+        await tester.tap(find.byKey(LoginScreen.sessionActiveGoOnKey));
+        await tester.pumpAndSettle();
+
+        expect(_auth.calls, hasLength(2));
+        final c = _auth.calls.last;
+        expect((c.classCode, c.username, c.password, c.takeOver),
+            ('EDG5A1', 'juandelacruz', 'secret1', true));
+        expect(_auth.state.isLoggedIn, isTrue);
+      });
+
+      testWidgets('"Huwag na" goes back to the password and sends nothing more', (tester) async {
+        await _pump(tester);
+        await askedToTakeOver(tester);
+
+        await tester.tap(find.byKey(LoginScreen.sessionActiveCancelKey));
+        await tester.pump();
+
+        expect(find.byKey(LoginScreen.sessionActiveGoOnKey), findsNothing);
+        expect(_auth.calls, hasLength(1));
+        expect(_auth.state.isLoggedIn, isFalse);
+      });
+
+      for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
+        testWidgets('fits at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
+          await _pump(tester, size: size);
+          await askedToTakeOver(tester);
+          expect(tester.takeException(), isNull);
+          expect(find.byKey(LoginScreen.sessionActiveGoOnKey), findsOneWidget);
+        });
+      }
+    });
+
     testWidgets('a wrong class code goes back to the first question', (tester) async {
       await _pump(tester);
       _auth.failWith = 'Mali ang class code. Itanong sa teacher mo ang tamang code.';
@@ -622,6 +683,7 @@ void main() {
         'I-type ang class code at username.': LoginField.classCode,
         'Puno na ang klase na ito. Itanong sa teacher mo.': LoginField.classCode,
         nameTakenMessage: null,
+        sessionActiveMessage: null,
         'May problema sa pag-sali. Subukan ulit mamaya.': null,
         'May gumagamit na ng username na ito sa klase.': LoginField.username,
         "Walang account na may ganitong username sa class code na ito. I-check ang username, o piliin ang 'BAGO AKO' para sumali.":

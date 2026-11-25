@@ -1,3 +1,4 @@
+import 'dart:math' show Random;
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -119,6 +120,21 @@ class StorageService {
   /// aid; see `unlock_all_provider.dart`).
   static bool getUnlockAll() =>
       appBox.get(_unlockAllKey, defaultValue: false) as bool;
+
+  static const _deviceIdKey = 'device_id';
+
+  /// A random id for this phone, made the first time it is asked for and kept across logouts.
+  /// Sent with every sign-in so the server can tell "the same phone again" from "another
+  /// phone" (one active session per student).
+  static Future<String> deviceId() async {
+    final saved = appBox.get(_deviceIdKey) as String?;
+    if (saved != null && saved.isNotEmpty) return saved;
+    final random = Random.secure();
+    final made = List.generate(
+        24, (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+    await appBox.put(_deviceIdKey, made);
+    return made;
+  }
 
   static Future<void> setUnlockAll(bool value) async {
     await appBox.put(_unlockAllKey, value);
@@ -417,6 +433,7 @@ class StorageService {
   static const _keptAcrossLogout = {
     _lastClassCodeKey,
     _lastUsernameKey,
+    _deviceIdKey,
     'sound_enabled',
     'music_enabled',
     'sound_volume',

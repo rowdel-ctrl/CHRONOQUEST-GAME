@@ -102,6 +102,25 @@ void main() {
       expect(loginErrorField(nameTakenMessage), isNull, reason: 'it belongs to no question');
     });
 
+    test('an account open on another phone is a question, on either tab', () {
+      DioException active(int status, Map<String, dynamic> body) {
+        final options = RequestOptions(path: '/student/login');
+        return DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+          response: Response(requestOptions: options, statusCode: status, data: body),
+        );
+      }
+
+      final body = {'success': false, 'message': 'x', 'code': 'SESSION_ACTIVE'};
+      expect(loginErrorMessage(active(409, body), joining: false), sessionActiveMessage);
+      expect(loginErrorMessage(active(409, body), joining: true), sessionActiveMessage);
+      expect(loginErrorField(sessionActiveMessage), isNull);
+      // Another 409 is still not that.
+      expect(loginErrorMessage(active(409, {'success': false, 'message': 'x'}), joining: false),
+          isNot(sessionActiveMessage));
+    });
+
     test('a full class says so', () {
       final msg = loginErrorMessage(_reply(400, 'This class is full. Ask your teacher.'), joining: true);
       expect(msg, 'Puno na ang klase na ito. Itanong sa teacher mo.');

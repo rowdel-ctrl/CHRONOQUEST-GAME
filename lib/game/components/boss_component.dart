@@ -653,6 +653,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     state = BossRoundState.asking;
     _t = 0;
     _cardClosed = false;
+    _explainTapped = false;
     game.audioService.playShockwave();
     game.showBossQuestion(_current!, this);
     game.notifyState();
@@ -814,10 +815,43 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     _t = 0;
   }
 
+  /// Whether the hero is held where he stands: from the wind-up to the end of the round (the
+  /// question, the attack's flight, the counter or the hit, and the explanation). The attack
+  /// is aimed at him, so walking about would drag it along. Between rounds he is free.
+  bool get holdsHero =>
+      !isDefeated &&
+      switch (state) {
+        BossRoundState.windup ||
+        BossRoundState.asking ||
+        BossRoundState.rush ||
+        BossRoundState.counter ||
+        BossRoundState.reflect ||
+        BossRoundState.rest =>
+          true,
+        _ => false,
+      };
+
+  /// Whether the card is showing why (the right answer and its explanation) and the fight is
+  /// waiting for the student to tap SUSUNOD. It is on from the moment the hit lands.
+  bool get explaining => state == BossRoundState.rest && !_cardClosed;
+
+  bool _explainTapped = false;
+
+  /// SUSUNOD on the explanation: the card goes and the next round follows after a short breath.
+  void continueAfterExplanation() {
+    if (explaining) _explainTapped = true;
+  }
+
   void _tickRest() {
-    if (!_cardClosed && _t >= BossAttackConstants.cardLingerSeconds) {
+    if (!_cardClosed) {
+      // The fight waits here for the student to finish reading.
+      if (!_explainTapped) {
+        _t = 0;
+        return;
+      }
       _cardClosed = true;
       game.closeBossQuestion();
+      _t = math.max(_t, BossAttackConstants.restSeconds - 0.4);
     }
     if (_t >= BossAttackConstants.restSeconds) _afterRound();
   }

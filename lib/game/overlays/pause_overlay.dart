@@ -5,8 +5,8 @@ import '../../widgets/living_backdrop.dart' show motionAllowed;
 import '../../widgets/pixel_icon.dart';
 import '../chrono_game.dart';
 
-/// Pause menu overlay: one big gold play button in the middle, with Settings
-/// and Umalis (leave) as small round buttons either side. Each has one word
+/// Pause menu overlay: one big gold play button in the middle, with Settings,
+/// Ulitin (start the level again) and Umalis (leave) as small round buttons around it. Each has one word
 /// under it, so what it does is never a guess.
 ///
 /// Keeps the panel out of the picture: the level shows dimmed behind a few
@@ -16,15 +16,23 @@ class PauseOverlayWidget extends StatelessWidget {
   static const playKey = ValueKey('pause-play');
   static const settingsKey = ValueKey('pause-settings');
   static const quitKey = ValueKey('pause-quit');
+  static const restartKey = ValueKey('pause-restart');
 
   final ChronoGame game;
   final VoidCallback onQuit;
+
+  /// Starts this level again from the beginning. Null hides the button.
+  final VoidCallback? onRestart;
 
   /// Opens Settings over the paused level. Null hides the button, which is
   /// how the overlay behaves wherever there is no router to open it with.
   final VoidCallback? onSettings;
   const PauseOverlayWidget(
-      {super.key, required this.game, required this.onQuit, this.onSettings});
+      {super.key,
+      required this.game,
+      required this.onQuit,
+      this.onSettings,
+      this.onRestart});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +88,17 @@ class PauseOverlayWidget extends StatelessWidget {
                         topGap: 0,
                       ),
                       const SizedBox(width: 34),
+                      if (onRestart != null) ...[
+                        _PauseAction(
+                          key: restartKey,
+                          label: 'ULITIN',
+                          onTap: () => _confirmRestart(context),
+                          face: const _SmallFace(
+                              glyph: PixelGlyph.restart,
+                              color: AppColors.primary),
+                        ),
+                        const SizedBox(width: 34),
+                      ],
                       _PauseAction(
                         key: quitKey,
                         label: 'UMALIS',
@@ -91,6 +110,62 @@ class PauseOverlayWidget extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Asks first: a level started again loses everything done in it so far.
+  void _confirmRestart(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          side: BorderSide(color: AppColors.primaryDark, width: 3),
+        ),
+        title: Text(
+          'Ulitin ang Level?',
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            height: 1.4,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Text(
+          'Magsisimula ulit ang level na ito sa umpisa. Mawawala ang progress mo rito.',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            key: const ValueKey('restart-cancel'),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(
+              'Kanselahin',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            key: const ValueKey('restart-confirm'),
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              game.overlays.remove('PauseOverlay');
+              // Like quitting, it does not resume the engine: the level is being torn
+              // down, and a running frame could still finish or fail it.
+              onRestart!();
+            },
+            child: Text(
+              'Ulitin',
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
             ),
           ),
         ],

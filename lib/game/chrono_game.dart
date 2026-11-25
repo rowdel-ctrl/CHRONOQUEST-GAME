@@ -409,9 +409,15 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     camera.viewport.add(WorldForeground());
   }
 
+  /// Set when the screen that shows this game is being left. Music asked for after that (a
+  /// level that finished loading late, the era's track after a bonus round) is not started, or
+  /// it would play on over the menus.
+  bool leftScreen = false;
+
   /// The music: a boss level has its own, not the era's.
   @protected
   void startMusic() {
+    if (leftScreen) return;
     if (isBossLevel) {
       audioService.playBossBgm();
     } else {
@@ -545,9 +551,9 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
       if (!gate.isLevelExit || gate.entered) continue;
       final playerRight = player.position.x + player.size.x;
       // A shut gate holds the student a little short of it; an open one is
-      // walked into, so it counts to the middle of the doorway.
+      // walked into, so it counts to where the level ends (the doorway's near edge).
       final target = gate.opened
-          ? gate.position.x + gate.size.x / 2 + player.size.x / 2
+          ? gate.enterX + player.size.x / 2
           : gate.position.x - CombatConstants.gateStandoff;
       final left = target - playerRight;
       return left < 0 ? 0 : left;

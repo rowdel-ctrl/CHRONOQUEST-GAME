@@ -27,6 +27,7 @@ enum PixelGlyph {
   clock,
   close,
   play,
+  restart,
 }
 
 /// One string per row, `#` for a filled square. Kept as text so a glyph can be
@@ -315,6 +316,21 @@ const Map<PixelGlyph, List<String>> pixelGlyphRows = {
     '.######.....',
     '.####.......',
     '.##.........',
+    '............',
+  ],
+  // A ring with an arrowhead at its top right: start again.
+  PixelGlyph.restart: [
+    '............',
+    '...#####..#.',
+    '..###..#####',
+    '.###....###.',
+    '.##......#..',
+    '.##.........',
+    '.##.........',
+    '.###.....##.',
+    '..###...###.',
+    '...#######..',
+    '....#####...',
     '............',
   ],
   // A pointing hand: "tap here".

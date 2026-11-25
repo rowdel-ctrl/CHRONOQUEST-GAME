@@ -3,13 +3,12 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-import '../../core/constants.dart';
 import '../chrono_game.dart';
 
 /// A heart lying on a high platform (or dropped by the boss when its second phase
-/// starts). Walk into it and the student gets one heart back, up to the five.
-/// It is there whether or not the hearts are full; at full it is simply not
-/// worth the climb, and it stays for later.
+/// starts). Walk into it and it is gone: the student gets one heart back, up to the
+/// five. At full hearts it is still taken (nothing is gained), so it never stays
+/// hanging there; a classmate's playtest suggestion.
 class HeartPickupComponent extends SpriteComponent
     with HasGameReference<ChronoGame>, CollisionCallbacks {
   bool collected = false;
@@ -37,15 +36,15 @@ class HeartPickupComponent extends SpriteComponent
     position.y = _baseY + sin(_bobTime) * 4;
   }
 
-  /// Whether picking it up would do anything right now.
-  bool get wanted => game.hearts < GameConstants.maxHearts;
-
-  /// Picks it up. A student with full hearts walks through it and leaves it be.
+  /// Picks it up. With full hearts it only disappears (a soft coin sound, no heart).
   void collect() {
-    if (collected || !wanted) return;
+    if (collected) return;
     collected = true;
-    game.gainHeart();
-    game.audioService.playHeart();
+    if (game.gainHeart()) {
+      game.audioService.playHeart();
+    } else {
+      game.audioService.playCoin();
+    }
     removeFromParent();
   }
 }

@@ -42,14 +42,14 @@ extension AnswerPointHandler on ChronoGame {
   }
 
   /// The student has walked into the open gate. If it is the level's exit, that
-  /// ends the level, after a short moment so the hero is seen going in.
+  /// ends the level, after a very short moment so the hero is seen stepping in.
   /// levelComplete() is itself guarded against running twice, since reaching
   /// the exit marker can also trigger it.
   void enterEndGate(GateComponent gate) {
     if (gate.entered) return;
     gate.entered = true;
     if (gate.isLevelExit) {
-      Future<void>.delayed(const Duration(milliseconds: 500), () {
+      Future<void>.delayed(const Duration(milliseconds: 250), () {
         if (isMounted) levelComplete();
       });
     }
@@ -57,12 +57,12 @@ extension AnswerPointHandler on ChronoGame {
   }
 
   /// Checks, every frame, whether the student has walked into an open gate:
-  /// their middle has reached the middle of the doorway.
+  /// their middle has stepped into the doorway ([GateComponent.enterX]).
   void checkGateEntered() {
     for (final gate in world.children.whereType<GateComponent>()) {
       if (!gate.opened || gate.entered) continue;
       final middle = player.position.x + player.size.x / 2;
-      if (middle >= gate.position.x + gate.size.x / 2) enterEndGate(gate);
+      if (middle >= gate.enterX) enterEndGate(gate);
     }
   }
 

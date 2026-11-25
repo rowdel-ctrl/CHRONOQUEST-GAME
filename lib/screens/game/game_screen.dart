@@ -250,6 +250,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     context.go('/level-select/${widget.eraId}');
   }
 
+  /// Starts this level again from the pause menu. It goes through a blank hop screen
+  /// (`/restart/...`) so this screen is torn down first and the new one starts clean:
+  /// the same route again would keep this screen, and a replaced one would be built
+  /// before this one's music and hearts-clock cleanup ran.
+  void _restartLevel() {
+    game.onLevelComplete = null;
+    game.onLevelFailed = null;
+    if (!mounted) return;
+    game.resumeEngine();
+    context.go('/restart/${widget.eraId}/${widget.level}');
+  }
+
   @override
   void dispose() {
     _splashTimer?.cancel();
@@ -262,6 +274,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // audio plugin is still initialising, so letting it run inside dispose()
     // stalled the very frame that should have painted the next route — the
     // "freezes on the first try" half of the same playtest report.
+    game.leftScreen = true; // nothing may start the music again after this
     final audio = game.audioService;
     Future<void>.microtask(audio.stopBgm);
     // The hearts clock starts again; also deferred, for the same reason.
@@ -337,6 +350,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       'PauseOverlay': (context, game) => PauseOverlayWidget(
                             game: game as ChronoGame,
                             onQuit: _quitToLevelSelect,
+                            onRestart: _restartLevel,
                             // Opens over the paused level; Back returns to the
                             // pause menu, which is still showing underneath.
                             onSettings: () => context.push('/settings'),

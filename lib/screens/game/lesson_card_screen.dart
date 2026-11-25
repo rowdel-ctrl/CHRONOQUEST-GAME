@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants.dart';
+import '../../core/test_mode.dart';
 import '../../data/history_full.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
@@ -80,6 +81,9 @@ class _LessonCardScreenState extends State<LessonCardScreen>
   int _total = 0;
   int _left = 0;
   bool _wasDone = false;
+
+  /// Test Mode: no reading time and no reading to the end, and nothing is saved.
+  bool _testMode = false;
   bool _saved = false;
   bool _inFront = true;
   Timer? _ticker;
@@ -127,8 +131,9 @@ class _LessonCardScreenState extends State<LessonCardScreen>
     setState(() {
       _chapter = chapter;
       _total = LessonCardScreen.readSeconds(chapter);
+      _testMode = TestMode.on;
       _wasDone = _isDone();
-      _left = _wasDone ? 0 : _total;
+      _left = _wasDone || _testMode ? 0 : _total;
     });
     if (_left > 0) {
       _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
@@ -174,10 +179,10 @@ class _LessonCardScreenState extends State<LessonCardScreen>
 
   bool get _atEnd => _progress >= 0.98;
   bool get _timeUp => _left <= 0;
-  bool get _ready => _wasDone || (_timeUp && _atEnd);
+  bool get _ready => _wasDone || _testMode || (_timeUp && _atEnd);
 
   void _saveIfDone() {
-    if (_saved || _wasDone || !_timeUp || !_atEnd) return;
+    if (_saved || _wasDone || _testMode || !_timeUp || !_atEnd) return;
     _saved = true;
     final cb = widget.onDone;
     if (cb != null) {

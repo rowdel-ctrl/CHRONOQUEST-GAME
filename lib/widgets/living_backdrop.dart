@@ -23,10 +23,19 @@ class LivingBackdrop extends StatefulWidget {
   /// null: follow the phone's setting.
   final bool? animate;
 
+  /// How much the picture is darkened (0 to 1) so the panels, words and buttons on top stand
+  /// out and the lanterns do not pull the eye. The title screens, which have no content to
+  /// read, set 0.
+  final double dim;
+
+  /// The usual darkening on menu screens.
+  static const double calm = 0.55;
+
   const LivingBackdrop({
     super.key,
     this.color = AppColors.accent,
     this.animate,
+    this.dim = calm,
   });
 
   @override
@@ -76,9 +85,19 @@ class _LivingBackdropState extends State<LivingBackdrop>
     return IgnorePointer(
       child: ExcludeSemantics(
         child: RepaintBoundary(
-          child: CustomPaint(
-            size: Size.infinite,
-            painter: _ParolPainter(seconds: _seconds, tint: widget.color),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              CustomPaint(
+                size: Size.infinite,
+                painter: _ParolPainter(seconds: _seconds, tint: widget.color),
+              ),
+              if (widget.dim > 0)
+                ColoredBox(
+                  color: const Color(0xFF05030F)
+                      .withValues(alpha: widget.dim.clamp(0.0, 1.0)),
+                ),
+            ],
           ),
         ),
       ),

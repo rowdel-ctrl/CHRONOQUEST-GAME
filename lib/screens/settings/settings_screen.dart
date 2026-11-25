@@ -139,7 +139,7 @@ class _UnlockAllSwitch extends ConsumerWidget {
             ),
           ),
           subtitle: Text(
-            'Bukas ang lahat ng panahon at level, at hindi nawawala ang puso.',
+            'Bukas ang lahat ng panahon at level, hindi nawawala ang puso, at hindi kailangang hintayin ang aralin.',
             style: GoogleFonts.poppins(color: Colors.white54, fontSize: 10),
           ),
           value: ref.watch(unlockAllProvider),

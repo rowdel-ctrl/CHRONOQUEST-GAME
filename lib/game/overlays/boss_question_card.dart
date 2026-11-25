@@ -53,6 +53,11 @@ class BossQuestionCard extends StatelessWidget {
 
   final void Function(String label) onAnswer;
 
+  /// After the hit has landed the card shows why (the right answer and its explanation) and
+  /// waits for the student to tap SUSUNOD ([onContinue]) before the next round starts.
+  final bool explaining;
+  final VoidCallback? onContinue;
+
   const BossQuestionCard({
     super.key,
     required this.question,
@@ -70,6 +75,8 @@ class BossQuestionCard extends StatelessWidget {
     this.fiftyFiftyCount = 0,
     this.onFiftyFifty,
     this.hiddenOptions = const [],
+    this.explaining = false,
+    this.onContinue,
   });
 
   @override
@@ -131,18 +138,38 @@ class BossQuestionCard extends StatelessWidget {
         children: [
           _header(),
           SizedBox(height: layout.headerGap),
-          Text(
-            question.questionText,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: layout.questionFontSize,
-              color: AppColors.textPrimary,
-              height: 1.3,
-              fontWeight: FontWeight.w600,
+          if (explaining) ...[
+            Text(
+              'Tamang sagot: ${question.correctAnswer}) ${question.correctText}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: layout.questionFontSize,
+                color: AppColors.textPrimary,
+                height: 1.3,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          SizedBox(height: layout.questionGap),
-          _options(layout),
+            SizedBox(height: layout.questionGap),
+            ExplanationPanel(
+              question: question,
+              correct: _correct,
+              onContinue: onContinue ?? () {},
+              layout: layout,
+            ),
+          ] else ...[
+            Text(
+              question.questionText,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: layout.questionFontSize,
+                color: AppColors.textPrimary,
+                height: 1.3,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: layout.questionGap),
+            _options(layout),
+          ],
         ],
       ),
     );

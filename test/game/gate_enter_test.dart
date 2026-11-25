@@ -1,5 +1,5 @@
-// Walking into the end gate: the level ends when the middle of the hero reaches
-// the middle of the doorway (checkGateEntered), not at the far pillar.
+// Walking into the end gate: the level ends as soon as the middle of the hero steps into the
+// doorway (checkGateEntered, GateComponent.enterX), not at the middle or the far pillar.
 //
 // A student reported having to walk to "the last pillar". This walks the real
 // hero, at normal speed, from where a shut gate holds him, through the real
@@ -76,7 +76,7 @@ void main() {
     'modern',
   ]) {
     testWidgets(
-        '$era: the hero going in at normal speed ends it at the middle of the doorway',
+        '$era: the hero going in at normal speed ends it as he steps into the doorway',
         (tester) async {
       final (game, gate) = await _mount(tester, era);
       final hero = game.player;
@@ -92,6 +92,7 @@ void main() {
       // Walk right at full speed, one frame at a time.
       game.gameInput.setScheme(ControlScheme.arrows);
       game.gameInput.setRightHeld(true);
+      final enterX = gate.enterX;
       final doorMiddle = gate.position.x + gate.size.x / 2;
       final farPillarLeft = gate.position.x + gate.size.x - 48;
       const step = PlayerComponent.forwardSpeed / 60; // a frame's walk, ~4.2
@@ -111,14 +112,16 @@ void main() {
       game.gameInput.setRightHeld(false);
 
       expect(gate.entered, isTrue);
-      expect(middleWhenIn, greaterThanOrEqualTo(doorMiddle));
-      expect(middleWhenIn - doorMiddle, lessThanOrEqualTo(step + 0.5),
-          reason: 'it ends on the frame his middle reaches the doorway middle');
+      expect(middleWhenIn, greaterThanOrEqualTo(enterX));
+      expect(middleWhenIn - enterX, lessThanOrEqualTo(step + 0.5),
+          reason: 'it ends on the frame his middle steps into the doorway');
+      expect(middleWhenIn, lessThan(doorMiddle),
+          reason: 'he does not have to walk on to the middle of the doorway');
       expect(hero.position.x, lessThan(gate.position.x + 60),
           reason: 'his left edge is nowhere near the far pillar');
 
       await tester
-          .pump(const Duration(seconds: 1)); // the 0.5 s completion timer
+          .pump(const Duration(seconds: 1)); // the 0.25 s completion timer
     });
   }
 

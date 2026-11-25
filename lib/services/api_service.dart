@@ -29,18 +29,22 @@ class ApiService {
   /// Signs in ("Balik na ako": [username] and [password]) or joins ("Bago ako":
   /// [name] and [password], no username: the server makes it from the name and
   /// sends it back). [allowSameName] goes on when a student with that name is
-  /// already in the class and the student says it is someone else.
+  /// already in the class and the student says it is someone else. [takeOver] goes on
+  /// when the account is open on another phone and the student chose to use it here.
   Future<Map<String, dynamic>> login({
     required String classCode,
     String? username,
     String? name,
     required String password,
     bool allowSameName = false,
+    bool takeOver = false,
   }) async {
     try {
       final body = <String, dynamic>{
         'classCode': classCode,
         'password': password,
+        // Which phone this is: the server asks before ending another phone's session.
+        'deviceId': await StorageService.deviceId(),
       };
       if (username != null && username.isNotEmpty) {
         body['username'] = username;
@@ -50,6 +54,10 @@ class ApiService {
       }
       if (allowSameName) {
         body['allowSameName'] = true;
+      }
+      // The student said yes to "use it here, log out the other phone".
+      if (takeOver) {
+        body['takeOver'] = true;
       }
 
       final response = await _dio.post('/student/login', data: body);

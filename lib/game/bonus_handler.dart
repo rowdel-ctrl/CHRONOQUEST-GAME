@@ -73,7 +73,7 @@ extension BonusHandler on ChronoGame {
     } catch (_) {
       result = null; // the round could not be shown: carry on as normal
     }
-    audioService.playBgm(currentEra); // the era's own music again
+    if (!leftScreen) audioService.playBgm(currentEra); // the era's own music again
     finishBonus(result);
   }
 

@@ -188,31 +188,35 @@ class AnswerButton extends StatelessWidget {
   }
 }
 
-/// Shown inline after a wrong answer so the player sees *why* before the
-/// game moves on. They tap Continue when ready, rather than it
-/// auto-advancing.
+/// Shown inline after a wrong answer (and after any boss answer) so the player sees *why*
+/// before the game moves on. They tap Continue when ready, rather than it auto-advancing.
 class ExplanationPanel extends StatelessWidget {
   final Question question;
   final VoidCallback onContinue;
   final QuestionLayout layout;
+
+  /// A right answer tints the panel green, a wrong one (or a timeout) red.
+  final bool correct;
 
   const ExplanationPanel({
     super.key,
     required this.question,
     required this.onContinue,
     this.layout = QuestionLayout.regular,
+    this.correct = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final tint = correct ? AppColors.success : AppColors.danger;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(layout.explanationPadding),
       margin: const EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
-        color: AppColors.danger.withValues(alpha: 0.08),
+        color: tint.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
+        border: Border.all(color: tint.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

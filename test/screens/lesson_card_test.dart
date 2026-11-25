@@ -3,6 +3,7 @@
 // that a lesson finished before opens START at once, and that a level without a lesson text
 // goes straight to the game. Also that every real level has exactly one lesson.
 import 'package:chronoquest/core/constants.dart';
+import 'package:chronoquest/core/test_mode.dart';
 import 'package:chronoquest/data/history_full.dart';
 import 'package:chronoquest/screens/game/full_story_screen.dart';
 import 'package:chronoquest/screens/game/lesson_card_screen.dart';
@@ -163,6 +164,22 @@ void main() {
           _chapter('3', paragraphs: 1, terms: 0),
         ],
       });
+    });
+
+    testWidgets('Test Mode: START is open at once, with no time to wait, and nothing is saved',
+        (tester) async {
+      TestMode.debugOverride = true;
+      addTearDown(() => TestMode.debugOverride = null);
+      await open(tester);
+      expect(startOpen(tester), isTrue);
+      expect(find.text('TAPOS NA'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 120));
+      await scrollToEnd(tester);
+      expect(events, isEmpty, reason: 'a tester does not finish the lesson, so nothing is saved');
+      await tester.tap(find.byKey(LessonCardScreen.startKey));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(events, ['game pre-colonial/1']);
     });
 
     testWidgets('opens with the lesson of that level, START locked and the time running',

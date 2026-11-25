@@ -81,6 +81,8 @@ class LoginScreen extends ConsumerStatefulWidget {
   static const changeKey = ValueKey('login_change');
   static const sameNameLoginKey = ValueKey('login_same_name_login');
   static const sameNameGoOnKey = ValueKey('login_same_name_go_on');
+  static const sessionActiveGoOnKey = ValueKey('login_session_active_go_on');
+  static const sessionActiveCancelKey = ValueKey('login_session_active_cancel');
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -116,6 +118,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   /// True while the screen asks "Ikaw ba 'yon?": a student with this name is
   /// already in the class.
   bool _nameTaken = false;
+
+  /// True while the screen asks "Ituloy dito?": the password was right, but this account is
+  /// open on another phone, and going on ends that phone's session.
+  bool _sessionActive = false;
 
   @override
   void dispose() {
@@ -193,9 +199,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _back() {
     _clearErrors();
-    if (_nameTaken) {
+    if (_nameTaken || _sessionActive) {
       // Back to the last question, to change the name or the password.
-      setState(() => _nameTaken = false);
+      setState(() {
+        _nameTaken = false;
+        _sessionActive = false;
+      });
       return;
     }
     setState(() {
@@ -306,7 +315,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
   }
 
-  Future<void> _submit({bool allowSameName = false}) async {
+  Future<void> _submit({bool allowSameName = false, bool takeOver = false}) async {
     final joining = _joining == true;
     final result = await ref.read(authProvider.notifier).login(
           classCode: _classCode.text.trim(),
@@ -317,6 +326,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               : null,
           password: _password.text,
           allowSameName: allowSameName,
+          takeOver: takeOver,
         );
     if (!mounted) return;
 
@@ -335,6 +345,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
 
     final message = ref.read(authProvider).error;
+    if (message == sessionActiveMessage) {
+      ref.read(authProvider.notifier).clearError();
+      setState(() => _sessionActive = true);
+      return;
+    }
     if (message == nameTakenMessage) {
       ref.read(authProvider.notifier).clearError();
       setState(() => _nameTaken = true);
@@ -353,6 +368,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     };
     setState(() {
       _nameTaken = false;
+      _sessionActive = false;
       final target = at != null && _steps.contains(at) ? at : _steps.last;
       _serverErrorAt = target;
       _index = _steps.indexOf(target);
@@ -457,18 +473,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               child: ConstrainedBox(
                                 constraints:
                                     const BoxConstraints(maxWidth: 480),
-                                child: _nameTaken
-                                    ? _nameTakenView(auth, wide: true)
-                                    : _question(auth, error, wide: true),
+                                child: _sessionActive
+                                    ? _sessionActiveView(auth, wide: true)
+                                    : _nameTaken
+                                        ? _nameTakenView(auth, wide: true)
+                                        : _question(auth, error, wide: true),
                               ),
                             ),
                           ],
                         )
                       : ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 420),
-                          child: _nameTaken
-                              ? _nameTakenView(auth, wide: false)
-                              : _question(auth, error, wide: false),
+                          child: _sessionActive
+                              ? _sessionActiveView(auth, wide: false)
+                              : _nameTaken
+                                  ? _nameTakenView(auth, wide: false)
+                                  : _question(auth, error, wide: false),
                         ),
                 ),
               ),
@@ -495,7 +515,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           AuthGuide(
             say: auth.isLoading
                 ? 'Sandali lang, chine-check ko…'
-                : _nameTaken
+                : _nameTaken || _sessionActive
                     ? 'Sandali lang!'
                     : error != null
                         ? 'May kailangang ayusin. Subukan ulit!'
@@ -686,6 +706,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: double.infinity,
                 onPressed: _next,
               ),
+      ],
+    );
+  }
+
+  /// "Gamit na ang account mo sa ibang device": going on logs the other phone out.
+  Widget _sessionActiveView(AuthState auth, {required bool wide}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Gamit na ang account mo sa ibang device.',
+          style: GoogleFonts.poppins(
+            fontSize: wide ? 23 : 19,
+            height: 1.25,
+            fontWeight: FontWeight.bold,
+            color: AppColors.surface,
+          ),
+        ),
+        const SizedBox(height: 12),
+        const AuthHelp('Isang device lang ang puwede sa isang account. '
+            'Kung ituloy mo rito, ma-lo-logout ang kabilang device.'),
+        const SizedBox(height: 14),
+        auth.isLoading
+            ? const AuthBusyButton(label: 'SANDALI LANG…')
+            : GameButton(
+                key: LoginScreen.sessionActiveGoOnKey,
+                label: 'ITULOY DITO',
+                fontSize: 13,
+                width: double.infinity,
+                onPressed: () => _submit(takeOver: true),
+              ),
+        const SizedBox(height: 14),
+        GameButton(
+          key: LoginScreen.sessionActiveCancelKey,
+          label: 'HUWAG NA',
+          fontSize: 13,
+          width: double.infinity,
+          color: AppColors.surface,
+          onPressed: _back,
+        ),
       ],
     );
   }

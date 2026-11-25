@@ -140,15 +140,18 @@ void main() {
       expect(game.hearts, 3);
     });
 
-    test('a heart pickup is taken when hearts are missing and left when they are full',
+    test('a heart pickup gives a heart when one is missing, and is taken either way',
         () async {
       final game = await _bareGame();
-      final heart = HeartPickupComponent(spawnPosition: Vector2(500, 300))
+      final full = HeartPickupComponent(spawnPosition: Vector2(500, 300))
         ..game = game;
       game.hearts = GameConstants.maxHearts;
-      heart.collect();
-      expect(heart.collected, isFalse, reason: 'full: it stays for later');
+      full.collect();
+      expect(full.collected, isTrue, reason: 'full: it still disappears, it does not hang there');
+      expect(game.hearts, GameConstants.maxHearts, reason: 'and gives nothing extra');
 
+      final heart = HeartPickupComponent(spawnPosition: Vector2(600, 300))
+        ..game = game;
       game.hearts = 4;
       heart.collect();
       expect(heart.collected, isTrue);

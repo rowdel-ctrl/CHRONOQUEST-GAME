@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../services/session_replaced.dart';
 import '../services/storage_service.dart';
 import 'constants.dart';
 
@@ -35,6 +36,10 @@ class DioClient {
         onError: (error, handler) async {
           if (error.response?.statusCode == 401) {
             await StorageService.clearToken();
+            // The same account was signed in on another device: say so, over any screen.
+            if (SessionReplaced.isReplaced(error.response)) {
+              SessionReplaced.notifier.value = true;
+            }
             // The router redirect will handle navigation to login
           }
           handler.next(error);

@@ -33,8 +33,12 @@ BossQuestionCard _card({
   int freezes = 1,
   void Function(String)? onAnswer,
   VoidCallback? onFreeze,
+  bool explaining = false,
+  VoidCallback? onContinue,
 }) =>
     BossQuestionCard(
+      explaining: explaining,
+      onContinue: onContinue,
       question: question ?? _question(),
       phaseTag: 'Phase 1 · 15 s',
       fraction: fraction,
@@ -196,13 +200,39 @@ void main() {
           reason: 'only the MALI! badge: no option was chosen to mark');
     });
 
-    testWidgets('no explanation to wait for: the fight does not stop',
+    testWidgets('while the attack is still moving the card does not explain yet',
         (tester) async {
       await _pump(
           tester, const Size(873, 393), _card(answered: true, selected: 'B'));
       expect(find.textContaining('Si Bonifacio ang Supremo'), findsNothing);
       expect(find.text('SUSUNOD'), findsNothing);
     });
+
+    for (final (answer, badge) in [('A', 'TAMA!'), ('B', 'MALI!'), ('', 'MALI!')]) {
+      testWidgets('once the hit has landed it shows the right answer and why ($badge)',
+          (tester) async {
+        var taps = 0;
+        await _pump(
+            tester,
+            const Size(640, 360),
+            _card(
+                answered: true,
+                selected: answer,
+                explaining: true,
+                onContinue: () => taps++));
+        expect(find.text(badge), findsOneWidget);
+        expect(find.textContaining('Tamang sagot: A) Andres Bonifacio'), findsOneWidget);
+        expect(find.text('Paliwanag'), findsOneWidget);
+        expect(find.textContaining('Si Bonifacio ang Supremo'), findsOneWidget);
+        expect(find.textContaining('Sino ang nagtatag'), findsNothing,
+            reason: 'the question and options make room for the explanation');
+        // It stays inside the top part of the screen, above the boss.
+        final rect = tester.getRect(find.byKey(BossQuestionCard.cardKey));
+        expect(rect.bottom, lessThanOrEqualTo(360 * BossQuestionCard.lowestShare + 1));
+        await tester.tap(find.text('SUSUNOD'));
+        expect(taps, 1);
+      });
+    }
   });
 
   group('Time Freeze', () {

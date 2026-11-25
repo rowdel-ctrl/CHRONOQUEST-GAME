@@ -96,13 +96,6 @@ class AudioService {
     );
   }
 
-  /// The era whose BGM is currently loaded, so [toggleMusic] can resume the
-  /// right track after being switched back on.
-  String? _currentBgmEra;
-
-  /// True from the moment the boss fight's music starts until any music stops.
-  bool _bossMusic = false;
-
   /// Which boss phase's track is playing (1 to 3), so music switched off and on again mid-fight
   /// comes back as the same one.
   int _bossPhase = 1;
@@ -231,14 +224,11 @@ class AudioService {
     _musicEnabled = on;
     _save(() => StorageService.setMusicEnabled(on));
     if (_musicEnabled) {
-      final era = _currentBgmEra;
-      if (_bossMusic) {
-        playBossBgm(phase: _bossPhase);
-      } else if (era != null) {
-        playBgm(era);
-      }
+      // Only a screen that owns music brings it back: switching music on in Settings, on a
+      // menu, must not start the track of a level that is long over.
+      _resumeMusic?.call();
     } else {
-      stopBgm();
+      _stopPlayer(); // the track is remembered, so switching back on restores it
     }
   }
 
@@ -356,21 +346,10 @@ class AudioService {
   }
 
   Future<void> playBgm(String eraId) async {
-    _currentBgmEra = eraId;
-    _bossMusic = false;
     _currentGain = 1.0;
+    _resumeMusic = () => playBgm(eraId);
     if (!_musicEnabled) return;
-    try {
-      await _ensureInitialized();
-      // Bgm.play releases whatever is already playing first, so switching
-      // eras needs no explicit stop.
-      await FlameAudio.bgm.play(
-        'bgm_${_bgmAssetKeyForEra(eraId)}.mp3',
-        volume: _bgmBaseVolume * _musicVolume,
-      );
-    } catch (e) {
-      debugPrint('AudioService: failed to play BGM for $eraId: $e');
-    }
+    await _startTrack('bgm_${_bgmAssetKeyForEra(eraId)}.mp3', 1.0);
   }
 
   /// The boss fight's own music, in place of the era's track until the level
@@ -378,20 +357,13 @@ class AudioService {
   /// and on again mid-fight.
   /// [phase] (1 to 3) picks the track: the fight gets more intense as it goes on.
   Future<void> playBossBgm({int phase = 1}) async {
-    _bossMusic = true;
     _bossPhase = phase.clamp(1, _bossTracks.length);
     final file = _bossTracks[_bossPhase - 1];
     _currentGain = _trackGain[file] ?? 1.0;
+    final again = _bossPhase;
+    _resumeMusic = () => playBossBgm(phase: again);
     if (!_musicEnabled) return;
-    try {
-      await _ensureInitialized();
-      await FlameAudio.bgm.play(
-        file,
-        volume: _bgmBaseVolume * _musicVolume * _currentGain,
-      );
-    } catch (e) {
-      debugPrint('AudioService: failed to play the boss music: $e');
-    }
+    await _startTrack(file, _currentGain);
   }
 
   /// The music of the era-complete screen, after the boss has fallen. It is not the era's own
@@ -403,28 +375,88 @@ class AudioService {
   Future<void> playBonusBgm() => _playOneOff('bgm_bonus.mp3');
 
   Future<void> _playOneOff(String file) async {
-    _bossMusic = false;
     _currentGain = _trackGain[file] ?? 1.0;
+    _resumeMusic = () => _playOneOff(file);
     if (!_musicEnabled) return;
-    try {
-      await _ensureInitialized();
-      await FlameAudio.bgm.play(
-        file,
-        volume: _bgmBaseVolume * _musicVolume * _currentGain,
-      );
-    } catch (e) {
-      debugPrint('AudioService: failed to play $file: $e');
-    }
+    await _startTrack(file, _currentGain);
   }
 
-  Future<void> stopBgm() async {
-    _bossMusic = false;
-    if (!_initialized) return;
-    try {
-      await FlameAudio.bgm.stop();
-    } catch (e) {
-      debugPrint('AudioService: failed to stop BGM: $e');
-    }
+  // ─── MUSIC COMMANDS, ONE AT A TIME ─────────────────────────────────────────
+  // Starting a track is several awaited steps inside `FlameAudio.bgm` (release, source,
+  // resume). A stop that arrived in the middle of them was lost, and the track then started
+  // and played on over the menus (a finished level's music did not stop). So every music
+  // command goes through one queue and runs only when the one before it is done.
+
+  /// What brings the current track back after music was switched off and on in Settings.
+  /// Null when no screen owns music (after [stopBgm]), so switching it on in a menu starts nothing.
+  Future<void> Function()? _resumeMusic;
+
+  Future<void> _musicQueue = Future<void>.value();
+
+  /// Whether a track was ever started (so there is a player to stop).
+  bool _musicUsed = false;
+
+  /// Counts commands, so a start that is still waiting when a newer one (or a stop) is
+  /// asked for can see it is out of date and not start.
+  int _musicStamp = 0;
+
+  /// Starts and stops the music player. Replaceable so a test can watch the order.
+  @visibleForTesting
+  Future<void> Function(String file, double volume) musicStarter = _startPlayer;
+  @visibleForTesting
+  Future<void> Function() musicStopper = _stopPlayerNow;
+
+  static Future<void> _startPlayer(String file, double volume) async {
+    await AudioService()._ensureInitialized();
+    await FlameAudio.bgm.play(file, volume: volume);
+  }
+  static Future<void> _stopPlayerNow() => FlameAudio.bgm.stop();
+
+  /// Forgets the music state and goes back to the real player, for a test.
+  @visibleForTesting
+  void resetMusicForTesting() {
+    musicStarter = _startPlayer;
+    musicStopper = _stopPlayerNow;
+    _resumeMusic = null;
+    _musicUsed = false;
+    _musicStamp = 0;
+    _musicQueue = Future<void>.value();
+    _musicEnabled = true;
+  }
+
+  Future<void> _queueMusic(Future<void> Function() job) {
+    final next = _musicQueue.then((_) => job()).catchError((Object e) {
+      debugPrint('AudioService: music command failed: $e');
+    });
+    _musicQueue = next;
+    return next;
+  }
+
+  Future<void> _startTrack(String file, double gain) {
+    final stamp = ++_musicStamp;
+    final volume = _bgmBaseVolume * _musicVolume * gain;
+    return _queueMusic(() async {
+      if (stamp != _musicStamp) return; // a newer command replaced this one
+      _musicUsed = true;
+      // Bgm.play releases whatever is already playing first, so changing track needs no stop.
+      await musicStarter(file, volume);
+    });
+  }
+
+  /// Stops the player but keeps what to bring back ([_resumeMusic]).
+  Future<void> _stopPlayer() {
+    _musicStamp++;
+    return _queueMusic(() async {
+      if (!_musicUsed) return; // nothing was ever started
+      await musicStopper();
+    });
+  }
+
+  /// Stops the music for good: a screen that is being left calls this, and nothing is brought
+  /// back by switching music on afterwards.
+  Future<void> stopBgm() {
+    _resumeMusic = null;
+    return _stopPlayer();
   }
 
   /// Stops music without tearing down the shared `FlameAudio.bgm` player —

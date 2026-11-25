@@ -16,12 +16,14 @@ import 'package:chronoquest/game/components/boss_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/enemy_behavior.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/game_input.dart';
 import 'package:chronoquest/game/level_loader.dart';
 import 'package:chronoquest/game/overlays/boss_question_card.dart';
 import 'package:chronoquest/game/overlays/hud_overlay.dart';
 import 'package:chronoquest/game/overlays/question_overlay.dart';
 import 'package:chronoquest/game/overlays/question_widgets.dart';
 import 'package:chronoquest/game/quiz_handler.dart';
+import 'package:chronoquest/models/control_scheme.dart';
 import 'package:chronoquest/models/question.dart';
 import 'package:chronoquest/widgets/game_ui.dart';
 import 'package:flame/components.dart';
@@ -184,11 +186,23 @@ void _step(_BossGame game, double seconds) {
   }
 }
 
-/// One step of the world that also plays the student's part between rounds: while a rune is
-/// waiting he stands on it, and a wave of minions is over at once.
+/// Like [_step], and the student taps SUSUNOD on the explanation as soon as it shows.
+void _stepReading(_BossGame game, BossComponent boss, double seconds) {
+  final n = (seconds / 0.05).round();
+  for (var i = 0; i < n; i++) {
+    if (boss.explaining) boss.continueAfterExplanation();
+    game.updateTree(0.05);
+  }
+}
+
+/// One step of the world that also plays the student's part between rounds: he taps SUSUNOD on
+/// the explanation at once, while a rune is waiting he stands on it, and a wave of minions is
+/// over at once.
 void _tick(_BossGame game, BossComponent boss) {
   final r = boss.rune;
-  if (boss.state == BossRoundState.rune && r != null) {
+  if (boss.explaining) {
+    boss.continueAfterExplanation();
+  } else if (boss.state == BossRoundState.rune && r != null) {
     final p = game.player;
     p.position.x = r.centreX - p.size.x / 2;
     p.position.y = r.surfaceY - p.size.y;
@@ -411,14 +425,19 @@ void main() {
       await _flush(tester);
     });
 
-    testWidgets('a new rune appears about 1.2 s after the hit, and touching it starts the next round',
+    testWidgets('after the hit the card explains and waits; a new rune comes soon after SUSUNOD',
         (tester) async {
       final (game, boss) = await _start(tester);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
       _step(game, 0.6); // sent back
       expect(boss.state, BossRoundState.rest);
-      _step(game, 1.05);
+      expect(boss.explaining, isTrue);
+      _step(game, 5);
+      expect(boss.state, BossRoundState.rest, reason: 'the fight waits while he reads');
+      expect(boss.explaining, isTrue);
+      boss.continueAfterExplanation();
+      _step(game, 0.3);
       expect(boss.state, BossRoundState.rest);
       _step(game, 0.2);
       expect(boss.state, BossRoundState.rune, reason: 'round 1 was played: a rune, not a wave');
@@ -430,15 +449,21 @@ void main() {
       await _flush(tester);
     });
 
-    testWidgets('the question card stays up a moment after the hit, then goes', (tester) async {
+    testWidgets('the question card stays up with the explanation until SUSUNOD, then goes',
+        (tester) async {
       final (game, boss) = await _start(tester);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
       _step(game, 0.6);
       expect(game.overlays.isActive('QuestionOverlay'), isTrue,
           reason: 'the right answer can still be read');
-      _step(game, 0.95);
+      _step(game, 10);
+      expect(game.overlays.isActive('QuestionOverlay'), isTrue,
+          reason: 'it does not close on its own');
+      boss.continueAfterExplanation();
+      _step(game, 0.1);
       expect(game.overlays.isActive('QuestionOverlay'), isFalse);
+      expect(boss.explaining, isFalse);
       await _flush(tester);
     });
 
@@ -745,13 +770,14 @@ void main() {
       final (game, boss) = await _start(tester, arena: _arena('era2_5'));
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
-      _step(game, 2.5); // sent back, the rest
+      _stepReading(game, boss, 2.5); // sent back, the rest
       await _settle(tester);
       expect(boss.state, BossRoundState.rune, reason: 'after round 1: no wave yet');
       expect(game.world.children.whereType<EnemyComponent>(), isEmpty);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game)); // round 2 won: the wave comes before round 3
       for (var i = 0; i < 80 && boss.state != BossRoundState.wave; i++) {
+        if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
       expect(boss.state, BossRoundState.wave);
@@ -830,6 +856,7 @@ void main() {
     /// Runs the world until the boss is waiting for a rune to be touched.
     void untilRune(_BossGame game, BossComponent boss) {
       for (var t = 0.0; t < 6 && boss.state != BossRoundState.rune; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
       expect(boss.state, BossRoundState.rune);
@@ -932,6 +959,7 @@ void main() {
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
       for (var t = 0.0; t < 6 && boss.state != BossRoundState.rune; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
       expect(boss.state, BossRoundState.rune);
@@ -954,10 +982,11 @@ void main() {
       final (game, boss) = await _start(tester, arena: level);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
-      _step(game, 2.5);
+      _stepReading(game, boss, 2.5);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
       for (var t = 0.0; t < 6 && boss.state != BossRoundState.wave; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
       expect(boss.state, BossRoundState.wave);
@@ -974,10 +1003,11 @@ void main() {
       final (game, boss) = await _start(tester, arena: level);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
-      _step(game, 2.5);
+      _stepReading(game, boss, 2.5);
       _untilAsking(game, boss);
       game.handleAnswer(_right(game));
       for (var t = 0.0; t < 6 && boss.state != BossRoundState.wave; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
       expect(boss.minions, hasLength(2));
@@ -1010,6 +1040,54 @@ void main() {
         game.updateTree(0.05);
       }
       await _flush(tester);
+    });
+  });
+
+  group('the hero is held during a round', () {
+    // A bare game with a real hero, as the control tests do: his own update reads the arrows.
+    ChronoGame bare(BossRoundState state) {
+      final game = ChronoGame();
+      game.onGameResize(Vector2(800, 450));
+      final player = PlayerComponent(characterId: 'rizal')
+        ..size = Vector2(96, 120)
+        ..position = Vector2(400, game.groundY - 120);
+      player.game = game;
+      game.player = player;
+      game.gameInput = GameInput(game: game, scheme: ControlScheme.arrows);
+      game.boss = BossComponent(eraId: 'spanish')..state = state;
+      return game;
+    }
+
+    test('he stands still from the wind-up to the end of the round, and walks between rounds', () {
+      for (final state in BossRoundState.values) {
+        final game = bare(state);
+        final start = game.player.position.x;
+        game.gameInput.setRightHeld(true);
+        game.player.update(1 / 60);
+        final held = const {
+          BossRoundState.windup,
+          BossRoundState.asking,
+          BossRoundState.rush,
+          BossRoundState.counter,
+          BossRoundState.reflect,
+          BossRoundState.rest,
+        }.contains(state);
+        expect(game.boss!.holdsHero, held, reason: '$state');
+        if (held) {
+          expect(game.player.position.x, start, reason: '$state: the attack is aimed at him');
+        } else {
+          expect(game.player.position.x, greaterThan(start), reason: '$state: free');
+        }
+      }
+    });
+
+    test('a fallen boss lets him go', () {
+      final game = bare(BossRoundState.rest);
+      game.boss!.isDefeated = true;
+      final start = game.player.position.x;
+      game.gameInput.setRightHeld(true);
+      game.player.update(1 / 60);
+      expect(game.player.position.x, greaterThan(start));
     });
   });
 
@@ -1082,6 +1160,27 @@ void main() {
       await tester.pump();
       expect(game.hearts, 4);
       expect(find.text('MALI!'), findsOneWidget, reason: 'still readable after the hit');
+      await _flush(tester);
+    });
+
+    testWidgets('after the hit the card explains why, and SUSUNOD takes it down', (tester) async {
+      final (game, boss) = await _start(tester, realOverlays: true);
+      _untilAsking(game, boss);
+      await tester.pump();
+      final q = game.currentQuestion!;
+      final wrong = q.options.firstWhere((o) => o.label != q.correctAnswer);
+      await tester.tap(find.text('${wrong.label}) ${wrong.text}'));
+      _step(game, 1);
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(boss.explaining, isTrue);
+      expect(find.text('Paliwanag'), findsOneWidget);
+      _step(game, 6);
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(find.text('Paliwanag'), findsOneWidget, reason: 'it waits for the student');
+      await tester.tap(find.text('SUSUNOD'));
+      _step(game, 0.1);
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(find.byType(BossQuestionCard), findsNothing);
       await _flush(tester);
     });
 

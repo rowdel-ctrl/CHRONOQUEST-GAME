@@ -304,10 +304,12 @@ class PlayerComponent extends SpriteAnimationComponent
     // Ignored while knocked back: a hit takes the controls for the length of
     // the shove, so the student cannot walk back into the enemy at once and
     // use the invincibility that follows to pass through it.
-    // Also ignored during a dash move, which moves the hero itself.
-    final horizontalInput = _knockbackRemaining > 0 || _moves.dashing
-        ? 0.0
-        : game.gameInput.horizontal;
+    // Also ignored during a dash move, which moves the hero itself, and while a boss round is
+    // on: the boss's attack is aimed at the hero, so he stands still until it is over.
+    final horizontalInput =
+        _knockbackRemaining > 0 || _moves.dashing || (game.boss?.holdsHero ?? false)
+            ? 0.0
+            : game.gameInput.horizontal;
     if (horizontalInput != 0) {
       position.x += forwardSpeed * horizontalInput * dt;
       facingRight = horizontalInput > 0;

@@ -248,6 +248,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
         onFiftyFifty: _useFiftyFifty,
         hiddenOptions: hiddenOptions,
         onAnswer: handleTap,
+        explaining: boss.explaining,
+        onContinue: boss.continueAfterExplanation,
       );
     }
 

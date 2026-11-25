@@ -33,7 +33,7 @@ import 'gate_art.dart';
 /// is answered, and, after [GateReveal] (gate_reveal.dart) has lifted the door,
 /// a glowing mat in the doorway with arrows and the word PASOK. The gate does
 /// not crumble: it stays, open, and the level ends when the middle of the
-/// student reaches the middle of the doorway (checkGateEntered). Extends
+/// student steps into the doorway (checkGateEntered, [enterX]). Extends
 /// `PositionComponent with HasPaint` so [render] can fade the whole gate with
 /// the paint's alpha.
 class GateComponent extends PositionComponent
@@ -48,6 +48,14 @@ class GateComponent extends PositionComponent
   /// True once the student has walked into the open doorway, which is what ends
   /// the level (ChronoGame.enterEndGate).
   bool entered = false;
+
+  /// How far into the doorway the student's middle must get: just past the doorway's near
+  /// edge, so about half of him is inside. A student reported still having to walk to the end
+  /// of the gate (first it was the far pillar, then the middle of the doorway).
+  static const double enterInset = 12;
+
+  /// The world x the middle of the student has to reach for the level to end.
+  double get enterX => position.x + GateArt.doorX + enterInset;
 
   /// Behind the student (whose priority is the default 0), so the hero is drawn
   /// in front of the gate while walking up to it and into its doorway.

@@ -69,6 +69,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     String? name,
     required String password,
     bool allowSameName = false,
+    bool takeOver = false,
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
@@ -78,6 +79,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         name: name,
         password: password,
         allowSameName: allowSameName,
+        takeOver: takeOver,
       );
       final student = Student.fromJson(data['user'] as Map<String, dynamic>);
       state = AuthState(
