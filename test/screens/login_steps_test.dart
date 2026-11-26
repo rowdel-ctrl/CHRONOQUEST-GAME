@@ -1,11 +1,13 @@
 // Sign in and sign up, one question at a time: pick "Bago ako" or "Balik na ako"
 // first, then answer one box per screen. The QR scan card shows on the class code
 // question only; on the others the guide takes its place.
+import 'package:chronoquest/models/class_move.dart';
 import 'package:chronoquest/models/student.dart';
 import 'package:chronoquest/providers/auth_provider.dart';
 import 'package:chronoquest/screens/auth/auth_widgets.dart';
 import 'package:chronoquest/screens/auth/forgot_password_screen.dart';
 import 'package:chronoquest/screens/auth/login_screen.dart';
+import 'package:chronoquest/screens/auth/move_up_screen.dart';
 import 'package:chronoquest/utils/login_errors.dart';
 import 'package:chronoquest/widgets/qr_scan_panel.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,9 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
 
   /// What the next login does: an error message to fail with, or null to succeed.
   String? failWith;
+
+  /// When set, the next login answers "the class has ended" with this.
+  ClassEndedInfo? classEnded;
   bool mustChange = false;
 
   /// True when the server answers a join (the student is new).
@@ -50,6 +55,7 @@ class _FakeAuth extends StateNotifier<AuthState> implements AuthNotifier {
     bool takeOver = false,
   }) async {
     calls.add(_Call(classCode, username, name, password, allowSameName, takeOver));
+    if (classEnded != null) return {'success': false, 'classEnded': classEnded};
     if (failWith != null) {
       state = AuthState(error: failWith);
       return {'success': false};
@@ -83,6 +89,8 @@ Future<void> _pump(
   List<String>? landedOn,
   LastSignIn? last,
   List<ForgotPasswordArgs>? forgotLog,
+  List<MoveUpArgs>? moveUpLog,
+  String? notice,
   ValueNotifier<bool?>? connection,
   VoidCallback? checkConnection,
   bool animations = false,
@@ -111,7 +119,16 @@ Future<void> _pump(
             // Never the real game clock: that would ask the live server.
             connection: connection ?? ValueNotifier<bool?>(null),
             checkConnection: checkConnection ?? () {},
+            notice: notice,
           ),
+    ),
+    GoRoute(
+      path: '/move-up',
+      builder: (_, state) {
+        final args = state.extra;
+        if (args is MoveUpArgs) moveUpLog?.add(args);
+        return const Scaffold(body: Text('move-up stand-in'));
+      },
     ),
     GoRoute(
       path: '/forgot-password',
@@ -640,6 +657,106 @@ void main() {
           await askedToTakeOver(tester);
           expect(tester.takeException(), isNull);
           expect(find.byKey(LoginScreen.sessionActiveGoOnKey), findsOneWidget);
+        });
+      }
+    });
+
+    group('the class has ended', () {
+      testWidgets('a learner with an account is taken to move up, with what they typed', (tester) async {
+        final log = <MoveUpArgs>[];
+        await _pump(tester, moveUpLog: log);
+        _auth.classEnded = const ClassEndedInfo(
+          name: 'Juan Dela Cruz',
+          username: 'juandelacruz',
+          sectionName: 'Sampaguita',
+          grade: 'Grade 5',
+          schoolYear: '2025-2026',
+        );
+        await _choose(tester, joining: false);
+        await _answer(tester, 'EDG5A1');
+        await _answer(tester, 'juandelacruz');
+        await _answer(tester, 'secret1');
+        await tester.pumpAndSettle();
+
+        expect(find.text('move-up stand-in'), findsOneWidget);
+        final a = log.single;
+        expect((a.classCode, a.username, a.password), ('EDG5A1', 'juandelacruz', 'secret1'));
+        expect(a.info.sectionName, 'Sampaguita');
+        expect(find.text(classEndedMessage), findsNothing);
+      });
+
+      testWidgets('the username the server has is used, not what was typed', (tester) async {
+        final log = <MoveUpArgs>[];
+        await _pump(tester, moveUpLog: log);
+        _auth.classEnded = const ClassEndedInfo(username: 'juandelacruz');
+        await _choose(tester, joining: false);
+        await _answer(tester, 'EDG5A1');
+        await _answer(tester, 'JuanDelaCruz');
+        await _answer(tester, 'secret1');
+        await tester.pumpAndSettle();
+
+        expect(log.single.username, 'juandelacruz');
+      });
+
+      testWidgets('coming back from move up keeps the answers in the boxes', (tester) async {
+        await _pump(tester);
+        _auth.classEnded = const ClassEndedInfo(username: 'juandelacruz');
+        await _choose(tester, joining: false);
+        await _answer(tester, 'EDG5A1');
+        await _answer(tester, 'juandelacruz');
+        await _answer(tester, 'secret1');
+        await tester.pumpAndSettle();
+        tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+        await tester.pumpAndSettle();
+
+        expect(find.text('Ano ang password mo?'), findsOneWidget);
+        expect(_typed(tester), 'secret1');
+      });
+
+      testWidgets('a join into an ended class has nothing to move: ask the teacher', (tester) async {
+        final log = <MoveUpArgs>[];
+        await _pump(tester, moveUpLog: log);
+        _auth.classEnded = const ClassEndedInfo(sectionName: 'Sampaguita');
+        await joinAs(tester);
+        await tester.pumpAndSettle();
+
+        expect(log, isEmpty);
+        expect(find.text('Anong class code ng klase mo?'), findsOneWidget);
+        expect(find.text(classEndedMessage), findsOneWidget);
+      });
+
+      testWidgets('a returning sign-in the server did not know has nothing to move either', (tester) async {
+        final log = <MoveUpArgs>[];
+        await _pump(tester, moveUpLog: log);
+        _auth.classEnded = const ClassEndedInfo();
+        await _choose(tester, joining: false);
+        await _answer(tester, 'EDG5A1');
+        await _answer(tester, 'nobody');
+        await _answer(tester, 'secret1');
+        await tester.pumpAndSettle();
+
+        expect(log, isEmpty);
+        expect(find.text(classEndedMessage), findsOneWidget);
+      });
+    });
+
+    group('a line from another screen', () {
+      testWidgets('shows above the two big buttons', (tester) async {
+        await _pump(tester, notice: askTeacherForNewCode);
+        expect(find.text(askTeacherForNewCode), findsOneWidget);
+        expect(find.byKey(LoginScreen.newKey), findsOneWidget);
+        expect(find.byKey(LoginScreen.returningKey), findsOneWidget);
+      });
+
+      testWidgets('is not there on a plain start', (tester) async {
+        await _pump(tester);
+        expect(find.text(askTeacherForNewCode), findsNothing);
+      });
+
+      for (final size in const [Size(732, 320), Size(640, 360), Size(400, 700)]) {
+        testWidgets('fits at ${size.width.toInt()}x${size.height.toInt()}', (tester) async {
+          await _pump(tester, size: size, notice: askTeacherForNewCode);
+          expect(tester.takeException(), isNull);
         });
       }
     });

@@ -7,6 +7,7 @@ import 'constants.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/change_password_screen.dart';
 import '../screens/auth/forgot_password_screen.dart';
+import '../screens/auth/move_up_screen.dart';
 import '../screens/auth/username_screen.dart';
 import '../screens/auth/welcome_screen.dart';
 import '../screens/home/character_selection_screen.dart';
@@ -43,12 +44,16 @@ final GoRouter appRouter = GoRouter(
     final hasToken = await StorageService.hasToken() || isGuest;
     final isLoginRoute = state.matchedLocation == '/login';
     final isForgotRoute = state.matchedLocation == '/forgot-password';
+    final isMoveUpRoute = state.matchedLocation == '/move-up';
     final isChangePwRoute = state.matchedLocation == '/change-password';
 
     // Forgetting a password happens before signing in, so it is open to everyone
     // who is signed out.
-    if (!hasToken && !isLoginRoute && !isForgotRoute) return '/login';
-    if (hasToken && (isLoginRoute || isForgotRoute)) {
+    // Moving to a new class happens before signing in too: the old class has ended.
+    if (!hasToken && !isLoginRoute && !isForgotRoute && !isMoveUpRoute) {
+      return '/login';
+    }
+    if (hasToken && (isLoginRoute || isForgotRoute || isMoveUpRoute)) {
       return '/character-selection';
     }
     if (hasToken && !isGuest && !isChangePwRoute) {
@@ -60,7 +65,17 @@ final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      // A message can come with it ("I don't have a code" on the move-up screen).
+      builder: (context, state) =>
+          LoginScreen(notice: state.extra is String ? state.extra as String : null),
+    ),
+    GoRoute(
+      path: '/move-up',
+      // Opened from the sign-in screen when the class has ended. Reached any other way
+      // (a deep link, a restart) there is nothing to move, so back to sign in.
+      redirect: (context, state) => state.extra is MoveUpArgs ? null : '/login',
+      builder: (context, state) =>
+          MoveUpScreen(args: state.extra! as MoveUpArgs),
     ),
     GoRoute(
       path: '/forgot-password',

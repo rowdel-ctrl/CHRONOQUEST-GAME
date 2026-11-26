@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../core/constants.dart';
 import '../core/dio_client.dart';
+import '../models/class_move.dart';
 import '../models/student.dart';
 import '../models/quiz_result.dart';
 import '../models/era_progress.dart';
@@ -77,8 +78,74 @@ class ApiService {
 
       return data;
     } on DioException catch (e) {
+      // The class has ended: the learner may move to the new one (see moveUp).
+      final ended = classEndedFrom(e);
+      if (ended != null) throw ClassEndedException(ended);
       // A name is only sent when joining ("Bago"); see loginErrorMessage.
       throw loginErrorMessage(e, joining: name != null && name.isNotEmpty);
+    }
+  }
+
+  /// "Is this your class?": what the server knows about the class behind [classCode].
+  /// No sign-in needed. Throws a message that is ready to show.
+  Future<ClassInfo> classLookup(String classCode) async {
+    try {
+      final response =
+          await _dio.post('/student/class-lookup', data: {'classCode': classCode});
+      final envelope = response.data as Map<String, dynamic>;
+      final data = (envelope['data'] ?? envelope) as Map<String, dynamic>;
+      return ClassInfo.fromJson(data);
+    } on DioException catch (e) {
+      throw classLookupErrorMessage(e);
+    }
+  }
+
+  /// Moves a learner whose class has ended into the new class, keeping the same account.
+  /// The old class code, username and password prove who it is. Saves the new sign-in the
+  /// way [login] does, so the old token, class code and username are dropped. Throws a
+  /// [MoveUpError]. [oldGrade] and [newGrade] only make the wrong-grade message clearer.
+  Future<MoveUpResult> moveUp({
+    required String oldClassCode,
+    required String username,
+    required String password,
+    required String newClassCode,
+    bool takeOver = false,
+    String? oldGrade,
+    String? newGrade,
+  }) async {
+    try {
+      final body = <String, dynamic>{
+        'classCode': oldClassCode,
+        'username': username,
+        'password': password,
+        'newClassCode': newClassCode,
+        'deviceId': await StorageService.deviceId(),
+      };
+      if (takeOver) body['takeOver'] = true;
+
+      final response = await _dio.post('/student/move-up', data: body);
+      final envelope = response.data as Map<String, dynamic>;
+      final data = envelope['data'] as Map<String, dynamic>;
+      await StorageService.saveToken(data['token'] as String);
+
+      final user = Student.fromJson(data['user'] as Map<String, dynamic>);
+      await StorageService.saveStudent(user);
+      // The new class code and the username the server has now (it may have a number added).
+      await StorageService.saveLastSignIn(
+        user.classCode.isNotEmpty ? user.classCode : newClassCode,
+        user.username.isNotEmpty ? user.username : username,
+      );
+
+      final section = data['section'] ?? envelope['section'];
+      final from = data['movedFrom'] ?? envelope['movedFrom'];
+      return MoveUpResult(
+        student: user,
+        section: section is Map<String, dynamic> ? ClassInfo.fromJson(section) : null,
+        fromSection: from is Map ? from['sectionName'] as String? : null,
+        fromYear: from is Map ? from['schoolYear'] as String? : null,
+      );
+    } on DioException catch (e) {
+      throw moveUpError(e, oldGrade: oldGrade, newGrade: newGrade);
     }
   }
 

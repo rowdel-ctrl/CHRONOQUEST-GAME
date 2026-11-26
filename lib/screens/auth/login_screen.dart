@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants.dart';
+import '../../models/class_move.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/server_clock.dart';
 import '../../services/storage_service.dart';
@@ -25,6 +26,7 @@ import '../../widgets/update_card.dart';
 import '../splash/splash_screen.dart';
 import 'auth_widgets.dart';
 import 'forgot_password_screen.dart';
+import 'move_up_screen.dart';
 
 /// The class code and username of the last sign-in on this phone.
 typedef LastSignIn = ({String classCode, String username});
@@ -62,12 +64,17 @@ class LoginScreen extends ConsumerStatefulWidget {
   /// server (at most once in 20 seconds, so staying on this screen is cheap).
   final VoidCallback? checkConnection;
 
+  /// A line shown above the two big buttons, such as "ask your teacher for the new class
+  /// code" after "I don't have a code" on the move-up screen.
+  final String? notice;
+
   const LoginScreen({
     super.key,
     this.scannerBuilder = cameraScannerView,
     this.lastSignIn = rememberedSignIn,
     this.connection,
     this.checkConnection,
+    this.notice,
   });
 
   static const newKey = ValueKey('login_new');
@@ -330,6 +337,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
     if (!mounted) return;
 
+    final ended = result['classEnded'];
+    if (ended is ClassEndedInfo) {
+      _classEnded(ended);
+      return;
+    }
+
     if (result['success'] == true) {
       final student = ref.read(authProvider).student;
       // A new student gets a welcome, then sees the username the server made, once,
@@ -377,6 +390,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
   }
 
+  /// The class has ended. A learner with an account there is taken to the move-up screen
+  /// with what they typed (kept in memory only); a join has nothing to move, so the class code
+  /// question says to ask the teacher for the new code.
+  void _classEnded(ClassEndedInfo info) {
+    if (_joining == false && info.hasAccount) {
+      context.push(
+        '/move-up',
+        extra: MoveUpArgs(
+          classCode: _classCode.text.trim(),
+          username: info.username!,
+          password: _password.text,
+          info: info,
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _nameTaken = false;
+      _sessionActive = false;
+      _identityShown = false;
+      _index = _steps.indexOf(LoginStep.classCode);
+      _localError = classEndedMessage;
+      _localErrorAt = LoginStep.classCode;
+    });
+  }
+
   String? _errorFor(LoginStep s, AuthState auth) {
     if (_localErrorAt == s) return _localError;
     if (auth.error != null && (_serverErrorAt ?? _steps.last) == s) {
@@ -410,6 +449,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ServerClock.instance.reachable,
                           checkConnection: widget.checkConnection ??
                               ServerClock.instance.syncIfNeeded,
+                          notice: widget.notice,
                         )
                       : _stepsView(auth, size.width > 700),
                 ),
@@ -904,12 +944,14 @@ class _ChoiceView extends StatefulWidget {
   final VoidCallback onGuest;
   final ValueListenable<bool?> connection;
   final VoidCallback checkConnection;
+  final String? notice;
   const _ChoiceView({
     required this.width,
     required this.onChoose,
     required this.onGuest,
     required this.connection,
     required this.checkConnection,
+    this.notice,
   });
 
   @override
@@ -944,6 +986,10 @@ class _ChoiceViewState extends State<_ChoiceView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (widget.notice != null) ...[
+          AuthError(widget.notice!),
+          const SizedBox(height: 14),
+        ],
         _ChoiceButton(
           key: LoginScreen.newKey,
           title: 'BAGO AKO',

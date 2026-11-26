@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../models/class_move.dart';
+
 /// Joining found a student with the same name already in the class. Not an error
 /// to show: the screen asks "Ikaw ba 'yon?" instead.
 const String nameTakenMessage = 'May kapareho nang pangalan sa klase.';
@@ -7,6 +9,11 @@ const String nameTakenMessage = 'May kapareho nang pangalan sa klase.';
 /// The password was right but this account is open on another phone. Not an error to show:
 /// the screen asks "Ituloy dito?" instead.
 const String sessionActiveMessage = 'Gamit na ang account sa ibang device.';
+
+/// The class has ended. A learner with an account there is offered a move to the new class
+/// (see [ClassEndedException]); this text is for a join, which has nothing to move.
+const String classEndedMessage =
+    'Tapos na ang klase na ito. Itanong sa teacher mo ang bagong class code.';
 
 /// The message a student sees when the login or join request fails.
 ///
@@ -51,6 +58,7 @@ String loginErrorMessage(DioException e, {required bool joining}) {
   if (data is Map && data['code'] == 'SESSION_ACTIVE') {
     return sessionActiveMessage;
   }
+  if (data is Map && data['code'] == 'CLASS_ENDED') return classEndedMessage;
 
   switch (response.statusCode) {
     case 400:
@@ -104,7 +112,8 @@ LoginField? loginErrorField(String message) {
   if (message == nameTakenMessage || message == sessionActiveMessage) return null;
   if (message.startsWith('Mali ang class code') ||
       message.startsWith('I-type ang class code') ||
-      message.startsWith('Puno na ang klase')) {
+      message.startsWith('Puno na ang klase') ||
+      message.startsWith('Tapos na ang klase')) {
     return LoginField.classCode;
   }
   if (message.contains('username')) return LoginField.username;
@@ -165,5 +174,133 @@ String changePasswordErrorMessage(DioException e) {
       return code >= 500
           ? 'May problema sa server. Subukan ulit mamaya.'
           : 'Hindi ma-save ang password. Subukan ulit.';
+  }
+}
+
+/// The ended-class answer inside a failed login, or null when the answer is something else.
+ClassEndedInfo? classEndedFrom(DioException e) {
+  final data = e.response?.data;
+  if (e.response?.statusCode != 409 || data is! Map) return null;
+  if (data['code'] != 'CLASS_ENDED') return null;
+  return ClassEndedInfo.fromJson(data['classEnded']);
+}
+
+/// Said when the phone cannot reach the server, or null when it did.
+String? _noConnection(DioException e) {
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+    case DioExceptionType.sendTimeout:
+    case DioExceptionType.receiveTimeout:
+      return 'Mabagal o walang internet. Subukan ulit.';
+    case DioExceptionType.connectionError:
+      return 'Hindi maka-connect sa server. I-check ang internet at subukan ulit.';
+    default:
+      return e.response == null
+          ? 'Hindi maka-connect sa server. Subukan ulit.'
+          : null;
+  }
+}
+
+const String _tooManyTries =
+    'Masyadong maraming try. Maghintay sandali bago subukan ulit.';
+
+/// The message for a failed "Is this your class?" look-up of the new class code.
+String classLookupErrorMessage(DioException e) {
+  final gone = _noConnection(e);
+  if (gone != null) return gone;
+  final response = e.response!;
+  final data = response.data;
+  if (data is Map && data['code'] == 'CLASS_ENDED') {
+    return 'Tapos na rin ang klase na ito. Itanong sa teacher mo ang bagong class code.';
+  }
+  switch (response.statusCode) {
+    case 400:
+      return 'I-type ang bagong class code.';
+    case 404:
+      return 'Mali ang class code. Itanong sa teacher mo ang tamang code.';
+    case 429:
+      return _tooManyTries;
+    default:
+      return (response.statusCode ?? 0) >= 500
+          ? 'May problema sa server. Subukan ulit mamaya.'
+          : 'Hindi mahanap ang klase. Subukan ulit.';
+  }
+}
+
+/// What went wrong when moving to the new class. The server's codes come in English, so
+/// each one gets its own words. [oldGrade] and [newGrade] ("Grade 5", "Grade 7") make the
+/// wrong-grade message say which grades are meant, when the screen knows them.
+MoveUpError moveUpError(DioException e, {String? oldGrade, String? newGrade}) {
+  final gone = _noConnection(e);
+  if (gone != null) return MoveUpError(gone);
+  final response = e.response!;
+  final data = response.data;
+  final code = data is Map && data['code'] is String ? data['code'] as String : null;
+  final server = data is Map && data['message'] is String
+      ? (data['message'] as String)
+      : '';
+
+  switch (code) {
+    case 'SESSION_ACTIVE':
+      return const MoveUpError(sessionActiveMessage, code: 'SESSION_ACTIVE');
+    case 'WRONG_GRADE':
+      final grades = oldGrade != null && newGrade != null
+          ? ' $oldGrade ka ngayon, at ang klase na ito ay $newGrade.'
+          : '';
+      return MoveUpError(
+          'Hindi puwede ang klase na ito.$grades Parehong grade o isang grade '
+          'pataas lang ang puwede.',
+          code: code);
+    case 'CLASS_FULL':
+      return MoveUpError('Puno na ang klase na ito. Itanong sa teacher mo.',
+          code: code);
+    case 'CLASS_ENDED':
+      return MoveUpError(
+          'Tapos na rin ang klase na ito. Itanong sa teacher mo ang bagong class code.',
+          code: code);
+    case 'SAME_CLASS':
+      return MoveUpError(
+          'Ito rin ang dati mong klase. Ilagay ang bagong class code.',
+          code: code);
+    case 'WRONG_YEAR':
+      return MoveUpError(
+          'Hindi para sa school year na ito ang klase na ito. '
+          'Itanong sa teacher mo ang tamang code.',
+          code: code);
+    case 'YEAR_ENDED':
+      return MoveUpError(
+          'Tapos na ang school year. Hintayin ang bagong school year bago '
+          'sumali sa bagong klase.',
+          code: code);
+    case 'CLASS_NOT_ENDED':
+      return MoveUpError(
+          'Hindi pa tapos ang dati mong klase. Mag-login ka na lang.',
+          code: code);
+    case 'CLASS_NOT_FOUND':
+      return MoveUpError(
+          'Mali ang class code. Itanong sa teacher mo ang tamang code.',
+          code: code);
+  }
+
+  switch (response.statusCode) {
+    case 401:
+      return const MoveUpError('Mali ang password. Bumalik sa login at subukan ulit.');
+    case 404:
+      return const MoveUpError(
+          'Mali ang class code. Itanong sa teacher mo ang tamang code.');
+    case 429:
+      final wait = RegExp(r'try again in (\d+) minute').firstMatch(server.toLowerCase());
+      return MoveUpError(wait != null
+          ? 'Masyadong maraming mali. Subukan ulit sa loob ng ${wait.group(1)} '
+              'minuto, o itanong sa teacher mo.'
+          : _tooManyTries);
+    default:
+      if ((response.statusCode ?? 0) >= 500) {
+        return const MoveUpError('May problema sa server. Subukan ulit mamaya.');
+      }
+      // A code this game does not know: the server's own words are better than none.
+      return MoveUpError(
+          server.isNotEmpty ? server : 'Hindi makalipat sa bagong klase. Subukan ulit.',
+          code: code);
   }
 }

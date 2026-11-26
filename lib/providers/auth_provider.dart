@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/class_move.dart';
 import '../models/student.dart';
 import '../data/question_bank.dart';
 import '../services/api_service.dart';
@@ -93,6 +94,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       _api.flushPendingResults();
       QuestionSync.sync(student.classCode);
       return {'success': true, 'isNewStudent': data['isNewStudent'] ?? false};
+    } on ClassEndedException catch (e) {
+      // Not an error to show: the screen offers to move to the new class, or says to
+      // ask the teacher for the new code.
+      state = state.copyWith(isLoading: false);
+      return {'success': false, 'classEnded': e.info};
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -102,6 +108,37 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
       return {'success': false};
     }
+  }
+
+  /// Moves a learner whose class has ended to the new class: the same account, so points,
+  /// coins and characters come along. Becomes the signed-in student, like [login].
+  /// Throws a [MoveUpError].
+  Future<MoveUpResult> moveUp({
+    required String oldClassCode,
+    required String username,
+    required String password,
+    required String newClassCode,
+    bool takeOver = false,
+    String? oldGrade,
+    String? newGrade,
+  }) async {
+    final result = await _api.moveUp(
+      oldClassCode: oldClassCode,
+      username: username,
+      password: password,
+      newClassCode: newClassCode,
+      takeOver: takeOver,
+      oldGrade: oldGrade,
+      newGrade: newGrade,
+    );
+    state = AuthState(
+      student: result.student,
+      isLoggedIn: true,
+      serverWallet: ServerWallet.of(result.student),
+    );
+    _api.flushPendingResults();
+    QuestionSync.sync(result.student.classCode);
+    return result;
   }
 
   /// Hides the last error, e.g. when the student switches between "Bago" and
