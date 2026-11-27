@@ -1,4 +1,5 @@
 import 'dart:async' show unawaited;
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flame/game.dart';
 import 'package:flame/camera.dart';
@@ -14,7 +15,10 @@ import '../models/quiz_result.dart';
 import '../models/student.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
+import '../screens/home/era_selection_screen.dart' show eraCardColor;
 import 'answer_point_handler.dart';
+import 'art_scale.dart';
+import 'boss_defeat.dart';
 import 'bonus/bonus_session.dart';
 import 'cave/cave_session.dart';
 import 'components/artifact_component.dart';
@@ -226,6 +230,13 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// does not update, and [gateRevealCameraX] is where the camera looks from.
   GateReveal? gateReveal;
   double? gateRevealCameraX;
+
+  /// The last hit on a boss: while it plays (about eight seconds) the world stands still and it
+  /// owns the camera and draws the cracks, the explosion, the coins and the medal. Null the rest
+  /// of the time.
+  BossDefeatSequence? bossDefeat;
+  Component? _bossDefeatLayer;
+  BossComponent? _defeatedBoss;
 
   /// How far the picture is shaken, in world units; zero except while the gate
   /// is opening (gate_reveal.dart).
@@ -443,6 +454,17 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
 
   @override
   void updateTree(double dt) {
+    // The boss has fallen: the world stands still (a zero-length step still mounts new
+    // components), only the defeat moves.
+    final defeat = bossDefeat;
+    if (defeat != null) {
+      super.updateTree(0);
+      defeat.step(dt > maxFrameDt ? maxFrameDt : dt, reducedMotion: PlatformDispatcher.instance.accessibilityFeatures.disableAnimations);
+      updateCamera();
+      if (defeat.drawsHero) player.hiddenForVictory = true;
+      if (defeat.done) _finishBossDefeat();
+      return;
+    }
     // The camera trip to the gate: the world stands still, only the trip moves.
     final reveal = gateReveal;
     if (reveal != null) {
@@ -491,11 +513,13 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   // ─── GAME EVENTS ──────────────────────────────────────────────────────────
 
   void onPlayerJump() {
+    if (bossDefeat != null) return _skipBossDefeat();
     if (gateReveal != null) return gateReveal!.skip();
     if (!questionShowing) player.jump();
   }
 
   void onPlayerAttack() {
+    if (bossDefeat != null) return _skipBossDefeat();
     if (gateReveal != null) return gateReveal!.skip();
     if (!questionShowing) player.attack();
   }
@@ -605,6 +629,82 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     }
   }
 
+  /// A boss's last hit: starts the defeat (cracks, explosion, coins, medal). False when the
+  /// phone is set to remove animations: the boss then lies defeated for a second, as it used to,
+  /// and the level ends.
+  bool beginBossDefeat(BossComponent boss) {
+    if (bossDefeat != null) return true;
+    if (PlatformDispatcher.instance.accessibilityFeatures.disableAnimations) return false;
+    final art = artSizeOf(boss.defeatedSprite);
+    final stage = BossDefeatStage(
+      viewSize: size.clone(),
+      normalTopLeft: Vector2(cameraLeftEdgeX, 0),
+      bossFoot: Vector2(boss.position.x + boss.size.x / 2, boss.position.y + boss.size.y),
+      heroFoot: Vector2(player.position.x + player.size.x / 2, player.position.y + player.size.y),
+      bossArtSize: art,
+      bossFlipped: boss.facesRight,
+      bossSprite: boss.defeatedSprite,
+      heroWinSprite: null,
+      groundY: groundY,
+      medalColor: eraCardColor(currentEra),
+      bossName: bossDisplayName(getEraById(boss.eraId).bossName),
+      pieces: <DefeatPiece>[],
+    );
+    final sequence = BossDefeatSequence(
+      stage: stage,
+      sounds: BossDefeatSounds(
+        rumble: audioService.playBossRumble,
+        crack: () {},
+        boom: audioService.playBossBoom,
+        clatter: audioService.playBossClatter,
+        coin: audioService.playCoin,
+        medal: audioService.playBossMedal,
+        win: audioService.playBossWin,
+      ),
+    )..story = BossDefeatTimes.hit;
+    _stopwatch.stop(); // the fall is not part of the time the student took
+    bossDefeat = sequence;
+    _defeatedBoss = boss;
+    boss.hideArt = true;
+    final layer = _BossDefeatLayer(sequence);
+    _bossDefeatLayer = layer;
+    camera.viewport.add(layer);
+    sequence.step(0); // the last hit lands at once
+    updateCamera();
+    unawaited(_loadDefeatArt(stage));
+    return true;
+  }
+
+  /// Cuts the boss picture into squares and loads the hero's cheering picture, a moment after the
+  /// defeat starts (the squares are only needed at the explosion).
+  Future<void> _loadDefeatArt(BossDefeatStage stage) async {
+    try {
+      final pieces = await sampleDefeatPieces(stage.bossSprite, stage.bossArtSize);
+      stage.pieces.addAll(pieces);
+    } catch (_) {}
+    try {
+      stage.heroWinSprite = await loadSprite('characters/${player.characterId}_win.png');
+    } catch (_) {}
+  }
+
+  void _skipBossDefeat() {
+    final d = bossDefeat;
+    if (d == null || !d.canSkip) return;
+    d.skip();
+  }
+
+  void _finishBossDefeat() {
+    final boss = _defeatedBoss;
+    _bossDefeatLayer?.removeFromParent();
+    _bossDefeatLayer = null;
+    bossDefeat = null;
+    _defeatedBoss = null;
+    camera.viewfinder.zoom = 1;
+    player.hiddenForVictory = false;
+    updateCamera();
+    boss?.finishDefeat();
+  }
+
   void startBossFight() {
     bossPhase = true;
     final level = tiledLevel;
@@ -705,5 +805,32 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
     } catch (_) {
       // Silently fail — result can be retransmitted later
     }
+  }
+}
+
+/// Draws the boss defeat over the world, in the units of the virtual screen.
+class _BossDefeatLayer extends Component {
+  final BossDefeatSequence sequence;
+  _BossDefeatLayer(this.sequence);
+
+  @override
+  void render(Canvas canvas) => sequence.render(canvas);
+}
+
+/// The name of a boss on the banner.
+String bossDisplayName(String bossId) {
+  switch (bossId) {
+    case 'bakunawa':
+      return 'Bakunawa';
+    case 'corruption_boss':
+      return 'Corruption Boss';
+    case 'governor':
+      return 'Governor';
+    case 'general':
+      return 'General';
+    case 'commander':
+      return 'Commander';
+    default:
+      return bossId.isEmpty ? 'Boss' : bossId[0].toUpperCase() + bossId.substring(1);
   }
 }

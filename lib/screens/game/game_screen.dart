@@ -22,6 +22,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/badge_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../services/storage_service.dart';
+import '../../utils/book_unlock.dart';
 import '../splash/level_splash.dart';
 import 'bonus_round_screen.dart';
 import 'cave_screen.dart';
@@ -181,6 +182,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         ),
       );
       if (widget.level == getEraById(widget.eraId).levels.length) {
+        // The next era's book comes unchained on the era shelf, once, even if the app is closed
+        // before the student gets there.
+        final authState = ref.read(authProvider);
+        unawaited(BookUnlock.markAfterBoss(
+          eraId: widget.eraId,
+          gradeLevel: authState.student?.gradeLevel,
+          isGuest: authState.isGuest,
+          firstClear: firstClear,
+        ));
         context.go('/era-complete/${widget.eraId}', extra: result);
       } else {
         context.go(

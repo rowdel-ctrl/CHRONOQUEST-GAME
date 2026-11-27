@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../services/audio_service.dart';
 import '../../models/badge_defs.dart';
 import '../../providers/badge_provider.dart';
 import '../../providers/game_provider.dart';
@@ -54,6 +55,8 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   @override
   void initState() {
     super.initState();
+    // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
+    Future<void>.microtask(() => AudioService().playLobbyBgm());
     // Hearts come back on their own; this keeps the countdown moving.
     _ticker = Timer.periodic(
       const Duration(seconds: 1),

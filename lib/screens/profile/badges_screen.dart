@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../models/badge_defs.dart';
 import '../../models/badge_facts.dart';
 import '../../providers/badge_provider.dart';
+import '../../services/audio_service.dart';
 import '../../services/badge_rules.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/badge_medal.dart';
@@ -39,6 +40,8 @@ class _BadgesScreenState extends ConsumerState<BadgesScreen> {
   @override
   void initState() {
     super.initState();
+    // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
+    Future<void>.microtask(() => AudioService().playLobbyBgm());
     // Not in this build: a provider may not change while the tree is being built.
     Future<void>.microtask(() {
       if (!mounted) return;

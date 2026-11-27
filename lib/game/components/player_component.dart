@@ -177,6 +177,9 @@ class PlayerComponent extends SpriteAnimationComponent
   /// Toggled during the invincibility window to flash the sprite. `render()`
   /// skips drawing entirely while this is false.
   bool _flashVisible = true;
+
+  /// Set while the boss defeat draws the cheering hero itself, so this picture is not drawn twice.
+  bool hiddenForVictory = false;
   double _flashTimer = 0;
 
   /// Whether the sprite is currently drawn — false only mid-flash during
@@ -475,7 +478,7 @@ class PlayerComponent extends SpriteAnimationComponent
   @override
   // ignore: must_call_super
   void render(Canvas canvas) {
-    if (!_flashVisible) return;
+    if (!_flashVisible || hiddenForVictory) return;
 
     // The art faces right. Facing left is mirrored by paintArt around the feet,
     // render-local: position.x IS worldX (camera, collision, spawner), so it must

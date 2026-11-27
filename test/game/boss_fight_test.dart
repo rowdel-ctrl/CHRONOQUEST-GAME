@@ -733,14 +733,45 @@ void main() {
       expect(game.answers.map((a) => a.questionId).toSet(), hasLength(22),
           reason: '22 different questions, each once');
       expect(game.overlays.isActive('QuestionOverlay'), isFalse);
-      expect(completed, 0, reason: 'the boss lies there for a moment first');
-      _step(game, 0.9);
+      expect(completed, 0, reason: 'the boss falls apart first (the defeat sequence)');
+      final defeat = game.bossDefeat;
+      expect(defeat, isNotNull, reason: 'the last hit starts the defeat');
+      expect(boss.hideArt, isTrue, reason: 'the sequence draws the boss now');
+      // The pressure builds, then the explosion, then the medal and the banner: about 8 s.
+      _step(game, 1.0);
+      expect(defeat!.hit, isTrue);
+      expect(defeat.boomed, isFalse);
+      _step(game, 2.5);
+      expect(defeat.boomed, isTrue);
       expect(completed, 0);
-      _step(game, 0.2);
+      _step(game, 3.0);
+      expect(completed, 0, reason: 'still playing, the level is not over until the gold fade');
+      _step(game, 4.0);
       expect(completed, 1);
+      expect(game.bossDefeat, isNull);
+      expect(game.camera.viewfinder.zoom, 1.0, reason: 'the camera is back');
       _step(game, 2);
       expect(completed, 1);
       expect(boss.isRemoving || !boss.isMounted, isTrue);
+      await _flush(tester);
+    });
+
+    testWidgets('a tap skips the rest of the defeat, but not in its first second', (tester) async {
+      final (game, boss) = await _start(tester);
+      var completed = 0;
+      game.onLevelComplete = (score, correct, total, answers) => completed++;
+      for (var n = 1; n <= 22; n++) {
+        _winRound(game, boss);
+      }
+      expect(game.bossDefeat, isNotNull);
+      game.onPlayerJump(); // too early
+      _step(game, 0.1);
+      expect(completed, 0);
+      _step(game, 1.2);
+      game.onPlayerAttack();
+      _step(game, 0.2);
+      expect(completed, 1, reason: 'skipped');
+      expect(game.bossDefeat, isNull);
       await _flush(tester);
     });
 

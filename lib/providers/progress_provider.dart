@@ -81,7 +81,20 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
     if (index <= 0) return true; // First era always unlocked
     final prevEraId = visibleEraIds[index - 1];
     final prevProgress = getEraProgress(prevEraId);
-    return prevProgress.isCompleted;
+    // The server's answer can be behind (a boss won offline, a result still queued): the boss
+    // level saved on this phone counts too, so a book that just came unchained does not close
+    // again.
+    return prevProgress.isCompleted || _bossDownOnThisPhone(prevEraId);
+  }
+
+  bool _bossDownOnThisPhone(String eraId) {
+    try {
+      final era = allEras.where((e) => e.id == eraId);
+      if (era.isEmpty) return false;
+      return StorageService.getCompletedLevels(eraId).containsKey(era.first.levels.length);
+    } catch (_) {
+      return false; // no local storage (a test)
+    }
   }
 
   void markLevelCompleted(String eraId, int level, int stars) {

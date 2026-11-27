@@ -103,6 +103,19 @@ void main() {
     expect(find.byKey(const Key('unlock_all_switch')), findsOneWidget);
   });
 
+  testWidgets('the tester build can replay the chain break from Settings', (tester) async {
+    await _open(tester, testBuild: true);
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -300));
+    await tester.pump();
+    expect(find.byKey(const Key('replay_chain_break')), findsOneWidget);
+    expect(find.text('Panoorin ang chain break'), findsOneWidget);
+  });
+
+  testWidgets('the student build has no chain break replay', (tester) async {
+    await _open(tester);
+    expect(find.byKey(const Key('replay_chain_break')), findsNothing);
+  });
+
   testWidgets('the student build has no Test Mode switch', (tester) async {
     await _open(tester, testBuild: false);
     expect(find.byKey(const Key('unlock_all_switch')), findsNothing);

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../core/test_mode.dart';
 import '../../data/history_full.dart';
+import '../../services/audio_service.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/living_backdrop.dart';
@@ -93,6 +94,8 @@ class _LessonCardScreenState extends State<LessonCardScreen>
   @override
   void initState() {
     super.initState();
+    // Silent while reading: the lobby music stops here and comes back on the level map.
+    Future<void>.microtask(() => AudioService().stopBgm());
     WidgetsBinding.instance.addObserver(this);
     _scroll.addListener(_onScroll);
     _load();

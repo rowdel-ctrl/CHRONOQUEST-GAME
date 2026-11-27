@@ -96,6 +96,8 @@ class _BackgroundHistoryScreenState extends State<BackgroundHistoryScreen> {
   @override
   void initState() {
     super.initState();
+    // Silent while reading: the lobby music stops here and comes back on the level map.
+    Future<void>.microtask(() => AudioService().stopBgm());
     _seen = widget.alreadyRead ?? _storedSeen();
     if (_seen) _read.addAll([for (var i = 0; i < _beats.length; i++) i]);
     _startDwell();

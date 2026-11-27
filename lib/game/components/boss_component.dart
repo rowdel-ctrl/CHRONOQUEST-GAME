@@ -84,6 +84,9 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   bool reachedCenter = false;
   bool isDefeated = false;
 
+  /// Set while the boss defeat sequence draws the boss itself (see boss_defeat.dart).
+  bool hideArt = false;
+
   late Sprite idleSprite;
   late Sprite attackSprite;
   late Sprite defeatedSprite;
@@ -315,7 +318,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   // ignore: must_call_super
   void render(Canvas canvas) {
     final art = sprite;
-    if (art == null) return;
+    if (art == null || hideArt) return;
     var footX = size.x / 2 + _poseShift;
     if (state == BossRoundState.windup) {
       final u = (_t / BossAttackConstants.windupSeconds).clamp(0.0, 1.0);
@@ -893,10 +896,19 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     _cardClosed = true;
     game.closeBossQuestion();
     sprite = defeatedSprite;
-    _defeatLeft = BossAttackConstants.defeatSeconds;
+    // The defeat sequence (cracks, explosion, medal) takes over and ends the level itself; with
+    // no sequence (a phone set to remove animations) the boss just lies there for a second.
+    _defeatLeft = game.beginBossDefeat(this) ? double.infinity : BossAttackConstants.defeatSeconds;
     game.audioService.stopBgm(); // the music stops so the victory sound is clear
-    game.audioService.playBossDefeat();
     game.overlays.remove('BossHealthOverlay');
+  }
+
+  /// The defeat sequence is over: the boss goes and the level is complete.
+  void finishDefeat() {
+    if (_finished) return;
+    _finished = true;
+    removeFromParent();
+    game.levelComplete();
   }
 
   void _tickDefeat(double dt) {

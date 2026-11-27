@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/unlock_all_provider.dart';
+import '../../services/audio_service.dart';
 import '../../services/storage_service.dart';
 import '../../widgets/hearts_pill.dart';
 import '../../widgets/living_backdrop.dart';
@@ -46,6 +47,8 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
   @override
   void initState() {
     super.initState();
+    // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
+    Future<void>.microtask(() => AudioService().playLobbyBgm());
     completedLevels = StorageService.getCompletedLevels(widget.eraId);
     // Ticks the persistent-hearts countdown shown below, and applies any
     // regen due since the provider was created — this screen is the main

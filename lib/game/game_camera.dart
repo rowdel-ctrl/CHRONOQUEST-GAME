@@ -12,6 +12,13 @@ import 'chrono_game.dart';
 /// to spawn, what to cull) shakes with it.
 extension GameCamera on ChronoGame {
   void updateCamera() {
+    // The boss defeat owns the camera while it plays: zoom, where it looks, the shake.
+    final defeat = bossDefeat;
+    if (defeat != null) {
+      camera.viewfinder.zoom = defeat.zoom;
+      camera.viewfinder.position = defeat.topLeft;
+      return;
+    }
     camera.viewfinder.position =
         Vector2(cameraLeftEdgeX + cameraShake.x, cameraShake.y);
   }

@@ -8,6 +8,8 @@ import '../../providers/auth_provider.dart';
 import '../../providers/control_scheme_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/audio_service.dart';
+import '../../services/storage_service.dart';
+import '../../utils/book_unlock.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/guest_card.dart';
 import '../../widgets/pixel_icon.dart';
@@ -91,6 +93,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           if (ref.watch(testBuildProvider)) ...const [
                             SizedBox(height: 18),
                             _UnlockAllSwitch(),
+                            SizedBox(height: 10),
+                            _ReplayChainBreak(),
                           ],
                         ],
                       ),
@@ -145,6 +149,43 @@ class _UnlockAllSwitch extends ConsumerWidget {
           value: ref.watch(unlockAllProvider),
           onChanged: (v) => ref.read(unlockAllProvider.notifier).set(v),
         ),
+      ),
+    );
+  }
+}
+
+/// Test Mode (tester build only): watch the book's chains break again, without finishing an era.
+class _ReplayChainBreak extends ConsumerWidget {
+  const _ReplayChainBreak();
+
+  static const Key buttonKey = Key('replay_chain_break');
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Material(
+      color: Colors.black26,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Colors.white24),
+      ),
+      child: ListTile(
+        key: buttonKey,
+        dense: true,
+        title: Text(
+          'Panoorin ang chain break',
+          style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+        ),
+        subtitle: Text(
+          'Pinapanood ulit ang pagbukas ng ikalawang libro sa istante, para hindi na kailangang tapusin ang buong era.',
+          style: GoogleFonts.poppins(color: Colors.white54, fontSize: 10),
+        ),
+        trailing: const Icon(Icons.play_arrow_rounded, color: AppColors.accent),
+        onTap: () async {
+          final era = BookUnlock.replayEraId(ref.read(authProvider).student?.gradeLevel);
+          if (era == null) return;
+          await StorageService.setPendingBookUnlock('${BookUnlock.replayPrefix}$era');
+          if (context.mounted) context.go('/era-selection');
+        },
       ),
     );
   }

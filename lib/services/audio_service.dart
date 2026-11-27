@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -85,7 +87,13 @@ class AudioService {
   static final AudioContext _mixWithMusic =
       AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers).build();
 
+  /// True while `flutter test` runs: there is no sound plugin then, and a screen that plays a
+  /// sound (a tap, the lobby music) must not fail a test that has nothing to do with sound. A
+  /// test that wants to watch the sound sets [poolFactory], [musicStarter] and [musicStopper].
+  static bool get _underFlutterTest => !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+
   static Future<AudioPool> _newPool(String file) {
+    if (_underFlutterTest) return Future<AudioPool>.value(_SilentPool());
     final service = AudioService();
     return AudioPool.create(
       source: AssetSource(file),
@@ -114,6 +122,7 @@ class AudioService {
     'bgm_boss_3.mp3': 0.5,
     'bgm_victory.mp3': 0.75,
     'bgm_bonus.mp3': 0.85,
+    'bgm_lobby.wav': 0.8,
   };
 
   bool get soundEnabled => _soundEnabled;
@@ -210,7 +219,7 @@ class AudioService {
     _save(() => StorageService.setMusicVolume(_musicVolume));
     if (_initialized) {
       try {
-        FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume * _currentGain);
+        FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume * _currentGain * _duck);
       } catch (e) {
         debugPrint('AudioService: could not change music volume: $e');
       }
@@ -332,6 +341,21 @@ class AudioService {
   /// it waits for the boss's question lead-in.
   Future<void> playBossAsk() => _playSfx('boss_ask.wav');
 
+  // ─── THE ERA BOOKS, THE CHAIN BREAK, THE BOSS DEFEAT ─────────────────────
+  // Made by tools/sfx/make_book_sfx.js.
+  Future<void> playBookSlide() => _playSfx('book_slide.wav');
+  Future<void> playBookOpen() => _playSfx('book_open.wav');
+  Future<void> playBookClose() => _playSfx('book_close.wav');
+  Future<void> playBookLocked() => _playSfx('book_locked.wav');
+  Future<void> playChainStrain() => _playSfx('chain_strain.wav');
+  Future<void> playChainUnlock() => _playSfx('chain_unlock.wav');
+  Future<void> playBookReveal() => _playSfx('book_reveal.wav');
+  Future<void> playBossRumble() => _playSfx('boss_rumble.wav');
+  Future<void> playBossBoom() => _playSfx('boss_boom.wav');
+  Future<void> playBossClatter() => _playSfx('boss_clatter.wav');
+  Future<void> playBossMedal() => _playSfx('boss_medal.wav');
+  Future<void> playBossWin() => _playSfx('boss_win.wav');
+
   // ─── BACKGROUND MUSIC ─────────────────────────────────────────────────────
 
   /// Music files drop the hyphen used in era ids (`bgm_precolonial.mp3` for
@@ -370,6 +394,38 @@ class AudioService {
   /// track and not the boss's, and it stops when the screen is left ([stopBgm]).
   Future<void> playVictoryBgm() => _playOneOff('bgm_victory.mp3');
 
+  /// The file of the lobby music: the menus (hero choice, the era books, the level map, the
+  /// shop, the profile). Every menu screen asks for it, and asking while it already plays does
+  /// nothing, so it does not start over when the student moves from one menu to the next. A
+  /// level's own music takes its place when a level starts ([playBgm]).
+  static const String lobbyTrack = 'bgm_lobby.wav';
+
+  Future<void> playLobbyBgm() async {
+    _resumeMusic = playLobbyBgm; // switching music on in Settings brings it back
+    if (!_musicEnabled) return;
+    if (_playingFile == lobbyTrack) return;
+    _currentGain = _trackGain[lobbyTrack] ?? 1.0;
+    await _startTrack(lobbyTrack, _currentGain);
+  }
+
+  /// Whether the lobby music is the track that is playing (or about to).
+  bool get lobbyPlaying => _playingFile == lobbyTrack;
+
+  /// How much quieter the music is made while something big plays over it (the chain break).
+  double _duck = 1.0;
+
+  /// Turns the music down to [factor] (0 to 1) of its level, or back up with 1. It lasts until
+  /// it is called again.
+  Future<void> duckMusic(double factor) async {
+    _duck = factor.clamp(0.0, 1.0).toDouble();
+    if (!_initialized || !_musicUsed) return;
+    try {
+      await FlameAudio.bgm.audioPlayer.setVolume(_bgmBaseVolume * _musicVolume * _currentGain * _duck);
+    } catch (e) {
+      debugPrint('AudioService: could not duck the music: $e');
+    }
+  }
+
   /// The music of the bonus round behind the golden portal. [playBgm] brings the era's own
   /// track back when the round is over.
   Future<void> playBonusBgm() => _playOneOff('bgm_bonus.mp3');
@@ -396,6 +452,9 @@ class AudioService {
   /// Whether a track was ever started (so there is a player to stop).
   bool _musicUsed = false;
 
+  /// The file of the track that is playing or has been asked for; null once stopped.
+  String? _playingFile;
+
   /// Counts commands, so a start that is still waiting when a newer one (or a stop) is
   /// asked for can see it is out of date and not start.
   int _musicStamp = 0;
@@ -407,10 +466,11 @@ class AudioService {
   Future<void> Function() musicStopper = _stopPlayerNow;
 
   static Future<void> _startPlayer(String file, double volume) async {
+    if (_underFlutterTest) return;
     await AudioService()._ensureInitialized();
     await FlameAudio.bgm.play(file, volume: volume);
   }
-  static Future<void> _stopPlayerNow() => FlameAudio.bgm.stop();
+  static Future<void> _stopPlayerNow() => _underFlutterTest ? Future<void>.value() : FlameAudio.bgm.stop();
 
   /// Forgets the music state and goes back to the real player, for a test.
   @visibleForTesting
@@ -418,6 +478,8 @@ class AudioService {
     musicStarter = _startPlayer;
     musicStopper = _stopPlayerNow;
     _resumeMusic = null;
+    _playingFile = null;
+    _duck = 1.0;
     _musicUsed = false;
     _musicStamp = 0;
     _musicQueue = Future<void>.value();
@@ -434,7 +496,8 @@ class AudioService {
 
   Future<void> _startTrack(String file, double gain) {
     final stamp = ++_musicStamp;
-    final volume = _bgmBaseVolume * _musicVolume * gain;
+    final volume = _bgmBaseVolume * _musicVolume * gain * _duck;
+    _playingFile = file;
     return _queueMusic(() async {
       if (stamp != _musicStamp) return; // a newer command replaced this one
       _musicUsed = true;
@@ -446,6 +509,7 @@ class AudioService {
   /// Stops the player but keeps what to bring back ([_resumeMusic]).
   Future<void> _stopPlayer() {
     _musicStamp++;
+    _playingFile = null;
     return _queueMusic(() async {
       if (!_musicUsed) return; // nothing was ever started
       await musicStopper();
@@ -463,4 +527,13 @@ class AudioService {
   /// this is a singleton that outlives any one level, so disposing its
   /// underlying player would silence every level after the first.
   Future<void> dispose() => stopBgm();
+}
+
+/// A pool that plays nothing, for `flutter test`.
+class _SilentPool implements AudioPool {
+  @override
+  Future<StopFunction> start({double volume = 1.0}) async => () async {};
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

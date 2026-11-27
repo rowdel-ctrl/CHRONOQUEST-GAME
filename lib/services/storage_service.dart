@@ -1,6 +1,7 @@
 import 'dart:math' show Random;
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants.dart';
@@ -168,6 +169,38 @@ class StorageService {
     if (data == null) return {};
     final Map<dynamic, dynamic> raw = Map<dynamic, dynamic>.from(data as Map);
     return raw.map((k, v) => MapEntry(int.parse(k.toString()), v as int));
+  }
+
+  // ─── THE BOOK WAITING TO BE UNCHAINED ─────────────────────────────────────
+  // Set when a boss is beaten for the first time and the next era opens, cleared when the era
+  // shelf has played the chain break. It is kept on the phone so the break still plays if the
+  // app is closed after the boss fell, and plays only once.
+  static const _pendingBookKey = 'pending_book_unlock';
+
+  /// What was last set, kept in memory too: the box writes to the file first and shows the new
+  /// value only afterwards, and the shelf must not see a mark it has just cleared.
+  static String? _pendingBookMemory;
+  static bool _pendingBookKnown = false;
+
+  static String? getPendingBookUnlock() => _pendingBookKnown ? _pendingBookMemory : appBox.get(_pendingBookKey) as String?;
+
+  static Future<void> setPendingBookUnlock(String? eraId) async {
+    _pendingBookMemory = eraId;
+    _pendingBookKnown = true;
+    try {
+      await (eraId == null ? appBox.delete(_pendingBookKey) : appBox.put(_pendingBookKey, eraId));
+    } catch (_) {
+      // The mark is a nicety: with no storage the book simply comes open without the show.
+    }
+  }
+
+  /// Forgets what was set in memory, so the box is read again. For a test that clears the box.
+  @visibleForTesting
+  static void resetPendingBookForTesting() => _forgetPendingBook();
+
+  static void _forgetPendingBook() {
+    _pendingBookMemory = null;
+    _pendingBookKnown = false;
   }
 
   // ─── PENDING RESULTS (offline queue) ──────────────────────────────────────
@@ -445,6 +478,7 @@ class StorageService {
   };
 
   static Future<void> clearAll() async {
+    _forgetPendingBook(); // the mark is the student's own: gone with the logout
     final kept = <String, dynamic>{
       for (final key in appBox.keys)
         if (_survivesLogout(key)) key as String: appBox.get(key),

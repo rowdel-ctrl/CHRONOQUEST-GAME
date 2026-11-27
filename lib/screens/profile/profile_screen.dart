@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../services/audio_service.dart';
 import '../../models/badge_defs.dart';
 import '../../models/student.dart';
 import '../../providers/auth_provider.dart';
@@ -49,6 +50,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
+    Future<void>.microtask(() => AudioService().playLobbyBgm());
     // Reached from character select now, which does not load progress.
     Future.microtask(() {
       ref.read(progressProvider.notifier).loadProgress();

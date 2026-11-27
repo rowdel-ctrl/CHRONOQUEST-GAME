@@ -72,6 +72,8 @@ class _FullStoryScreenState extends State<FullStoryScreen> {
   @override
   void initState() {
     super.initState();
+    // Silent while reading: the lobby music stops here and comes back on the level map.
+    Future<void>.microtask(() => AudioService().stopBgm());
     _scroll.addListener(_onScroll);
     _load();
   }

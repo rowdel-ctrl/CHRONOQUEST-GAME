@@ -260,7 +260,11 @@ void main() {
       expect(find.text('PARA SA NAKA-SIGN IN'), findsOneWidget);
 
       final grade5 = allEras.where((e) => e.grade == 5).toList();
-      await tester.tap(find.byKey(EraSelectionScreen.cardKey(grade5[0].id)));
+      // A tap opens the book; its gold button goes to the levels.
+      await tester.tapAt(tester.getCenter(find.byKey(EraSelectionScreen.cardKey(grade5[0].id))));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1300));
+      await tester.tap(find.byKey(EraSelectionScreen.playKey));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(landed, ['/level-select/${GuestMode.eraId}']);
