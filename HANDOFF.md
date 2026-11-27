@@ -3,7 +3,7 @@
 > **Chat nickname: GAME.** This file is for the game app only (`CHRONO-GAMEAPP`). The board that shows all three chats is `../HANDOFF.md`. Dashboard: `../CHRONO-DASHBOARD/HANDOFF.md`. Landing page: `../CHRONO-LANDING/HANDOFF.md`.
 > At the end of a session add a dated entry at the top (automatically, without asking). Keep the newest entry under one page. Keep this file under about 400 lines: when it grows past that, move the oldest entries in full to `docs/handoff-archive/` and leave a one-line pointer under "Older entries" at the bottom.
 
-**Date:** 2026-11-27 (BUILT student + TEST 1.16.0, same version, versionCode 2242; NOT COMMITTED; full suite 2,157 pass; analyze clean; not tried on a phone)
+**Date:** 2026-11-27 (BUILT student + TEST 1.16.0, same version, versionCode 2242; COMMITTED and pushed 9c1ba72 on PPP; full suite 2,157 pass; analyze clean; not tried on a phone)
 **From:** Claude Haiku 5.5
 - **User:** "Build new apks now" (no commit asked, so none made).
 - **Version:** pubspec 1.16.0+34, appVersion 1.16.0 (middle number: new questions and lessons, a clock on every level question, and the clean return to the login). codeBump=2 so versionCode is 2242 (above 1.15.0's 2241).
