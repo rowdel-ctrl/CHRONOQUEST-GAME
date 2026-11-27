@@ -178,18 +178,13 @@ void main() {
       final screen = Offset.zero & entry.value;
       final grade5 = allEras.where((e) => e.grade == 5);
       expect(grade5.length, 3);
-      // The first is finished and the second is not open in this fake, so it stands
-      // on the first, with the second peeking in.
+      // The first is in front; the second and third stand beside it, chained, and the
+      // layout leaves all three on the screen.
       for (final era in grade5) {
         final card = find.byKey(EraSelectionScreen.cardKey(era.id));
-        // The first is in front; the one after it peeks in; the third is out of sight.
-        if (era == grade5.last) {
-          expect(card, findsNothing);
-          continue;
-        }
         expect(card, findsOneWidget);
         expect(screen.contains(tester.getRect(card).center), isTrue);
-        expect(card.hitTestable(), findsOneWidget);
+        if (era != grade5.last) expect(card.hitTestable(), findsOneWidget);
       }
       // Grade 6 eras stay hidden when the switch is off.
       for (final era in allEras.where((e) => e.grade == 6)) {

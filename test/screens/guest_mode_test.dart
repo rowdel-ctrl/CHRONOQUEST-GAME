@@ -256,8 +256,8 @@ void main() {
         (tester) async {
       final landed = <String>[];
       await openEras(tester, landedOn: landed);
-      // The first era is in front; the second peeks in beside it and says so.
-      expect(find.text('PARA SA NAKA-SIGN IN'), findsOneWidget);
+      // The first era is in front; the second and third stand beside it and say so.
+      expect(find.text('PARA SA NAKA-SIGN IN'), findsNWidgets(2));
 
       final grade5 = allEras.where((e) => e.grade == 5).toList();
       // A tap opens the book; its gold button goes to the levels.

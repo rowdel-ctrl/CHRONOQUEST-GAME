@@ -392,8 +392,9 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> with Ti
   static const double _boxW = kBookPageW * 2;
   static const double _boxH = kBookPageH + 2 * kBookDepth + 16;
 
-  /// How big a book beside the front one is, compared with the front one.
+  /// How big a book beside the front one is, compared with the front one, and the one behind that.
   static const double _sideScale = 0.72;
+  static const double _farScale = 0.58;
 
   /// Lays the books out in the room the screen has: the front book as large as fits (never
   /// more than its design size), the two neighbours tilted away behind it.
@@ -412,7 +413,9 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> with Ti
     final room = math.max(0.3, (box.maxHeight - 6) / _boxH);
     final closedScale = math.max(0.3, math.min(1.0, math.min(room, box.maxWidth * 0.62 / kBookPageW)));
     final openScale = math.max(0.3, math.min(1.0, math.min(room, box.maxWidth * 0.94 / _boxW)));
-    final step = (kBookPageW * closedScale * (1 + _sideScale)) / 2 + 8;
+    // As on the mockup: the next book stands one book-width from the middle one, the one behind
+    // it half a book-width further.
+    final step = kBookPageW * closedScale;
     final cx = box.maxWidth / 2;
     final cy = box.maxHeight / 2;
     final moving = motionAllowed(context);
@@ -429,9 +432,12 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> with Ti
       final shut = isUnlocking || !unlocked(era);
       final guestLocked = isGuest && !unlocked(era);
       final isOpen = _open == i;
-      final scale = isOpen ? openScale : (big ? closedScale : closedScale * _sideScale);
+      final far = d.abs() > 1;
+      final scale = isOpen
+          ? openScale
+          : (big ? closedScale : closedScale * (far ? _farScale : _sideScale));
       // The books beside the front one slide away while one is open.
-      final slide = d * step * (reading && !big ? 3.2 : 1.0);
+      final slide = d.sign * (far ? 1.5 : d.abs().toDouble()) * step * (reading && !big ? 3.2 : 1.0);
       Widget b = EraBook(
         era: era,
         number: eraNumberFor(era.id),
@@ -455,12 +461,13 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> with Ti
         },
         onPlay: unlocked(era) ? () => context.go('/level-select/${era.id}') : null,
       );
-      // The tilt of a book that is not in front: turned away from the middle.
+      // The tilt of a book that is not in front: turned in toward the middle, so the edge
+      // nearest the middle is the far one (as on the mockup). The one behind turns more.
       b = Transform(
         alignment: Alignment.center,
         transform: Matrix4.identity()
           ..setEntry(3, 2, 0.0009)
-          ..rotateY(-d.clamp(-1, 1) * 0.5 * (isOpen ? 0 : 1)),
+          ..rotateY(d.sign * (far ? 1.5 : d.abs().toDouble()) * 0.5 * (isOpen ? 0 : 1)),
         child: b,
       );
       // A tap on a shut book makes it wobble; the book that is being unchained lifts.
@@ -529,9 +536,9 @@ class _EraSelectionScreenState extends ConsumerState<EraSelectionScreen> with Ti
                 ),
               ),
             ),
-          // Neighbours first, so the front book is drawn over them.
-          for (var d = -1; d <= 1; d++)
-            if (d != 0 && focus + d >= 0 && focus + d < count) book(focus + d),
+          // The farthest first, then the neighbours, so the front book is drawn over them.
+          for (final d in const [-2, 2, -1, 1])
+            if (focus + d >= 0 && focus + d < count) book(focus + d),
           book(focus),
           if (focus > 0 && !reading)
             Positioned(

@@ -20,6 +20,7 @@ import 'package:chronoquest/screens/home/era_selection_screen.dart';
 import 'package:chronoquest/services/storage_service.dart';
 import 'package:chronoquest/utils/book_unlock.dart';
 import 'package:chronoquest/widgets/character_portrait.dart';
+import 'package:chronoquest/widgets/era_book.dart' show kBookDepth;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -203,7 +204,8 @@ void main() {
           findsOneWidget,
           reason: 'the full name');
       expect(_assetsIn(tester, cover),
-          contains('assets/bosses/${first.bossName}_idle.png'));
+          contains('assets/enemies/${first.enemyTypes.first}_1.png'),
+          reason: 'the medal shows the first enemy of the era, as on the mockup');
       expect(
           find.descendant(
               of: cover, matching: find.text('PINDUTIN PARA BUKSAN')),
@@ -283,11 +285,11 @@ void main() {
 
       expect(_assetsIn(tester, _cover(1)), contains('assets/ui/lock_icon.png'));
       expect(_assetsIn(tester, _cover(1)),
-          contains('assets/bosses/${_grade5[1].bossName}_idle.png'));
+          contains('assets/enemies/${_grade5[1].enemyTypes.first}_1.png'));
       expect(
           find.descendant(of: _cover(1), matching: find.byType(ColorFiltered)),
           findsWidgets,
-          reason: 'the boss is a dark shape');
+          reason: 'the enemy is a dark shape');
       final note =
           tester.widget<Text>(find.byKey(EraSelectionScreen.lockedNoteKey));
       expect(note.textSpan!.toPlainText(),
@@ -296,6 +298,47 @@ void main() {
           find.descendant(
               of: _cover(1), matching: find.text('PINDUTIN PARA BUKSAN')),
           findsNothing);
+    });
+  });
+
+  group('the shelf looks like the mockup', () {
+    // How tall the cover is on its left and on its right edge, as it is drawn (a book turned in
+    // perspective is taller on the edge that is nearer to the eye).
+    List<double> edges(WidgetTester tester, int i) {
+      final box = tester.renderObject<RenderBox>(_cover(i));
+      final w = box.size.width, h = box.size.height;
+      final tl = box.localToGlobal(Offset.zero);
+      final bl = box.localToGlobal(Offset(0, h));
+      final tr = box.localToGlobal(Offset(w, 0));
+      final br = box.localToGlobal(Offset(w, h));
+      return [bl.dy - tl.dy, br.dy - tr.dy];
+    }
+
+    testWidgets(
+        'the first three books are on the shelf, and the ones beside the front one lean in toward it',
+        (tester) async {
+      await _open(tester);
+      for (var i = 0; i < 3; i++) {
+        expect(_cover(i), findsOneWidget, reason: 'book ${i + 1} is on the shelf');
+      }
+      // The books on the right of the front one: their right edge is the near one.
+      for (final i in [1, 2]) {
+        final e = edges(tester, i);
+        expect(e[1], greaterThan(e[0]),
+            reason: 'book ${i + 1} turns its right edge toward the eye, like the mockup');
+      }
+      // From the second book, the one on its left leans the other way.
+      await _next(tester);
+      final left = edges(tester, 0);
+      expect(left[0], greaterThan(left[1]),
+          reason: 'a book on the left turns its left edge toward the eye');
+    });
+
+    testWidgets('a book is thick: the page edges show under the cover',
+        (tester) async {
+      await _open(tester);
+      expect(kBookDepth, greaterThanOrEqualTo(20),
+          reason: 'the mockup book is about 9% as thick as a page is wide');
     });
   });
 
@@ -607,9 +650,9 @@ void main() {
       expect(chains, findsNWidgets(2));
 
       await _prev(tester);
-      expect(chains, findsOneWidget,
+      expect(chains, findsNWidgets(2),
           reason:
-              'the first book is free; only the second beside it is chained');
+              'the first book is free; the second and third beside it are chained');
     });
   });
 }

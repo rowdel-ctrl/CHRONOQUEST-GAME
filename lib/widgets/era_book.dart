@@ -11,8 +11,18 @@ import '../models/era_progress.dart';
 const double kBookPageW = 236;
 const double kBookPageH = 252;
 
-/// How thick the book is, in the same units.
-const double kBookDepth = 12;
+/// How thick the book is, in the same units (the mockup's 2.2% of the screen width on a 24%
+/// wide page, so the same 9% of a page).
+const double kBookDepth = 22;
+
+/// How far the cover floats above the pages, and the chains above the cover (the mockup's .8
+/// and 1.8, in the same units as the page).
+const double _kCoverLift = 8;
+const double _kChainLift = 18;
+
+/// The cover's own thickness, and how far the back boards stick out past the pages.
+const double _kCoverThick = 9;
+const double _kBoardOverhang = 11;
 
 /// A line about each era for the left page, in everyday words.
 String eraBlurb(String eraId) {
@@ -238,7 +248,7 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
                         height: kBookPageH,
                         child: Transform(
                           alignment: Alignment.centerLeft,
-                          transform: _plane(0.8)..rotateY(-angle),
+                          transform: _plane(_kCoverLift)..rotateY(-angle),
                           child: angle < math.pi / 2
                               ? Stack(clipBehavior: Clip.none, children: [
                                   ..._coverEdges(color),
@@ -274,7 +284,7 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
                           width: kBookPageW,
                           height: kBookPageH,
                           child: Transform(
-                            transform: _plane(1.8),
+                            transform: _plane(_kChainLift),
                             child: IgnorePointer(
                               child: CustomPaint(
                                 painter: _ChainsPainter(
@@ -314,16 +324,16 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
       clipBehavior: Clip.none,
       children: [
         Positioned(
-          left: -5,
-          top: -5,
-          right: -5,
-          bottom: -5,
+          left: left ? -_kBoardOverhang : 0,
+          top: -_kBoardOverhang,
+          right: left ? 0 : -_kBoardOverhang,
+          bottom: -_kBoardOverhang,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: color.withValues(alpha: alpha),
               borderRadius: BorderRadius.horizontal(
-                left: Radius.circular(left ? 14 : 0),
-                right: Radius.circular(left ? 0 : 14),
+                left: Radius.circular(left ? 18 : 0),
+                right: Radius.circular(left ? 0 : 18),
               ),
               border: Border.all(
                   color: Colors.black.withValues(alpha: 0.3 * alpha), width: 2),
@@ -400,7 +410,7 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
         left: 0,
         top: kBookPageH,
         width: kBookPageW,
-        height: 5,
+        height: _kCoverThick,
         child: Transform(
           alignment: Alignment.topCenter,
           transform: Matrix4.rotationX(-math.pi / 2),
@@ -410,7 +420,7 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
       Positioned(
         left: kBookPageW,
         top: 0,
-        width: 5,
+        width: _kCoverThick,
         height: kBookPageH,
         child: Transform(
           alignment: Alignment.centerLeft,
@@ -453,7 +463,7 @@ class _PageStripes extends CustomPainter {
     final dark = Paint()
       ..color = const Color(0xFFB39A62).withValues(alpha: alpha);
     canvas.drawRect(Offset.zero & size, dark);
-    const step = 2.2;
+    const step = 3.0;
     if (vertical) {
       for (var x = 0.0; x < size.width; x += step) {
         canvas.drawRect(Rect.fromLTWH(x, 0, step - 0.8, size.height), light);
@@ -504,15 +514,9 @@ class _Cover extends StatelessWidget {
     final levels = era.levels.length;
     final filled =
         done ? levels : progress.levelsCompleted.clamp(0, levels).toInt();
-    Widget boss = Image.asset(
-      'assets/bosses/${era.bossName}_idle.png',
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomCenter,
-      filterQuality: FilterQuality.none,
-      errorBuilder: (_, __, ___) => const SizedBox(),
-    );
+    Widget boss = _eraMedalPicture(era);
     if (lock > 0.01) {
-      // A dark shape: the boss is not known yet.
+      // A dark shape: the enemy is not known yet.
       boss = ColorFiltered(
         colorFilter: ColorFilter.mode(
             Color.lerp(Colors.transparent, const Color(0x99000000), lock)!,
@@ -523,7 +527,7 @@ class _Cover extends StatelessWidget {
     return Container(
       key: coverKey,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
+        borderRadius: const BorderRadius.horizontal(right: Radius.circular(12)),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -532,14 +536,25 @@ class _Cover extends StatelessWidget {
             Color.lerp(color, Colors.black, 0.28)!
           ],
         ),
-        border: Border.all(color: AppColors.accent, width: 3),
-        boxShadow: const [
-          BoxShadow(
-              color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 4))
-        ],
+        // A thin dark rim, like the edge of the board.
+        border: Border.all(color: const Color(0x38000000), width: 5),
       ),
       child: Stack(
         children: [
+          // The gold frame, set in from the edge.
+          Positioned(
+            left: 5,
+            top: 5,
+            right: 5,
+            bottom: 5,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius:
+                    const BorderRadius.horizontal(right: Radius.circular(8)),
+                border: Border.all(color: AppColors.accent, width: 4),
+              ),
+            ),
+          ),
           // The shadow of the spine.
           Positioned(
             left: 0,
@@ -580,23 +595,23 @@ class _Cover extends StatelessWidget {
                             Container(
                               width: 96,
                               height: 96,
-                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.black.withValues(alpha: 0.25),
                                 border: Border.all(
-                                    color: AppColors.accent, width: 3),
+                                    color: AppColors.accent, width: 4),
                               ),
                               child: boss,
                             ),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 8),
                             Text(
                               era.name,
                               textAlign: TextAlign.center,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
-                                  fontSize: 14.5,
+                                  fontSize: 17,
                                   height: 1.2,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -633,7 +648,7 @@ class _Cover extends StatelessWidget {
                               )
                             else ...[
                               Container(
-                                height: 7,
+                                height: 10,
                                 width: 130,
                                 decoration: BoxDecoration(
                                   color: Colors.black.withValues(alpha: 0.35),
@@ -680,6 +695,18 @@ class _Cover extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The picture on an era's medal: the first enemy of the era (a tribal warrior, a Spanish soldier,
+/// ...), as on the mockup. They face left, so it is drawn as it is.
+Widget _eraMedalPicture(EraData era) {
+  if (era.enemyTypes.isEmpty) return const SizedBox();
+  return Image.asset(
+    'assets/enemies/${era.enemyTypes.first}_1.png',
+    fit: BoxFit.contain,
+    filterQuality: FilterQuality.none,
+    errorBuilder: (_, __, ___) => const SizedBox(),
+  );
 }
 
 class _Pill extends StatelessWidget {
@@ -761,19 +788,13 @@ class _LeftPage extends StatelessWidget {
                       Container(
                         width: 96,
                         height: 96,
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: color,
                             border:
-                                Border.all(color: AppColors.accent, width: 3)),
-                        child: Image.asset(
-                          'assets/bosses/${era.bossName}_idle.png',
-                          fit: BoxFit.contain,
-                          alignment: Alignment.bottomCenter,
-                          filterQuality: FilterQuality.none,
-                          errorBuilder: (_, __, ___) => const SizedBox(),
-                        ),
+                                Border.all(color: AppColors.accent, width: 4)),
+                        child: _eraMedalPicture(era),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -782,7 +803,7 @@ class _LeftPage extends StatelessWidget {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
-                            fontSize: 14.5,
+                            fontSize: 17,
                             height: 1.2,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF3B2812)),
