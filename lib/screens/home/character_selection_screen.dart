@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../services/audio_service.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/hearts_pill.dart';
@@ -122,6 +123,8 @@ class _CharacterSelectionScreenState
     // Start on the hero the student chose last time.
     // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
     Future<void>.microtask(() => AudioService().playLobbyBgm());
+    // Is this login still the one the server knows? (Another device may have taken it.)
+    Future<void>.microtask(() => ref.read(authProvider.notifier).checkSession());
     final i = allCharacters
         .indexWhere((c) => c.id == ref.read(gameProvider).selectedCharacterId);
     _selected = i < 0 ? 0 : i;

@@ -65,6 +65,38 @@ void main() {
     expect(seen.length, greaterThan(1), reason: 'the legs cycle while he walks');
   });
 
+  // The game also runs a very short step between the normal ones (seen on a tablet: dt 0.0001
+  // after every 0.0167). A gentle push moved the hero under the old fixed limit in that step, which
+  // read as "standing still" and reset the legs, so they froze unless the joystick was pulled to
+  // the edge (user report, 2026-11-28).
+  for (final pull in [1.0, 2.0, 3.0, 5.0, 10.0]) {
+    test('a push of $pull/10 still moves the legs when short steps come between the normal ones',
+        () async {
+      final game = await _game();
+      game.gameInput.joystick.delta.setValues(pull, 0);
+      final seen = <int>{};
+      for (var i = 0; i < 90; i++) {
+        game.player.update(1 / 60);
+        seen.add(game.player.animationTicker!.currentIndex);
+        game.player.update(0.0001);
+        seen.add(game.player.animationTicker!.currentIndex);
+      }
+      expect(seen.length, greaterThan(1), reason: 'the legs cycle at a push of $pull/10');
+    });
+  }
+
+  test('standing still still shows the first picture when short steps come between the normal ones',
+      () async {
+    final game = await _game();
+    game.gameInput.joystick.delta.setValues(0, 0);
+    for (var i = 0; i < 60; i++) {
+      game.player.update(1 / 60);
+      game.player.update(0.0001);
+    }
+    expect(game.player.animationTicker!.currentIndex, 0);
+    expect(game.player.playing, isFalse);
+  });
+
   test('he stops, the legs go back to the first picture', () async {
     final game = await _game();
     game.gameInput.joystick.delta.setValues(10, 0);

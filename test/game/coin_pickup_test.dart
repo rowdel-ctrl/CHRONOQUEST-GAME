@@ -40,7 +40,7 @@ void main() {
   });
 
   test('wired to the wallet, the coins are there at once and survive a restart, with no level end',
-      () {
+      () async {
     final wallet = GameNotifier(clock: ServerClock.fixed(DateTime.utc(2020, 1, 1, 12)))
       ..loadWallet('pick1');
     final game = ChronoGame()..onCoinCollected = () => wallet.addCoins(1);
@@ -55,5 +55,8 @@ void main() {
       ..loadWallet('pick1');
     expect(later.state.coins, 12);
     expect(StorageService.getWallet('pick1')!['coins'], 12);
+    // Each wallet also starts a hearts write; let those finish before the box is closed (on a
+    // busy machine they used to land after tearDownAll: "Box has already been closed").
+    await Future<void>.delayed(const Duration(milliseconds: 500));
   });
 }

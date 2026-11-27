@@ -78,7 +78,13 @@ class _EraCompleteScreenState extends ConsumerState<EraCompleteScreen> {
 
   @override
   void dispose() {
-    Future<void>.microtask(() => AudioService().stopBgm());
+    // Only the victory music is stopped here. The era books may already have started the menu
+    // music (the new page is built before this one is removed), and that must go on.
+    Future<void>.microtask(() {
+      final audio = AudioService();
+      audio.stopCelebration();
+      return audio.stopBgmIf('bgm_victory.mp3');
+    });
     super.dispose();
   }
 

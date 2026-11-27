@@ -54,7 +54,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final _api = ApiService();
 
   Future<void> _checkExistingLogin() async {
-    final hasToken = await StorageService.hasToken();
+    bool hasToken;
+    try {
+      hasToken = await StorageService.hasToken();
+    } catch (_) {
+      return; // the phone's secure storage could not be read: nobody is signed in
+    }
     if (hasToken) {
       final student = StorageService.getStudent();
       if (student != null) {
@@ -166,6 +171,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
       ),
       isLoggedIn: true,
     );
+  }
+
+  DateTime? _lastSessionCheck;
+
+  /// Asks the server whether this phone's login still counts, so the "your account is open on
+  /// another device" notice shows up at once and not only after the student does something that
+  /// saves. A refused request raises the notice through the DioClient (SessionReplaced). Called
+  /// when the game opens or comes back, every couple of minutes, and when a menu opens; [minGap]
+  /// keeps those from asking more than once in a short while (a classroom shares one address).
+  Future<void> checkSession({Duration minGap = const Duration(seconds: 20)}) async {
+    if (GuestMode.active || !state.isLoggedIn) return;
+    final now = DateTime.now();
+    final last = _lastSessionCheck;
+    if (last != null && now.difference(last) < minGap) return;
+    _lastSessionCheck = now;
+    await refreshProfile();
   }
 
   Future<void> refreshProfile() async {

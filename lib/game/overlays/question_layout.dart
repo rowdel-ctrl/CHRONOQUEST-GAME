@@ -121,4 +121,30 @@ class QuestionLayout {
 
   static QuestionLayout forHeight(double height) =>
       height < compactBelowHeight ? compact : regular;
+
+  /// A typical tall card with a short explanation, in the [regular] layout. Not the very
+  /// worst case: a longer explanation just scales the card down a little while it shows.
+  static const double regularTypicalHeight = 450;
+
+  /// How much the whole card may be enlarged on a big screen (a tablet), as a multiple of 1.
+  ///
+  /// The card is drawn at its design size (500 wide, 16 px text) and used to sit in the middle
+  /// of a tablet as a small box. A phone (under [compactBelowHeight] tall) always gets 1. A
+  /// bigger screen gets as much as fits across [availableWidth] and down [availableHeight],
+  /// never more than [maxGrowth]. The whole card is scaled as one piece, so the small parts
+  /// (the HAMON chip, the timer, the icons) grow with the text.
+  static double growthFor({
+    required double screenHeight,
+    required double availableWidth,
+    required double availableHeight,
+    required double cardWidth,
+    double cardHeight = regularTypicalHeight,
+    double maxGrowth = 1.6,
+  }) {
+    if (screenHeight < compactBelowHeight) return 1;
+    final byWidth = availableWidth / cardWidth;
+    final byHeight = availableHeight / cardHeight;
+    final k = byWidth < byHeight ? byWidth : byHeight;
+    return k.clamp(1.0, maxGrowth);
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme.dart';
@@ -5,7 +7,6 @@ import 'core/router.dart';
 import 'providers/auth_provider.dart';
 import 'providers/badge_provider.dart';
 import 'providers/update_provider.dart';
-import 'services/guest_mode.dart';
 import 'widgets/session_replaced_gate.dart';
 
 class ChronoQuestApp extends ConsumerStatefulWidget {
@@ -17,24 +18,22 @@ class ChronoQuestApp extends ConsumerStatefulWidget {
 
 class _ChronoQuestAppState extends ConsumerState<ChronoQuestApp>
     with WidgetsBindingObserver {
-  /// Coming back to the game asks the server for the profile at most this often, so a phone
-  /// whose account was signed in elsewhere finds out without waiting for the next level.
-  static const Duration _resumeCheckEvery = Duration(minutes: 2);
-  DateTime? _lastResumeCheck;
+  /// A phone whose account was signed in on another device finds out without waiting for the
+  /// next level: the server is asked when the game opens or comes back, every [_watchEvery]
+  /// while it is open, and when a menu opens (see AuthNotifier.checkSession). A short gap keeps
+  /// it from asking twice in a row; a whole class on one network is many phones.
+  static const Duration _watchEvery = Duration(minutes: 2);
+  Timer? _watch;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) return;
-    if (!ref.read(authProvider).isLoggedIn || GuestMode.active) return;
-    final now = DateTime.now();
-    final last = _lastResumeCheck;
-    if (last != null && now.difference(last) < _resumeCheckEvery) return;
-    _lastResumeCheck = now;
-    ref.read(authProvider.notifier).refreshProfile();
+    ref.read(authProvider.notifier).checkSession();
   }
 
   @override
   void dispose() {
+    _watch?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -43,6 +42,12 @@ class _ChronoQuestAppState extends ConsumerState<ChronoQuestApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _watch = Timer.periodic(_watchEvery, (_) {
+      ref.read(authProvider.notifier).checkSession(minGap: const Duration(seconds: 90));
+    });
+    // The saved login is read a moment after the game opens; then ask the server about it.
+    Future<void>.delayed(const Duration(seconds: 3),
+        () => mounted ? ref.read(authProvider.notifier).checkSession() : null);
     // Is there a newer version? Asked once as the game opens; it never holds
     // anything up, and with no internet it just finds nothing.
     Future.microtask(() => ref.read(updateProvider.notifier).check());

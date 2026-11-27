@@ -195,9 +195,32 @@ class AudioService {
     if (!_soundEnabled || _sfxVolume <= 0) return;
     try {
       final pool = await _poolFor(file);
-      await pool.start(volume: _sfxBaseVolume * _sfxVolume);
+      final stop = await pool.start(volume: _sfxBaseVolume * _sfxVolume);
+      if (_celebrationFiles.contains(file)) _celebrationStops.add(stop);
     } catch (e) {
       debugPrint('AudioService: failed to play $file: $e');
+    }
+  }
+
+  /// The long "success" sounds (a level or era complete, a boss down). They are sound effects, so
+  /// the music commands do not reach them: one that was still playing when the student went on
+  /// to the menus went on playing there ([stopCelebration] stops them).
+  static const Set<String> _celebrationFiles = {
+    'level_complete.mp3',
+    'era_complete.mp3',
+    'boss_win.wav',
+  };
+  final List<StopFunction> _celebrationStops = [];
+
+  /// Stops any success sound that is still playing. A screen that is being left, and the lobby
+  /// music starting, call this.
+  Future<void> stopCelebration() async {
+    final stops = List<StopFunction>.of(_celebrationStops);
+    _celebrationStops.clear();
+    for (final stop in stops) {
+      try {
+        await stop();
+      } catch (_) {}
     }
   }
 
@@ -401,6 +424,7 @@ class AudioService {
   static const String lobbyTrack = 'bgm_lobby.wav';
 
   Future<void> playLobbyBgm() async {
+    stopCelebration(); // a success sound from the screen before must not play on into the menus
     _resumeMusic = playLobbyBgm; // switching music on in Settings brings it back
     if (!_musicEnabled) return;
     if (_playingFile == lobbyTrack) return;
@@ -514,6 +538,14 @@ class AudioService {
       if (!_musicUsed) return; // nothing was ever started
       await musicStopper();
     });
+  }
+
+  /// Stops the music only if [file] is the track that is playing. A screen that is being left
+  /// after the next screen has already started its own music (go_router builds the new page
+  /// first and removes the old one after the transition) must not cut that music off.
+  Future<void> stopBgmIf(String file) {
+    if (_playingFile != file) return Future<void>.value();
+    return stopBgm();
   }
 
   /// Stops the music for good: a screen that is being left calls this, and nothing is brought

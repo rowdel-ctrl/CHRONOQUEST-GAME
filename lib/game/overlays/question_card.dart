@@ -20,6 +20,9 @@ class QuestionCard extends StatelessWidget {
   final Question question;
   final int secondsElapsed;
   final bool answered;
+
+  /// The option the student picked with a first tap and has not confirmed yet (or null).
+  final String? pickedAnswer;
   final String? selectedAnswer;
 
   /// Option labels hidden by the 50/50 power-up.
@@ -51,6 +54,7 @@ class QuestionCard extends StatelessWidget {
     required this.question,
     required this.secondsElapsed,
     required this.answered,
+    this.pickedAnswer,
     required this.selectedAnswer,
     required this.hiddenOptions,
     required this.showPowerups,
@@ -83,18 +87,36 @@ class QuestionCard extends StatelessWidget {
           layout.maxWidth,
           constraints.maxWidth - layout.margin.horizontal,
         );
+        final availableHeight = constraints.maxHeight - layout.margin.vertical;
+        final grow = QuestionLayout.growthFor(
+          screenHeight: constraints.maxHeight,
+          availableWidth: constraints.maxWidth - layout.margin.horizontal,
+          availableHeight: availableHeight,
+          cardWidth: width,
+        );
+        final card = SizedBox(width: width, child: _card(layout));
         return Padding(
           padding: layout.margin,
           // The compact layout is sized for a typical question, but a long
           // explanation or a large system font can still make the card taller
           // than the screen. Scaling it down uniformly keeps every option
           // and the Continue button on screen (a scrolling card left C and D
-          // below the fold with the timer running). It never scales up, and
-          // taps still land: hit-testing follows the transform.
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: SizedBox(width: width, child: _card(layout)),
-          ),
+          // below the fold with the timer running). On a phone it never scales
+          // up. On a tablet the card is first enlarged ([grow], see
+          // QuestionLayout.growthFor): the box is `width * grow` wide and the
+          // FittedBox draws the card as large as fits in it, so a long
+          // explanation still shrinks it to fit the height. Taps still land:
+          // hit-testing follows the transform.
+          child: grow > 1.001
+              ? ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: width * grow,
+                    maxWidth: width * grow,
+                    maxHeight: availableHeight,
+                  ),
+                  child: FittedBox(fit: BoxFit.contain, child: card),
+                )
+              : FittedBox(fit: BoxFit.scaleDown, child: card),
         );
       },
     );
@@ -125,7 +147,9 @@ class QuestionCard extends StatelessWidget {
           SizedBox(height: layout.headerGap),
           Text(
             question.questionText,
-            textAlign: TextAlign.center,
+            // Left-aligned: a long question centred starts every line in a different place and
+            // is hard to read (the user, on the tablet, 2026-11-28).
+            textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: layout.questionFontSize,
               color: AppColors.textPrimary,
@@ -211,6 +235,7 @@ class QuestionCard extends StatelessWidget {
         option: option,
         state: state,
         selected: answered && option.label == selectedAnswer,
+        picked: !answered && pickedAnswer == option.label,
         layout: layout,
         onTap: () => onAnswer(option.label),
       );

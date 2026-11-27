@@ -1214,6 +1214,11 @@ void main() {
 
       final q = game.currentQuestion!;
       final right = q.options.firstWhere((o) => o.label == q.correctAnswer);
+      // The first tap only picks (tap to pick, tap again to confirm), the boss has not answered.
+      await tester.tap(find.text('${right.label}) ${right.text}'));
+      await tester.pump();
+      expect(game.answers, isEmpty, reason: 'one tap is only a pick');
+      expect(find.text('TAP ULIT'), findsOneWidget);
       await tester.tap(find.text('${right.label}) ${right.text}'));
       await tester.pump();
       expect(game.answers.single.isCorrect, isTrue);
@@ -1234,6 +1239,9 @@ void main() {
       final wrong = q.options.firstWhere((o) => o.label != q.correctAnswer);
       await tester.tap(find.text('${wrong.label}) ${wrong.text}'));
       await tester.pump();
+      expect(find.text('MALI!'), findsNothing, reason: 'a slip is only a pick');
+      await tester.tap(find.text('${wrong.label}) ${wrong.text}'));
+      await tester.pump();
       expect(find.text('MALI!'), findsOneWidget);
       _step(game, 1);
       await tester.pump();
@@ -1248,6 +1256,8 @@ void main() {
       await tester.pump();
       final q = game.currentQuestion!;
       final wrong = q.options.firstWhere((o) => o.label != q.correctAnswer);
+      await tester.tap(find.text('${wrong.label}) ${wrong.text}'));
+      await tester.pump();
       await tester.tap(find.text('${wrong.label}) ${wrong.text}'));
       _step(game, 1);
       await tester.pump(const Duration(milliseconds: 150));

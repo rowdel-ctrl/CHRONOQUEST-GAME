@@ -104,6 +104,25 @@ void main() {
     }
 
     testWidgets(
+        'a 1143x686 tablet: the card is drawn bigger than on a phone, within its share of the screen',
+        (tester) async {
+      const tablet = Size(1143, 686);
+      await _pump(tester, tablet, _card());
+      final r = _rect(tester);
+      expect(r.width, greaterThan(520),
+          reason: 'the design is 520 px wide; a tablet draws it larger');
+      expect(r.width, lessThanOrEqualTo(tablet.width * BossQuestionCard.normalWidthShare + 1));
+      expect(r.bottom, lessThanOrEqualTo(tablet.height * BossQuestionCard.lowestShare + 1));
+      expect((r.center.dx - tablet.width / 2).abs(), lessThan(1));
+    });
+
+    testWidgets('a phone is not enlarged (873x393 stays at the 520 px design)',
+        (tester) async {
+      await _pump(tester, const Size(873, 393), _card());
+      expect(_rect(tester).width, lessThanOrEqualTo(520 + 1));
+    });
+
+    testWidgets(
         'a very long question is scaled down, not allowed to grow over the boss',
         (tester) async {
       const screen = Size(873, 393);

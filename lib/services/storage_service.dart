@@ -2,6 +2,7 @@ import 'dart:math' show Random;
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants.dart';
@@ -17,21 +18,46 @@ class StorageService {
   static const _characterKey = 'selected_character';
 
   // ─── JWT TOKEN ─────────────────────────────────────────────────────────────
+  // The saved login is kept encrypted with a key that lives only in this phone's
+  // keystore. If the phone puts the file back without the key (a reinstall that
+  // restores the old app data) every read fails with BAD_DECRYPT, and the app used
+  // to stop on its first screen for good. Now an unreadable file is wiped and
+  // counts as "not logged in", so the student just signs in again.
+  static Future<void> _wipeUnreadable() async {
+    try {
+      await _storage.deleteAll();
+    } catch (_) {}
+  }
+
   static Future<void> saveToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
+    try {
+      await _storage.write(key: _tokenKey, value: token);
+    } on PlatformException {
+      await _wipeUnreadable();
+      await _storage.write(key: _tokenKey, value: token);
+    }
   }
 
   static Future<String?> getToken() async {
-    return await _storage.read(key: _tokenKey);
+    try {
+      return await _storage.read(key: _tokenKey);
+    } on PlatformException {
+      await _wipeUnreadable();
+      return null;
+    }
   }
 
   static Future<bool> hasToken() async {
-    final token = await _storage.read(key: _tokenKey);
+    final token = await getToken();
     return token != null && token.isNotEmpty;
   }
 
   static Future<void> clearToken() async {
-    await _storage.delete(key: _tokenKey);
+    try {
+      await _storage.delete(key: _tokenKey);
+    } on PlatformException {
+      await _wipeUnreadable();
+    }
   }
 
   // ─── STUDENT DATA (Hive) ──────────────────────────────────────────────────
@@ -483,7 +509,7 @@ class StorageService {
       for (final key in appBox.keys)
         if (_survivesLogout(key)) key as String: appBox.get(key),
     };
-    await _storage.deleteAll();
+    await _wipeUnreadable();
     await appBox.clear();
     await appBox.putAll(kept);
   }

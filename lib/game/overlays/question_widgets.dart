@@ -111,6 +111,10 @@ class AnswerButton extends StatelessWidget {
   final QuestionOption option;
   final AnswerState state;
   final bool selected;
+
+  /// The student's first tap: this option is picked but not locked in yet. A second tap on it
+  /// answers; a tap on another option moves the pick (QuestionOverlayWidget keeps the rule).
+  final bool picked;
   final VoidCallback onTap;
   final QuestionLayout layout;
 
@@ -120,6 +124,7 @@ class AnswerButton extends StatelessWidget {
     required this.state,
     required this.selected,
     required this.onTap,
+    this.picked = false,
     this.layout = QuestionLayout.regular,
   });
 
@@ -133,12 +138,17 @@ class AnswerButton extends StatelessWidget {
     } else if (state == AnswerState.wrong) {
       buttonColor = AppColors.danger.withValues(alpha: 0.15);
       borderColor = AppColors.danger;
+    } else if (picked) {
+      buttonColor = AppColors.accent.withValues(alpha: 0.22);
+      borderColor = AppColors.accent;
     }
 
     return Semantics(
       button: true,
-      label: 'Sagot ${option.label}: ${option.text}',
-      selected: selected,
+      label: picked
+          ? 'Sagot ${option.label}: ${option.text}. Piliin ulit para i-confirm.'
+          : 'Sagot ${option.label}: ${option.text}',
+      selected: selected || picked,
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
@@ -149,8 +159,10 @@ class AnswerButton extends StatelessWidget {
             border: Border.all(color: borderColor, width: 2.5),
             borderRadius: BorderRadius.circular(4),
           ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          // The answer reads from the left like the question: lines that all start at the same
+          // place are easier to read than centred ones.
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           // The mark hangs on the button's top-right corner, over the border, so it
           // never covers the text. The stack is as wide as the button (the text
           // wrapper takes the full width), so the corner is the button's, not the
@@ -158,14 +170,14 @@ class AnswerButton extends StatelessWidget {
           // button (and its row) taller, and QuestionCard scales the whole card down
           // if that no longer fits.
           child: Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             clipBehavior: Clip.none,
             children: [
               SizedBox(
                 width: double.infinity,
                 child: Text(
                   '${option.label}) ${option.text}',
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                   style: GoogleFonts.poppins(
                     fontSize: layout.optionFontSize,
                     color: AppColors.textPrimary,
@@ -178,7 +190,7 @@ class AnswerButton extends StatelessWidget {
               Positioned(
                 top: -15,
                 right: -14,
-                child: AnswerMark(state: state),
+                child: picked ? const PickedTag() : AnswerMark(state: state),
               ),
             ],
           ),

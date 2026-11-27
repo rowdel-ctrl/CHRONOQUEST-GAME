@@ -91,3 +91,30 @@ class AnswerFeedbackBadge extends StatelessWidget {
     );
   }
 }
+/// "TAP ULIT" on the corner of the option the student has picked but not confirmed yet.
+class PickedTag extends StatelessWidget {
+  const PickedTag({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _PopIn(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: AppColors.primaryDark,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.accent, width: 1.5),
+        ),
+        child: Text(
+          'TAP ULIT',
+          style: GoogleFonts.poppins(
+            fontSize: 8,
+            height: 1.2,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}

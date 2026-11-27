@@ -26,6 +26,17 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     with SingleTickerProviderStateMixin {
   bool answered = false;
   String? selectedAnswer;
+
+  /// The first tap only picks an answer (it lights up with "TAP ULIT"); a second tap on the
+  /// same one answers, a tap on another moves the pick. This stops a slipped thumb from
+  /// costing a heart. See [handleTap].
+  String? _pick;
+  Object? _pickedOn;
+
+  /// The pick, only while it belongs to the question on screen (the boss's card stays up from
+  /// one round to the next, and a pick must not carry over).
+  String? get pickedAnswer =>
+      identical(_pickedOn, widget.game.currentQuestion) ? _pick : null;
   int secondsElapsed = 0;
   late async.Timer timer;
   async.Timer? _clock;
@@ -119,13 +130,29 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     if (mounted) setState(() {});
   }
 
+  /// True when this tap was only a pick (the answer is not given yet).
+  bool _onlyPicked(String answer) {
+    if (pickedAnswer == answer) return false;
+    widget.game.audioService.playTap();
+    setState(() {
+      _pick = answer;
+      _pickedOn = widget.game.currentQuestion;
+    });
+    return true;
+  }
+
   void handleTap(String answer) {
     if (_bossMode) {
+      final boss = widget.game.boss;
+      if (boss == null || !boss.asking) return;
+      if (_onlyPicked(answer)) return;
       _tapBoss(answer);
       return;
     }
     if (answered) return;
+    if (_onlyPicked(answer)) return;
     setState(() {
+      _pick = null;
       answered = true;
       selectedAnswer = answer;
     });
@@ -212,6 +239,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
     wrongOptions.shuffle();
     setState(() {
       hiddenOptions = wrongOptions.take(2).map((o) => o.label).toList();
+      // A pick that 50/50 just took away is not a pick any more.
+      if (hiddenOptions.contains(_pick)) _pick = null;
     });
   }
 
@@ -237,6 +266,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
         frozen: boss.frozen,
         answered: answered,
         selectedAnswer: answered ? (boss.lastAnswer ?? '') : null,
+        pickedAnswer: pickedAnswer,
         timeFreezeCount: widget.game.playerPowerUps.timeFreeze,
         onTimeFreeze: _useBossTimeFreeze,
         freezeSecondsLeft: boss.frozenSecondsLeft.ceil(),
@@ -263,6 +293,7 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
               secondsElapsed: secondsElapsed,
               answered: answered,
               selectedAnswer: selectedAnswer,
+              pickedAnswer: pickedAnswer,
               hiddenOptions: hiddenOptions,
               showPowerups: !widget.game.bossPhase,
               countdownFraction: _countdown?.fraction,

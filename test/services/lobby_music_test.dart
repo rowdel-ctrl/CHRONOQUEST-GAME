@@ -15,7 +15,7 @@ class _Pool implements AudioPool {
   @override
   Future<StopFunction> start({double volume = 1.0}) async {
     log.add('$file @${volume.toStringAsFixed(2)}');
-    return () async {};
+    return () async => log.add('stopped $file');
   }
 
   @override
@@ -27,14 +27,19 @@ void main() {
   late List<String> events;
 
   setUp(() {
-    audio = AudioService()..resetMusicForTesting();
+    audio = AudioService()
+      ..resetMusicForTesting()
+      ..resetSfxForTesting();
     events = [];
     audio.musicStarter = (file, volume) async =>
         events.add('start $file ${volume.toStringAsFixed(3)}');
     audio.musicStopper = () async => events.add('stop');
   });
 
-  tearDown(() => audio.resetMusicForTesting());
+  tearDown(() {
+    audio.resetMusicForTesting();
+    audio.resetSfxForTesting();
+  });
 
   test(
       'the lobby music starts once, and asking again while it plays does nothing',
@@ -108,6 +113,43 @@ void main() {
     await audio.playLobbyBgm();
     expect(events.single, 'start bgm_lobby.wav 0.096');
     await audio.duckMusic(1.0);
+  });
+
+  test(
+      'the era complete screen, left after the books started the menu music, does not cut that music off',
+      () async {
+    await audio.playVictoryBgm();
+    await audio.playLobbyBgm(); // the shelf is built first
+    await audio.stopBgmIf('bgm_victory.mp3'); // the old page is removed afterwards
+    expect(audio.lobbyPlaying, isTrue);
+    expect(events.last, startsWith('start bgm_lobby.wav'), reason: 'no stop after the lobby start');
+  });
+
+  test('the era complete screen, left before anything else plays, stops the victory music', () async {
+    await audio.playVictoryBgm();
+    await audio.stopBgmIf('bgm_victory.mp3');
+    expect(events.last, 'stop');
+    expect(audio.lobbyPlaying, isFalse);
+  });
+
+  test('a success sound still playing is stopped when the menu music starts or the screen is left',
+      () async {
+    final played = <String>[];
+    audio.poolFactory = (file) async => _Pool(played, file);
+    await audio.playLevelComplete();
+    await audio.playLobbyBgm();
+    await Future<void>.delayed(Duration.zero);
+    expect(played, contains('stopped level_complete.mp3'));
+
+    played.clear();
+    await audio.playBossWin();
+    await audio.stopCelebration();
+    expect(played, contains('stopped boss_win.wav'));
+
+    played.clear();
+    await audio.playBookOpen(); // an ordinary sound is not touched
+    await audio.stopCelebration();
+    expect(played.where((e) => e.startsWith('stopped')), isEmpty);
   });
 
   test('the new sounds are played from their own files', () async {

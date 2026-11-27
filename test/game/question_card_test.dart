@@ -404,17 +404,84 @@ void main() {
     });
   });
 
-  group('Desktop layout is unchanged', () {
+  group('Big screens (a tablet, a desktop) get a bigger card', () {
     for (final entry in _desktops.entries) {
-      testWidgets('${entry.key}: 500 px card, never scaled', (tester) async {
+      testWidgets('${entry.key}: the 500 px design, drawn larger and on screen',
+          (tester) async {
         await _pump(tester, entry.value,
             _card(_Calls(), answered: true, selected: 'B'));
 
+        // Laid out as the same 500 px design, then enlarged as one piece.
         expect(tester.getSize(find.byKey(QuestionCard.cardKey)).width, 500);
-        expect(_scaleOf(tester), closeTo(1, 0.001));
+        expect(_scaleOf(tester), greaterThanOrEqualTo(1));
         expectOnScreen(tester, find.byKey(QuestionCard.cardKey), entry.value);
       });
     }
+
+    // The user's Xiaomi-class tablet: 2000x1200 px at density 280 is about 1143x686 dp.
+    testWidgets('a 1143x686 tablet: the card is much bigger than 500 px, never past the screen',
+        (tester) async {
+      const tablet = Size(1143, 686);
+      await _pump(tester, tablet, _card(_Calls()));
+
+      final rect = _onScreen(tester, find.byKey(QuestionCard.cardKey));
+      expect(rect.width, greaterThan(600),
+          reason: 'it used to be a 500 px box in the middle of the tablet');
+      expect(_scaleOf(tester), lessThanOrEqualTo(1.6 + 0.001));
+      expectOnScreen(tester, find.byKey(QuestionCard.cardKey), tablet);
+      expect((rect.center.dx - tablet.width / 2).abs(), lessThan(1),
+          reason: 'still centred');
+    });
+
+    testWidgets('a 1143x686 tablet: a wrong answer shrinks it to fit, Continue still on screen',
+        (tester) async {
+      const tablet = Size(1143, 686);
+      await _pump(tester, tablet, _card(_Calls(), answered: true, selected: 'D'));
+
+      expectOnScreen(tester, find.byKey(QuestionCard.cardKey), tablet);
+      expectOnScreen(tester, find.text('SUSUNOD'), tablet);
+      expectOnScreen(tester, find.text('C) Mahigit 1,000'), tablet);
+    });
+
+    testWidgets('a 1143x686 tablet: every option can still be tapped', (tester) async {
+      const tablet = Size(1143, 686);
+      final calls = _Calls();
+      await _pump(tester, tablet, _card(calls));
+      for (final label in ['A) Mahigit 7,000', 'B) Mahigit 500', 'C) Mahigit 1,000', 'D) Mahigit 3,000']) {
+        await tester.tap(find.text(label));
+      }
+      expect(calls.answers, ['A', 'B', 'C', 'D']);
+    });
+
+    testWidgets('a phone is never enlarged', (tester) async {
+      await _pump(tester, const Size(873, 393), _card(_Calls()));
+      expect(_scaleOf(tester), lessThanOrEqualTo(1.001));
+    });
+  });
+
+  group('QuestionLayout.growthFor', () {
+    test('a phone is 1', () {
+      expect(
+          QuestionLayout.growthFor(
+              screenHeight: 393, availableWidth: 800, availableHeight: 377, cardWidth: 640),
+          1);
+    });
+    test('a tablet grows by what fits, never past the cap', () {
+      final k = QuestionLayout.growthFor(
+          screenHeight: 686, availableWidth: 1079, availableHeight: 670, cardWidth: 500);
+      expect(k, greaterThan(1.2));
+      expect(k, lessThanOrEqualTo(1.6));
+      expect(
+          QuestionLayout.growthFor(
+              screenHeight: 2000, availableWidth: 5000, availableHeight: 5000, cardWidth: 500),
+          1.6);
+    });
+    test('never shrinks below 1 when the room is small', () {
+      expect(
+          QuestionLayout.growthFor(
+              screenHeight: 600, availableWidth: 300, availableHeight: 200, cardWidth: 500),
+          1);
+    });
   });
 
   group('Behaviour moved out of the overlay is intact', () {

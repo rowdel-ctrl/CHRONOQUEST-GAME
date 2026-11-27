@@ -165,7 +165,7 @@ class _EraBookState extends State<EraBook> with SingleTickerProviderStateMixin {
             Color.lerp(widget.color, const Color(0xFF3A3548), 0.55 * lock)!;
 
         final tilt = Matrix4.identity()
-          ..setEntry(3, 2, 0.0011)
+          ..setEntry(3, 2, -0.0011)
           ..rotateX(0.42);
 
         final cover = _Cover(

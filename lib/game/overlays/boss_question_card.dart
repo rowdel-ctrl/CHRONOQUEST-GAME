@@ -60,6 +60,9 @@ class BossQuestionCard extends StatelessWidget {
   final bool answered;
   final String? selectedAnswer;
 
+  /// The option the student picked with a first tap and has not confirmed yet (or null).
+  final String? pickedAnswer;
+
   final int timeFreezeCount;
   final VoidCallback? onTimeFreeze;
 
@@ -91,6 +94,7 @@ class BossQuestionCard extends StatelessWidget {
     required this.selectedAnswer,
     required this.timeFreezeCount,
     required this.onAnswer,
+    this.pickedAnswer,
     this.onTimeFreeze,
     this.freezeSecondsLeft = 0,
     this.freezeUsed = false,
@@ -117,21 +121,46 @@ class BossQuestionCard extends StatelessWidget {
         final widest = room.widthShare > normalWidthShare ? layout.maxWidth * 1.5 : layout.maxWidth;
         final width = math.max(260.0, math.min(widest, screenW * room.widthShare));
         final maxHeight = math.max(80.0, screenH * room.heightShare - topInset);
+        // On a tablet the card is enlarged as one piece, up to its own width share of the
+        // screen (56% for a normal question). Its height still stops at maxHeight (the
+        // FittedBox scales it down to fit), so it never grows over the boss and the attack.
+        // A phone gets 1 and is exactly as before.
+        final grow = QuestionLayout.growthFor(
+          screenHeight: screenH,
+          availableWidth: screenW * room.widthShare,
+          availableHeight: double.infinity,
+          cardWidth: width,
+          maxGrowth: 1.5,
+        );
+        final card = SizedBox(width: width, child: _card(layout));
         return Align(
           alignment: Alignment.topCenter,
           child: Padding(
             padding: const EdgeInsets.only(top: topInset),
-            child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxWidth: screenW, maxHeight: maxHeight),
-              // A long question or a large system font scales the card down instead of
-              // letting it grow over the boss. Taps still land: hit-testing follows it.
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.topCenter,
-                child: SizedBox(width: width, child: _card(layout)),
-              ),
-            ),
+            child: grow > 1.001
+                ? ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: width * grow,
+                      maxWidth: width * grow,
+                      maxHeight: maxHeight,
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      alignment: Alignment.topCenter,
+                      child: card,
+                    ),
+                  )
+                : ConstrainedBox(
+                    constraints:
+                        BoxConstraints(maxWidth: screenW, maxHeight: maxHeight),
+                    // A long question or a large system font scales the card down instead of
+                    // letting it grow over the boss. Taps still land: hit-testing follows it.
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.topCenter,
+                      child: card,
+                    ),
+                  ),
           ),
         );
       },
@@ -165,7 +194,7 @@ class BossQuestionCard extends StatelessWidget {
           if (explaining) ...[
             Text(
               'Tamang sagot: ${question.correctAnswer}) ${question.correctText}',
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: layout.questionFontSize,
                 color: AppColors.textPrimary,
@@ -183,7 +212,7 @@ class BossQuestionCard extends StatelessWidget {
           ] else ...[
             Text(
               question.questionText,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: layout.questionFontSize,
                 color: AppColors.textPrimary,
@@ -339,6 +368,7 @@ class BossQuestionCard extends StatelessWidget {
         option: option,
         state: state,
         selected: answered && option.label == selectedAnswer,
+        picked: !answered && pickedAnswer == option.label,
         layout: layout,
         onTap: () => onAnswer(option.label),
       );

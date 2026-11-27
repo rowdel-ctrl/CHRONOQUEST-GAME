@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/audio_service.dart';
@@ -49,6 +50,7 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     super.initState();
     // The lobby music: it keeps playing from one menu to the next and stops when a level starts.
     Future<void>.microtask(() => AudioService().playLobbyBgm());
+    Future<void>.microtask(() => ref.read(authProvider.notifier).checkSession());
     completedLevels = StorageService.getCompletedLevels(widget.eraId);
     // Ticks the persistent-hearts countdown shown below, and applies any
     // regen due since the provider was created — this screen is the main

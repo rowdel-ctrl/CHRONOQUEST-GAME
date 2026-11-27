@@ -412,7 +412,14 @@ class PlayerComponent extends SpriteAnimationComponent
     // still (no pull on the joystick, or pushing against a wall or the boss's
     // side line) shows the first walk picture instead of running on the spot.
     if ((animation?.frames.length ?? 0) > 1) {
-      final moved = (position.x - xAtStart).abs() > 0.01;
+      // "Moved" is judged against what this step could move: the game also runs a very short
+      // step (a ten-thousandth of a second) between the normal ones, and a gentle push of the
+      // joystick moves the hero only a few thousandths in it, under a fixed limit. That read as
+      // "standing still" and sent the legs back to the first picture every other step, so the
+      // hero slid along with frozen legs unless the joystick was pulled right to the edge.
+      final travelled = (position.x - xAtStart).abs();
+      final wanted = (forwardSpeed * horizontalInput * dt).abs();
+      final moved = travelled > 0.01 || (wanted > 0 && travelled >= wanted * 0.25);
       if (!moved && playing) animationTicker?.reset();
       playing = moved;
     } else {

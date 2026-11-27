@@ -8,6 +8,7 @@ import '../../core/constants.dart';
 import '../../models/artifact_art.dart';
 import '../../models/badge_defs.dart';
 import '../../providers/game_provider.dart';
+import '../../services/audio_service.dart';
 import '../../widgets/game_ui.dart';
 import '../../widgets/living_backdrop.dart';
 import '../../widgets/new_badge.dart';
@@ -156,6 +157,8 @@ class _LevelCompleteScreenState extends ConsumerState<LevelCompleteScreen>
   void dispose() {
     _starController.dispose();
     _scaleController.dispose();
+    // The success sound must not play on into the menus.
+    Future<void>.microtask(() => AudioService().stopCelebration());
     super.dispose();
   }
 
