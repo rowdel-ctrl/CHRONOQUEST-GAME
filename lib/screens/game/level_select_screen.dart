@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/game_provider.dart';
+import '../../providers/progress_provider.dart';
 import '../../providers/unlock_all_provider.dart';
 import '../../services/audio_service.dart';
 import '../../services/storage_service.dart';
@@ -52,6 +53,10 @@ class _LevelSelectScreenState extends ConsumerState<LevelSelectScreen> {
     Future<void>.microtask(() => AudioService().playLobbyBgm());
     Future<void>.microtask(() => ref.read(authProvider.notifier).checkSession());
     completedLevels = StorageService.getCompletedLevels(widget.eraId);
+    // The map is rebuilt from the server's results after a login on a phone that forgot them.
+    ref.listenManual(progressProvider, (_, __) {
+      if (mounted) setState(() => completedLevels = StorageService.getCompletedLevels(widget.eraId));
+    });
     // Ticks the persistent-hearts countdown shown below, and applies any
     // regen due since the provider was created — this screen is the main
     // place players wait out that countdown.
