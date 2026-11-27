@@ -3,2776 +3,3376 @@
     {
       "id": "ww2_1_1",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging kauna-unahang halal na kapulungan ng mga Pilipino na binuksan noong 1907?",
+      "questionText": "Nilagdaan ni Pangulong Franklin Roosevelt ang Tydings-McDuffie Act noong Marso 24, 1934. Ayon dito, bibigyan ang Pilipinas ng Komonwelt sa loob ng sampung taon bago ang ganap na kalayaan. Ano ang pangunahing laman ng Batas Tydings-McDuffie?",
       "options": [
         {
           "label": "A",
-          "text": "Asamblea ng Pilipinas"
+          "text": "Agarang kalayaan ng Pilipinas noong 1934."
         },
         {
           "label": "B",
-          "text": "Kongreso ng Malolos"
+          "text": "Pagbabalik ng Pilipinas sa pamamahala ng Espanya."
         },
         {
           "label": "C",
-          "text": "Senado ng Pilipinas"
+          "text": "Pagbibigay ng karapatang bumoto sa lahat ng banyaga."
         },
         {
           "label": "D",
-          "text": "Batasang Pambansa"
+          "text": "Pagtatatag ng Komonwelt sa loob ng sampung taon bago ang kalayaan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang Asamblea ng Pilipinas ang mababang kapulungan ng Komisyon ng Pilipinas at pinamunuan ni Sergio Osmeña."
+      "correctAnswer": "D",
+      "explanation": "Ang Tydings-McDuffie Act ay nagtakda ng Komonwelt sa loob ng sampung taon bago ang ganap na kalayaan."
     },
     {
       "id": "ww2_1_2",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong batas noong 1916 ang nagpangako ng kalayaan sa Pilipinas at lumikha ng Senado at Kapulungan ng mga Kinatawan?",
+      "questionText": "Ayon sa batas, kailangang aprubahan ng mga Pilipino ang isang saligang batas bago ito maging batayan ng Komonwelt. Ano ang kahalagahan ng pag-apruba ng saligang batas sa ilalim ng Tydings-McDuffie?",
       "options": [
         {
           "label": "A",
-          "text": "Batas Cooper"
+          "text": "Ito ang nagbalik ng kapangyarihan sa Espanya."
         },
         {
           "label": "B",
-          "text": "Batas Tydings-McDuffie"
+          "text": "Ito ang nagtapos sa lahat ng ugnayan sa Estados Unidos."
         },
         {
           "label": "C",
-          "text": "Batas Bell"
+          "text": "Ito ang nagpawalang-bisa sa lahat ng batas ng Pilipinas."
         },
         {
           "label": "D",
-          "text": "Batas Jones"
+          "text": "Ito ang hakbang na nagbigay daan sa pagbuo ng Komonwelt."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Tinatawag ding Philippine Autonomy Act ang Batas Jones at nangakong ibibigay ang kalayaan kapag may matatag na pamahalaan."
+      "explanation": "Kailangan munang aprubahan ng mga Pilipino ang saligang batas, kaya ito ang hakbang na nagbigay daan sa pagbuo ng Komonwelt."
     },
     {
       "id": "ww2_1_3",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"Filipinization\" sa ilalim ni Gobernador-Heneral Francis Harrison?",
+      "questionText": "Ang Tydings-McDuffie Act ay itinuturing na kasunduang nagtakda ng kalayaan sa hinaharap, ngunit may mga kondisyon at limitasyon sa ekonomiya at kapangyarihan ng Pilipinas. Anong pahayag ang pinakatumpak tungkol sa batas?",
       "options": [
         {
           "label": "A",
-          "text": "Pagpapadala ng mga Pilipino sa Amerika"
+          "text": "Agad nitong ibinigay ang ganap na kalayaan sa bansa."
         },
         {
           "label": "B",
-          "text": "Pagpapalit ng wikang Tagalog sa Ingles"
+          "text": "Walang anumang kondisyon ang batas para sa Pilipinas."
         },
         {
           "label": "C",
-          "text": "Pagpapalit ng mga Amerikano sa tanggapan ng gobyerno ng mga Pilipino"
+          "text": "Tinanggihan ng Pilipinas ang batas sa lahat ng bahagi."
         },
         {
           "label": "D",
-          "text": "Pagtatayo ng mga paaralan para sa mga Amerikano"
+          "text": "Nagtakda ito ng kalayaan sa hinaharap pero may kondisyon at limitasyon."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Dumami ang mga Pilipinong nakapaglingkod sa pamahalaan sa panahon ni Harrison (1913-1921)."
+      "correctAnswer": "D",
+      "explanation": "Nagtakda ang batas ng kalayaan sa hinaharap, pero may kondisyon at limitasyon sa ekonomiya at kapangyarihan ng Pilipinas."
     },
     {
       "id": "ww2_1_4",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang namuno sa Misyong Pangkalayaan na tinawag na \"OsRox\" noong 1922?",
+      "questionText": "Sa pagkakatatag ng Komonwelt, ang Pilipinas ay may sariling pamahalaan pero nasa ilalim pa rin ng Estados Unidos sa maraming aspeto. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Manuel Quezon at Jose Laurel"
+          "text": "Walang sariling pamahalaan ang Pilipinas."
         },
         {
           "label": "B",
-          "text": "Sergio Osmeña at Manuel Roxas"
+          "text": "Ang Espanya pa rin ang namumuno sa bansa."
         },
         {
           "label": "C",
-          "text": "Emilio Aguinaldo at Apolinario Mabini"
+          "text": "Ganap na malaya na ang Pilipinas sa panahong ito."
         },
         {
           "label": "D",
-          "text": "Claro Recto at Elpidio Quirino"
+          "text": "May limitadong sariling pamahalaan ang Pilipinas sa ilalim ng Estados Unidos."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang OsRox ay pinaikling pangalan nina Osmeña at Roxas, na humiling ng kalayaan sa Estados Unidos."
+      "correctAnswer": "D",
+      "explanation": "May sariling pamahalaan ang Pilipinas sa Komonwelt, pero nasa ilalim pa rin ito ng Estados Unidos sa maraming aspeto, kaya limitado."
     },
     {
       "id": "ww2_1_5",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Aling batas noong 1934 ang nagtakda ng sampung taong Pamahalaang Komonwelt bago ang ganap na kalayaan?",
+      "questionText": "Ang Batas Tydings-McDuffie ay nagbigay ng sampung taong transisyon. Layunin ng transisyon na ihanda ang bansa sa kalayaan. Ano ang layunin ng sampung taong transisyon?",
       "options": [
         {
           "label": "A",
-          "text": "Batas Tydings-McDuffie"
+          "text": "Ibigay ang bansa sa Japan."
         },
         {
           "label": "B",
-          "text": "Batas Hare-Hawes-Cutting"
+          "text": "Ipagbawal ang pagbuo ng pamahalaan."
         },
         {
           "label": "C",
-          "text": "Batas Jones"
+          "text": "Ihanda ang bansa para sa ganap na kalayaan."
         },
         {
           "label": "D",
-          "text": "Batas Philippine Bill of 1902"
+          "text": "Ibalik ang Pilipinas sa pamamahala ng Espanya."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Nilagdaan ito ni Pangulong Franklin D. Roosevelt noong Marso 24, 1934."
+      "correctAnswer": "C",
+      "explanation": "Ang sampung taong transisyon ay panahon ng paghahanda ng bansa para sa ganap na kalayaan."
     },
     {
       "id": "ww2_1_6",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang tumutol sa Hare-Hawes-Cutting Act na naging dahilan ng pagpasa ng Tydings-McDuffie?",
+      "questionText": "Ang Tydings-McDuffie ay pinagtibay ng Kongreso ng Estados Unidos at tinanggap ng mga Pilipinong lider bilang hakbang tungo sa kalayaan. Ano ang pinakamahusay na buod ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Emilio Aguinaldo"
+          "text": "Isang batas na nagbalik ng pamahalaang Espanyol."
         },
         {
           "label": "B",
-          "text": "Jose P. Laurel"
+          "text": "Isang kasunduan sa pagitan ng Pilipinas at Japan."
         },
         {
           "label": "C",
-          "text": "Elpidio Quirino"
+          "text": "Isang kasunduang pangkapayapaan sa pagitan ng Espanya at Pilipinas."
         },
         {
           "label": "D",
-          "text": "Manuel L. Quezon"
+          "text": "Isang batas ng Estados Unidos na nagtakda ng kalayaan sa hinaharap, na tinanggap ng mga Pilipinong lider."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Tinutulan ni Quezon ang Hare-Hawes-Cutting dahil sa mga probisyong hindi pabor sa Pilipinas, kabilang ang mga base militar."
+      "explanation": "Ang buod: batas ito ng Estados Unidos na nagtakda ng kalayaan sa hinaharap at tinanggap ng mga Pilipinong lider."
     },
     {
       "id": "ww2_1_7",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kailan pinasinayaan ang Pamahalaang Komonwelt ng Pilipinas?",
+      "questionText": "Ang Komonwelt ay nagkaroon ng pangulo at kongreso, ngunit may kapangyarihan pa ring pinanatili ang Estados Unidos. Anong ugnayan ang ipinakita ng Komonwelt sa Estados Unidos?",
       "options": [
         {
           "label": "A",
-          "text": "Hulyo 4, 1946"
+          "text": "Ang Estados Unidos ay sumailalim sa Pilipinas."
         },
         {
           "label": "B",
-          "text": "Hunyo 12, 1898"
+          "text": "Ganap na nawalan ng ugnayan ang dalawang bansa."
         },
         {
           "label": "C",
-          "text": "Nobyembre 15, 1935"
+          "text": "Walang anumang kapangyarihan ang Estados Unidos."
         },
         {
           "label": "D",
-          "text": "Disyembre 8, 1941"
+          "text": "May sariling pamahalaan ngunit may kapangyarihang nanatili sa Estados Unidos."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Si Manuel L. Quezon ang unang Pangulo ng Komonwelt at si Sergio Osmeña ang Pangalawang Pangulo."
+      "correctAnswer": "D",
+      "explanation": "May pangulo at kongreso ang Komonwelt, pero may kapangyarihan pa ring nanatili sa Estados Unidos."
     },
     {
       "id": "ww2_1_8",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ilang taon ang itinakdang paglipat ng Pilipinas patungo sa ganap na kalayaan ayon sa Tydings-McDuffie?",
+      "questionText": "Ayon sa modyul, ang Tydings-McDuffie ay isang batas na pinag-aralan at pinagdebatehan ng mga Pilipino bago ito tinanggap. Bakit mahalagang suriin ang Tydings-McDuffie ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Limang taon"
+          "text": "Upang patunayan na walang epekto ang batas sa bansa."
         },
         {
           "label": "B",
-          "text": "Sampung taon"
+          "text": "Upang ipaliwanag kung paano natapos ang Komonwelt agad."
         },
         {
           "label": "C",
-          "text": "Dalawampung taon"
+          "text": "Upang ipakita na hindi nagkaroon ng debate tungkol dito."
         },
         {
           "label": "D",
-          "text": "Isang taon"
+          "text": "Upang maunawaan ang mga kondisyon at pinagmulan ng Komonwelt."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang sampung taong panahon ng Komonwelt ay inihanda para sa ganap na kalayaan sa 1946."
+      "correctAnswer": "D",
+      "explanation": "Dapat suriin ang Tydings-McDuffie upang maunawaan ang mga kondisyon at pinagmulan ng Komonwelt."
     },
     {
       "id": "ww2_1_9",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang tamang kongklusyon tungkol sa pagsisikap ng mga Pilipino na magkaroon ng sariling pamahalaan sa panahon ng mga Amerikano?",
+      "questionText": "Ang paghahanda tungo sa kalayaan ay isang proseso na may sariling yugto at kondisyon. Alin ang pinakamahusay na paglalarawan ng paghahanda tungo sa kalayaan?",
       "options": [
         {
           "label": "A",
-          "text": "Unti-unting nabigyan ng kapangyarihan ang mga Pilipino sa pamamagitan ng mga batas, misyon at pakikipag-ayos"
+          "text": "Isang prosesong pinangasiwaan ng Japan."
         },
         {
           "label": "B",
-          "text": "Ibinigay agad ng Amerika ang kalayaan noong 1902"
+          "text": "Isang proseso na walang anumang kondisyon."
         },
         {
           "label": "C",
-          "text": "Hindi na kailanman hiniling ng mga Pilipino ang kalayaan"
+          "text": "Isang biglaang pangyayari na natapos sa isang araw."
         },
         {
           "label": "D",
-          "text": "Tuluyang inalis ang pamahalaang Pilipino"
+          "text": "Isang unti-unting proseso na may mga yugto at kondisyon."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang Asamblea, Batas Jones, mga misyon at Tydings-McDuffie ay hakbang tungo sa sariling pamahalaan."
+      "correctAnswer": "D",
+      "explanation": "Ang paghahanda tungo sa kalayaan ay unti-unting proseso na may mga yugto at kondisyon."
     },
     {
       "id": "ww2_1_10",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tungkulin ng isang \"independence mission\" noong panahon ng Amerikano?",
+      "questionText": "Ang Tydings-McDuffie ay nagbigay ng daan sa pagbuo ng Pamahalaang Komonwelt, na pinamunuan ni Manuel L. Quezon. Anong ugnayan ang nakikita sa pagitan ng batas at ng Komonwelt?",
       "options": [
         {
           "label": "A",
-          "text": "Magtayo ng base militar ng Amerika"
+          "text": "Walang ugnayan ang batas at ang Komonwelt."
         },
         {
           "label": "B",
-          "text": "Magbenta ng produkto sa Hapon"
+          "text": "Ang batas ay ipinawalang-bisa ng Komonwelt."
         },
         {
           "label": "C",
-          "text": "Magturo ng Ingles sa mga Pilipino"
+          "text": "Ang batas ang nagbigay daan sa pagbuo ng Komonwelt."
         },
         {
           "label": "D",
-          "text": "Magtungo sa Washington upang humiling ng kalayaan para sa Pilipinas"
+          "text": "Ang Komonwelt ang sumulat ng batas sa Estados Unidos."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang Tydings-McDuffie ang nagbigay daan sa pagbuo ng Komonwelt na pinamunuan ni Quezon."
+    },
+    {
+      "id": "ww2_1_11",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Saligang Batas ng 1935 ay inaprubahan noong Marso 23, 1935. Ito ang naging batayan ng Pamahalaang Komonwelt. Ano ang naging papel ng Saligang Batas ng 1935?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging gabay sa pagtatatag ng Katipunan."
+        },
+        {
+          "label": "B",
+          "text": "Naging batayan ito ng Pamahalaang Komonwelt."
+        },
+        {
+          "label": "C",
+          "text": "Naging listahan ng mga bayad sa Estados Unidos."
+        },
+        {
+          "label": "D",
+          "text": "Naging kasunduan ito sa pagitan ng Espanya at Pilipinas."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Saligang Batas ng 1935 ang naging batayan ng Pamahalaang Komonwelt."
+    },
+    {
+      "id": "ww2_1_12",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Manuel L. Quezon ay nahalal bilang unang pangulo ng Komonwelt. Pinangunahan niya ang paghahanda ng bansa para sa kalayaan. Anong papel ang ginampanan ni Quezon sa Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nilagdaan niya ang Kasunduan ng Paris."
+        },
+        {
+          "label": "B",
+          "text": "Siya ang gobernador-heneral ng Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Pinamunuan niya ang labanan sa Tirad Pass."
+        },
+        {
+          "label": "D",
+          "text": "Pinangunahan niya ang paghahanda ng bansa para sa kalayaan bilang pangulo."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ang mga misyon ay lumipad o naglakbay patungong Estados Unidos upang makiusap sa Kongreso."
+      "explanation": "Bilang unang pangulo ng Komonwelt, pinangunahan ni Quezon ang paghahanda ng bansa para sa kalayaan."
+    },
+    {
+      "id": "ww2_1_13",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa panahon ng Komonwelt, nagkaroon ng sariling pamahalaan ang Pilipinas na may sariling pangulo at kongreso. Ano ang ipinakikita ng pagkakatatag ng Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging bahagi ng Japan ang Pilipinas."
+        },
+        {
+          "label": "B",
+          "text": "Ibinalik ang pamamahala sa mga Espanyol."
+        },
+        {
+          "label": "C",
+          "text": "Ganap na nawalan ng pamahalaan ang Pilipinas."
+        },
+        {
+          "label": "D",
+          "text": "May pagkilala sa limitadong sariling pamahalaan ng mga Pilipino."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang pagkakatatag ng Komonwelt ay pagkilala sa limitadong sariling pamahalaan ng mga Pilipino."
+    },
+    {
+      "id": "ww2_1_14",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Komonwelt ay itinatag bilang paghahanda sa ganap na kalayaan na nakatakda sa loob ng sampung taon. Ano ang layunin ng pagkakatatag ng Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ibigay ang bansa sa ibang bansa."
+        },
+        {
+          "label": "B",
+          "text": "Ibalik ang pamamahala ng Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Ihanda ang bansa sa ganap na kalayaan."
+        },
+        {
+          "label": "D",
+          "text": "Ipagbawal ang lahat ng pamahalaang lokal."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Itinatag ang Komonwelt para ihanda ang bansa sa ganap na kalayaan sa loob ng sampung taon."
+    },
+    {
+      "id": "ww2_1_15",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Quezon ay nagpatupad ng mga programa para sa mga magsasaka at para sa pagtatanggol ng bansa. Ano ang ipinakikita ng mga programa ni Quezon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpapatigil sa lahat ng pamahalaang lokal."
+        },
+        {
+          "label": "B",
+          "text": "Pagbabalik sa sistemang kolonyal ng Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Pagpapabaya sa mga magsasaka at sa pagtatanggol ng bansa."
+        },
+        {
+          "label": "D",
+          "text": "Pagbibigay-pansin sa pangangailangan ng bansa sa panahon ng paghahanda."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang mga programa ni Quezon para sa magsasaka at pagtatanggol ay pagbibigay-pansin sa pangangailangan ng bansa habang naghahanda."
+    },
+    {
+      "id": "ww2_1_16",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Komonwelt ay pinamunuan ng mga Pilipino sa ilalim ng isang saligang batas na inaprubahan ng mamamayan. Alin ang tamang paglalarawan sa Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang pamahalaang pinamunuan ng Japan."
+        },
+        {
+          "label": "B",
+          "text": "Isang pamahalaang walang saligang batas."
+        },
+        {
+          "label": "C",
+          "text": "Isang pamahalaang pinamunuan ng mga Espanyol."
+        },
+        {
+          "label": "D",
+          "text": "Isang pamahalaang pinamunuan ng mga Pilipino sa ilalim ng saligang batas."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang Komonwelt ay pamahalaang pinamunuan ng mga Pilipino sa ilalim ng saligang batas."
+    },
+    {
+      "id": "ww2_1_17",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ayon sa modyul, ang Komonwelt ay nagsilbing tulay mula sa pamamahalang kolonyal tungo sa ganap na kalayaan. Anong papel ng Komonwelt ayon sa talata?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagsilbi itong hadlang sa anumang paghahanda."
+        },
+        {
+          "label": "B",
+          "text": "Nagsilbi itong pangwakas ng lahat ng pamahalaan."
+        },
+        {
+          "label": "C",
+          "text": "Nagsilbi itong pagbabalik sa sistemang Espanyol."
+        },
+        {
+          "label": "D",
+          "text": "Nagsilbi itong tulay mula sa kolonyal na pamamahala tungo sa kalayaan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Nagsilbing tulay ang Komonwelt mula sa kolonyal na pamamahala tungo sa kalayaan."
+    },
+    {
+      "id": "ww2_1_18",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang pagkakatatag ng Komonwelt ay bunga ng mahabang pakikibaka at negosasyon ng mga Pilipinong lider sa Estados Unidos. Anong konklusyon ang maaaring mabuo mula sa talata?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang Komonwelt ay itinatag ng Japan."
+        },
+        {
+          "label": "B",
+          "text": "Walang negosasyon na naganap para sa Komonwelt."
+        },
+        {
+          "label": "C",
+          "text": "Ang Komonwelt ay bunga ng mahabang pakikibaka at negosasyon."
+        },
+        {
+          "label": "D",
+          "text": "Ang Komonwelt ay biglaang itinatag nang walang anumang pakikibaka."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang konklusyon: bunga ng mahabang pakikibaka at negosasyon ng mga Pilipinong lider ang Komonwelt."
+    },
+    {
+      "id": "ww2_1_19",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa Komonwelt, ang kapangyarihan ng pangulo at kongreso ay nagpakita ng unti-unting paglipat ng kontrol. Anong aral ang mahihinuha mula sa Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ibinigay ang kontrol sa ibang bansa."
+        },
+        {
+          "label": "B",
+          "text": "Walang inilipat na kontrol sa mga Pilipino."
+        },
+        {
+          "label": "C",
+          "text": "Agad na nawala ang lahat ng kontrol ng Pilipino."
+        },
+        {
+          "label": "D",
+          "text": "Unti-unting inilipat ang kontrol sa mga Pilipino."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang aral: unti-unting inilipat sa mga Pilipino ang kontrol ng pamahalaan."
+    },
+    {
+      "id": "ww2_1_20",
+      "era": "ww2",
+      "subTopic": "Pamahalaang Komonwelt at si Manuel L. Quezon",
+      "gradeLevel": "grade6",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Komonwelt ay nagkaroon ng mga batas para sa edukasyon, wika, at ekonomiya bilang paghahanda sa kalayaan. Anong mga larangan ang tinugunan ng Komonwelt?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sining at isports lamang."
+        },
+        {
+          "label": "B",
+          "text": "Militar ng Espanya lamang."
+        },
+        {
+          "label": "C",
+          "text": "Edukasyon, wika, at ekonomiya."
+        },
+        {
+          "label": "D",
+          "text": "Relihiyon at paglalakbay lamang."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang mga larangang tinugunan ng Komonwelt ay edukasyon, wika at ekonomiya."
     }
   ],
   "2": [
     {
       "id": "ww2_2_1",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging batayan ng pambansang wika na ipinahayag noong 1937?",
+      "questionText": "Noong Nobyembre 13, 1936, inaprubahan ng Pamahalaang Komonwelt ang Batas Komonwelt 184, na lumikha ng Surian ng Wikang Pambansa. Ano ang layunin ng Batas Komonwelt 184?",
       "options": [
         {
           "label": "A",
-          "text": "Cebuano"
+          "text": "Ipagbawal ang lahat ng wikang katutubo."
         },
         {
           "label": "B",
-          "text": "Ilokano"
+          "text": "Ibalik ang wikang Espanyol bilang opisyal na wika."
         },
         {
           "label": "C",
-          "text": "Kapampangan"
+          "text": "Gawing wikang Ingles ang lahat ng paaralan lamang."
         },
         {
           "label": "D",
-          "text": "Tagalog"
+          "text": "Lumikha ng Surian ng Wikang Pambansa para sa pagpapaunlad ng wikang pambansa."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Pinili ang Tagalog bilang batayan ng wikang pambansa sa ilalim ng Pangulong Quezon."
+      "explanation": "Ang Batas Komonwelt 184 ay lumikha ng Surian ng Wikang Pambansa para sa pagpapaunlad ng wikang pambansa."
     },
     {
       "id": "ww2_2_2",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong programa ng Komonwelt ang nagbigay ng karapatang bumoto sa kababaihan noong 1937?",
+      "questionText": "Ang Surian ng Wikang Pambansa ay pinagkatiwalaan ng pagbuo ng wikang pambansa batay sa mga wikang katutubo ng bansa. Bakit nakabatay sa mga wikang katutubo ang wikang pambansa?",
       "options": [
         {
           "label": "A",
-          "text": "Batas Militar"
+          "text": "Dahil ang Ingles ang dapat maging batayan."
         },
         {
           "label": "B",
-          "text": "Batas ng Edukasyon"
+          "text": "Dahil ang Espanyol ang dapat maging batayan."
         },
         {
           "label": "C",
-          "text": "Plebisito para sa pagboto ng kababaihan"
+          "text": "Dahil walang kaugnayan ang mga katutubong wika."
         },
         {
           "label": "D",
-          "text": "Kasunduan sa Paris"
+          "text": "Dahil ang wikang pambansa ay binuo mula sa mga wikang katutubo ng bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Bumoto ang mga babae sa plebisito noong 1937 at tinanggap ang karapatang bumoto."
+      "correctAnswer": "D",
+      "explanation": "Binuo ang wikang pambansa mula sa mga wikang katutubo ng bansa, kaya nakabatay dito."
     },
     {
       "id": "ww2_2_3",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang layunin ng \"katarungang panlipunan\" na isinulong ni Quezon?",
+      "questionText": "Noong Hulyo 4, 1946, kinilala ng Batas Komonwelt 570 ang Filipino bilang opisyal na wika kasama ang Ingles. Ano ang ipinakikita ng Batas Komonwelt 570?",
       "options": [
         {
           "label": "A",
-          "text": "Maging mayaman ang iilang pamilya"
+          "text": "Pagpapawalang-bisa ng Filipino bilang wika."
         },
         {
           "label": "B",
-          "text": "Magkaroon ng makatarungang kalagayan ang mga manggagawa at maralita"
+          "text": "Pagbalik ng Espanyol bilang opisyal na wika."
         },
         {
           "label": "C",
-          "text": "Alisin ang mga paaralan"
+          "text": "Pagpapatigil sa paggamit ng anumang wika sa paaralan."
         },
         {
           "label": "D",
-          "text": "Magpataw ng mataas na buwis sa mahihirap"
+          "text": "Opisyal na pagkilala sa Filipino bilang wikang opisyal kasama ang Ingles."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Layunin nitong bawasan ang agwat ng mayaman at mahirap, sa pamamagitan ng minimum na sahod at iba pang proteksiyon."
+      "correctAnswer": "D",
+      "explanation": "Ipinapakita ng Batas Komonwelt 570 ang opisyal na pagkilala sa Filipino bilang wikang opisyal kasama ang Ingles."
     },
     {
       "id": "ww2_2_4",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang Amerikanong heneral na naging tagapayong militar ni Pangulong Quezon sa pagbuo ng hukbong Pilipino?",
+      "questionText": "Sa panahon ng Komonwelt, may mga Pilipinong tumutol sa mga patakaran ng Estados Unidos at nagpatuloy sa paglaban sa iba't ibang paraan. Anong pahayag ang tumpak tungkol sa mga lumaban sa panahon ng Komonwelt?",
       "options": [
         {
           "label": "A",
-          "text": "Douglas MacArthur"
+          "text": "Walang Pilipinong tumutol sa patakaran."
         },
         {
           "label": "B",
-          "text": "Jonathan Wainwright"
+          "text": "Ang mga tumutol ay pinalaya agad ng Estados Unidos."
         },
         {
           "label": "C",
-          "text": "Dwight Eisenhower"
+          "text": "Lahat ng Pilipino ay tumanggap ng patakaran nang buo."
         },
         {
           "label": "D",
-          "text": "Chester Nimitz"
+          "text": "May mga Pilipinong tumutol at nagpatuloy ang pakikibaka sa iba't ibang paraan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Si Heneral MacArthur ang tumulong sa pagbuo ng Hukbong Pilipino sa ilalim ng National Defense Act ng 1935."
+      "correctAnswer": "D",
+      "explanation": "May mga Pilipinong tumutol sa ilang patakaran, at nagpatuloy ang pakikibaka nila sa iba't ibang paraan."
     },
     {
       "id": "ww2_2_5",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang heneral na tumangging manumpa ng katapatan sa Amerika at ipinatapon sa Guam?",
+      "questionText": "Ang paglinang ng wikang pambansa ay bahagi ng pagkakakilanlan ng bansa bilang isang malayang pamayanan. Bakit mahalaga ang wikang pambansa sa pagkakakilanlan ng bansa?",
       "options": [
         {
           "label": "A",
-          "text": "Emilio Aguinaldo"
+          "text": "Ito ay tanda ng pagsuko sa Estados Unidos."
         },
         {
           "label": "B",
-          "text": "Manuel Quezon"
+          "text": "Ito ay patunay na sakop pa rin ang bansa ng Espanya."
         },
         {
           "label": "C",
-          "text": "Sergio Osmeña"
+          "text": "Ito ay walang kaugnayan sa pagkakakilanlan ng bansa."
         },
         {
           "label": "D",
-          "text": "Artemio Ricarte"
+          "text": "Ito ay sumasalamin sa sariling pagkakakilanlan ng mga Pilipino."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Si Artemio Ricarte ay hindi sumuko at kalaunan ay namatay sa Pilipinas sa panahon ng digmaan."
+      "explanation": "Mahalaga ang wikang pambansa dahil sumasalamin ito sa sariling pagkakakilanlan ng mga Pilipino."
     },
     {
       "id": "ww2_2_6",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang tagapayo ni Aguinaldo na ipinatapon sa Guam dahil sa pagtangging manumpa sa Estados Unidos?",
+      "questionText": "Pinili ang Tagalog bilang batayan ng wikang pambansa dahil ito ay wikang ginagamit ng maraming Pilipino sa Kalakhang Maynila. Bakit Tagalog ang napiling batayan ng wikang pambansa?",
       "options": [
         {
           "label": "A",
-          "text": "Felipe Agoncillo"
+          "text": "Dahil ito ang wika ng mga Hapones."
         },
         {
           "label": "B",
-          "text": "Pedro Paterno"
+          "text": "Dahil ito ang wika ng mga Espanyol."
         },
         {
           "label": "C",
-          "text": "Apolinario Mabini"
+          "text": "Dahil ito ang wika ng mga Amerikano."
         },
         {
           "label": "D",
-          "text": "Isabelo Artacho"
+          "text": "Dahil ito ay malawak na ginagamit sa Kalakhang Maynila at sa maraming bahagi ng bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Bumalik si Mabini sa Pilipinas noong 1903 at namatay ilang sandali pagkatapos."
+      "correctAnswer": "D",
+      "explanation": "Tagalog ang napili dahil malawak itong ginagamit sa Kalakhang Maynila at sa maraming bahagi ng bansa."
     },
     {
       "id": "ww2_2_7",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tungkulin ng Surian ng Wikang Pambansa na itinatag noong 1936?",
+      "questionText": "Sa Komonwelt, ang Surian ng Wikang Pambansa ang nagsilbing sentro ng paglinang ng wika. Anong papel ang ginampanan ng Surian sa Komonwelt?",
       "options": [
         {
           "label": "A",
-          "text": "Magpalit ng pangalan ng bansa"
+          "text": "Naging sentro ito ng digmaan laban sa Japan."
         },
         {
           "label": "B",
-          "text": "Magsagawa ng pag-aaral at pumili ng batayang wika para sa wikang pambansa"
+          "text": "Naging sentro ito ng pagpapalaganap ng Espanyol."
         },
         {
           "label": "C",
-          "text": "Magpabago ng watawat"
+          "text": "Naging sentro ito ng kalakalan ng Estados Unidos."
         },
         {
           "label": "D",
-          "text": "Magpalit ng sistema ng pagbubuwis"
+          "text": "Naging sentro ito ng paglinang ng wikang pambansa."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ito ang ahensiyang naghanda sa pagpili ng wikang pambansa."
+      "correctAnswer": "D",
+      "explanation": "Ang Surian ng Wikang Pambansa ang sentro ng paglinang ng wikang pambansa."
     },
     {
       "id": "ww2_2_8",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang isang bunga ng Saligang Batas ng 1935?",
+      "questionText": "Ang mga lider ng Komonwelt ay naniniwala na ang sariling wika ay mahalagang sangkap sa pagiging malaya ng bansa. Anong paniniwala ng mga lider ng Komonwelt ang ipinakita sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagkakaroon ng pamahalaang may Pangulo at Kongreso na pinili ng mga Pilipino"
+          "text": "Walang kaugnayan ang wika sa kalayaan ng bansa."
         },
         {
           "label": "B",
-          "text": "Pagbabalik ng pamahalaang Espanyol"
+          "text": "Ang wika ay dapat ipagbawal sa lahat ng paaralan."
         },
         {
           "label": "C",
-          "text": "Pag-alis ng karapatang bumoto"
+          "text": "Ang wikang banyaga ay mas mahalaga kaysa sariling wika."
         },
         {
           "label": "D",
-          "text": "Pagiging estado ng Amerika ng Pilipinas"
+          "text": "Ang sariling wika ay mahalaga sa pagiging malaya ng bansa."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Itinatag nito ang Komonwelt na may Pangulo, Pangalawang Pangulo at Pambansang Asamblea."
+      "correctAnswer": "D",
+      "explanation": "Naniniwala ang mga lider na mahalaga ang sariling wika sa pagiging malaya ng bansa."
     },
     {
       "id": "ww2_2_9",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang pananaliksik tungkol kay Macario Sakay, alin ang pinakamahalagang ambag niya?",
+      "questionText": "Ayon sa talata, may mga Pilipinong nagpahayag ng pagtutol sa patakaran sa wika at iba pang polisiya ng Komonwelt. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Nagtayo siya ng paaralan sa Maynila"
+          "text": "Ang pagtutol ay ginawa lamang ng mga dayuhan."
         },
         {
           "label": "B",
-          "text": "Naging gobernador siya ng Pilipinas"
+          "text": "Lahat ng Pilipino ay sumang-ayon nang walang pagtutol."
         },
         {
           "label": "C",
-          "text": "Sumulat siya ng Saligang Batas ng 1935"
+          "text": "Walang anumang pagtutol na naitala sa panahon ng Komonwelt."
         },
         {
           "label": "D",
-          "text": "Nagpatuloy siya sa paglaban para sa kalayaan hanggang sa kanyang pagbitay noong 1907"
+          "text": "Hindi lahat ng Pilipino ay sumang-ayon sa mga polisiya ng Komonwelt."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Itinatag niya ang Republika ng Katagalugan at nanatiling lumaban hanggang binitay."
+      "explanation": "May mga nagpahayag ng pagtutol, kaya hindi lahat ng Pilipino ay sumang-ayon sa mga polisiya ng Komonwelt."
     },
     {
       "id": "ww2_2_10",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang dahilan kung bakit maituturing na bayani ang mga Pilipinong lumaban sa mga Amerikano?",
+      "questionText": "Ang pagpili ng wikang pambansa ay isang proseso na nagpapakita ng pagsisikap ng mga Pilipino na pagkaisahin ang bansa. Anong layunin ang ipinakita ng pagpili ng wikang pambansa?",
       "options": [
         {
           "label": "A",
-          "text": "Dahil sila ay mayayaman"
+          "text": "Pagpapalit ng wikang pambansa sa Ingles."
         },
         {
           "label": "B",
-          "text": "Dahil sila ay mga dayuhan"
+          "text": "Pagpapalawak ng impluwensiya ng Espanya."
         },
         {
           "label": "C",
-          "text": "Ipinaglaban nila ang kalayaan at karapatan ng bayan sa kabila ng mas malakas na kalaban"
+          "text": "Pagkakawatak-watak ng bansa sa maraming wika."
         },
         {
           "label": "D",
-          "text": "Dahil sila ay nakipagkaibigan sa mananakop"
+          "text": "Pagkakaisa ng bansa sa pamamagitan ng iisang wika."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang katapangan at paninindigan para sa bayan ang batayan ng pagiging bayani."
+      "correctAnswer": "D",
+      "explanation": "Ipinapakita ng pagpili ng wikang pambansa ang layuning pagkaisahin ang bansa sa iisang wika."
     }
   ],
   "3": [
     {
       "id": "ww2_3_1",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kailan sinalakay ng mga Hapones ang Pilipinas sa pagsisimula ng Ikalawang Digmaang Pandaigdig sa bansa?",
+      "questionText": "Noong Disyembre 8, 1941, sinalakay ng Japan ang Pilipinas. Ang pananakop ng Hapon ay tumagal hanggang 1945. Ano ang ipinakikita ng pagsalakay ng Japan noong Disyembre 8, 1941?",
       "options": [
         {
           "label": "A",
-          "text": "Hulyo 4, 1946"
+          "text": "Ang pagbuo ng Komonwelt."
         },
         {
           "label": "B",
-          "text": "Disyembre 30, 1896"
+          "text": "Ang pagkilala ng Japan sa kalayaan ng bansa."
         },
         {
           "label": "C",
-          "text": "Disyembre 8, 1941"
+          "text": "Ang pagtatapos ng lahat ng labanan sa bansa."
         },
         {
           "label": "D",
-          "text": "Agosto 15, 1945"
+          "text": "Ang simula ng pananakop ng Japan sa Pilipinas."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ilang oras pagkatapos ng Pearl Harbor, binomba ng mga Hapones ang mga base sa Pilipinas, kabilang ang Clark Field."
+      "correctAnswer": "D",
+      "explanation": "Ang pagsalakay ng Japan noong Disyembre 8, 1941 ang simula ng pananakop nito sa Pilipinas."
     },
     {
       "id": "ww2_3_2",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang idineklara ni Heneral MacArthur sa Maynila noong Disyembre 1941 upang maiwasan ang pagkawasak ng lungsod?",
+      "questionText": "Noong Oktubre 14, 1943, itinatag ng Japan ang Ikalawang Republika sa ilalim ni Jose P. Laurel. Ano ang naging papel ng Ikalawang Republika?",
       "options": [
         {
           "label": "A",
-          "text": "Lungsod ng Kalayaan"
+          "text": "Ito ay pamahalaang itinatag ng Espanya."
         },
         {
           "label": "B",
-          "text": "Bukas na Lungsod (Open City)"
+          "text": "Ito ay pamahalaang itinatag ng Estados Unidos."
         },
         {
           "label": "C",
-          "text": "Lungsod ng Digmaan"
+          "text": "Ito ay pamahalaang itinatag ng Komonwelt bago ang digmaan."
         },
         {
           "label": "D",
-          "text": "Lungsod ng mga Hapones"
+          "text": "Ito ay pamahalaang itinatag ng Japan na pinamunuan ni Laurel."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Isang open city ay hindi na ipagtatanggol upang maiwasan ang pagbomba, ngunit pumasok pa rin ang mga Hapones noong Enero 1942."
+      "correctAnswer": "D",
+      "explanation": "Ang Ikalawang Republika ay pamahalaang itinatag ng Japan noong 1943 sa pamumuno ni Laurel."
     },
     {
       "id": "ww2_3_3",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Martsa ng Kamatayan sa Bataan?",
+      "questionText": "Layunin ng Japan na itatag ang tinatawag nitong Greater East Asia Co-Prosperity Sphere, isang ugnayang pang-ekonomiya at pampulitika sa Asya. Ano ang layunin ng Japan sa pananakop ng mga bansa sa Asya?",
       "options": [
         {
           "label": "A",
-          "text": "Sapilitang paglalakad ng libu-libong bihag na Pilipino at Amerikano matapos bumagsak ang Bataan"
+          "text": "Ipagbawal ang kalakalan sa buong Asya."
         },
         {
           "label": "B",
-          "text": "Parada ng mga Hapones sa Maynila"
+          "text": "Ibalik ang kolonyalismo ng Espanya sa Asya."
         },
         {
           "label": "C",
-          "text": "Paglalakbay ng Pangulo patungong Amerika"
+          "text": "Ibigay ang kalayaan sa lahat ng bansa sa Asya."
         },
         {
           "label": "D",
-          "text": "Pagpupulong ng mga heneral"
+          "text": "Itatag ang isang sphere ng ugnayang pang-ekonomiya at pampulitika sa Asya sa ilalim ng Japan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Pagkatapos ng pagsuko ng Bataan noong Abril 9, 1942, libu-libong bihag ang namatay sa init, gutom at karahasan."
+      "correctAnswer": "D",
+      "explanation": "Layunin ng Japan na itatag ang Greater East Asia Co-Prosperity Sphere, isang ugnayang pang-ekonomiya at pampulitika sa Asya sa ilalim nito."
     },
     {
       "id": "ww2_3_4",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tawag sa Pilipinas na itinatag ng mga Hapones noong 1943 na pinamunuan ni Jose P. Laurel?",
+      "questionText": "Sa ilalim ng pananakop ng Hapon, nagkaroon ng mga pagbabago sa pamahalaan, ekonomiya, at lipunan ng Pilipinas. Anong pahayag ang tumpak tungkol sa pananakop ng Hapon?",
       "options": [
         {
           "label": "A",
-          "text": "Unang Republika"
+          "text": "Walang pagbabagong naganap sa bansa."
         },
         {
           "label": "B",
-          "text": "Ikatlong Republika"
+          "text": "Ibinalik agad ang Komonwelt sa unang araw."
         },
         {
           "label": "C",
-          "text": "Komonwelt"
+          "text": "Ang Hapon ay nagbigay ng kalayaan nang walang kondisyon."
         },
         {
           "label": "D",
-          "text": "Ikalawang Republika"
+          "text": "Nagdulot ito ng pagbabago sa pamahalaan, ekonomiya, at lipunan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Itinatag ang pamahalaang ito noong Oktubre 14, 1943 ngunit hindi kinilala ng maraming Pilipino bilang tunay na malaya."
+      "explanation": "Nagdulot ang pananakop ng pagbabago sa pamahalaan, ekonomiya at lipunan ng Pilipinas."
     },
     {
       "id": "ww2_3_5",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging layunin ng mga Hapones sa pananakop ng Pilipinas?",
+      "questionText": "Ayon sa modyul, ginamit ng Japan ang mga Pilipinong lider upang maipatupad ang kanilang patakaran sa bansa. Bakit kailangan ng Japan ang mga Pilipinong lider?",
       "options": [
         {
           "label": "A",
-          "text": "Magturo ng demokrasya sa mga Pilipino"
+          "text": "Upang ipagbawal ang anumang pamahalaan."
         },
         {
           "label": "B",
-          "text": "Ibigay ang kalayaan ng Pilipinas"
+          "text": "Upang mapawalang-bisa ang lahat ng batas."
         },
         {
           "label": "C",
-          "text": "Kontrolin ang likas na yaman at itatag ang Greater East Asia Co-Prosperity Sphere"
+          "text": "Upang maibalik ang kolonyalismo ng Espanya."
         },
         {
           "label": "D",
-          "text": "Magtayo ng pamahalaang Amerikano"
+          "text": "Upang maipatupad ang kanilang patakaran sa bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Layon ng Hapon na maging pinuno ng Asya at gamitin ang likas na yaman ng bansang nasasakop."
+      "correctAnswer": "D",
+      "explanation": "Ginamit ng Japan ang mga Pilipinong lider upang maipatupad ang kanilang patakaran sa bansa."
     },
     {
       "id": "ww2_3_6",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tanyag na pangako ni MacArthur nang umalis siya sa Pilipinas noong 1942?",
+      "questionText": "Ang Japan ay nagpakilala ng mga patakaran na naglalayong baguhin ang kultura at wika ng mga Pilipino. Anong layunin ng Japan ang ipinakita ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "\"Mabuhay ang Pilipinas\""
+          "text": "Palaganapin ang kulturang Amerikano."
         },
         {
           "label": "B",
-          "text": "\"I shall return\""
+          "text": "Ibalik ang wikang Espanyol sa bansa."
         },
         {
           "label": "C",
-          "text": "\"Walang iwanan\""
+          "text": "Baguhin ang kultura at wika ng mga Pilipino."
         },
         {
           "label": "D",
-          "text": "\"Pilipinas para sa Pilipino\""
+          "text": "Panatilihin ang lahat ng kultura ng mga Pilipino."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Tinupad niya ang pangako nang lumapag siya sa Leyte noong Oktubre 20, 1944."
+      "correctAnswer": "C",
+      "explanation": "Layunin ng Japan na baguhin ang kultura at wika ng mga Pilipino."
     },
     {
       "id": "ww2_3_7",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Aling lugar ang unang nakatanggap ng pagbabalik ng mga puwersang Amerikano noong Oktubre 1944?",
+      "questionText": "Ang pananakop ng Hapon ay nagdulot ng hirap sa mga Pilipino, kabilang ang kakulangan sa pagkain at pagkawala ng buhay. Anong bunga ng pananakop ng Hapon ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Leyte"
+          "text": "Pagdami ng paaralan sa buong bansa."
         },
         {
           "label": "B",
-          "text": "Maynila"
+          "text": "Pagkawala ng lahat ng hidwaan sa bansa."
         },
         {
           "label": "C",
-          "text": "Baguio"
+          "text": "Pagtaas ng kayamanan ng lahat ng mamamayan."
         },
         {
           "label": "D",
-          "text": "Zamboanga"
+          "text": "Kakulangan sa pagkain at pagkawala ng buhay."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang paglapag sa Leyte ay simula ng pagpapalaya ng Pilipinas."
+      "correctAnswer": "D",
+      "explanation": "Ang bunga ng pananakop ay kakulangan sa pagkain at pagkawala ng buhay."
     },
     {
       "id": "ww2_3_8",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Hukbalahap (Hukbong Bayan Laban sa Hapon)?",
+      "questionText": "Sinasabing ang Ikalawang Republika ay hindi lubos na kinilala ng maraming Pilipino dahil sa ugnayan nito sa Japan. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Hukbong Hapones sa Pilipinas"
+          "text": "Walang pakialam ang mga Pilipino sa pamahalaan."
         },
         {
           "label": "B",
-          "text": "Pangkat ng mga kolaboreytor"
+          "text": "Kinilala ng Estados Unidos ang Ikalawang Republika."
         },
         {
           "label": "C",
-          "text": "Hukbong dagat ng Amerika"
+          "text": "Lahat ng Pilipino ay lubos na kumilala sa Ikalawang Republika."
         },
         {
           "label": "D",
-          "text": "Gerilyang samahan na lumaban sa mga Hapones sa Gitnang Luzon"
+          "text": "Maraming Pilipino ang hindi kumilala sa pamahalaan dahil sa ugnayan nito sa Japan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Itinatag noong Marso 1942 at pinamunuan ni Luis Taruc."
+      "explanation": "Hindi kinilala ng maraming Pilipino ang Ikalawang Republika dahil sa ugnayan nito sa Japan."
     },
     {
       "id": "ww2_3_9",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang pinakatamang paglalarawan sa pamahalaang itinatag ng Hapon sa Pilipinas?",
+      "questionText": "Ang Bataan Death March ay isa sa mga malulupit na pangyayari sa panahon ng pananakop ng Hapon. Ano ang ipinakikita ng Bataan Death March tungkol sa pananakop?",
       "options": [
         {
           "label": "A",
-          "text": "Ganap na malayang pamahalaan"
+          "text": "Ang pagtatatag ng Komonwelt sa Bataan."
         },
         {
           "label": "B",
-          "text": "Pamahalaang Amerikano"
+          "text": "Ang kasunduang pangkapayapaan ng dalawang bansa."
         },
         {
           "label": "C",
-          "text": "Papet na pamahalaang kontrolado ng militar ng Hapon"
+          "text": "Ang kabaitan ng mga sundalong Hapones sa mga bihag."
         },
         {
           "label": "D",
-          "text": "Pamahalaang Espanyol"
+          "text": "Ang kalupitan na naranasan ng mga sundalo at sibilyan sa panahon ng pananakop."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Bagaman may Pilipinong pangulo, nasa kamay ng Hapon ang tunay na kapangyarihan."
+      "correctAnswer": "D",
+      "explanation": "Ipinapakita ng Bataan Death March ang kalupitang naranasan ng mga sundalo at sibilyan sa pananakop."
     },
     {
       "id": "ww2_3_10",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kailan idineklarang malaya ang Maynila sa kamay ng mga Hapones matapos ang matinding labanan?",
+      "questionText": "Ang mga pangyayari sa panahon ng pananakop ng Hapon ay mahalagang bahagi ng kasaysayan ng bansa. Bakit mahalagang pag-aralan ang panahong ito?",
       "options": [
         {
           "label": "A",
-          "text": "Disyembre 1941"
+          "text": "Upang kalimutan ang lahat ng pangyayari."
         },
         {
           "label": "B",
-          "text": "Marso 1945"
+          "text": "Upang patunayan na walang nangyari sa panahong ito."
         },
         {
           "label": "C",
-          "text": "Hunyo 1898"
+          "text": "Upang ipakita na mas maganda ang pananakop kaysa kalayaan."
         },
         {
           "label": "D",
-          "text": "Hulyo 1946"
+          "text": "Upang maunawaan ang epekto ng digmaan at pananakop sa bansa."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Winasak ang malaking bahagi ng Maynila, lalo na ang Intramuros, sa Labanan sa Maynila noong Pebrero–Marso 1945."
+      "correctAnswer": "D",
+      "explanation": "Pinag-aaralan ang panahong ito upang maunawaan ang epekto ng digmaan at pananakop sa bansa."
     }
   ],
   "4": [
     {
       "id": "ww2_4_1",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong wika ang ipinatupad ng mga Hapones sa mga paaralan kasabay ng Tagalog?",
+      "questionText": "Sa ilalim ng Hapon, ang wikang Ingles ay ipinagbawal sa mga paaralan at ang wikang Hapones ay itinuro. Anong pagbabago sa edukasyon ang naganap sa panahon ng Hapon?",
       "options": [
         {
           "label": "A",
-          "text": "Ingles"
+          "text": "Ipinagbawal ang lahat ng paaralan sa bansa."
         },
         {
           "label": "B",
-          "text": "Nihonggo"
+          "text": "Itinuro ang Espanyol bilang pangunahing wika."
         },
         {
           "label": "C",
-          "text": "Espanyol"
+          "text": "Ipinagbawal ang Filipino at itinuro ang Ingles."
         },
         {
           "label": "D",
-          "text": "Mandarin"
+          "text": "Ipinagbawal ang Ingles at itinuro ang wikang Hapones sa mga paaralan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ipinagbawal ang Ingles at itinaguyod ang Nihonggo at Tagalog."
+      "correctAnswer": "D",
+      "explanation": "Sa panahon ng Hapon, ipinagbawal ang Ingles at itinuro ang wikang Hapones sa mga paaralan."
     },
     {
       "id": "ww2_4_2",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tawag sa salaping inilimbag ng mga Hapones na mabilis na nawalan ng halaga?",
+      "questionText": "Ang patakaran ng Hapon sa wika ay bahagi ng layunin nitong baguhin ang pagkakakilanlan ng mga Pilipino. Bakit binago ng Hapon ang patakaran sa wika?",
       "options": [
         {
           "label": "A",
-          "text": "Salaping \"Mickey Mouse\""
+          "text": "Upang maibalik ang Komonwelt."
         },
         {
           "label": "B",
-          "text": "Salaping barya"
+          "text": "Upang palakasin ang impluwensiya ng Espanya."
         },
         {
           "label": "C",
-          "text": "Salaping ginto"
+          "text": "Upang gawing mas madali ang pag-aaral ng Ingles."
         },
         {
           "label": "D",
-          "text": "Salaping papel ng Amerika"
+          "text": "Upang baguhin ang pagkakakilanlan ng mga Pilipino at palaganapin ang kulturang Hapones."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Dahil sa dami ng nailimbag, umabot sa sobrang taas ang presyo ng bilihin."
+      "correctAnswer": "D",
+      "explanation": "Binago ng Hapon ang patakaran sa wika upang baguhin ang pagkakakilanlan ng mga Pilipino at palaganapin ang kulturang Hapones."
     },
     {
       "id": "ww2_4_3",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang epekto ng digmaan sa pagkain at kabuhayan ng mga Pilipino?",
+      "questionText": "Ayon sa modyul, ang mga paaralan ay pinamahalaan ng bagong sistema na sumusunod sa patakaran ng Japan. Ano ang ipinakikita ng pagbabago sa mga paaralan?",
       "options": [
         {
           "label": "A",
-          "text": "Sobra-sobra ang suplay ng pagkain"
+          "text": "Nawala ang lahat ng paaralan sa bansa."
         },
         {
           "label": "B",
-          "text": "Naging libre ang mga bilihin"
+          "text": "Walang pagbabago sa sistema ng edukasyon."
         },
         {
           "label": "C",
-          "text": "Natigil ang lahat ng presyo"
+          "text": "Ibinalik ang sistema ng edukasyon ng Espanya."
         },
         {
           "label": "D",
-          "text": "Nagkaroon ng kakulangan sa pagkain at pagtaas ng presyo ng bilihin"
+          "text": "Naimpluwensiyahan ng Japan ang sistema ng edukasyon."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Rasyon at itim na pamilihan ang bunga ng kakulangan."
+      "explanation": "Ang pagbabago sa paaralan ay patunay na naimpluwensiyahan ng Japan ang sistema ng edukasyon."
     },
     {
       "id": "ww2_4_4",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tungkulin ng Kempeitai?",
+      "questionText": "Maraming pagbabago sa lipunan ang naganap sa panahon ng pananakop, kabilang ang pamumuhay at mga gawain ng mga tao. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Samahang tumulong sa mga Pilipino"
+          "text": "Hindi nagbago ang pamumuhay ng mga tao."
         },
         {
           "label": "B",
-          "text": "Hukbong dagat ng Pilipinas"
+          "text": "Naging mas mayaman ang lahat ng Pilipino."
         },
         {
           "label": "C",
-          "text": "Hukbong pulis ng Hapon na naghahanap at nagpaparusa sa mga pinaghihinalaang kalaban"
+          "text": "Walang epekto ang pananakop sa pamumuhay ng mga tao."
         },
         {
           "label": "D",
-          "text": "Samahan ng mga guro"
+          "text": "Naapektuhan ng pananakop ang pang-araw-araw na pamumuhay ng mga Pilipino."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Kempeitai ay kilala sa pagpapahirap at pagpatay sa mga pinaghihinalaan."
+      "correctAnswer": "D",
+      "explanation": "Ang konklusyon: naapektuhan ng pananakop ang pang-araw-araw na pamumuhay ng mga Pilipino."
     },
     {
       "id": "ww2_4_5",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang tinawag na \"Makapili\"?",
+      "questionText": "Ang patakaran ng Hapon sa edukasyon ay nagdulot ng kalituhan sa mga mag-aaral dahil sa pagbabago ng wika ng pagtuturo. Anong epekto ng patakaran sa mga mag-aaral ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Mga gerilyang Pilipino"
+          "text": "Natapos ang lahat ng pag-aaral sa bansa."
         },
         {
           "label": "B",
-          "text": "Mga Pilipinong kumampi sa mga Hapones laban sa kapwa Pilipino"
+          "text": "Wala silang naramdamang anumang pagbabago."
         },
         {
           "label": "C",
-          "text": "Mga sundalong Amerikano"
+          "text": "Naging mas madali ang pag-aaral para sa kanila."
         },
         {
           "label": "D",
-          "text": "Mga guro ng Nihonggo"
+          "text": "Nalito sila dahil sa pagbabago ng wika ng pagtuturo."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang Makabayang Katipunan ng mga Pilipino ay isang pangkat ng kolaboreytor."
+      "correctAnswer": "D",
+      "explanation": "Nalito ang mga mag-aaral dahil nagbago ang wika ng pagtuturo."
     },
     {
       "id": "ww2_4_6",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang KALIBAPI?",
+      "questionText": "Ang pananakop ng Hapon ay nag-iwan ng marka sa kultura at pagkakakilanlan ng mga Pilipino. Anong aral ang maaaring makuha mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Kapisanan sa Paglilingkod sa Bagong Pilipinas, ang tanging partidong pinahintulutan ng mga Hapones"
+          "text": "Walang epekto ang pananakop sa kultura ng bansa."
         },
         {
           "label": "B",
-          "text": "Samahan ng mga gerilya"
+          "text": "Ang kultura ng bansa ay nanatiling ganap na pareho."
         },
         {
           "label": "C",
-          "text": "Hukbong sandatahan ng Pilipinas"
+          "text": "Ang pananakop ay nagpalakas lamang sa kultura ng Espanya."
         },
         {
           "label": "D",
-          "text": "Pahayagan ng Amerika"
+          "text": "Malaki ang epekto ng pananakop sa kultura at pagkakakilanlan ng mga Pilipino."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Sa pamamagitan nito, kinontrol ng Hapon ang pulitika at lipunan."
+      "correctAnswer": "D",
+      "explanation": "Ang aral: malaki ang epekto ng pananakop sa kultura at pagkakakilanlan ng mga Pilipino."
     },
     {
       "id": "ww2_4_7",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang ginawa ng mga Hapones sa edukasyon sa Pilipinas?",
+      "questionText": "Ipinakita ng patakaran ng Hapon na ang wika ay maaaring gamitin bilang kasangkapan ng kapangyarihan. Anong mensahe ng talata tungkol sa wika?",
       "options": [
         {
           "label": "A",
-          "text": "Ginawang libre ang lahat ng kolehiyo"
+          "text": "Ang wika ay ginagamit lamang sa pagbabasa."
         },
         {
           "label": "B",
-          "text": "Pinalitan ang lahat ng guro ng Amerikano"
+          "text": "Ang wika ay walang kaugnayan sa kapangyarihan."
         },
         {
           "label": "C",
-          "text": "Isinara ang lahat ng paaralan magpakailanman"
+          "text": "Ang wika ay dapat iwasan sa lahat ng paaralan."
         },
         {
           "label": "D",
-          "text": "Binago ang kurikulum upang burahin ang impluwensiya ng Amerika at ituro ang kultura ng Hapon"
+          "text": "Ang wika ay maaaring gamitin bilang kasangkapan ng kapangyarihan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Itinuro ang Nihonggo at pagpapahalagang Asyano."
+      "explanation": "Ang mensahe: maaaring gamitin ang wika bilang kasangkapan ng kapangyarihan."
     },
     {
       "id": "ww2_4_8",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging epekto ng pananakop sa kalayaan ng pamamahayag?",
+      "questionText": "Sa panahon ng pananakop, may mga Pilipinong nagtago ng sariling wika at kultura sa kabila ng mga patakaran. Anong katangian ang ipinakita ng mga Pilipinong nagtago ng kanilang kultura?",
       "options": [
         {
           "label": "A",
-          "text": "Naging malaya ang mga mamamahayag"
+          "text": "Pagsuko sa anumang patakaran ng Hapon."
         },
         {
           "label": "B",
-          "text": "Dumami ang mga pahayagang Amerikano"
+          "text": "Kawalan ng interes sa kultura ng bansa."
         },
         {
           "label": "C",
-          "text": "Mahigpit na kinontrol ang mga pahayagan at radyo"
+          "text": "Determinasyong panatilihin ang sariling kultura at wika."
         },
         {
           "label": "D",
-          "text": "Pinayagan ang pagpuna sa Hapon"
+          "text": "Pagtanggap sa lahat ng dayuhang kultura nang walang pagtutol."
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Sinuri at pinagbawalan ang anumang laban sa mga Hapones."
+      "explanation": "Ang pagtatago ng sariling wika at kultura ay tanda ng determinasyong panatilihin ang kultura at wika."
     },
     {
       "id": "ww2_4_9",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Paano lumaban ang mga ordinaryong Pilipino sa pananakop?",
+      "questionText": "Ang kasaysayan ng wika sa Pilipinas ay nagpapakita kung paano naapektuhan ng mga mananakop ang edukasyon. Anong ugnayan ang nakikita sa pagitan ng mananakop at edukasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Sumunod sa lahat ng utos ng Hapon"
+          "text": "Walang kinalaman ang mananakop sa edukasyon."
         },
         {
           "label": "B",
-          "text": "Sumali sa gerilya, nagtago ng mga bihag, at nagpalaganap ng lihim na balita"
+          "text": "Ang mananakop ay hindi nagtatag ng anumang paaralan."
         },
         {
           "label": "C",
-          "text": "Lumipat sa Hapon"
+          "text": "Naimpluwensiyahan ng mananakop ang sistema ng edukasyon."
         },
         {
           "label": "D",
-          "text": "Nagbenta ng armas sa kalaban"
+          "text": "Ang edukasyon ay laging nasa kamay ng mga Pilipino lamang."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Maraming sibilyan ang tumulong sa kilusang gerilya sa pamamagitan ng pagkain, impormasyon at kanlungan."
+      "correctAnswer": "C",
+      "explanation": "Ang ugnayan: naimpluwensiyahan ng mananakop ang sistema ng edukasyon."
     },
     {
       "id": "ww2_4_10",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Aling pangyayari ang nagpapakita ng kalupitan ng pananakop?",
+      "questionText": "Mahalagang suriin ang mga pagbabagong naganap sa lipunan upang maunawaan ang kasalukuyang kalagayan ng bansa. Bakit mahalagang suriin ang mga pagbabago sa lipunan?",
       "options": [
         {
           "label": "A",
-          "text": "Pagpatay at pagpapahirap sa mga sibilyan at bihag"
+          "text": "Upang patunayan na walang pagbabago sa bansa."
         },
         {
           "label": "B",
-          "text": "Pagbibigay ng libreng pagkain sa lahat"
+          "text": "Upang kalimutan ang mga pangyayari sa nakaraan."
         },
         {
           "label": "C",
-          "text": "Pagpapatayo ng mga ospital ng Amerika"
+          "text": "Upang ipakita na mas maganda ang nakaraan kaysa sa kasalukuyan."
         },
         {
           "label": "D",
-          "text": "Pagdiriwang ng kalayaan"
+          "text": "Upang maunawaan ang pinagmulan ng kasalukuyang kalagayan ng bansa."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Maraming sibilyan ang namatay, lalo na noong 1945."
+      "correctAnswer": "D",
+      "explanation": "Pinag-aaralan ang mga pagbabago sa lipunan upang maunawaan ang pinagmulan ng kasalukuyang kalagayan ng bansa."
     }
   ],
   "5": [
     {
       "id": "ww2_5_1",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng primaryang batis sa pananaliksik tungkol sa Digmaan?",
+      "questionText": "Sa panahon ng pananakop ng Hapon, maraming Pilipinong gerilya ang nagtago sa kabundukan at lumaban sa mga sundalong Hapones. Ano ang ginawa ng mga gerilyang Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Talaarawan ng isang sundalo noong 1944"
+          "text": "Sumuko agad sa mga sundalong Hapones."
         },
         {
           "label": "B",
-          "text": "Aklat-aralin na isinulat noong 2020"
+          "text": "Lumipat sa Estados Unidos para mag-aral."
         },
         {
           "label": "C",
-          "text": "Dokumentaryo na gawa noong nakaraang taon"
+          "text": "Nakipagkasundo sa Espanya para sa kapayapaan."
         },
         {
           "label": "D",
-          "text": "Artikulo sa pahayagan noong 2015"
+          "text": "Nagtago sa kabundukan at lumaban sa mga sundalong Hapones."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang primaryang batis ay mula mismo sa panahon o saksi sa pangyayari."
+      "correctAnswer": "D",
+      "explanation": "Nagtago ang mga gerilyang Pilipino sa kabundukan at lumaban sa mga sundalong Hapones."
     },
     {
       "id": "ww2_5_2",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng sekundaryang batis?",
+      "questionText": "Ang Hukbalahap ay grupong lumaban sa Hapon, lalo na sa Gitnang Luzon. Ang pangalan nito ay nagmula sa Hukbong Bayan Laban sa mga Hapon. Ano ang layunin ng Hukbalahap?",
       "options": [
         {
           "label": "A",
-          "text": "Liham na isinulat ng isang gerilya"
+          "text": "Labanan ang pananakop ng Hapon."
         },
         {
           "label": "B",
-          "text": "Larawan noong 1945"
+          "text": "Tulungan ang Hapon sa pananakop."
         },
         {
           "label": "C",
-          "text": "Opisyal na kautusan ng Pangulo"
+          "text": "Ipagbawal ang lahat ng labanan sa bansa."
         },
         {
           "label": "D",
-          "text": "Aklat ng isang mananalaysay tungkol sa digmaan"
+          "text": "Ipagtanggol ang kapangyarihan ng Espanya."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang sekundaryang batis ay sinulat ng hindi nakasaksi at nagsusuri ng mga primaryang batis."
+      "correctAnswer": "A",
+      "explanation": "Ang layunin ng Hukbalahap ay labanan ang pananakop ng Hapon."
     },
     {
       "id": "ww2_5_3",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang Punong Mahistrado na tumangging makipagtulungan sa mga Hapones at binaril noong 1942?",
+      "questionText": "Ayon sa talata, ang mga gerilya ay tumulong sa pagbibigay ng impormasyon at suporta sa mga Pilipinong sundalo ng Estados Unidos. Anong kontribusyon ng mga gerilya ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Jose P. Laurel"
+          "text": "Tumigil sila sa anumang labanan."
         },
         {
           "label": "B",
-          "text": "Claro M. Recto"
+          "text": "Nagbigay sila ng sandata sa mga Hapones."
         },
         {
           "label": "C",
-          "text": "Jose Abad Santos"
+          "text": "Tinulungan nila ang Espanya na bumalik sa bansa."
         },
         {
           "label": "D",
-          "text": "Manuel Roxas"
+          "text": "Nagbigay sila ng impormasyon at suporta sa mga Pilipinong sundalo at sa mga Amerikano."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Si Jose Abad Santos ay nanindigan sa katapatan sa bayan at pinatay noong Mayo 7, 1942."
+      "correctAnswer": "D",
+      "explanation": "Nagbigay ang mga gerilya ng impormasyon at suporta sa mga Pilipino at Amerikanong sundalo."
     },
     {
       "id": "ww2_5_4",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang gerilyang pinuno ng Camarines Norte na pinatay noong 1942?",
+      "questionText": "Ang pagpupunyagi ng mga gerilya ay nagpakita ng pagmamahal sa bayan at tapang sa harap ng panganib. Anong katangian ang ipinakita ng mga gerilya?",
       "options": [
         {
           "label": "A",
-          "text": "Luis Taruc"
+          "text": "Takot at pagsuko sa mga mananakop."
         },
         {
           "label": "B",
-          "text": "Wenceslao Vinzons"
+          "text": "Kawalan ng pakialam sa kalagayan ng bansa."
         },
         {
           "label": "C",
-          "text": "Ramon Magsaysay"
+          "text": "Pagtanggap sa pananakop nang walang pagtutol."
         },
         {
           "label": "D",
-          "text": "Macario Peralta"
+          "text": "Pagmamahal sa bayan at katapangan sa harap ng panganib."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Si Vinzons ay dating delegado ng Saligang Batas ng 1935 at pinuno ng gerilya sa Bicol."
+      "correctAnswer": "D",
+      "explanation": "Ipinakita ng mga gerilya ang pagmamahal sa bayan at katapangan sa harap ng panganib."
     },
     {
       "id": "ww2_5_5",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang tagapagtatag ng Girl Scouts of the Philippines na tumulong sa mga bihag at pinatay sa Fort Santiago?",
+      "questionText": "Ang mga gerilya ay madalas na kumikilos nang lihim dahil sa lakas ng mga sundalong Hapones. Bakit kumilos nang lihim ang mga gerilya?",
       "options": [
         {
           "label": "A",
-          "text": "Josefa Llanes Escoda"
+          "text": "Dahil wala silang alam sa digmaan."
         },
         {
           "label": "B",
-          "text": "Gregoria de Jesus"
+          "text": "Dahil gusto nilang sumuko sa mga Hapones."
         },
         {
           "label": "C",
-          "text": "Melchora Aquino"
+          "text": "Dahil nais nilang makipagkaibigan sa mga Espanyol."
         },
         {
           "label": "D",
-          "text": "Teresa Magbanua"
+          "text": "Dahil mas malakas ang mga sundalong Hapones kaysa sa kanila sa harapang labanan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Tumulong siya sa mga bihag ng digmaan at dinakip ng Kempeitai noong 1944."
+      "correctAnswer": "D",
+      "explanation": "Kumilos sila nang lihim dahil mas malakas ang mga sundalong Hapones sa harapang labanan."
     },
     {
       "id": "ww2_5_6",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Bakit mahalagang suriin kung sino ang sumulat ng isang dokumento sa pananaliksik?",
+      "questionText": "Sa kabila ng hirap, nagpatuloy ang mga gerilya sa paglaban sa iba't ibang lugar ng bansa. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Upang malaman kung mahaba ang dokumento"
+          "text": "Walang gerilyang lumaban sa bansa."
         },
         {
           "label": "B",
-          "text": "Upang malaman kung maganda ang sulat-kamay"
+          "text": "Ang gerilya ay nakipagkasundo sa Hapon."
         },
         {
           "label": "C",
-          "text": "Upang malaman kung bagong imprenta"
+          "text": "Tumigil ang lahat ng gerilya sa unang taon ng pananakop."
         },
         {
           "label": "D",
-          "text": "Upang malaman kung mapagkakatiwalaan at kung may kinikilingan ito"
+          "text": "Nagpatuloy ang paglaban ng mga gerilya sa maraming lugar."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Mahalaga ang awtor sa pagtatasa ng kredibilidad ng batis."
+      "explanation": "Ang konklusyon: nagpatuloy ang paglaban ng mga gerilya sa maraming lugar kahit mahirap."
     },
     {
       "id": "ww2_5_7",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang unang hakbang sa pagsasagawa ng pananaliksik?",
+      "questionText": "Ang gerilyang pakikibaka ay bahagi ng mas malawak na pagsisikap ng mga Pilipino na palayain ang bansa. Ano ang kaugnayan ng gerilya sa pagpapalaya ng bansa?",
       "options": [
         {
           "label": "A",
-          "text": "Magsulat ng kongklusyon"
+          "text": "Ito ang nagbigay ng kalayaan sa Hapon."
         },
         {
           "label": "B",
-          "text": "Magpalimbag ng aklat"
+          "text": "Ito ang nagtapos sa lahat ng pakikibaka."
         },
         {
           "label": "C",
-          "text": "Pumili ng paksa at bumuo ng tanong na sasagutin"
+          "text": "Hindi ito kinilala bilang bahagi ng pakikibaka."
         },
         {
           "label": "D",
-          "text": "Magbayad ng isang eksperto"
+          "text": "Bahagi ito ng pagsisikap na palayain ang bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Gabay ng tanong ang paghahanap ng datos at pagsusuri."
+      "correctAnswer": "D",
+      "explanation": "Ang gerilyang pakikibaka ay bahagi ng pagsisikap ng mga Pilipino na palayain ang bansa."
     },
     {
       "id": "ww2_5_8",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng pagsisikap ng mga Pilipino para sa ganap na kalayaan matapos ang digmaan?",
+      "questionText": "Ang mga Pilipinong gerilya ay binubuo ng mga karaniwang mamamayan, sundalo, at mga lider ng iba't ibang pamayanan. Anong aral ang maaaring makuha mula sa komposisyon ng mga gerilya?",
       "options": [
         {
           "label": "A",
-          "text": "Pagtanggap ng pananakop ng Hapon"
+          "text": "Ang mga lider lamang ang lumaban."
         },
         {
           "label": "B",
-          "text": "Pakikipag-ayos sa Estados Unidos hanggang sa pagkamit ng kalayaan noong Hulyo 4, 1946"
+          "text": "Ang mga gerilya ay binubuo lamang ng mga dayuhan."
         },
         {
           "label": "C",
-          "text": "Pagbabalik sa pamamahala ng Espanya"
+          "text": "Walang kinalaman ang karaniwang mamamayan sa paglaban."
         },
         {
           "label": "D",
-          "text": "Pagtalikod sa kalayaan"
+          "text": "Nagkaisa ang iba't ibang sektor ng lipunan sa paglaban."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Naganap ang kalayaan nang magtapos ang Komonwelt noong 1946."
+      "correctAnswer": "D",
+      "explanation": "Ang aral: nagkaisa ang iba't ibang sektor ng lipunan sa paglaban."
     },
     {
       "id": "ww2_5_9",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kapag may magkasalungat na impormasyon sa dalawang batis, ano ang dapat gawin ng mananaliksik?",
+      "questionText": "Ang kasaysayan ng gerilya ay mahalagang paksa sa pag-aaral ng pananakop ng Hapon at paglaya ng bansa. Bakit mahalagang pag-aralan ang kasaysayan ng gerilya?",
       "options": [
         {
           "label": "A",
-          "text": "Suriin at ihambing ang mga batis at humanap ng ikatlong patunay"
+          "text": "Upang ipagbawal ang pag-aaral ng digmaan."
         },
         {
           "label": "B",
-          "text": "Piliin ang pinakamaikling batis"
+          "text": "Upang patunayan na walang ambag ang mga gerilya."
         },
         {
           "label": "C",
-          "text": "Piliin ang batis na pinakamaganda ang pabalat"
+          "text": "Upang ipakita na walang labanan sa panahon ng pananakop."
         },
         {
           "label": "D",
-          "text": "Huwag na lang magpatuloy sa pananaliksik"
+          "text": "Upang maunawaan ang pagsisikap ng mga Pilipino sa paglaya ng bansa."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang paghahambing at pagkumpirma ng mga batis ay bahagi ng malalim na pananaliksik."
+      "correctAnswer": "D",
+      "explanation": "Pinag-aaralan ang kasaysayan ng gerilya upang maunawaan ang pagsisikap ng mga Pilipino sa paglaya ng bansa."
     },
     {
       "id": "ww2_5_10",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang layunin ng pagsasagawa ng pananaliksik tungkol sa mga bayani ng kalayaan?",
+      "questionText": "Ang paglaban ng mga gerilya ay nagpakita ng pagkakaisa ng mga Pilipino sa harap ng iisang kaaway. Alin ang pinakamahusay na buod ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Upang makalimutan ang kasaysayan"
+          "text": "Ang mga Pilipino ay sumang-ayon sa pananakop."
         },
         {
           "label": "B",
-          "text": "Upang magpakitang-gilas lamang"
+          "text": "Walang pagkakaisa ang mga Pilipino sa panahong ito."
         },
         {
           "label": "C",
-          "text": "Upang maghanap ng kalaban"
+          "text": "Nagkawatak-watak ang mga Pilipino sa harap ng kaaway."
         },
         {
           "label": "D",
-          "text": "Upang maunawaan at mapahalagahan ang kanilang ambag sa pagkamit ng kalayaan"
+          "text": "Nagkaisa ang mga Pilipino sa paglaban sa iisang kaaway."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ang pananaliksik ay nagbibigay-daan sa wastong pag-unawa sa nakaraan."
+      "explanation": "Ang buod: nagkaisa ang mga Pilipino sa paglaban sa iisang kaaway."
     }
   ],
   "6": [
     {
       "id": "ww2_6_1",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kailan ipinagkaloob ng Estados Unidos ang kalayaan ng Pilipinas?",
+      "questionText": "Noong Hulyo 4, 1946, opisyal na kinilala ang kalayaan ng Pilipinas. Ang araw na ito ay ginugunita bilang Araw ng Kalayaan. Anong mahalagang pangyayari ang naganap noong Hulyo 4, 1946?",
       "options": [
         {
           "label": "A",
-          "text": "Hunyo 12, 1898"
+          "text": "Nilagdaan ang Kasunduan ng Paris."
         },
         {
           "label": "B",
-          "text": "Nobyembre 15, 1935"
+          "text": "Itinatag ang Ikalawang Republika."
         },
         {
           "label": "C",
-          "text": "Setyembre 21, 1972"
+          "text": "Ipinasa ang Saligang Batas ng 1935."
         },
         {
           "label": "D",
-          "text": "Hulyo 4, 1946"
+          "text": "Opisyal na kinilala ang kalayaan ng Pilipinas."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Pinasinayaan ang Ikatlong Republika at si Manuel Roxas ang unang Pangulo."
+      "explanation": "Noong Hulyo 4, 1946, opisyal na kinilala ang kalayaan ng Pilipinas."
     },
     {
       "id": "ww2_6_2",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang unang Pangulo ng Ikatlong Republika ng Pilipinas?",
+      "questionText": "Pagkatapos ng digmaan, kinailangang muling buuin ang mga lungsod, paaralan, at imprastruktura ng bansa. Ano ang pangunahing hamon na hinarap ng bansa pagkatapos ng digmaan?",
       "options": [
         {
           "label": "A",
-          "text": "Elpidio Quirino"
+          "text": "Ang pagpapalaganap ng wikang Hapones."
         },
         {
           "label": "B",
-          "text": "Ramon Magsaysay"
+          "text": "Ang pagpapatuloy ng digmaan sa buong bansa."
         },
         {
           "label": "C",
-          "text": "Manuel A. Roxas"
+          "text": "Ang pagtatatag ng bagong kolonya ng Espanya."
         },
         {
           "label": "D",
-          "text": "Sergio Osmeña"
+          "text": "Ang muling pagbuo ng mga lungsod, paaralan, at imprastruktura."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Si Roxas ang nahalal noong Abril 1946 at nanungkulan nang magtamo ng kalayaan ang bansa."
+      "correctAnswer": "D",
+      "explanation": "Ang hamon pagkatapos ng digmaan ay muling pagbuo ng mga lungsod, paaralan at imprastruktura."
     },
     {
       "id": "ww2_6_3",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang isa sa mga malaking problema ng bansa pagkatapos ng digmaan?",
+      "questionText": "Noong Marso 14, 1947, nilagdaan ng Pilipinas at Estados Unidos ang Military Bases Agreement, na nagbigay sa Amerika ng mga base militar sa bansa. Ano ang naging bunga ng Military Bases Agreement?",
       "options": [
         {
           "label": "A",
-          "text": "Labis na kayamanan ng bansa"
+          "text": "Ibinalik nito ang mga base sa Japan."
         },
         {
           "label": "B",
-          "text": "Pagkawasak ng mga lungsod at kakulangan ng pagkain at trabaho"
+          "text": "Ipinagbawal nito ang paggamit ng base militar."
         },
         {
           "label": "C",
-          "text": "Kakulangan ng populasyon"
+          "text": "Nagbigay ito ng kalayaan sa lahat ng base militar."
         },
         {
           "label": "D",
-          "text": "Sobra ang mga paaralan"
+          "text": "Nagbigay ito sa Estados Unidos ng mga base militar sa Pilipinas."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Napinsala ang Maynila at ibang lungsod, at maraming Pilipino ang nawalan ng tirahan."
+      "correctAnswer": "D",
+      "explanation": "Ang Military Bases Agreement ay nagbigay sa Estados Unidos ng mga base militar sa Pilipinas."
     },
     {
       "id": "ww2_6_4",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong lungsod ang itinuring na isa sa pinakanasira sa buong mundo pagkatapos ng digmaan?",
+      "questionText": "Ang pagkilala sa kalayaan ay may kasamang ugnayan sa Estados Unidos, kabilang ang kasunduang pang-militar at pang-ekonomiya. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Maynila"
+          "text": "Sinakop muli ng Hapon ang bansa."
         },
         {
           "label": "B",
-          "text": "Cebu"
+          "text": "Walang kasunduang naganap pagkatapos ng kalayaan."
         },
         {
           "label": "C",
-          "text": "Davao"
+          "text": "Naputol agad ang lahat ng ugnayan ng dalawang bansa."
         },
         {
           "label": "D",
-          "text": "Baguio"
+          "text": "Nagkaroon ng ugnayan ang Pilipinas at Estados Unidos pagkatapos ng kalayaan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Winasak ang malaking bahagi ng lungsod, lalo na ang Intramuros, sa pinakamabigat na labanan noong 1945."
+      "correctAnswer": "D",
+      "explanation": "Nagkaroon ng ugnayan ang Pilipinas at Estados Unidos pagkatapos ng kalayaan, kasama ang kasunduang militar at pang-ekonomiya."
     },
     {
       "id": "ww2_6_5",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Batas sa Rehabilitasyon ng Pilipinas (Philippine Rehabilitation Act) ng 1946?",
+      "questionText": "Matapos ang digmaan, kinailangang maibalik ang kaayusan sa lipunan at ang tiwala ng mamamayan sa pamahalaan. Ano ang layunin ng pagbabalik ng kaayusang panlipunan?",
       "options": [
         {
           "label": "A",
-          "text": "Batas na nag-alis ng kalayaan"
+          "text": "Ibalik ang pamamahala ng Japan."
         },
         {
           "label": "B",
-          "text": "Batas na nagbawal ng kalakalan"
+          "text": "Ipagbawal ang lahat ng pamahalaan."
         },
         {
           "label": "C",
-          "text": "Batas na nagpalit ng wikang pambansa"
+          "text": "Palaganapin ang digmaan sa buong bansa."
         },
         {
           "label": "D",
-          "text": "Batas ng Amerika na nagbigay ng pondo para sa pagkukumpuni ng mga pinsala ng digmaan"
+          "text": "Maibalik ang kaayusan at tiwala ng mamamayan sa pamahalaan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ang pagtanggap ng bayad ay kinabit sa Bell Trade Act, kaya naging kontrobersiyal."
+      "explanation": "Layunin ng pagbabalik ng kaayusan na maibalik ang kaayusan at tiwala ng mamamayan sa pamahalaan."
     },
     {
       "id": "ww2_6_6",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging dahilan ng paglakas ng kilusang Huk pagkatapos ng digmaan?",
+      "questionText": "Ang pagkilala sa kalayaan ay isang mahalagang yugto, ngunit nagpatuloy ang mga hamon sa ekonomiya at pamamahala. Anong pahayag ang tumpak tungkol sa kalayaan at mga hamon?",
       "options": [
         {
           "label": "A",
-          "text": "Kakulangan ng mga paaralan"
+          "text": "Naging ganap na mayaman ang bansa sa unang taon."
         },
         {
           "label": "B",
-          "text": "Pag-alis ng lahat ng Amerikano"
+          "text": "Natapos ang lahat ng hamon pagkatapos ng kalayaan."
         },
         {
           "label": "C",
-          "text": "Hindi nalutas ang suliranin sa lupa at kahirapan ng mga magsasaka"
+          "text": "Walang hamon na hinarap ang bansa pagkatapos ng 1946."
         },
         {
           "label": "D",
-          "text": "Pagtaas ng sahod"
+          "text": "Kinilala ang kalayaan, pero nagpatuloy ang mga hamon sa ekonomiya at pamamahala."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Maraming Huk ang naghangad ng reporma sa lupa at lumaban sa pamahalaan."
+      "correctAnswer": "D",
+      "explanation": "Kinilala ang kalayaan, pero nagpatuloy ang mga hamon sa ekonomiya at pamamahala."
     },
     {
       "id": "ww2_6_7",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang Pangulo na kilala sa pagtugon sa kilusang Huk at sa pagiging \"Kampeon ng Masa\"?",
+      "questionText": "Ayon sa modyul, mahalagang maunawaan ang mga kasunduan ng Pilipinas at Estados Unidos pagkatapos ng digmaan. Bakit mahalagang maunawaan ang mga kasunduang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Elpidio Quirino"
+          "text": "Upang kalimutan ang kasaysayan ng bansa."
         },
         {
           "label": "B",
-          "text": "Ramon Magsaysay"
+          "text": "Upang patunayan na walang epekto ang mga kasunduan."
         },
         {
           "label": "C",
-          "text": "Manuel Roxas"
+          "text": "Upang ipakita na walang relasyon ang dalawang bansa."
         },
         {
           "label": "D",
-          "text": "Carlos P. Garcia"
+          "text": "Upang masuri ang epekto nito sa kalayaan at ekonomiya ng bansa."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Si Magsaysay ay nanungkulan mula 1953 hanggang 1957 at kilalang malapit sa ordinaryong tao."
+      "correctAnswer": "D",
+      "explanation": "Mahalagang maunawaan ang mga kasunduan upang masuri ang epekto nito sa kalayaan at ekonomiya ng bansa."
     },
     {
       "id": "ww2_6_8",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong petsa ang ipinagdiriwang ngayon bilang Araw ng Kalayaan ng Pilipinas?",
+      "questionText": "Ang pagkakatatag ng bagong kaayusan ay pinangunahan ng mga Pilipinong lider at mamamayan. Sino ang nanguna sa pagbuo ng bagong kaayusan ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Hunyo 12"
+          "text": "Ang mga sundalong Hapones."
         },
         {
           "label": "B",
-          "text": "Hulyo 4"
+          "text": "Walang nanguna sa pagbuo nito."
         },
         {
           "label": "C",
-          "text": "Agosto 21"
+          "text": "Ang mga dayuhang opisyal lamang."
         },
         {
           "label": "D",
-          "text": "Nobyembre 30"
+          "text": "Ang mga Pilipinong lider at mamamayan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Inilipat noong 1962 ang pagdiriwang mula Hulyo 4 patungong Hunyo 12 bilang pagkilala sa deklarasyon ng 1898."
+      "correctAnswer": "D",
+      "explanation": "Ang mga Pilipinong lider at mamamayan ang nanguna sa pagbuo ng bagong kaayusan."
     },
     {
       "id": "ww2_6_9",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang naging pagbabago sa lipunang Pilipino matapos ang digmaan?",
+      "questionText": "Ang kalayaang natamo noong 1946 ay bunga ng mahabang pakikibaka ng mga Pilipino at ng mga pagbabagong naganap sa panahon ng digmaan. Ano ang pinagmulan ng kalayaan noong 1946 ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbabalik ng Espanya"
+          "text": "Isang biglaang pagbibigay ng dayuhan."
         },
         {
           "label": "B",
-          "text": "Pagkakaroon ng hari"
+          "text": "Isang kasunduang walang kinalaman sa pakikibaka."
         },
         {
           "label": "C",
-          "text": "Pagkawala ng gobyerno"
+          "text": "Isang desisyon ng Japan na walang pakikilahok ng mga Pilipino."
         },
         {
           "label": "D",
-          "text": "Pagkaroon ng malayang bansa na may bagong hamon sa ekonomiya at seguridad"
+          "text": "Mahabang pakikibaka ng mga Pilipino at mga pagbabago sa panahon ng digmaan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Nagsimula ang Ikatlong Republika na may kasamang mga hamon ng rehabilitasyon."
+      "explanation": "Bunga ng mahabang pakikibaka at mga pagbabago sa panahon ng digmaan ang kalayaan noong 1946."
     },
     {
       "id": "ww2_6_10",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tumulong sa pagkilala ng Pilipinas bilang malayang bansa sa daigdig matapos ang digmaan?",
+      "questionText": "Ang muling pagbangon ng bansa ay nagpakita ng katatagan at pagtutulungan ng mga mamamayan. Anong katangian ang ipinakita ng mga mamamayan sa muling pagbangon?",
       "options": [
         {
           "label": "A",
-          "text": "Pagsali sa Axis Powers"
+          "text": "Katatagan at pagtutulungan."
         },
         {
           "label": "B",
-          "text": "Pagsuko sa Hapon"
+          "text": "Pagsuko at kawalan ng pag-asa."
         },
         {
           "label": "C",
-          "text": "Pagiging kasapi ng United Nations bilang isa sa mga unang kasapi"
+          "text": "Pag-iwas sa anumang pagbabago."
         },
         {
           "label": "D",
-          "text": "Pagbabalik sa Komonwelt"
+          "text": "Pag-asa lamang sa tulong ng dayuhan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Isa ang Pilipinas sa mga bansang lumagda sa Karta ng United Nations noong 1945."
+      "correctAnswer": "A",
+      "explanation": "Ipinakita ng mga mamamayan ang katatagan at pagtutulungan sa muling pagbangon."
     }
   ],
   "7": [
     {
       "id": "ww2_7_1",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang neokolonyalismo?",
+      "questionText": "Ang import substitution ay patakarang naglalayong bawasan ang pag-angkat ng produktong dayuhan at palakasin ang lokal na produksiyon. Ano ang layunin ng import substitution?",
       "options": [
         {
           "label": "A",
-          "text": "Direktang pananakop gamit ang hukbo"
+          "text": "Ipagbawal ang lahat ng lokal na produksiyon."
         },
         {
           "label": "B",
-          "text": "Pagsasarili ng bansa"
+          "text": "Ibigay ang lahat ng kalakalan sa ibang bansa."
         },
         {
           "label": "C",
-          "text": "Di-tuwirang kontrol ng makapangyarihang bansa sa ekonomiya at pulitika ng isang malayang bansa"
+          "text": "Dagdagan ang pag-angkat ng lahat ng dayuhang produkto."
         },
         {
           "label": "D",
-          "text": "Pagpapalaya ng kolonya"
+          "text": "Bawasan ang pag-angkat ng dayuhang produkto at palakasin ang lokal na produksiyon."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Kahit malaya sa pangalan, nanatiling nakadepende ang Pilipinas sa Amerika sa kalakalan at seguridad."
+      "correctAnswer": "D",
+      "explanation": "Layunin ng import substitution na bawasan ang pag-angkat ng dayuhang produkto at palakasin ang lokal na produksiyon."
     },
     {
       "id": "ww2_7_2",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong batas noong 1946 ang nagtakda ng malayang kalakalan ng Pilipinas at Amerika sa loob ng walong taon?",
+      "questionText": "Ayon sa talata, ang import substitution ay nagkaroon ng mga suliranin tulad ng mataas na presyo at kakulangan sa kalidad ng produkto. Anong suliranin ng import substitution ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Batas Jones"
+          "text": "Walang anumang suliraning naitala."
         },
         {
           "label": "B",
-          "text": "Bell Trade Act"
+          "text": "Mababang presyo ng lahat ng produkto."
         },
         {
           "label": "C",
-          "text": "Batas Cooper"
+          "text": "Labis na kalidad ng lahat ng produkto."
         },
         {
           "label": "D",
-          "text": "Batas Hare-Hawes-Cutting"
+          "text": "Mataas na presyo at kakulangan sa kalidad ng produkto."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Tinatawag ding Philippine Trade Act, na nagbigay ng kalamangan sa Amerika."
+      "correctAnswer": "D",
+      "explanation": "Ang nabanggit na suliranin ay mataas na presyo at kakulangan sa kalidad ng produkto."
     },
     {
       "id": "ww2_7_3",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"parity rights\" sa ilalim ng Bell Trade Act?",
+      "questionText": "Ang patakarang pang-ekonomiya ng bansa ay naapektuhan ng mga krisis sa pananalapi at kalakalan. Ano ang ipinakikita ng talata tungkol sa ekonomiya?",
       "options": [
         {
           "label": "A",
-          "text": "Pantay na karapatan ng mga Amerikano at Pilipino sa paggamit ng likas na yaman at pagnenegosyo"
+          "text": "Walang kaugnayan ang krisis sa ekonomiya."
         },
         {
           "label": "B",
-          "text": "Pagbabawal sa mga Amerikano sa Pilipinas"
+          "text": "Hindi naapektuhan ng anumang krisis ang ekonomiya."
         },
         {
           "label": "C",
-          "text": "Pagbibigay ng kalayaan sa mga magsasaka"
+          "text": "Lumakas ang ekonomiya dahil sa kawalan ng kalakalan."
         },
         {
           "label": "D",
-          "text": "Pagpapalit ng pera"
+          "text": "Naapektuhan ang ekonomiya ng mga krisis sa pananalapi at kalakalan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Kinailangan ng pag-amyenda sa Saligang Batas ng 1935 upang maipatupad ito."
+      "correctAnswer": "D",
+      "explanation": "Ipinapakita ng talata na naapektuhan ang ekonomiya ng mga krisis sa pananalapi at kalakalan."
     },
     {
       "id": "ww2_7_4",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Kasunduang Base Militar (Military Bases Agreement) ng 1947?",
+      "questionText": "Sa panahon ng import substitution, nagkaroon ng pagsisikap na palakasin ang mga lokal na industriya. Anong layunin ang nakita sa panahon ng import substitution?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbebenta ng Pilipinas sa Amerika"
+          "text": "Pahinain ang mga lokal na industriya."
         },
         {
           "label": "B",
-          "text": "Pagpapaalis sa mga sundalo ng Amerika"
+          "text": "Itigil ang lahat ng produksiyon sa bansa."
         },
         {
           "label": "C",
-          "text": "Pagbibigay ng kalayaan sa Pilipinas"
+          "text": "Ibigay ang lahat ng industriya sa dayuhan."
         },
         {
           "label": "D",
-          "text": "Pinahintulutan ang Amerika na magkaroon ng mga base militar sa Pilipinas sa loob ng 99 taon"
+          "text": "Palakasin ang mga lokal na industriya ng bansa."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Kilalang mga base ang Clark Air Base at Subic Naval Base."
+      "explanation": "Ang layunin ng import substitution ay palakasin ang mga lokal na industriya ng bansa."
     },
     {
       "id": "ww2_7_5",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Mutual Defense Treaty ng 1951?",
+      "questionText": "Ang mga patakarang pang-ekonomiya ay may positibo at negatibong epekto, depende sa pagpapatupad nito. Anong aral ang mahihinuha mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Kasunduang kalakalan lamang"
+          "text": "Ang patakaran ay hindi dapat ipatupad."
         },
         {
           "label": "B",
-          "text": "Kasunduang pangkultura"
+          "text": "Walang epekto ang patakaran sa ekonomiya."
         },
         {
           "label": "C",
-          "text": "Kasunduang magtulungan ang Pilipinas at Amerika kapag may sumalakay sa alinman"
+          "text": "Lahat ng patakaran ay laging nagdudulot ng kabutihan."
         },
         {
           "label": "D",
-          "text": "Kasunduang magtatapos ng digmaan sa Hapon"
+          "text": "Ang epekto ng patakaran ay nakadepende sa pagpapatupad nito."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Naging batayan ito ng alyansang militar ng dalawang bansa."
+      "correctAnswer": "D",
+      "explanation": "Ang aral: nakadepende ang epekto ng patakaran sa kung paano ito ipinatupad."
     },
     {
       "id": "ww2_7_6",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Laurel-Langley Agreement ng 1955?",
+      "questionText": "Ang mga krisis sa ekonomiya ay nagdulot ng hirap sa maraming pamilyang Pilipino. Anong epekto ng mga krisis ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Pagpapahinto ng kalakalan"
+          "text": "Walang epekto ang krisis sa mga pamilya."
         },
         {
           "label": "B",
-          "text": "Rebisyon sa Bell Trade Act na naglapat ng mas pantay na kalakalan sa ilang aspeto"
+          "text": "Nawala ang lahat ng hanapbuhay sa bansa."
         },
         {
           "label": "C",
-          "text": "Pagbibigay ng lupa sa Amerika"
+          "text": "Naging mas mayaman ang lahat ng pamilya."
         },
         {
           "label": "D",
-          "text": "Pagpapalit ng Saligang Batas"
+          "text": "Naging mahirap ang buhay ng maraming pamilya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Tinanggal nito ang kontrol ng Amerika sa palitan ng piso, ngunit nanatiling pabor sa Amerika ang kalakalan."
+      "correctAnswer": "D",
+      "explanation": "Dahil sa mga krisis, naging mahirap ang buhay ng maraming pamilya."
     },
     {
       "id": "ww2_7_7",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"Filipino First Policy\" ni Pangulong Carlos P. Garcia?",
+      "questionText": "Upang mapalakas ang ekonomiya, kinailangan ng bansa ng mga tamang patakaran sa kalakalan at produksiyon. Ano ang kinakailangan upang mapalakas ang ekonomiya ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbibigay-priyoridad sa mga negosyanteng Pilipino at lokal na produkto"
+          "text": "Pagtigil ng lahat ng kalakalan."
         },
         {
           "label": "B",
-          "text": "Pagbabawal sa lahat ng dayuhan"
+          "text": "Pagpapabaya sa lokal na produksiyon."
         },
         {
           "label": "C",
-          "text": "Pagpapalit ng wikang pambansa"
+          "text": "Pag-asa lamang sa tulong ng dayuhan."
         },
         {
           "label": "D",
-          "text": "Pagsunod sa Amerika"
+          "text": "Mga tamang patakaran sa kalakalan at produksiyon."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Layunin nitong bawasan ang kontrol ng mga dayuhan sa ekonomiya."
+      "correctAnswer": "D",
+      "explanation": "Para mapalakas ang ekonomiya, kailangan ng tamang patakaran sa kalakalan at produksiyon."
     },
     {
       "id": "ww2_7_8",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kailan tinanggihan ng Senado ang bagong kasunduan sa mga base ng Amerika, na nagtapos sa pananatili ng mga base noong 1992?",
+      "questionText": "Ang ekonomiya ng Pilipinas ay nakadepende noon sa kalakalan at pag-angkat ng produkto mula sa ibang bansa. Anong kalagayan ng ekonomiya ang ipinakita ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Hulyo 1946"
+          "text": "Walang kinalaman ang kalakalan sa ekonomiya."
         },
         {
           "label": "B",
-          "text": "Disyembre 1941"
+          "text": "Ganap na malaya ang ekonomiya sa anumang kalakalan."
         },
         {
           "label": "C",
-          "text": "Pebrero 1986"
+          "text": "Ang ekonomiya ay nakadepende lamang sa lokal na pagkain."
         },
         {
           "label": "D",
-          "text": "Setyembre 1991"
+          "text": "Malaki ang pag-asa ng ekonomiya sa kalakalan at pag-angkat."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Bumoto ang Senado laban sa pagpapatuloy ng kasunduan, kaya umalis ang mga Amerikano sa Clark at Subic."
+      "explanation": "Malaki ang pag-asa ng ekonomiya noon sa kalakalan at pag-angkat ng produkto."
     },
     {
       "id": "ww2_7_9",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging epekto ng pagkakatali ng piso sa dolyar sa panahon ng Bell Trade Act?",
+      "questionText": "Mahalagang suriin ang mga patakarang pang-ekonomiya upang maunawaan ang mga suliranin ng bansa. Bakit mahalagang suriin ang mga patakarang pang-ekonomiya?",
       "options": [
         {
           "label": "A",
-          "text": "Tumaas ang halaga ng piso kahit walang dahilan"
+          "text": "Upang ipagpaliban ang anumang pagbabago."
         },
         {
           "label": "B",
-          "text": "Naging libre ang lahat ng produkto"
+          "text": "Upang iwasan ang lahat ng pag-aaral ng ekonomiya."
         },
         {
           "label": "C",
-          "text": "Nawalan ng sariling kontrol ang Pilipinas sa halaga ng kanyang salapi"
+          "text": "Upang patunayan na perpekto ang lahat ng patakaran."
         },
         {
           "label": "D",
-          "text": "Nagkaroon ng sariling ginto"
+          "text": "Upang maunawaan ang mga suliranin at ang posibleng solusyon."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Naipit ang ekonomiya sa mga patakarang pabor sa Amerika."
+      "correctAnswer": "D",
+      "explanation": "Sinusuri ang mga patakarang pang-ekonomiya upang maunawaan ang mga suliranin at posibleng solusyon."
     },
     {
       "id": "ww2_7_10",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng pagpapakita ng neokolonyalismo sa ekonomiya?",
+      "questionText": "Ang paglinang ng lokal na produksiyon ay isang paraan upang maging mas malaya ang ekonomiya ng bansa. Anong ugnayan ang nakikita sa lokal na produksiyon at kalayaan ng ekonomiya?",
       "options": [
         {
           "label": "A",
-          "text": "Pagtatayo ng mga sariling pabrika at pamilihan"
+          "text": "Walang ugnayan ang produksiyon sa kalayaan."
         },
         {
           "label": "B",
-          "text": "Pagdepende ng bansa sa kalakalan at tulong ng isang makapangyarihang bansa"
+          "text": "Ang lokal na produksiyon ay nagpapahina sa ekonomiya."
         },
         {
           "label": "C",
-          "text": "Pagtanggi sa lahat ng kalakalan"
+          "text": "Ang lokal na produksiyon ay humahadlang sa kalakalan."
         },
         {
           "label": "D",
-          "text": "Pagbabawal sa mga banyaga"
+          "text": "Ang lokal na produksiyon ay makatutulong sa mas malayang ekonomiya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Hindi tuluyang nakalaya ang ekonomiya ng Pilipinas pagkatapos ng 1946."
+      "correctAnswer": "D",
+      "explanation": "Ang lokal na produksiyon ay makatutulong sa mas malayang ekonomiya."
+    },
+    {
+      "id": "ww2_7_11",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Military Bases Agreement ng 1947 ay nagbigay sa Estados Unidos ng karapatang gamitin ang mga base militar sa Pilipinas. Ano ang layunin ng Military Bases Agreement?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ibigay ang mga base sa Espanya."
+        },
+        {
+          "label": "B",
+          "text": "Ibalik ang mga base militar sa Japan."
+        },
+        {
+          "label": "C",
+          "text": "Ipagbawal ang lahat ng base militar sa bansa."
+        },
+        {
+          "label": "D",
+          "text": "Bigyan ang Estados Unidos ng karapatang gamitin ang mga base militar sa bansa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Layunin ng Military Bases Agreement na bigyan ang Estados Unidos ng karapatang gamitin ang mga base militar sa bansa."
+    },
+    {
+      "id": "ww2_7_12",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kabilang sa mga base na nabanggit sa kasunduan ang Clark, Subic, at iba pang lugar sa bansa. Anong pahayag ang tumpak tungkol sa mga base?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang base na nabanggit sa kasunduan."
+        },
+        {
+          "label": "B",
+          "text": "Ang Clark at Subic ay ibinigay sa Hapon."
+        },
+        {
+          "label": "C",
+          "text": "Kabilang sa mga base ang Clark at Subic."
+        },
+        {
+          "label": "D",
+          "text": "Ang Clark at Subic ay ipinagbawal sa Estados Unidos."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Kabilang sa mga base ang Clark at Subic."
+    },
+    {
+      "id": "ww2_7_13",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang pagkakaroon ng base militar ng Estados Unidos sa Pilipinas ay nagdulot ng mga usapin tungkol sa kalayaan at soberanya ng bansa. Anong usapin ang lumitaw dahil sa mga base militar?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mga usapin tungkol sa pagbabalik ng Espanya."
+        },
+        {
+          "label": "B",
+          "text": "Mga usapin tungkol sa pagtatatag ng Komonwelt."
+        },
+        {
+          "label": "C",
+          "text": "Mga usapin tungkol sa pagtatatag ng Katipunan."
+        },
+        {
+          "label": "D",
+          "text": "Mga usapin tungkol sa kalayaan at soberanya ng bansa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Dahil sa mga base militar, lumitaw ang mga usapin tungkol sa kalayaan at soberanya ng bansa."
+    },
+    {
+      "id": "ww2_7_14",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ayon sa talata, ang kasunduan ay nagbigay ng mga karapatan sa Estados Unidos na may kaugnayan sa seguridad ng bansa. Anong konklusyon ang maaaring mabuo mula sa talata?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang kasunduan ay nagtapos sa lahat ng ugnayan."
+        },
+        {
+          "label": "B",
+          "text": "Ang kasunduan ay walang kinalaman sa seguridad."
+        },
+        {
+          "label": "C",
+          "text": "Ang kasunduan ay nagbigay ng karapatan sa Japan."
+        },
+        {
+          "label": "D",
+          "text": "Ang kasunduan ay may kaugnayan sa seguridad ng bansa at ng Estados Unidos."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang konklusyon: ang kasunduan ay may kaugnayan sa seguridad ng bansa at ng Estados Unidos."
+    },
+    {
+      "id": "ww2_7_15",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa pagkakalagda ng kasunduan, ang mga lider ng Pilipinas at Estados Unidos ay kumatawan sa kani-kanilang bansa. Ano ang ipinakita ng pagkakalagda ng kasunduan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang pumirma sa kasunduan."
+        },
+        {
+          "label": "B",
+          "text": "Ang kasunduan ay pinirmahan ng Espanya lamang."
+        },
+        {
+          "label": "C",
+          "text": "Ang kasunduan ay pinirmahan ng Japan at Espanya."
+        },
+        {
+          "label": "D",
+          "text": "Ang kasunduan ay pinagkasunduan ng dalawang pamahalaan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinagkasunduan ng dalawang pamahalaan ang kasunduan, kaya kumatawan ang mga lider sa kani-kanilang bansa."
+    },
+    {
+      "id": "ww2_7_16",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang mga base militar ay nagkaroon ng malaking papel sa seguridad ng rehiyon at sa ugnayan ng Pilipinas at Estados Unidos. Anong papel ang ginampanan ng mga base militar?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Wala silang papel sa seguridad ng bansa."
+        },
+        {
+          "label": "B",
+          "text": "Sila ang nagpalaganap ng wikang Espanyol."
+        },
+        {
+          "label": "C",
+          "text": "Sila ang nagtapos sa ugnayan ng dalawang bansa."
+        },
+        {
+          "label": "D",
+          "text": "Malaki ang papel nila sa seguridad at ugnayan ng dalawang bansa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Malaki ang papel ng mga base sa seguridad at ugnayan ng Pilipinas at Estados Unidos."
+    },
+    {
+      "id": "ww2_7_17",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Mahalagang pag-aralan ang Military Bases Agreement upang maunawaan ang kasaysayan ng ugnayan ng Pilipinas at Estados Unidos. Bakit mahalagang pag-aralan ang kasunduan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Upang kalimutan ang ugnayan ng dalawang bansa."
+        },
+        {
+          "label": "B",
+          "text": "Upang patunayan na walang kasaysayan ang kasunduan."
+        },
+        {
+          "label": "C",
+          "text": "Upang iwasan ang anumang tanong tungkol sa kasunduan."
+        },
+        {
+          "label": "D",
+          "text": "Upang maunawaan ang kasaysayan ng ugnayan ng dalawang bansa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinag-aaralan ang kasunduan upang maunawaan ang kasaysayan ng ugnayan ng dalawang bansa."
+    },
+    {
+      "id": "ww2_7_18",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang kasunduan ay nagpakita ng pagbabago sa paraan ng pakikipag-ugnayan ng Pilipinas sa mga dayuhang bansa. Anong pagbabago ang ipinakita ng kasunduan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang nagbago sa pakikipag-ugnayan ng bansa."
+        },
+        {
+          "label": "B",
+          "text": "Naging sapilitan ang lahat ng pakikipag-ugnayan."
+        },
+        {
+          "label": "C",
+          "text": "Naging ganap na hindi na nakikipag-ugnayan ang bansa sa labas."
+        },
+        {
+          "label": "D",
+          "text": "Ang pakikipag-ugnayan sa dayuhang bansa ay naging mas pormal at nakasulat."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Naging mas pormal at nakasulat ang pakikipag-ugnayan ng Pilipinas sa mga dayuhang bansa."
+    },
+    {
+      "id": "ww2_7_19",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang mga sundalong Pilipino at Amerikano ay nagtulungan sa ilang gawain sa ilalim ng kasunduan. Anong ugnayan ang ipinakita ng talata?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang mga sundalo ay mula sa Japan."
+        },
+        {
+          "label": "B",
+          "text": "Walang pagtutulungan sa pagitan ng mga sundalo."
+        },
+        {
+          "label": "C",
+          "text": "Naglaban ang mga sundalo ng dalawang bansa sa lahat ng lugar."
+        },
+        {
+          "label": "D",
+          "text": "Nagtulungan ang mga sundalo ng dalawang bansa sa ilang gawain."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Nagtulungan ang mga sundalong Pilipino at Amerikano sa ilang gawain sa ilalim ng kasunduan."
+    },
+    {
+      "id": "ww2_7_20",
+      "era": "ww2",
+      "subTopic": "Kasunduang Militar: Military Bases Agreement, 1947–1991",
+      "gradeLevel": "grade6",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Ang Military Bases Agreement ay isa sa mga mahalagang kasunduan na humubog sa ugnayang Pilipino-Amerikano pagkatapos ng digmaan. Alin ang pinakamahusay na buod ng talata?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang kasunduang walang epekto sa bansa."
+        },
+        {
+          "label": "B",
+          "text": "Isang kasunduang pinirmahan ng Japan at Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Isang kasunduang nagtapos sa ugnayan ng dalawang bansa."
+        },
+        {
+          "label": "D",
+          "text": "Isang mahalagang kasunduan na humubog sa ugnayang Pilipino-Amerikano pagkatapos ng digmaan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang buod: isang mahalagang kasunduan na humubog sa ugnayang Pilipino-Amerikano pagkatapos ng digmaan."
     }
   ],
   "8": [
     {
       "id": "ww2_8_1",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"colonial mentality\" o kolonyal na kaisipan?",
+      "questionText": "Ayon sa sanaysay ni Renato Constantino, ang kolonyal na edukasyon ay nagturo ng pag-iisip na pabor sa dayuhan. Ano ang pangunahing ideya ng talata tungkol sa kolonyal na edukasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Pagmamahal sa sariling kultura"
+          "text": "Ang kolonyal na edukasyon ay walang epekto sa pag-iisip."
         },
         {
           "label": "B",
-          "text": "Paniniwalang higit na magaling ang dayuhan at banyagang produkto kaysa sa sarili"
+          "text": "Ang kolonyal na edukasyon ay nagturo ng pagkakaisa sa Japan."
         },
         {
           "label": "C",
-          "text": "Pagtangkilik sa mga lokal na produkto"
+          "text": "Ang kolonyal na edukasyon ay nagturo ng pag-iisip na pabor sa dayuhan."
         },
         {
           "label": "D",
-          "text": "Pagtanggi sa lahat ng impluwensiya"
+          "text": "Ang kolonyal na edukasyon ay nagturo ng pagmamahal sa sariling kultura lamang."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Madalas makita ito sa pagpapaboran sa mga imported na gamit at sa pagmamaliit sa sariling wika at kultura."
+      "correctAnswer": "C",
+      "explanation": "Ayon kay Constantino, nagturo ang kolonyal na edukasyon ng pag-iisip na pabor sa dayuhan."
     },
     {
       "id": "ww2_8_2",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng impluwensiya ng Amerika sa kulturang Pilipino?",
+      "questionText": "Ayon sa talata, hindi nawala ang kondisyong kolonyal sa pagkakaroon ng kalayaan, bagkus ito ay nagbago ng anyo. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Paggamit ng wikang Ingles at pagtangkilik sa pelikula at musika ng Hollywood"
+          "text": "Walang kolonyal na kondisyon sa panahong ito."
         },
         {
           "label": "B",
-          "text": "Pagsusuot ng baro't saya lamang"
+          "text": "Ang kalayaan ay nagpalala sa kolonyal na kondisyon."
         },
         {
           "label": "C",
-          "text": "Pagtigil sa pag-aaral ng Ingles"
+          "text": "Nagbago ang anyo ng kolonyal na kondisyon kahit may kalayaan na."
         },
         {
           "label": "D",
-          "text": "Pagtanggi sa lahat ng dayuhang libangan"
+          "text": "Ganap na nawala ang kolonyal na kondisyon pagkatapos ng kalayaan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Malaki ang naging epekto ng edukasyon at media sa panlasa ng mga Pilipino."
+      "correctAnswer": "C",
+      "explanation": "Hindi nawala ang kondisyong kolonyal sa kalayaan. Nagbago lang ito ng anyo."
     },
     {
       "id": "ww2_8_3",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang kilalang makabayang mambabatas na nagtaguyod ng \"Filipino First\" at nagpaalala ng pagiging malaya sa dayuhang kontrol?",
+      "questionText": "Ang edukasyong Amerikano ay nagturo ng wikang Ingles at mga kaugalian ng Amerika, na nakaapekto sa pagkakakilanlan ng mga Pilipino. Anong epekto ng edukasyong Amerikano ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Manuel Roxas"
+          "text": "Pinalakas nito ang wikang Espanyol."
         },
         {
           "label": "B",
-          "text": "Emilio Aguinaldo"
+          "text": "Ibinalik nito ang kulturang Hapones."
         },
         {
           "label": "C",
-          "text": "Sergio Osmeña"
+          "text": "Walang epekto ang edukasyon sa pagkakakilanlan."
         },
         {
           "label": "D",
-          "text": "Claro M. Recto"
+          "text": "Naapektuhan nito ang pagkakakilanlan ng mga Pilipino."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Si Recto ay nanguna sa makabayang pagpapahalaga sa kasarinlan ng ekonomiya at patakarang panlabas."
+      "explanation": "Naapektuhan ng edukasyong Amerikano ang pagkakakilanlan ng mga Pilipino dahil sa Ingles at kaugaliang Amerikano."
     },
     {
       "id": "ww2_8_4",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang sumulat ng \"The Miseducation of the Filipino\" na nagpuna sa edukasyong kolonyal?",
+      "questionText": "Ang neokolonyalismo ay tumutukoy sa patuloy na impluwensiya ng dating mananakop sa ekonomiya at kultura ng isang bansa kahit malaya na ito. Ano ang kahulugan ng neokolonyalismo ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Jose Rizal"
+          "text": "Pagbibigay ng kalayaan sa lahat ng bansa."
         },
         {
           "label": "B",
-          "text": "Nick Joaquin"
+          "text": "Pagpapawalang-bisa ng lahat ng kalakalan."
         },
         {
           "label": "C",
-          "text": "Renato Constantino"
+          "text": "Pagbabalik ng kolonyal na pamahalaan sa bansa."
         },
         {
           "label": "D",
-          "text": "Carlos P. Romulo"
+          "text": "Patuloy na impluwensiya ng dating mananakop kahit malaya na ang bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ipinakita niya kung paano hinubog ng edukasyon ang kaisipang kolonyal."
+      "correctAnswer": "D",
+      "explanation": "Ang neokolonyalismo ay patuloy na impluwensiya ng dating mananakop kahit malaya na ang bansa."
     },
     {
       "id": "ww2_8_5",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Paano maipapakita ang pagiging makabayan sa pang-araw-araw na buhay?",
+      "questionText": "Ayon sa talata, ang wikang Ingles ay naging mahalaga sa edukasyon at trabaho, kaya lumaganap ang paggamit nito. Bakit lumaganap ang paggamit ng Ingles ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagtanggi sa lahat ng dayuhan"
+          "text": "Dahil ginamit lamang ito ng mga Hapones."
         },
         {
           "label": "B",
-          "text": "Pagtangkilik sa sariling wika, produkto at kultura nang may paggalang sa iba"
+          "text": "Dahil ipinagbawal ang lahat ng ibang wika."
         },
         {
           "label": "C",
-          "text": "Paghamak sa mga katutubo"
+          "text": "Dahil walang ibang wika na maaaring gamitin."
         },
         {
           "label": "D",
-          "text": "Pagbalewala sa kasaysayan"
+          "text": "Dahil naging mahalaga ito sa edukasyon at trabaho."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Hindi pagkamuhi sa iba kundi pagpapahalaga sa sarili ang diwa ng nasyonalismo."
+      "correctAnswer": "D",
+      "explanation": "Lumaganap ang Ingles dahil naging mahalaga ito sa edukasyon at trabaho."
     },
     {
       "id": "ww2_8_6",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang epekto ng neokolonyalismo sa wika?",
+      "questionText": "Ang kasaysayan ng edukasyon ay nagpapakita ng impluwensiya ng mananakop sa pag-iisip ng mga mamamayan. Anong aral ang maaaring makuha mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Nangibabaw ang Ingles sa edukasyon, negosyo at gobyerno"
+          "text": "Ang edukasyon ay walang kaugnayan sa pag-iisip."
         },
         {
           "label": "B",
-          "text": "Nawala ang lahat ng wika sa bansa"
+          "text": "Walang impluwensiya ang mananakop sa pag-iisip."
         },
         {
           "label": "C",
-          "text": "Naging opisyal na wika ang Espanyol"
+          "text": "Ang pag-iisip ng mga mamamayan ay laging nasa kamay ng mananakop."
         },
         {
           "label": "D",
-          "text": "Hindi na ginamit ang Ingles"
+          "text": "Malaki ang impluwensiya ng mananakop sa pag-iisip ng mga mamamayan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Dahil sa matagal na paggamit, mas mataas ang tingin ng iba sa Ingles kaysa sa katutubong wika."
+      "correctAnswer": "D",
+      "explanation": "Ang aral: malaki ang impluwensiya ng mananakop sa pag-iisip ng mga mamamayan."
     },
     {
       "id": "ww2_8_7",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"brain drain\" na nauugnay sa epekto ng neokolonyal na pananaw?",
+      "questionText": "Mahalagang suriin ang edukasyon upang malaman kung ito ay nagpapalaya o nagpapatuloy ng dependensiya ng bansa. Bakit mahalagang suriin ang edukasyon ayon sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagdami ng mga paaralan"
+          "text": "Upang ipagbawal ang lahat ng paaralan."
         },
         {
           "label": "B",
-          "text": "Pagtaas ng sahod ng mga guro"
+          "text": "Upang iwasan ang anumang pagsusuri sa edukasyon."
         },
         {
           "label": "C",
-          "text": "Pagbabalik ng mga dayuhan"
+          "text": "Upang patunayan na perpekto ang lahat ng edukasyon."
         },
         {
           "label": "D",
-          "text": "Pag-alis ng mga mahuhusay na Pilipino patungo sa ibang bansa para sa mas magandang oportunidad"
+          "text": "Upang malaman kung nagpapalaya o nagpapatuloy ng dependensiya ang edukasyon."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Madalas isipin ng iba na mas maganda ang trabaho sa dayuhang bansa kaysa sa sariling bayan."
+      "explanation": "Sinusuri ang edukasyon upang malaman kung nagpapalaya ito o nagpapatuloy ng dependensiya ng bansa."
     },
     {
       "id": "ww2_8_8",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang tamang kongklusyon tungkol sa epekto ng neokolonyalismo?",
+      "questionText": "Ang pagkakakilanlan ng isang bansa ay nahuhubog ng wika, kultura, at edukasyon nito. Anong ugnayan ang ipinakita ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Wala itong epekto sa lipunan"
+          "text": "Ang pagkakakilanlan ay hindi nagbabago kailanman."
         },
         {
           "label": "B",
-          "text": "Napabuti nito ang lahat ng aspeto"
+          "text": "Ang pagkakakilanlan ay nakasalalay lamang sa lahi."
         },
         {
           "label": "C",
-          "text": "Naapektuhan nito ang ekonomiya, kultura at pananaw ng maraming Pilipino"
+          "text": "Walang kinalaman ang edukasyon sa pagkakakilanlan."
         },
         {
           "label": "D",
-          "text": "Nawala ang kasaysayan ng bansa"
+          "text": "Hinuhubog ng wika, kultura, at edukasyon ang pagkakakilanlan ng bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Dahil sa matagal na ugnayan sa Amerika, nahubog ang maraming pananaw at gawi ng mga Pilipino."
+      "correctAnswer": "D",
+      "explanation": "Ipinapakita ng talata na hinuhubog ng wika, kultura at edukasyon ang pagkakakilanlan ng bansa."
     },
     {
       "id": "ww2_8_9",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang layunin ng pagtatatag ng Cultural Center of the Philippines?",
+      "questionText": "Ang kritikal na pagsusuri sa kasaysayan ng edukasyon ay tumutulong sa mga mag-aaral na maunawaan ang kanilang sariling kultura. Anong kasanayan ang nalilinang sa pagsusuri ng kasaysayan ng edukasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Itaguyod ang kulturang Amerikano"
+          "text": "Pagsang-ayon nang walang pagsusuri."
         },
         {
           "label": "B",
-          "text": "Itaguyod ang sining at kulturang Pilipino"
+          "text": "Pagtanggap lamang sa lahat ng sinabi ng iba."
         },
         {
           "label": "C",
-          "text": "Magturo ng Hapon"
+          "text": "Pag-iwas sa anumang tanong tungkol sa kasaysayan."
         },
         {
           "label": "D",
-          "text": "Magbenta ng mga banyagang produkto"
+          "text": "Kritikal na pag-iisip tungkol sa kultura at kasaysayan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ginawa ito upang pagyamanin ang pambansang kamalayan sa sining."
+      "correctAnswer": "D",
+      "explanation": "Ang kritikal na pagsusuri sa kasaysayan ng edukasyon ay nagpapaunlad ng kritikal na pag-iisip tungkol sa kultura at kasaysayan."
     },
     {
       "id": "ww2_8_10",
       "era": "ww2",
-      "subTopic": "Epekto ng neokolonyalistang pananaw sa kultura at lipunang Pilipino",
+      "subTopic": "Epekto ng Neokolonyalismo sa Kultura at Lipunan",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Aling kilos ang nagpapakita ng paglaban sa kolonyal na kaisipan?",
+      "questionText": "Ang pagsusuri ng epekto ng dayuhang edukasyon ay makatutulong upang pahalagahan ang sariling wika at kultura. Anong mensahe ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Pagpapahalaga sa sariling wika, lokal na produkto at kasaysayan"
+          "text": "Ang sariling wika at kultura ay walang halaga."
         },
         {
           "label": "B",
-          "text": "Pagmamaliit sa sariling wika"
+          "text": "Ang pagsusuri ng edukasyon ay hindi kailangan."
         },
         {
           "label": "C",
-          "text": "Pagtangkilik sa banyaga lamang"
+          "text": "Ang dayuhang edukasyon ay dapat tanggapin nang buo."
         },
         {
           "label": "D",
-          "text": "Paglimot sa mga bayani"
+          "text": "Ang pagsusuri ng dayuhang edukasyon ay tumutulong pahalagahan ang sariling wika at kultura."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang pagmamahal sa sariling kultura ay hakbang laban sa kolonyal na kaisipan."
+      "correctAnswer": "D",
+      "explanation": "Ang mensahe: ang pagsusuri ng dayuhang edukasyon ay tumutulong upang pahalagahan ang sariling wika at kultura."
     },
     {
       "id": "ww2_8_11",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging kauna-unahang halal na kapulungan ng mga Pilipino na binuksan noong 1907?",
+      "questionText": "Ang Tydings-McDuffie ay pinagtibay ng Kongreso ng Estados Unidos at tinanggap ng mga Pilipinong lider bilang hakbang tungo sa kalayaan. Ano ang pinakamahusay na buod ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "Asamblea ng Pilipinas"
+          "text": "Isang batas na nagbalik ng pamahalaang Espanyol."
         },
         {
           "label": "B",
-          "text": "Kongreso ng Malolos"
+          "text": "Isang kasunduan sa pagitan ng Pilipinas at Japan."
         },
         {
           "label": "C",
-          "text": "Senado ng Pilipinas"
+          "text": "Isang kasunduang pangkapayapaan sa pagitan ng Espanya at Pilipinas."
         },
         {
           "label": "D",
-          "text": "Batasang Pambansa"
+          "text": "Isang batas ng Estados Unidos na nagtakda ng kalayaan sa hinaharap, na tinanggap ng mga Pilipinong lider."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang Asamblea ng Pilipinas ang mababang kapulungan ng Komisyon ng Pilipinas at pinamunuan ni Sergio Osmeña."
+      "correctAnswer": "D",
+      "explanation": "Ang buod: batas ito ng Estados Unidos na nagtakda ng kalayaan sa hinaharap at tinanggap ng mga Pilipinong lider."
     },
     {
       "id": "ww2_8_12",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Anong programa ng Komonwelt ang nagbigay ng karapatang bumoto sa kababaihan noong 1937?",
+      "questionText": "Ayon sa talata, may mga Pilipinong nagpahayag ng pagtutol sa patakaran sa wika at iba pang polisiya ng Komonwelt. Anong konklusyon ang maaaring mabuo mula sa talata?",
       "options": [
         {
           "label": "A",
-          "text": "Batas Militar"
+          "text": "Ang pagtutol ay ginawa lamang ng mga dayuhan."
         },
         {
           "label": "B",
-          "text": "Batas ng Edukasyon"
+          "text": "Lahat ng Pilipino ay sumang-ayon nang walang pagtutol."
         },
         {
           "label": "C",
-          "text": "Plebisito para sa pagboto ng kababaihan"
+          "text": "Walang anumang pagtutol na naitala sa panahon ng Komonwelt."
         },
         {
           "label": "D",
-          "text": "Kasunduan sa Paris"
+          "text": "Hindi lahat ng Pilipino ay sumang-ayon sa mga polisiya ng Komonwelt."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Bumoto ang mga babae sa plebisito noong 1937 at tinanggap ang karapatang bumoto."
+      "correctAnswer": "D",
+      "explanation": "May mga nagpahayag ng pagtutol, kaya hindi lahat ng Pilipino ay sumang-ayon sa mga polisiya ng Komonwelt."
     },
     {
       "id": "ww2_8_13",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang Martsa ng Kamatayan sa Bataan?",
+      "questionText": "Noong Oktubre 14, 1943, itinatag ng Japan ang Ikalawang Republika sa ilalim ni Jose P. Laurel. Ano ang naging papel ng Ikalawang Republika?",
       "options": [
         {
           "label": "A",
-          "text": "Sapilitang paglalakad ng libu-libong bihag na Pilipino at Amerikano matapos bumagsak ang Bataan"
+          "text": "Ito ay pamahalaang itinatag ng Espanya."
         },
         {
           "label": "B",
-          "text": "Parada ng mga Hapones sa Maynila"
+          "text": "Ito ay pamahalaang itinatag ng Estados Unidos."
         },
         {
           "label": "C",
-          "text": "Paglalakbay ng Pangulo patungong Amerika"
+          "text": "Ito ay pamahalaang itinatag ng Komonwelt bago ang digmaan."
         },
         {
           "label": "D",
-          "text": "Pagpupulong ng mga heneral"
+          "text": "Ito ay pamahalaang itinatag ng Japan na pinamunuan ni Laurel."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Pagkatapos ng pagsuko ng Bataan noong Abril 9, 1942, libu-libong bihag ang namatay sa init, gutom at karahasan."
+      "correctAnswer": "D",
+      "explanation": "Ang Ikalawang Republika ay pamahalaang itinatag ng Japan noong 1943 sa pamumuno ni Laurel."
     },
     {
       "id": "ww2_8_14",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tungkulin ng Kempeitai?",
+      "questionText": "Ang patakaran ng Hapon sa edukasyon ay nagdulot ng kalituhan sa mga mag-aaral dahil sa pagbabago ng wika ng pagtuturo. Anong epekto ng patakaran sa mga mag-aaral ang nabanggit?",
       "options": [
         {
           "label": "A",
-          "text": "Samahang tumulong sa mga Pilipino"
+          "text": "Natapos ang lahat ng pag-aaral sa bansa."
         },
         {
           "label": "B",
-          "text": "Hukbong dagat ng Pilipinas"
+          "text": "Wala silang naramdamang anumang pagbabago."
         },
         {
           "label": "C",
-          "text": "Hukbong pulis ng Hapon na naghahanap at nagpaparusa sa mga pinaghihinalaang kalaban"
+          "text": "Naging mas madali ang pag-aaral para sa kanila."
         },
         {
           "label": "D",
-          "text": "Samahan ng mga guro"
+          "text": "Nalito sila dahil sa pagbabago ng wika ng pagtuturo."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Kempeitai ay kilala sa pagpapahirap at pagpatay sa mga pinaghihinalaan."
+      "correctAnswer": "D",
+      "explanation": "Nalito ang mga mag-aaral dahil nagbago ang wika ng pagtuturo."
     },
     {
       "id": "ww2_8_15",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang tagapagtatag ng Girl Scouts of the Philippines na tumulong sa mga bihag at pinatay sa Fort Santiago?",
+      "questionText": "Ang mga Pilipinong gerilya ay binubuo ng mga karaniwang mamamayan, sundalo, at mga lider ng iba't ibang pamayanan. Anong aral ang maaaring makuha mula sa komposisyon ng mga gerilya?",
       "options": [
         {
           "label": "A",
-          "text": "Josefa Llanes Escoda"
+          "text": "Ang mga lider lamang ang lumaban."
         },
         {
           "label": "B",
-          "text": "Gregoria de Jesus"
+          "text": "Ang mga gerilya ay binubuo lamang ng mga dayuhan."
         },
         {
           "label": "C",
-          "text": "Melchora Aquino"
+          "text": "Walang kinalaman ang karaniwang mamamayan sa paglaban."
         },
         {
           "label": "D",
-          "text": "Teresa Magbanua"
+          "text": "Nagkaisa ang iba't ibang sektor ng lipunan sa paglaban."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Tumulong siya sa mga bihag ng digmaan at dinakip ng Kempeitai noong 1944."
+      "correctAnswer": "D",
+      "explanation": "Ang aral: nagkaisa ang iba't ibang sektor ng lipunan sa paglaban."
     },
     {
       "id": "ww2_8_16",
       "era": "ww2",
-      "subTopic": "Kaayusang panlipunan pagkatapos ng Ikalawang Digmaang Pandaigdig",
+      "subTopic": "Kaayusang Panlipunan Matapos ang Ikalawang Digmaang Pandaigdig",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang naging dahilan ng paglakas ng kilusang Huk pagkatapos ng digmaan?",
+      "questionText": "Noong Hulyo 4, 1946, opisyal na kinilala ang kalayaan ng Pilipinas. Ang araw na ito ay ginugunita bilang Araw ng Kalayaan. Anong mahalagang pangyayari ang naganap noong Hulyo 4, 1946?",
       "options": [
         {
           "label": "A",
-          "text": "Kakulangan ng mga paaralan"
+          "text": "Nilagdaan ang Kasunduan ng Paris."
         },
         {
           "label": "B",
-          "text": "Pag-alis ng lahat ng Amerikano"
+          "text": "Itinatag ang Ikalawang Republika."
         },
         {
           "label": "C",
-          "text": "Hindi nalutas ang suliranin sa lupa at kahirapan ng mga magsasaka"
+          "text": "Ipinasa ang Saligang Batas ng 1935."
         },
         {
           "label": "D",
-          "text": "Pagtaas ng sahod"
+          "text": "Opisyal na kinilala ang kalayaan ng Pilipinas."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Maraming Huk ang naghangad ng reporma sa lupa at lumaban sa pamahalaan."
+      "correctAnswer": "D",
+      "explanation": "Noong Hulyo 4, 1946, opisyal na kinilala ang kalayaan ng Pilipinas."
     },
     {
       "id": "ww2_8_17",
       "era": "ww2",
-      "subTopic": "Neokolonyalismo: patakarang pang-ekonomiya at kasunduang militar (1946-1986)",
+      "subTopic": "Patakarang Pang-ekonomiya: Import Substitution at mga Krisis",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang \"Filipino First Policy\" ni Pangulong Carlos P. Garcia?",
+      "questionText": "Sa panahon ng import substitution, nagkaroon ng pagsisikap na palakasin ang mga lokal na industriya. Anong layunin ang nakita sa panahon ng import substitution?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbibigay-priyoridad sa mga negosyanteng Pilipino at lokal na produkto"
+          "text": "Pahinain ang mga lokal na industriya."
         },
         {
           "label": "B",
-          "text": "Pagbabawal sa lahat ng dayuhan"
+          "text": "Itigil ang lahat ng produksiyon sa bansa."
         },
         {
           "label": "C",
-          "text": "Pagpapalit ng wikang pambansa"
+          "text": "Ibigay ang lahat ng industriya sa dayuhan."
         },
         {
           "label": "D",
-          "text": "Pagsunod sa Amerika"
+          "text": "Palakasin ang mga lokal na industriya ng bansa."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Layunin nitong bawasan ang kontrol ng mga dayuhan sa ekonomiya."
+      "correctAnswer": "D",
+      "explanation": "Ang layunin ng import substitution ay palakasin ang mga lokal na industriya ng bansa."
     },
     {
       "id": "ww2_8_18",
       "era": "ww2",
-      "subTopic": "Tungo sa nagsasariling pamahalaan",
+      "subTopic": "Batas Tydings-McDuffie",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang namuno sa Misyong Pangkalayaan na tinawag na \"OsRox\" noong 1922?",
+      "questionText": "Ang Tydings-McDuffie ay nagbigay ng daan sa pagbuo ng Pamahalaang Komonwelt, na pinamunuan ni Manuel L. Quezon. Anong ugnayan ang nakikita sa pagitan ng batas at ng Komonwelt?",
       "options": [
         {
           "label": "A",
-          "text": "Manuel Quezon at Jose Laurel"
+          "text": "Walang ugnayan ang batas at ang Komonwelt."
         },
         {
           "label": "B",
-          "text": "Sergio Osmeña at Manuel Roxas"
+          "text": "Ang batas ay ipinawalang-bisa ng Komonwelt."
         },
         {
           "label": "C",
-          "text": "Emilio Aguinaldo at Apolinario Mabini"
+          "text": "Ang batas ang nagbigay daan sa pagbuo ng Komonwelt."
         },
         {
           "label": "D",
-          "text": "Claro Recto at Elpidio Quirino"
+          "text": "Ang Komonwelt ang sumulat ng batas sa Estados Unidos."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang OsRox ay pinaikling pangalan nina Osmeña at Roxas, na humiling ng kalayaan sa Estados Unidos."
+      "correctAnswer": "C",
+      "explanation": "Ang Tydings-McDuffie ang nagbigay daan sa pagbuo ng Komonwelt na pinamunuan ni Quezon."
     },
     {
       "id": "ww2_8_19",
       "era": "ww2",
-      "subTopic": "Pamahalaang Komonwelt at mga Pilipinong lumaban para sa kalayaan",
+      "subTopic": "Patakarang Komonwelt at mga Lumaban sa mga Amerikano",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sino ang heneral na tumangging manumpa ng katapatan sa Amerika at ipinatapon sa Guam?",
+      "questionText": "Noong Hulyo 4, 1946, kinilala ng Batas Komonwelt 570 ang Filipino bilang opisyal na wika kasama ang Ingles. Ano ang ipinakikita ng Batas Komonwelt 570?",
       "options": [
         {
           "label": "A",
-          "text": "Emilio Aguinaldo"
+          "text": "Pagpapawalang-bisa ng Filipino bilang wika."
         },
         {
           "label": "B",
-          "text": "Manuel Quezon"
+          "text": "Pagbalik ng Espanyol bilang opisyal na wika."
         },
         {
           "label": "C",
-          "text": "Sergio Osmeña"
+          "text": "Pagpapatigil sa paggamit ng anumang wika sa paaralan."
         },
         {
           "label": "D",
-          "text": "Artemio Ricarte"
+          "text": "Opisyal na pagkilala sa Filipino bilang wikang opisyal kasama ang Ingles."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Si Artemio Ricarte ay hindi sumuko at kalaunan ay namatay sa Pilipinas sa panahon ng digmaan."
+      "explanation": "Ipinapakita ng Batas Komonwelt 570 ang opisyal na pagkilala sa Filipino bilang wikang opisyal kasama ang Ingles."
     },
     {
       "id": "ww2_8_20",
       "era": "ww2",
-      "subTopic": "Layunin at mahahalagang pangyayari sa pananakop ng mga Hapones",
+      "subTopic": "Mga Layunin at Pangyayari sa Pananakop ng Hapon",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ano ang tanyag na pangako ni MacArthur nang umalis siya sa Pilipinas noong 1942?",
+      "questionText": "Ang Japan ay nagpakilala ng mga patakaran na naglalayong baguhin ang kultura at wika ng mga Pilipino. Anong layunin ng Japan ang ipinakita ng talata?",
       "options": [
         {
           "label": "A",
-          "text": "\"Mabuhay ang Pilipinas\""
+          "text": "Palaganapin ang kulturang Amerikano."
         },
         {
           "label": "B",
-          "text": "\"I shall return\""
+          "text": "Ibalik ang wikang Espanyol sa bansa."
         },
         {
           "label": "C",
-          "text": "\"Walang iwanan\""
+          "text": "Baguhin ang kultura at wika ng mga Pilipino."
         },
         {
           "label": "D",
-          "text": "\"Pilipinas para sa Pilipino\""
+          "text": "Panatilihin ang lahat ng kultura ng mga Pilipino."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Tinupad niya ang pangako nang lumapag siya sa Leyte noong Oktubre 20, 1944."
+      "correctAnswer": "C",
+      "explanation": "Layunin ng Japan na baguhin ang kultura at wika ng mga Pilipino."
     },
     {
       "id": "ww2_8_21",
       "era": "ww2",
-      "subTopic": "Mga pagbabago sa lipunang Pilipino sa ilalim ng mga Hapones",
+      "subTopic": "Mga Pagbabago sa Lipunan sa Panahon ng Hapon",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang ginawa ng mga Hapones sa edukasyon sa Pilipinas?",
+      "questionText": "Ang kasaysayan ng wika sa Pilipinas ay nagpapakita kung paano naapektuhan ng mga mananakop ang edukasyon. Anong ugnayan ang nakikita sa pagitan ng mananakop at edukasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Ginawang libre ang lahat ng kolehiyo"
+          "text": "Walang kinalaman ang mananakop sa edukasyon."
         },
         {
           "label": "B",
-          "text": "Pinalitan ang lahat ng guro ng Amerikano"
+          "text": "Ang mananakop ay hindi nagtatag ng anumang paaralan."
         },
         {
           "label": "C",
-          "text": "Isinara ang lahat ng paaralan magpakailanman"
+          "text": "Naimpluwensiyahan ng mananakop ang sistema ng edukasyon."
         },
         {
           "label": "D",
-          "text": "Binago ang kurikulum upang burahin ang impluwensiya ng Amerika at ituro ang kultura ng Hapon"
+          "text": "Ang edukasyon ay laging nasa kamay ng mga Pilipino lamang."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Itinuro ang Nihonggo at pagpapahalagang Asyano."
+      "correctAnswer": "C",
+      "explanation": "Ang ugnayan: naimpluwensiyahan ng mananakop ang sistema ng edukasyon."
     },
     {
       "id": "ww2_8_22",
       "era": "ww2",
-      "subTopic": "Pananaliksik sa pagpupunyagi ng mga Pilipino tungo sa kalayaan",
+      "subTopic": "Kontribusyon ng mga Gerilya at Hukbalahap",
       "gradeLevel": "grade6",
       "level": 8,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alin ang halimbawa ng pagsisikap ng mga Pilipino para sa ganap na kalayaan matapos ang digmaan?",
+      "questionText": "Ang Hukbalahap ay grupong lumaban sa Hapon, lalo na sa Gitnang Luzon. Ang pangalan nito ay nagmula sa Hukbong Bayan Laban sa mga Hapon. Ano ang layunin ng Hukbalahap?",
       "options": [
         {
           "label": "A",
-          "text": "Pagtanggap ng pananakop ng Hapon"
+          "text": "Labanan ang pananakop ng Hapon."
         },
         {
           "label": "B",
-          "text": "Pakikipag-ayos sa Estados Unidos hanggang sa pagkamit ng kalayaan noong Hulyo 4, 1946"
+          "text": "Tulungan ang Hapon sa pananakop."
         },
         {
           "label": "C",
-          "text": "Pagbabalik sa pamamahala ng Espanya"
+          "text": "Ipagbawal ang lahat ng labanan sa bansa."
         },
         {
           "label": "D",
-          "text": "Pagtalikod sa kalayaan"
+          "text": "Ipagtanggol ang kapangyarihan ng Espanya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Naganap ang kalayaan nang magtapos ang Komonwelt noong 1946."
+      "correctAnswer": "A",
+      "explanation": "Ang layunin ng Hukbalahap ay labanan ang pananakop ng Hapon."
     }
   ]
 }

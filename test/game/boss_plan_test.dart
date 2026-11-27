@@ -55,6 +55,67 @@ void main() {
       expect(BossPlan.phaseTag(22), 'Phase 3 · 10 s');
     });
 
+    group('the time for a long question, and the teacher\'s own number', () {
+      Question words(int questionWords, {int optionWords = 3}) => Question(
+            id: 'w',
+            era: 'spanish',
+            questionText: List.filled(questionWords, 'salita').join(' '),
+            options: [
+              for (final l in ['A', 'B', 'C', 'D'])
+                QuestionOption(label: l, text: List.filled(optionWords, 'sagot').join(' ')),
+            ],
+            correctAnswer: 'A',
+          );
+
+      test('a short card keeps the normal times', () {
+        final q = words(14); // 14 + 4 x 3 = 26 words
+        expect(BossPlan.cardWords(q), 26);
+        expect(BossPlan.readingBonus(q), 0);
+        expect(BossPlan.secondsFor(1, question: q), 15);
+        expect(BossPlan.secondsFor(10, question: q), 12);
+        expect(BossPlan.secondsFor(22, question: q), 10);
+      });
+
+      test('exactly 30 words is still free, then each word adds about a third of a second', () {
+        expect(BossPlan.readingBonus(words(18)), 0); // 30 words
+        expect(BossPlan.readingBonus(words(19)), 0); // 31 words: 0.35 s rounds to 0
+        expect(BossPlan.readingBonus(words(49)), 11); // 61 words: 31 extra x 0.35 = 10.85
+      });
+
+      test('a typical new card (about 62 words) gets about 11 more seconds in every phase', () {
+        final q = words(27, optionWords: 9); // 27 + 36 = 63 words
+        expect(BossPlan.cardWords(q), 63);
+        expect(BossPlan.readingBonus(q), 12);
+        expect(BossPlan.secondsFor(1, question: q), 27);
+        expect(BossPlan.secondsFor(10, question: q), 24);
+        expect(BossPlan.secondsFor(22, question: q), 22);
+      });
+
+      test('the bonus stops at 25 seconds', () {
+        final q = words(60, optionWords: 20); // 140 words
+        expect(BossPlan.readingBonus(q), 25);
+        expect(BossPlan.secondsFor(1, question: q), 40);
+      });
+
+      test('no question known (the HUD before the first throw) means no bonus', () {
+        expect(BossPlan.secondsFor(1), 15);
+      });
+
+      test('a teacher\'s number is used as it is, the later phases shorter in the same shape', () {
+        final long = words(27, optionWords: 9);
+        expect(BossPlan.secondsFor(1, question: long, teacherSeconds: 15), 15, reason: 'no bonus on top of the teacher');
+        expect(BossPlan.secondsFor(10, question: long, teacherSeconds: 15), 12);
+        expect(BossPlan.secondsFor(22, question: long, teacherSeconds: 15), 10);
+        expect([for (final r in [1, 10, 22]) BossPlan.secondsFor(r, teacherSeconds: 30)], [30, 24, 20]);
+        expect([for (final r in [1, 10, 22]) BossPlan.secondsFor(r, teacherSeconds: 120)], [120, 96, 80]);
+      });
+
+      test('the phase label shows the seconds of this question', () {
+        expect(BossPlan.phaseTag(1, seconds: 27), 'Phase 1 · 27 s');
+        expect(BossPlan.phaseTag(10), 'Phase 2 · 12 s');
+      });
+    });
+
     test('the extra attack starts in round 16', () {
       expect(BossPlan.extraFromRound, 16);
     });

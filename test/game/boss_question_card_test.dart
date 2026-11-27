@@ -111,9 +111,90 @@ void main() {
           'Ano ang tawag sa sinaunang sistema ng pagsulat ng mga Pilipino bago pa man '
                   'dumating ang mga Espanyol, na ginamit ng mga ninuno natin sa mga talaan at liham? ' *
               2;
-      await _pump(tester, screen, _card(question: _question(text: long)));
+      final q = _question(text: long);
+      await _pump(tester, screen, _card(question: q));
       expect(_rect(tester).bottom,
-          lessThanOrEqualTo(screen.height * BossQuestionCard.lowestShare + 1));
+          lessThanOrEqualTo(screen.height * BossQuestionCard.roomFor(q).heightShare + 1));
+    });
+
+    testWidgets('even an enormous question never reaches below the roomiest limit', (tester) async {
+      const screen = Size(732, 320);
+      final q = _question(text: List.filled(400, 'salita').join(' '));
+      await _pump(tester, screen, _card(question: q));
+      expect(_rect(tester).bottom,
+          lessThanOrEqualTo(screen.height * BossQuestionCard.roomiestShare + 1));
+    });
+
+    group('a long question gets more room', () {
+      Question words(int n, {int optionWords = 3}) => Question(
+            id: 'w$n',
+            era: 'spanish',
+            questionText: List.filled(n, 'salita').join(' '),
+            options: [
+              for (final l in ['A', 'B', 'C', 'D'])
+                QuestionOption(label: l, text: List.filled(optionWords, 'sagot').join(' ')),
+            ],
+            correctAnswer: 'A',
+          );
+
+      test('a short card keeps the normal room, a 70-word card gets the roomiest', () {
+        final short = BossQuestionCard.roomFor(words(14)); // 26 words
+        expect(short.heightShare, BossQuestionCard.lowestShare);
+        expect(short.widthShare, BossQuestionCard.normalWidthShare);
+        final at40 = BossQuestionCard.roomFor(words(28)); // 40 words: still normal
+        expect(at40.heightShare, BossQuestionCard.lowestShare);
+        final big = BossQuestionCard.roomFor(words(58)); // 70 words
+        expect(big.heightShare, closeTo(BossQuestionCard.roomiestShare, 1e-9));
+        expect(big.widthShare, closeTo(BossQuestionCard.roomiestWidthShare, 1e-9));
+        final huge = BossQuestionCard.roomFor(words(300));
+        expect(huge.heightShare, closeTo(BossQuestionCard.roomiestShare, 1e-9), reason: 'it stops there');
+      });
+
+      test('the room grows smoothly with the words, never shrinks', () {
+        var last = 0.0, lastWidth = 0.0;
+        for (var n = 10; n <= 120; n += 5) {
+          final r = BossQuestionCard.roomFor(words(n));
+          expect(r.heightShare, greaterThanOrEqualTo(last));
+          expect(r.widthShare, greaterThanOrEqualTo(lastWidth));
+          last = r.heightShare;
+          lastWidth = r.widthShare;
+        }
+      });
+
+      for (final entry in {
+        'small phone 732x320': const Size(732, 320),
+        'small phone 640x360': const Size(640, 360),
+        'modern phone 873x393': const Size(873, 393),
+      }.entries) {
+        testWidgets('${entry.key}: a 63-word card is wider than a short one, inside the screen and above the limit',
+            (tester) async {
+          final screen = entry.value;
+          await _pump(tester, screen, _card(question: words(27, optionWords: 9)));
+          final r = _rect(tester);
+          expect(r.bottom, lessThanOrEqualTo(screen.height * BossQuestionCard.roomiestShare + 1));
+          expect(r.top, greaterThanOrEqualTo(BossQuestionCard.topInset - 1));
+          expect((r.center.dx - screen.width / 2).abs(), lessThan(1));
+          expect(r.left, greaterThan(0));
+          expect(r.right, lessThan(screen.width));
+
+          final longWidth = tester.getSize(find.byKey(BossQuestionCard.cardKey)).width; // laid out, before any shrinking
+          await _pump(tester, screen, _card());
+          final shortWidth = tester.getSize(find.byKey(BossQuestionCard.cardKey)).width;
+          expect(longWidth, greaterThan(shortWidth), reason: 'a long question is given width too');
+        });
+      }
+
+      testWidgets('answering (the explanation) keeps the same room for the same question', (tester) async {
+        const screen = Size(732, 320);
+        final q = words(27, optionWords: 9);
+        await _pump(tester, screen, _card(question: q));
+        final before = _rect(tester);
+        await _pump(tester, screen, _card(question: q, answered: true, selected: 'B', explaining: true, onContinue: () {}));
+        final after = _rect(tester);
+        expect(after.bottom, lessThanOrEqualTo(screen.height * BossQuestionCard.roomiestShare + 1));
+        expect(before.bottom, lessThanOrEqualTo(screen.height * BossQuestionCard.roomiestShare + 1));
+        expect(after.bottom, lessThanOrEqualTo(screen.height * BossQuestionCard.roomiestShare + 1));
+      });
     });
 
     testWidgets(

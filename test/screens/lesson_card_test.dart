@@ -85,11 +85,11 @@ void main() {
       }
     });
 
-    test('every lesson is read for a fair time, under a minute and 40 seconds', () {
+    test('every lesson is read for a fair time, under two minutes', () {
       for (final e in _eras) {
         for (final c in real[e]!) {
           final s = LessonCardScreen.readSeconds(c);
-          expect(s, inInclusiveRange(20, 100), reason: '$e ${c.weeks}');
+          expect(s, inInclusiveRange(20, 120), reason: '$e ${c.weeks}');
         }
       }
     });

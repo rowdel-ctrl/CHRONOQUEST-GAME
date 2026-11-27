@@ -3,6 +3,7 @@ import 'dart:math';
 import '../core/boss_attack_constants.dart';
 import '../core/constants.dart';
 import '../models/question.dart';
+import '../utils/reading_time.dart';
 
 /// How a boss fight is laid out: 22 rounds, three phases that get harder (less time to
 /// answer), a wrong answer asked again at the back. Plain Dart, so it can be tested without
@@ -22,15 +23,36 @@ class BossPlan {
   /// Phase (1 to 3) of [round] (1 is the first round).
   static int phaseOfRound(int round) => BossAttackConstants.phaseOfRound(round);
 
-  /// Seconds to answer in [round].
+  /// Seconds to answer in [round], for a short question and no teacher setting.
   static double secondsForRound(int round) => answerSeconds[phaseOfRound(round) - 1];
+
+  /// How much shorter the second and third phase are than the first (12 / 15 and 10 / 15), so a
+  /// teacher sets one number and the phases keep their shape.
+  static const List<double> phaseShare = [1, 12 / 15, 10 / 15];
+
+  /// Words on the card, and the seconds added for reading a long one (see [ReadingTime]).
+  static int cardWords(Question q) => ReadingTime.cardWords(q);
+  static int readingBonus(Question q) => ReadingTime.bonus(q);
+
+  /// Seconds to answer [question] in [round].
+  ///
+  /// With a teacher's number ([teacherSeconds], the first phase's time) that number is used as it
+  /// is, shortened by [phaseShare] in the later phases. Without one the normal times of
+  /// [answerSeconds] apply, plus [readingBonus] for a long card, so a long question is not lost
+  /// to a clock made for a short one.
+  static double secondsFor(int round, {Question? question, int? teacherSeconds}) {
+    final phase = phaseOfRound(round);
+    if (teacherSeconds != null) return (teacherSeconds * phaseShare[phase - 1]).roundToDouble();
+    final bonus = question == null ? 0 : readingBonus(question);
+    return answerSeconds[phase - 1] + bonus;
+  }
 
   /// "Tanong 7 ng 22": the round being played, counting the ones already won.
   static String roundTag(int round, int total) => 'Tanong $round ng $total';
 
   /// "Phase 2 · 12 s".
-  static String phaseTag(int round) =>
-      'Phase ${phaseOfRound(round)} · ${secondsForRound(round).round()} s';
+  static String phaseTag(int round, {double? seconds}) =>
+      'Phase ${phaseOfRound(round)} · ${(seconds ?? secondsForRound(round)).round()} s';
 }
 
 /// The questions of one boss fight, in the order they are asked.

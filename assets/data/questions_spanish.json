@@ -8,27 +8,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Dumating ang mga Espanyol sa Pilipinas para maghanap ng ginto at yamang-kalakal. Anong dahilan ng kolonisasyon ito?",
+      "questionText": "Nagbabasa si Miguel ng isang liham mula sa isang opisyal ng Espanya noong ika-16 na siglo na nagsasabing kailangang sakupin ang mga pulo sa Asya upang makakuha ng pampalasa, ginto, at makapagtayo ng mga simbahan. Aling dalawang dahilan ng kolonisasyon ang malinaw na makikita sa liham na binasa ni Miguel?",
       "options": [
         {
           "label": "A",
-          "text": "Paghahanap ng ginto"
+          "text": "Gold at Glory"
         },
         {
           "label": "B",
-          "text": "Pagtuturo ng Ingles"
+          "text": "Gold at Gospel"
         },
         {
           "label": "C",
-          "text": "Pagtulong sa kalakalan ng Pilipino"
+          "text": "Glory at Gospel"
         },
         {
           "label": "D",
-          "text": "Paglilibang sa mga katutubo"
+          "text": "Reduccion at Patronato"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Hinanap ng Espanya ang ginto at yamang-kalakal ng Pilipinas; isa ito sa tatlong dahilan ng kolonisasyon, ang \"Gold, Glory, Gospel\"."
+      "correctAnswer": "B",
+      "explanation": "Ang pampalasa at ginto ay Gold, at ang pagtatayo ng simbahan ay Gospel. Ito ang dalawang dahilang nasa liham."
     },
     {
       "id": "spa_1_2",
@@ -38,27 +38,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gusto ng Hari ng Espanya na maging makapangyarihan at kilala ang kaniyang bansa sa mundo. Anong dahilan ng kolonisasyon ito?",
+      "questionText": "Nais ng Hari ng Espanya na kilalanin ang kanyang kaharian bilang pinakamakapangyarihan at pinakamalawak sa buong Europa sa pamamagitan ng pag-angkin ng mga bagong lupain sa silangan. Anong pangunahing layunin ng kolonisasyon ang ipinapakita ng hangaring ito ng Hari?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbibigay ng kalayaan"
+          "text": "Reduccion, dahil pinagsasama-sama nito ang mga nayon."
         },
         {
           "label": "B",
-          "text": "Karangalan at kapangyarihan"
+          "text": "Gospel, dahil nais nitong magpadala ng mga misyonero."
         },
         {
           "label": "C",
-          "text": "Pagtuturo ng Ingles"
+          "text": "Gold, dahil naghahanap ito ng maraming pilak at ginto."
         },
         {
           "label": "D",
-          "text": "Pagtulong sa mahihirap"
+          "text": "Glory, dahil hangad nito ang kapangyarihan at karangalan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang \"Glory\" sa Gold, Glory, Gospel ay ang hangad ng Espanya na magkaroon ng karangalan at kapangyarihan bilang bansa."
+      "correctAnswer": "D",
+      "explanation": "Glory ang hangad ng Hari: kapangyarihan at karangalan bilang pinakamalawak na kaharian sa Europa."
     },
     {
       "id": "spa_1_3",
@@ -68,27 +68,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sabi ng kaklase mo, ang kolonisasyon ay pagbisita lang ng mga dayuhan. Ano ang tamang kahulugan nito?",
+      "questionText": "Noong unang panahon, nakatira ang pamilya ni Makisig sa malalayong burol at tabing-ilog. Dumating ang mga sundalo at prayleng Espanyol at inutusan silang lumipat sa bagong bayan na malapit sa plasa at simbahan. Ano ang pangunahing dahilan kung bakit ipinatupad ng mga Espanyol ang patakarang Reduccion sa pamilya ni Makisig?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbisita ng turista"
+          "text": "Upang makapaglakbay sila nang mabilis patungong Espanya."
         },
         {
           "label": "B",
-          "text": "Pagtulong sa kapitbahay"
+          "text": "Upang mailayo sila sa malalakas na bagyo sa tabing-ilog."
         },
         {
           "label": "C",
-          "text": "Pakikipagkaibigan"
+          "text": "Upang madali silang pamahalaan at turuan ng Kristiyanismo."
         },
         {
           "label": "D",
-          "text": "Pananakop para pakinabangan ang yaman"
+          "text": "Upang mabigyan sila ng malalawak na sakahan sa kabundukan."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang kolonisasyon ay pananakop sa ibang lupain upang pamahalaan ito at pakinabangan ang yaman at mga tao nito, hindi simpleng pagbisita."
+      "correctAnswer": "C",
+      "explanation": "Pinalipat sila sa bayan malapit sa plasa at simbahan para madaling pamahalaan at turuan ng Kristiyanismo."
     },
     {
       "id": "spa_1_4",
@@ -98,27 +98,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Pinilit ang mga nakakalat na pamayanan na tumira malapit sa simbahan, \"sa ilalim ng kampana.\" Ano ang tawag sa patakarang ito?",
+      "questionText": "Nang tumanggi ang mga pamilya sa isang liblib na barangay na iwan ang kanilang lupain at lumipat sa itinatag na pueblo, ginamit ng mga Espanyol ang kanilang mga kawal upang sapilitang paalisin ang mga ito. Anong paraan ng pagsasailalim ang ginamit ng mga Espanyol sa sitwasyong ito?",
       "options": [
         {
           "label": "A",
-          "text": "Bandala"
+          "text": "Patronato Real at pagbubuwis"
         },
         {
           "label": "B",
-          "text": "Encomienda"
+          "text": "Pakikipagkalakalan at Sandugo"
         },
         {
           "label": "C",
-          "text": "Reduccion"
+          "text": "Puwersang Militar at Reduccion"
         },
         {
           "label": "D",
-          "text": "Tributo"
+          "text": "Kristiyanisasyon at pagdiriwang"
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Ang Reduccion ay sapilitang pagsasama-sama ng mga katutubo sa isang pamayanan malapit sa simbahan para mas madali silang pamahalaan."
+      "explanation": "Pinaalis sila ng mga kawal na Espanyol sa sapilitang paglipat sa pueblo. Puwersang militar at Reduccion ang ginamit."
     },
     {
       "id": "spa_1_5",
@@ -128,27 +128,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ipinagkaloob ng Santo Papa sa Hari ng Espanya ang karapatang pamunuan ang gawaing panrelihiyon sa mga sinakop na lupain, kasama ang pagtatalaga ng obispo at pari. Ano ang tawag dito?",
+      "questionText": "Sa isang talakayan sa klase, sinabi ni Carlo na ang kolonisasyon ay simpleng pagbisita at pakikipagkaibigan lamang ng isang bansa sa isa pang lupain. Aling pahayag ang pinakatamang magwawasto sa maling pagkaunawa ni Carlo?",
       "options": [
         {
           "label": "A",
-          "text": "Reduccion"
+          "text": "Ito ay pansamantalang pagtigil ng mga barko sa daungan."
         },
         {
           "label": "B",
-          "text": "Kolonisasyon"
+          "text": "Ito ay palitan ng mga produkto nang may pantay na halaga."
         },
         {
           "label": "C",
-          "text": "Polo y Servicio"
+          "text": "Ito ay pagtulong sa mahihirap na bansa nang walang kapalit."
         },
         {
           "label": "D",
-          "text": "Patronato Real"
+          "text": "Ito ay pananakop upang pamahalaan at pakinabangan ang yaman."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ito ang Patronato Real: karapatang bigay ng Santo Papa sa Hari ng Espanya na pamunuan ang gawaing panrelihiyon, pati ang pagtatalaga ng obispo at pari."
+      "explanation": "Hindi simpleng pagbisita ang kolonisasyon. Pananakop ito para pamahalaan ang lupain at pakinabangan ang yaman."
     },
     {
       "id": "spa_1_6",
@@ -158,27 +158,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Iniwan ng pamilya ni Mang Tomas ang kanilang bukid at lumipat malapit sa simbahan, kahit ayaw nila. Ano ang dahilan ng Espanya?",
+      "questionText": "Sa panahon ng Espanyol, nagtalaga ang Hari ng Espanya ng mga bagong obispo at pari sa iba't ibang lalawigan sa Pilipinas upang mangasiwa sa mga parokya at simbahan. Aling kasunduan o karapatan ang nagbigay ng kapangyarihang ito sa Hari ng Espanya?",
       "options": [
         {
           "label": "A",
-          "text": "Mas madali silang pamahalaan"
+          "text": "Patronato Real"
         },
         {
           "label": "B",
-          "text": "Para bigyan sila ng lupa"
+          "text": "Polo y Servicio"
         },
         {
           "label": "C",
-          "text": "Para lumaya sila"
+          "text": "Kalakalang Galyon"
         },
         {
           "label": "D",
-          "text": "Para magpahinga sila"
+          "text": "Sistemang Bandala"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Sa patakarang reduccion, pinalipat ang mga katutubo malapit sa simbahan para mas madali silang pamahalaan at turuan ng Kristiyanismo."
+      "explanation": "Ang Patronato Real ang nagbigay sa Hari ng karapatang mag-atas ng mga obispo at pari sa kolonya."
     },
     {
       "id": "spa_1_7",
@@ -188,27 +188,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naging magkaugnay ang simbahan at ang pamahalaang kolonyal sa Pilipinas. Anong patakaran ang dahilan nito?",
+      "questionText": "Napansin ni Lian sa kanyang pagsusuri ng kasaysayan na sa bawat ekspedisyong ipinadadala ng Espanya sa Pilipinas, laging may kasamang mga sundalo at mga prayleng misyonero. Ano ang ipinahihiwatig ng magkasabay na pagdating ng mga sundalo at prayle sa kapuluan?",
       "options": [
         {
           "label": "A",
-          "text": "Reduccion"
+          "text": "Magkaaway ang simbahan at pamahalaan sa pananakop."
         },
         {
           "label": "B",
-          "text": "Patronato Real"
+          "text": "Magkatuwang ang krus at espada sa pagsakop sa bansa."
         },
         {
           "label": "C",
-          "text": "Bandala"
+          "text": "Walang kinalaman ang relihiyon sa pamahalaang Espanyol."
         },
         {
           "label": "D",
-          "text": "Barter"
+          "text": "Tagapagtanggol ng katutubo ang mga sundalo laban sa pari."
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Dahil sa Patronato Real, ang Hari ng Espanya ang namahala sa gawain ng simbahan, kaya naging magkaugnay ang simbahan at pamahalaan."
+      "explanation": "Magkatuwang ang krus (mga prayle) at espada (mga sundalo) sa pagsakop sa bansa."
     },
     {
       "id": "spa_1_8",
@@ -218,27 +218,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Isang armadong pangkat ng Espanyol ang dumating sa isang pamayanan para pasukuin ang mga katutubo. Anong paraan ng pananakop ito?",
+      "questionText": "Tinawag ng mga Espanyol ang paninirahan sa bagong pueblo bilang pamumuhay 'sa ilalim ng kampana' dahil maririnig mula sa bawat bahay ang tunog ng kampana ng simbahan. Paano nakatulong ang tunog ng kampana sa layunin ng mga prayle at opisyal sa pueblo?",
       "options": [
         {
           "label": "A",
-          "text": "Kristiyanisasyon"
+          "text": "Nagbababala ito kung may paparating na bagyo sa dagat."
         },
         {
           "label": "B",
-          "text": "Reduccion"
+          "text": "Nagsisilbi itong hudyat sa oras ng dasal at pagtitipon."
         },
         {
           "label": "C",
-          "text": "Puwersang militar"
+          "text": "Nagpapaalala ito sa mga katutubo ng kanilang lumang awit."
         },
         {
           "label": "D",
-          "text": "Patronato Real"
+          "text": "Ginagamit ito upang itaboy ang mababangis na hayop sa gubat."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang paggamit ng armadong ekspedisyon para lupigin ang mga katutubo ay puwersang militar, isa sa mga paraan ng pananakop ng Espanya."
+      "correctAnswer": "B",
+      "explanation": "Hudyat ang kampana sa oras ng dasal at pagtitipon, kaya nasusubaybayan ang mga tao sa pueblo."
     },
     {
       "id": "spa_1_9",
@@ -248,27 +248,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtuturo ang isang misyonero ng Katolisismo para palitan ang relihiyon ng mga katutubo. Anong paraan ng pananakop ito?",
+      "questionText": "Isang sinaunang pamayanan sa baybayin ang tinuruan ng mga prayle tungkol sa pagbibinyag, pagdarasal ng rosaryo, at pagdiriwang ng pista ng mga santo kapalit ng kanilang pagsamba sa mga anito. Anong paraan ng kolonisasyon ang ginamit upang mabago ang paniniwala at pamumuhay ng pamayanan?",
       "options": [
         {
           "label": "A",
-          "text": "Puwersang militar"
+          "text": "Kristiyanisasyon"
         },
         {
           "label": "B",
-          "text": "Reduccion"
+          "text": "Kalakalang Galyon"
         },
         {
           "label": "C",
-          "text": "Bandala"
+          "text": "Sistemang Encomienda"
         },
         {
           "label": "D",
-          "text": "Kristiyanisasyon"
+          "text": "Pagpapadala ng tributo"
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang pagpapalit ng relihiyon ng mga katutubo tungo sa Katolisismo ay Kristiyanisasyon, na naging paraan din ng kontrol ng Espanya."
+      "correctAnswer": "A",
+      "explanation": "Kristiyanisasyon ang pagbabago ng paniniwala ng pamayanan sa pamamagitan ng binyag, rosaryo at pista ng mga santo."
     },
     {
       "id": "spa_1_10",
@@ -278,27 +278,177 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naglista si Mia ng mga dahilan ng kolonisasyon ng Espanya. Alin ang HINDI dahilan?",
+      "questionText": "Labis na nalungkot si Apo Lakay nang iwan nila ang kanilang lupain sa tabing-ilog dahil doon nakalibing ang kanilang mga ninuno at naroon ang kanilang mga taniman. Ano ang naging epekto ng patakarang Reduccion sa mga katutubong tulad ni Apo Lakay?",
       "options": [
         {
           "label": "A",
-          "text": "Pagbibigay ng kalayaan sa mga Pilipino"
+          "text": "Nadagdagan ang kanilang kalayaan sa pamimili ng tirahan."
         },
         {
           "label": "B",
-          "text": "Paghahanap ng ginto"
+          "text": "Naging mayaman agad ang lahat ng lumipat sa bagong bayan."
         },
         {
           "label": "C",
-          "text": "Pagpapalaganap ng Kristiyanismo"
+          "text": "Nawala ang kanilang ugnayan sa sariling lupa at kabuhayan."
         },
         {
           "label": "D",
-          "text": "Pagtatamo ng karangalan"
+          "text": "Naging pinuno sila ng mga bagong tayong simbahan sa lugar."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Iniwan nila ang lupa ng mga ninuno at taniman, kaya nawala ang kanilang ugnayan sa sariling lupa at kabuhayan."
+    },
+    {
+      "id": "spa_1_11",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang eksibit sa paaralan, may tatlong simbolo: isang sako ng ginto, isang korona ng hari, at isang krus. Kinakatawan nito ang mga dahilan ng pananakop ng Espanya. Aling simbolo ang kumakatawan sa layuning Gospel o Ebanghelyo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang krus, dahil simbolo ito ng Kristiyanismo."
+        },
+        {
+          "label": "B",
+          "text": "Ang sako ng ginto, dahil yaman ito ng simbahan."
+        },
+        {
+          "label": "C",
+          "text": "Ang korona ng hari, dahil siya ang pinuno ng bansa."
+        },
+        {
+          "label": "D",
+          "text": "Ang tatlong simbolo, dahil iisa lamang ang kahulugan."
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Ginto, karangalan at pagpapalaganap ng Kristiyanismo ang mga dahilan ng Espanya; hindi kasama ang pagbibigay ng kalayaan sa mga Pilipino."
+      "explanation": "Ang krus ay simbolo ng Kristiyanismo, kaya ito ang kumakatawan sa Gospel."
+    },
+    {
+      "id": "spa_1_12",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nagtatanong si Bea kung bakit nagawang magpasya ng Hari ng Espanya tungkol sa pagtatayo ng mga simbahan at pagpapadala ng mga pari sa Pilipinas kahit nasa Roma ang Santo Papa. Ano ang paliwanag sa malawak na kapangyarihang ito ng Hari sa simbahan ng kolonya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang mga obispo at pari sa bansang Espanya noon."
+        },
+        {
+          "label": "B",
+          "text": "Mas malapit ang Espanya sa Pilipinas kaysa sa Roma."
+        },
+        {
+          "label": "C",
+          "text": "Ibinigay ng Santo Papa ang karapatang Patronato Real."
+        },
+        {
+          "label": "D",
+          "text": "Pinili ng mga katutubo ang Hari bilang pinuno ng simbahan."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ibinigay ng Santo Papa sa Hari ang karapatang Patronato Real, kaya siya ang nagpapasya sa simbahan sa kolonya."
+    },
+    {
+      "id": "spa_1_13",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang poster na ginawa ni Anton, ipinakita niya ang isang pueblo kung saan nasa gitna ang simbahan at munisipyo, at nakapalibot dito ang mga bahay ng mga katutubo. Anong mahalagang pagbabago sa lipunang Pilipino ang ipinapakita ng guhit ni Anton?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang pagbabalik ng mga tao sa pamumuhay sa kuweba."
+        },
+        {
+          "label": "B",
+          "text": "Ang pagkakaayos ng bayan bunga ng patakarang Reduccion."
+        },
+        {
+          "label": "C",
+          "text": "Ang paglipat ng mga pamayanan mula bundok patungong dagat."
+        },
+        {
+          "label": "D",
+          "text": "Ang pagtatayo ng mga pamilihan para sa mga dayuhang Tsino."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Nakasentro ang pueblo sa simbahan at munisipyo, na bunga ng patakarang Reduccion."
+    },
+    {
+      "id": "spa_1_14",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Clara ang tatlong pangyayari: (1) Paghahanap ng mina ng ginto, (2) Pagpapalawak ng imperyo ng Hari, at (3) Pagbibinyag sa mga katutubo. Aling pagkakasunod-sunod ng '3G' ang tumutugma sa tatlong pangyayaring sinuri ni Clara?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gospel, Gold, Glory"
+        },
+        {
+          "label": "B",
+          "text": "Glory, Gospel, Gold"
+        },
+        {
+          "label": "C",
+          "text": "Gold, Glory, Gospel"
+        },
+        {
+          "label": "D",
+          "text": "Gold, Gospel, Glory"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang ginto ay Gold, ang imperyo ng Hari ay Glory, at ang pagbibinyag ay Gospel."
+    },
+    {
+      "id": "spa_1_15",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 1–2, hiniling ng guro na ipaliwanag kung paano nabago ng kolonisasyon ang sinaunang lipunang Pilipino. Aling pahayag ang pinakawasto at komprehensibo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang nagbago sa pamumuhay at paniniwala ng mga katutubo."
+        },
+        {
+          "label": "B",
+          "text": "Mas lalong lumakas ang kapangyarihan ng mga Babaylan noon."
+        },
+        {
+          "label": "C",
+          "text": "Nabago ang tirahan, relihiyon, at pamamahala ng mga Pilipino."
+        },
+        {
+          "label": "D",
+          "text": "Naging pantay ang karapatan ng Espanyol at katutubo sa batas."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nabago ng kolonisasyon ang tirahan, relihiyon at pamamahala ng mga Pilipino."
     }
   ],
   "2": [
@@ -310,27 +460,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang pamilya: si Ana ay 12 taong gulang, si Mang Ben ay 35, at si Lolo Ando ay 70. Sino ang kailangang magbayad ng tributo?",
+      "questionText": "Si Mang Pedro ay isang 35-taong-gulang na magsasaka sa panahon ng Espanyol. Tuwing sumasapit ang takdang panahon, kailangan niyang magbayad ng salapi o ani sa pamahalaan bilang tanda ng pagkilala sa Hari ng Espanya. Anong patakarang pang-ekonomiya ang ipinatutupad kay Mang Pedro?",
       "options": [
         {
           "label": "A",
-          "text": "Si Mang Ben lang"
+          "text": "Tributo"
         },
         {
           "label": "B",
-          "text": "Si Ana lang"
+          "text": "Polo y Servicio"
         },
         {
           "label": "C",
-          "text": "Si Lolo Ando lang"
+          "text": "Kalakalang Galyon"
         },
         {
           "label": "D",
-          "text": "Silang tatlo"
+          "text": "Monopolyo sa Tabako"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Ang tributo ay binabayaran ng mga may edad 16 hanggang 60, kaya si Mang Ben (35) lang ang magbabayad. Bata pa si Ana at lampas na si Lolo Ando."
+      "explanation": "Tributo ang bayad sa salapi o ani bilang pagkilala sa Hari ng Espanya."
     },
     {
       "id": "spa_2_2",
@@ -340,27 +490,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Mang Tino ay 40 taong gulang. Gumagawa siya ng polo y servicio nang 40 araw bawat taon. Ilang araw siyang gagawa sa loob ng 3 taon?",
+      "questionText": "Sa isang lalawigan, inatasan ang lahat ng kalalakihang may edad 16 hanggang 60 na magtrabaho nang walang bayad sa pagtatayo ng tulay at simbahan sa loob ng 40 araw sa isang taon. Ano ang tawag sa sapilitang paggawang ito na ipinatupad sa kalalakihan?",
       "options": [
         {
           "label": "A",
-          "text": "40"
+          "text": "Polo y Servicio"
         },
         {
           "label": "B",
-          "text": "80"
+          "text": "Sistemang Bandala"
         },
         {
           "label": "C",
-          "text": "120"
+          "text": "Kalakalang Galyon"
         },
         {
           "label": "D",
-          "text": "160"
+          "text": "Sistemang Encomienda"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang polo y servicio ay 40 araw bawat taon, kaya sa loob ng 3 taon ay 40 x 3 = 120 araw."
+      "correctAnswer": "A",
+      "explanation": "Polo y Servicio ang sapilitang paggawa nang walang bayad, 40 araw sa isang taon, ng mga lalaking 16 hanggang 60 taong gulang."
     },
     {
       "id": "spa_2_3",
@@ -370,27 +520,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Napilitang ibenta ni Aling Nena ang kaniyang ani sa pamahalaan sa mababang halaga. Anong sistema ito?",
+      "questionText": "Nakaani ng 50 kaban ng palay si Mang Tomas. Dumating ang mga opisyal ng pamahalaan at sapilitang binili ang kanyang ani sa presyong mas mababa kaysa sa tunay na halaga nito sa pamilihan. Anong mapang-abusong patakaran ang naranasan ni Mang Tomas?",
       "options": [
         {
           "label": "A",
-          "text": "Sistemang Encomienda"
+          "text": "Patronato Real"
         },
         {
           "label": "B",
-          "text": "Sistemang Bandala"
+          "text": "Kalakalang Galyon"
         },
         {
           "label": "C",
-          "text": "Monopolyo sa Tabako"
+          "text": "Sistemang Bandala"
         },
         {
           "label": "D",
-          "text": "Kalakalang Galyon"
+          "text": "Sistemang Encomienda"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Sa Sistemang Bandala, sapilitang ibinebenta ng mga magsasaka ang kanilang ani sa pamahalaan sa halagang mas mababa kaysa sa tunay na halaga."
+      "correctAnswer": "C",
+      "explanation": "Sa Sistemang Bandala, sapilitang binibili ng pamahalaan ang ani sa presyong mas mababa kaysa tunay na halaga."
     },
     {
       "id": "spa_2_4",
@@ -400,27 +550,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Binigyan ng lugar at mga naninirahan dito ang isang encomendero. Kailangan niyang protektahan at Kristiyanuhin sila. Ano ang karapatan niya kapalit nito?",
+      "questionText": "Sa loob ng halos 250 taon, naglalayag ang malalaking barkong Espanyol mula Maynila patungong Acapulco, Mexico na may dalang mga kalakal upang ipagpalit. Ano ang naging pangunahing papel ng Kalakalang Galyon sa ekonomiya ng kolonya?",
       "options": [
         {
           "label": "A",
-          "text": "Maging Hari"
+          "text": "Nagbukas ito ng kalakalan para sa lahat ng mamamayan."
         },
         {
           "label": "B",
-          "text": "Magbigay ng ginto"
+          "text": "Nagbigay ito ng libreng pagkain sa lahat ng magsasaka."
         },
         {
           "label": "C",
-          "text": "Mangolekta ng buwis"
+          "text": "Nagpaunlad ito sa paggawa ng maliliit na bangkang lokal."
         },
         {
           "label": "D",
-          "text": "Magtayo ng paaralan"
+          "text": "Nagsilbi itong pangunahing pinagkukunan ng kita ng kolonya."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Kapalit ng pagprotekta at pagkristiyano sa mga naninirahan, may karapatan ang encomendero na mangolekta ng buwis mula sa kanila."
+      "correctAnswer": "D",
+      "explanation": "Ang Kalakalang Galyon ang pangunahing pinagkukunan ng kita ng kolonya sa loob ng halos 250 taon."
     },
     {
       "id": "spa_2_5",
@@ -430,27 +580,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang lugar, ang pamahalaan lang ang puwedeng bumili at magbenta ng tabako. Ano ang tawag dito?",
+      "questionText": "Ipinagkatiwala ng Hari ng Espanya ang isang malawak na lupain at ang mga naninirahan dito kay Don Rafael upang pangalagaan at turuan ng Kristiyanismo kapalit ng karapatang maningil ng buwis. Anong sistema ang inilalarawan sa kalagayan ni Don Rafael?",
       "options": [
         {
           "label": "A",
-          "text": "Bandala"
+          "text": "Sistemang Bandala"
         },
         {
           "label": "B",
-          "text": "Tributo"
+          "text": "Pamahalaang Sentral"
         },
         {
           "label": "C",
-          "text": "Polo y Servicio"
+          "text": "Monopolyo sa Tabako"
         },
         {
           "label": "D",
-          "text": "Monopolyo sa Tabako"
+          "text": "Sistemang Encomienda"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Sa Monopolyo sa Tabako, tanging ang pamahalaan ang may karapatang bumili at magbenta ng tabako."
+      "explanation": "Sa Sistemang Encomienda, ipinagkatiwala ang lupain at mga tao sa encomendero kapalit ng karapatang maningil ng buwis."
     },
     {
       "id": "spa_2_6",
@@ -460,27 +610,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang mga galyon ay may dalang paninda mula Maynila papuntang Mexico at tumagal ng halos 250 taon. Ano ang naging kahalagahan nito?",
+      "questionText": "Ipinatupad sa ilang lalawigan na tanging ang pamahalaang Espanyol lamang ang maaaring bumili at magbenta ng tabako mula sa mga magsasaka. Ano ang naging suliranin ng mga magsasaka sa ilalim ng Monopolyo sa Tabako?",
       "options": [
         {
           "label": "A",
-          "text": "Malaking kita ng kolonya"
+          "text": "Pinayagan silang ibenta ang tabako sa ibang bansa."
         },
         {
           "label": "B",
-          "text": "Walang naidulot"
+          "text": "Hindi na sila pinayagang magtanim ng anumang halaman."
         },
         {
           "label": "C",
-          "text": "Libreng pagkain"
+          "text": "Sobra-sobra ang salaping ibinayad sa kanila ng ahente."
         },
         {
           "label": "D",
-          "text": "Pumalit sa simbahan"
+          "text": "Kinulang sila sa pagkain dahil tabako lamang ang itinanim."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang Kalakalang Galyon sa pagitan ng Pilipinas at Mexico ang naging pangunahing pinagkukunan ng kita ng kolonya sa loob ng halos 250 taon."
+      "correctAnswer": "D",
+      "explanation": "Tabako lang ang itinanim ng mga magsasaka sa ilalim ng monopolyo, kaya kinulang sila sa pagkain."
     },
     {
       "id": "spa_2_7",
@@ -490,27 +640,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa Maynila nakatira ang pinuno ng buong pamahalaang kolonyal. Kinatawan siya ng Hari ng Espanya. Sino siya?",
+      "questionText": "Sa panahon ng anihan, malayo ang pinagdalhan kay Mang Juan para sa Polo y Servicio. Dahil dito, walang nag-alaga at nag-ani sa kanyang sariling palayan. Paano nakaapekto ang Polo y Servicio sa kabuhayan ng pamilya ni Mang Juan?",
       "options": [
         {
           "label": "A",
-          "text": "Alcalde Mayor"
+          "text": "Natuto siyang gumawa ng barko kaya naging mayaman."
         },
         {
           "label": "B",
-          "text": "Gobernador Heneral"
+          "text": "Binigyan sila ng libreng bigas ng Gobernador Heneral."
         },
         {
           "label": "C",
-          "text": "Gobernadorcillo"
+          "text": "Napabayaan ang sakahan kaya nagkulang ang pagkain nila."
         },
         {
           "label": "D",
-          "text": "Encomendero"
+          "text": "Lumaki ang kita ng pamilya dahil sa sahod sa pamahalaan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang Gobernador Heneral ang pinuno ng sentral na pamahalaan sa Maynila at kinatawan ng Hari ng Espanya."
+      "correctAnswer": "C",
+      "explanation": "Nawala si Mang Juan sa sakahan dahil sa Polo y Servicio, kaya napabayaan ang palayan at nagkulang ang pagkain nila."
     },
     {
       "id": "spa_2_8",
@@ -520,27 +670,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang bayan, katutubong Pilipino ang pinuno. Ano ang tawag sa kaniya?",
+      "questionText": "Pinag-aaralan ni Nina ang balangkas ng Pamahalaang Kolonyal ng Espanya sa Pilipinas mula sa pinakamataas na pinuno sa Maynila hanggang sa pinuno ng bayan. Aling pagkakasunod-sunod ang nagpapakita ng tamang antas ng pamumuno mula sa pinakamataas hanggang sa bayan?",
       "options": [
         {
           "label": "A",
-          "text": "Alcalde Mayor"
+          "text": "Alcalde Mayor, Gobernadorcillo, Gobernador Heneral"
         },
         {
           "label": "B",
-          "text": "Gobernador Heneral"
+          "text": "Gobernadorcillo, Alcalde Mayor, Gobernador Heneral"
         },
         {
           "label": "C",
-          "text": "Gobernadorcillo"
+          "text": "Gobernador Heneral, Alcalde Mayor, Gobernadorcillo"
         },
         {
           "label": "D",
-          "text": "Encomendero"
+          "text": "Gobernador Heneral, Gobernadorcillo, Alcalde Mayor"
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Ang Gobernadorcillo ang katutubong Pilipinong pinuno ng isang bayan o pueblo sa panahon ng Espanyol."
+      "explanation": "Mula pinakamataas: Gobernador Heneral, Alcalde Mayor, Gobernadorcillo."
     },
     {
       "id": "spa_2_9",
@@ -550,27 +700,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Mahal ang bigas sa palengke, pero mababa ang bayad ng pamahalaan kay Mang Ben para sa ani niya. Ano ang epekto nito sa kaniya?",
+      "questionText": "Si Don Mariano ay isang katutubong Pilipino na hinirang bilang Gobernadorcillo sa kanilang pueblo. Siya ang naatasang maningil ng buwis at magpanatili ng kaayusan sa bayan. Ano ang mahalagang katangian ng posisyong Gobernadorcillo sa pamahalaang lokal?",
       "options": [
         {
           "label": "A",
-          "text": "Yumaman siya"
+          "text": "Siya ang pinakamataas na pinuno sa buong Pilipinas."
         },
         {
           "label": "B",
-          "text": "Malaki ang kita niya"
+          "text": "Siya ang nagpapadala ng mga barko patungong Mexico."
         },
         {
           "label": "C",
-          "text": "Libre ang bigas niya"
+          "text": "Ito ang pinakamataas na posisyong bukas sa katutubo."
         },
         {
           "label": "D",
-          "text": "Kaunti ang kita niya"
+          "text": "Siya ang pumipili ng bagong Hari sa bansang Espanya."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Sa sistemang bandala, mababa ang bayad sa ani ng magsasaka kahit mataas ang presyo sa palengke, kaya kaunti ang kita niya."
+      "correctAnswer": "C",
+      "explanation": "Ang Gobernadorcillo ang pinakamataas na posisyon sa pamahalaan na maaaring hawakan ng katutubo."
     },
     {
       "id": "spa_2_10",
@@ -580,27 +730,177 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang tributo, bandala, at polo y servicio ay pare-parehong nagpapahirap sa mga Pilipino. Ano ang pagkakatulad ng tatlo?",
+      "questionText": "Sa isang pagsusulit, pinaghahambing nina Ana at Ben ang Tributo at Sistemang Bandala na parehong ipinatupad sa mga mamamayan. Ano ang pangunahing pagkakaiba ng Tributo at Sistemang Bandala?",
       "options": [
         {
           "label": "A",
-          "text": "Pakinabang ng Espanya ang layunin"
+          "text": "Ang Tributo ay sa Maynila; ang Bandala ay sa Mexico."
         },
         {
           "label": "B",
-          "text": "Para tumulong sa Pilipino"
+          "text": "Ang Tributo ay para sa babae; ang Bandala ay sa lalaki."
         },
         {
           "label": "C",
-          "text": "Para sa kalayaan"
+          "text": "Ang Tributo ay gawaing bayan; ang Bandala ay pagdarasal."
         },
         {
           "label": "D",
-          "text": "Libre ang lahat"
+          "text": "Ang Tributo ay taunang buwis; ang Bandala ay sapilitang pagbili ng ani."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang Tributo ay taunang buwis. Ang Bandala ay sapilitang pagbili ng ani sa mababang presyo."
+    },
+    {
+      "id": "spa_2_11",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang kinatawan ng Hari ng Espanya sa Pilipinas, hawak ng Gobernador Heneral ang kapangyarihang magpatupad ng batas at mamuno sa buong kolonya. Saang bahagi ng pamahalaang kolonyal namumuno ang Gobernador Heneral?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pamahalaang Pambayan"
+        },
+        {
+          "label": "B",
+          "text": "Sentral na Pamahalaan"
+        },
+        {
+          "label": "C",
+          "text": "Pamahalaang Pambarangay"
+        },
+        {
+          "label": "D",
+          "text": "Pamahalaang Panlalawigan"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang Gobernador Heneral ang namumuno sa sentral na pamahalaan sa Maynila bilang kinatawan ng Hari."
+    },
+    {
+      "id": "spa_2_12",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Isang 65-taong-gulang na lolo at isang 14-taong-gulang na binatilyo ang naninirahan sa iisang pamilya noong panahon ng Espanyol. Batay sa batas ng Polo y Servicio at Tributo, sakop ba sila ng sapilitang paggawa at pagbabayad ng buwis?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hindi, dahil ang sakop lamang ay edad 16 hanggang 60."
+        },
+        {
+          "label": "B",
+          "text": "Oo, dahil kailangan silang turuan ng sipag sa paggawa."
+        },
+        {
+          "label": "C",
+          "text": "Hindi, dahil mga babae lamang ang nagbabayad ng buwis."
+        },
+        {
+          "label": "D",
+          "text": "Oo, dahil lahat ng lalaki ay dapat maglingkod sa Hari."
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Ang tributo, bandala at polo y servicio ay ginawa para mapakinabangan ng Espanya ang Pilipinas, hindi para tulungan ang mga Pilipino."
+      "explanation": "Hindi sila sakop dahil ang Polo y Servicio at Tributo ay para sa mga edad 16 hanggang 60 lamang."
+    },
+    {
+      "id": "spa_2_13",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Gabby ang epekto ng mga patakarang pang-ekonomiya ng Espanya (Tributo, Bandala, Polo, Monopolyo) sa kabuhayan ng mga Pilipino. Ano ang pangkalahatang layunin ng lahat ng patakarang pang-ekonomiyang ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mapayaman ang mga katutubong magsasaka sa probinsya."
+        },
+        {
+          "label": "B",
+          "text": "Makapagpatayo ng sariling negosyo ang bawat Pilipino."
+        },
+        {
+          "label": "C",
+          "text": "Maging pantay ang antas ng pamumuhay ng lahat sa bayan."
+        },
+        {
+          "label": "D",
+          "text": "Mapakinabangan ng Espanya ang yaman at paggawa ng kolonya."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Iisa ang layunin ng mga patakarang ito: mapakinabangan ng Espanya ang yaman at paggawa ng kolonya."
+    },
+    {
+      "id": "spa_2_14",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang dula-dulaan, ipinakita ni Sofia ang pagdating ng galyon mula Acapulco sa daungan ng Maynila na sinalubong ng mga opisyal at mangangalakal. Aling dalawang lugar ang pinag-ugnay ng Kalakalang Galyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Cebu sa Pilipinas at Macau sa Tsina"
+        },
+        {
+          "label": "B",
+          "text": "Jolo sa Sulu at Batavia sa Indonesia"
+        },
+        {
+          "label": "C",
+          "text": "Maynila sa Pilipinas at Madrid sa Espanya"
+        },
+        {
+          "label": "D",
+          "text": "Maynila sa Pilipinas at Acapulco sa Mexico"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinag-ugnay ng Kalakalang Galyon ang Maynila sa Pilipinas at ang Acapulco sa Mexico."
+    },
+    {
+      "id": "spa_2_15",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang pagtatapos sa Linggo 3–5, hiniling ng guro na ibuod ang naging epekto ng mga patakarang kolonyal sa pamumuhay ng mga Pilipino. Aling pahayag ang pinakatamang buod?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagdala ito ng kasaganaan at kalayaan sa lahat ng Pilipino."
+        },
+        {
+          "label": "B",
+          "text": "Naging pantay ang karapatan ng mga magsasaka at encomendero."
+        },
+        {
+          "label": "C",
+          "text": "Pinatatag nito ang kapangyarihan ng mga katutubo sa pamahalaan."
+        },
+        {
+          "label": "D",
+          "text": "Nagdulot ito ng kahirapan, pang-aabuso, at pagkawala ng kalayaan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Dahil sa mga patakarang kolonyal, nagdusa ang mga Pilipino sa kahirapan, pang-aabuso at pagkawala ng kalayaan."
     }
   ],
   "3": [
@@ -612,27 +912,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ayaw ng mga Igorot na bumaba sa kapatagan at magpabinyag. Ano ang ginawa ng mga Espanyol sa kanila?",
+      "questionText": "Nang pilitin ng mga prayle at sundalong Espanyol ang mga Igorot sa Cordillera na bumaba sa kapatagan upang manirahan sa pueblo at magpabinyag, matatag na tumanggi ang mga ito. Ano ang pangunahing dahilan kung bakit tinanggihan ng mga Igorot ang Reduccion at Kristiyanisasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Sinunog ang bahay at sinupil sila"
+          "text": "Wala silang sapat na pagkain kapag nanirahan sa pueblo."
         },
         {
           "label": "B",
-          "text": "Binigyan sila ng ginto"
+          "text": "Pinagbawalan sila ng mga mangangalakal na Tsino na bumaba."
         },
         {
           "label": "C",
-          "text": "Hinayaan silang manatili"
+          "text": "Pinahahalagahan nila ang kalayaan at paniniwala sa kalikasan."
         },
         {
           "label": "D",
-          "text": "Pinakasalan sila"
+          "text": "Takot silang bumaba sa kapatagan dahil sa malalakas na bagyo."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Nang tumutol ang mga Igorot sa pagpapabinyag at sa paglipat sa kapatagan, ipinasunog ng mga Espanyol ang kanilang bahay at sapilitan silang sinupil."
+      "correctAnswer": "C",
+      "explanation": "Tinanggihan ng mga Igorot ang Reduccion at Kristiyanisasyon dahil mahalaga sa kanila ang kalayaan at paniniwala sa kalikasan."
     },
     {
       "id": "spa_3_2",
@@ -642,27 +942,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "May natuklasang mina sa Cordillera. Ano ang isa pang layunin ng Espanya roon?",
+      "questionText": "Bukod sa pagpapalaganap ng Kristiyanismo, nagpadala ang Espanya ng maraming ekspedisyon sa kabundukan ng Cordillera nang mabalitaan nila ang isang mahalagang yaman doon. Anong likas na yaman ang hinangad ng mga Espanyol sa Cordillera?",
       "options": [
         {
           "label": "A",
-          "text": "Maghanap ng perlas"
+          "text": "Mga mina ng ginto"
         },
         {
           "label": "B",
-          "text": "Maghanap ng ginto"
+          "text": "Mga perlas sa ilog"
         },
         {
           "label": "C",
-          "text": "Magtanim ng palay"
+          "text": "Mga pampalasa sa gubat"
         },
         {
           "label": "D",
-          "text": "Magtayo ng paaralan"
+          "text": "Mga plantasyon ng abaka"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "May natuklasang mina ng ginto sa Cordillera, kaya isa pang layunin ng Espanya roon ang paghahanap ng ginto, bukod sa pagpapalaganap ng Kristiyanismo."
+      "correctAnswer": "A",
+      "explanation": "Mga mina ng ginto sa Cordillera ang hinangad ng mga Espanyol."
     },
     {
       "id": "spa_3_3",
@@ -672,27 +972,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtayo ang Espanya ng pamahalaang militar sa isang teritoryo sa Cordillera. Ano ito?",
+      "questionText": "Nang sunugin ng mga sundalong Espanyol ang mga bahay ng mga Igorot upang pilitin silang sumuko, lumaban ang mga Igorot gamit ang kanilang tradisyunal na paraan ng pakikidigma. Ano ang tawag sa tradisyunal na paraan ng paglaban ng mga Igorot sa pamamagitan ng pamumugot ng ulo ng kaaway?",
       "options": [
         {
           "label": "A",
-          "text": "Pueblo"
+          "text": "Jihad"
         },
         {
           "label": "B",
-          "text": "Sultanato"
+          "text": "Sandugo"
         },
         {
           "label": "C",
-          "text": "Comandancia"
+          "text": "Pangangayaw"
         },
         {
           "label": "D",
-          "text": "Reduccion"
+          "text": "Polo y Servicio"
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Ang comandancia ay pamahalaang militar na itinatag ng Espanya sa isang teritoryo, gaya ng Cordillera, para mapangasiwaan ito."
+      "explanation": "Ang Pangangayaw ang tradisyunal na pakikidigma ng mga Igorot, kasama ang pamumugot ng ulo ng kaaway."
     },
     {
       "id": "spa_3_4",
@@ -702,27 +1002,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Patuloy pa ring sumuway at nag-alsa ang mga Igorot laban sa Espanya. Ano ang ipinapakita nito?",
+      "questionText": "Upang mapangasiwaan at makontrol ang mga Igorot na patuloy na sumusuway sa mga patakaran, nagtatag ang Espanya ng isang pamahalaang militar sa Cordillera. Ano ang tawag sa pamahalaang militar na ito na itinatag sa partikular na teritoryo?",
       "options": [
         {
           "label": "A",
-          "text": "Sumuko sila"
+          "text": "Alcaldia"
         },
         {
           "label": "B",
-          "text": "Tinanggap nila ang lahat"
+          "text": "Sultanato"
         },
         {
           "label": "C",
-          "text": "Umalis sila sa bansa"
+          "text": "Encomienda"
         },
         {
           "label": "D",
-          "text": "Matatag ang paglaban nila"
+          "text": "Comandancia"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Patuloy na sumuway at nag-alsa ang mga Igorot at hindi sila sumuko, kaya makikitang matatag ang paglaban nila sa mga Espanyol."
+      "explanation": "Ang Comandancia ay pamahalaang militar na itinatag ng Espanya sa isang partikular na teritoryo, gaya ng Cordillera."
     },
     {
       "id": "spa_3_5",
@@ -732,27 +1032,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sinimulan ng Espanya ang pagtatangkang sakupin ang Mindanao noong 1571, pero nahirapan sila. Bakit mas mahirap sakupin ang Mindanao?",
+      "questionText": "Sa ilalim ng Monopolyo sa Tabako, dumanas ng matinding pang-aabuso ang mga Igorot mula sa mga ahente ng pamahalaan na bumibili ng kanilang ani sa itinakdang mababang halaga. Paano tumugon ang mga Igorot sa pang-aabusong ito sa Monopolyo sa Tabako?",
       "options": [
         {
           "label": "A",
-          "text": "Malakas ang ugnayan ng mga Sultanato sa ibang bansa"
+          "text": "Naglunsad sila ng pagsuway at rebelyon laban sa ahente."
         },
         {
           "label": "B",
-          "text": "Walang tao roon"
+          "text": "Sumunod sila nang tahimik at nagtanim pa ng mas marami."
         },
         {
           "label": "C",
-          "text": "Malapit ito sa Espanya"
+          "text": "Lumipat silang lahat sa Maynila upang magreklamo sa Hari."
         },
         {
           "label": "D",
-          "text": "Ayaw ng Espanya"
+          "text": "Ibinigay nila nang libre ang lahat ng tabako sa simbahan."
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Mas mahirap sakupin ang mga Muslim sa Mindanao dahil aktibo ang ugnayan ng mga Sultanato roon sa ibang bansa sa Timog-Silangang Asya."
+      "explanation": "Dahil sa pang-aabuso sa tabako, lumaban ang mga Igorot sa pamamagitan ng pagsuway at rebelyon laban sa mga ahente."
     },
     {
       "id": "spa_3_6",
@@ -762,27 +1062,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang serye ng labanan ng Espanya at mga Muslim sa Mindanao ay nagsimula noong 1571. Ano ang tawag dito?",
+      "questionText": "Mula noong 1571, ilang ulit na nagpadala ng hukbo ang Espanya upang sakupin ang Mindanao, ngunit bigo silang ganap na masakop ang mga Muslim doon. Aling salik ang pangunahing nakatulong sa mga Muslim upang mapanatili ang kanilang kalayaan?",
       "options": [
         {
           "label": "A",
-          "text": "Labanan sa Mactan"
+          "text": "Nakatira silang lahat sa tuktok ng matataas na bulkan."
         },
         {
           "label": "B",
-          "text": "Digmaang Moro"
+          "text": "Mayroon silang malalaking kanyon mula sa bansang Espanya."
         },
         {
           "label": "C",
-          "text": "Pangangayaw"
+          "text": "Walang interes ang mga Espanyol sa mga lupain sa Mindanao."
         },
         {
           "label": "D",
-          "text": "Reduccion"
+          "text": "May aktibong ugnayan ang mga Sultanato sa Timog-Silangang Asya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Digmaang Moro ang tawag sa serye ng labanan ng Espanya at ng mga Muslim sa Mindanao na nagsimula noong 1571."
+      "correctAnswer": "D",
+      "explanation": "May aktibong ugnayan ang mga Sultanato sa Timog-Silangang Asya, kaya mas napanatili ng mga Muslim ang kalayaan."
     },
     {
       "id": "spa_3_7",
@@ -792,27 +1092,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Inilunsad ng mga Muslim ang banal na digmaan para ipagtanggol ang kanilang relihiyon at paraan ng pamumuhay. Ano ito at sino ang namuno?",
+      "questionText": "Nang salakayin ng mga Espanyol ang kanilang mga pamayanan at tangkaing palitan ang kanilang relihiyon, pinamunuan ni Sultan Kudarat ang mga Muslim upang ipagtanggol ang kanilang pananampalataya at paraan ng pamumuhay. Ano ang tawag sa banal na digmaang inilunsad ng mga Muslim bilang pagtatanggol sa Islam at kalayaan?",
       "options": [
         {
           "label": "A",
-          "text": "Jihad, Lapu-Lapu"
+          "text": "Jihad"
         },
         {
           "label": "B",
-          "text": "Pangangayaw, Sultan Kudarat"
+          "text": "Reduccion"
         },
         {
           "label": "C",
-          "text": "Jihad, Sultan Kudarat"
+          "text": "Patronato"
         },
         {
           "label": "D",
-          "text": "Reduccion, Magalat"
+          "text": "Pangangayaw"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang banal na digmaang inilunsad ng mga Muslim para ipagtanggol ang kanilang relihiyon ay jihad, at pinamunuan ito ni Sultan Kudarat."
+      "correctAnswer": "A",
+      "explanation": "Ang Jihad ay banal na digmaan ng mga Muslim para ipagtanggol ang Islam at kalayaan."
     },
     {
       "id": "spa_3_8",
@@ -822,27 +1122,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagsimula ang pagtatangkang sakupin ang Mindanao noong 1571. Ilang taon na ang lumipas hanggang 2026?",
+      "questionText": "Pinag-aaralan ni Maya ang pagkakatulad ng pagtugon ng mga Igorot sa Cordillera at ng mga Muslim sa Mindanao laban sa kolonyalismong Espanyol. Ano ang pangunahing pagkakatulad ng dalawang pangkat na ito sa kasaysayan?",
       "options": [
         {
           "label": "A",
-          "text": "355"
+          "text": "Pareho silang matagumpay na nakapagpanatili ng kasarinlan."
         },
         {
           "label": "B",
-          "text": "455"
+          "text": "Pareho silang gumamit ng Monopolyo sa Tabako sa kalakalan."
         },
         {
           "label": "C",
-          "text": "555"
+          "text": "Pareho silang sumuko at lumipat sa mga itinatag na pueblo."
         },
         {
           "label": "D",
-          "text": "655"
+          "text": "Pareho silang nakipag-alyansa sa Espanya laban sa ibang isla."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ibawas ang 1571 sa 2026 para makuha kung ilang taon na ang lumipas: 2026 - 1571 = 455 taon."
+      "correctAnswer": "A",
+      "explanation": "Parehong matagumpay na napanatili ng mga Igorot at Muslim ang kanilang kasarinlan."
     },
     {
       "id": "spa_3_9",
@@ -852,27 +1152,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Lumaban ang mga Igorot sa mga kaaway sa tradisyunal nilang paraan na tinatawag na pangangayaw. Ano ang ipinapakita nito?",
+      "questionText": "Napansin ni Leo na bagama't may malalakas na armas ang mga Espanyol, nahirapan silang pasukin ang mga pamayanan ng mga Igorot sa Cordillera. Paano nakatulong ang heograpiya ng Cordillera sa pagtatanggol ng mga Igorot?",
       "options": [
         {
           "label": "A",
-          "text": "Sumunod sila sa Espanyol"
+          "text": "Walang anumang daanan patungo sa hilagang bahagi ng Luzon."
         },
         {
           "label": "B",
-          "text": "Umiwas sila sa laban"
+          "text": "Mainit ang klima sa bundok kaya nagkakasakit ang mga sundalo."
         },
         {
           "label": "C",
-          "text": "Nakipagkaibigan sila"
+          "text": "Naging proteksyon nila ang matatarik at masukal na kabundukan."
         },
         {
           "label": "D",
-          "text": "Lumaban sila sa sarili nilang paraan"
+          "text": "Napapalibutan ito ng malalawak na karagatan at malalaking alon."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang pangangayaw o pamumugot ng ulo ay tradisyunal na paraan ng paglaban ng mga Igorot, kaya lumaban sila sa sarili nilang paraan."
+      "correctAnswer": "C",
+      "explanation": "Naging proteksyon ng mga Igorot ang matatarik at masukal na bundok ng Cordillera."
     },
     {
       "id": "spa_3_10",
@@ -882,27 +1182,177 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Dahil sa katatagan ng mga Muslim, hindi ganap na nasakop ang Mindanao. Ano ang naging bunga nito?",
+      "questionText": "Sa isang talakayan, sinabi ni Paul na ang lahat ng katutubo sa Pilipinas ay madaling napasunod ng mga Espanyol nang dumating ang mga ito. Aling ebidensya sa Linggo 6–7 ang direktang nagpapabulaan sa sinabi ni Paul?",
       "options": [
         {
           "label": "A",
-          "text": "Nanatiling malaya ang mga Muslim doon"
+          "text": "Ang pagtatayo ng mga simbahan sa gitna ng mga pueblo."
         },
         {
           "label": "B",
-          "text": "Naging kolonya ito"
+          "text": "Ang pagbabayad ng tributo ng mga mamamayan sa kapatagan."
         },
         {
           "label": "C",
-          "text": "Nawala ang Islam"
+          "text": "Ang paglalayag ng mga galyon mula Maynila patungong Mexico."
         },
         {
           "label": "D",
-          "text": "Sumuko si Sultan Kudarat"
+          "text": "Ang matinding paglaban sa Digmaang Moro at rebelyong Igorot."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Dahil sa katatagan ng mga Muslim, hindi ganap na nasakop ng Espanya ang Mindanao, kaya nanatiling malaya sila roon."
+      "correctAnswer": "D",
+      "explanation": "Ang matinding paglaban sa Digmaang Moro at rebelyong Igorot ang patunay na hindi madaling napasunod ang lahat."
+    },
+    {
+      "id": "spa_3_11",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nang sunugin ng mga Espanyol ang kanilang mga bahay, hindi pa rin nagpabinyag ang mga Igorot; sa halip, lalo silang lumayo sa matataas na bahagi ng bundok. Ano ang ipinapakita ng kilos na ito ng mga Igorot?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hindi sila marunong magtayo ng bagong bahay sa kapatagan."
+        },
+        {
+          "label": "B",
+          "text": "Gusto nilang maghanap ng bagong minahan ng ginto sa bundok."
+        },
+        {
+          "label": "C",
+          "text": "Takot silang makipag-usap sa mga taong naninirahan sa bayan."
+        },
+        {
+          "label": "D",
+          "text": "Mas mahalaga sa kanila ang kalayaan kaysa materyal na bahay."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mas pinili ng mga Igorot ang kalayaan kaysa sa bahay, kaya lumayo sila sa mas mataas na bundok."
+    },
+    {
+      "id": "spa_3_12",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinag-aaralan ni Vince kung bakit nagtayo ang Espanya ng comandancia sa Cordillera sa halip na karaniwang alcaldia. Ano ang pangunahing pagkakaiba ng comandancia sa karaniwang lalawigan (alcaldia)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Matatagpuan lamang ang comandancia sa malalaking lungsod."
+        },
+        {
+          "label": "B",
+          "text": "Ang comandancia ay pinamumunuan ng mga katutubong Babaylan."
+        },
+        {
+          "label": "C",
+          "text": "Walang binabayarang buwis ang mga tao sa loob ng comandancia."
+        },
+        {
+          "label": "D",
+          "text": "Ang comandancia ay pinamumunuan ng militar dahil may paglaban."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang comandancia ay pinamumunuan ng militar dahil may paglaban, hindi tulad ng karaniwang alcaldia."
+    },
+    {
+      "id": "spa_3_13",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang pagsusulit, tinanong kung alin sa mga sumusunod ang HINDI naging tugon ng mga Igorot at Muslim sa kolonyalismong Espanyol. Aling pahayag ang dapat piliin?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagsasagawa ng pangangayaw laban sa mananakop"
+        },
+        {
+          "label": "B",
+          "text": "Pagsuway sa mapang-abusong Monopolyo sa Tabako"
+        },
+        {
+          "label": "C",
+          "text": "Paglulunsad ng jihad upang ipagtanggol ang relihiyon"
+        },
+        {
+          "label": "D",
+          "text": "Kusang pagpapasakop at pagtalikod sa sariling kultura"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hindi nagpasakop at hindi tinalikuran ang sariling kultura ng mga Igorot at Muslim, kundi lumaban sila."
+    },
+    {
+      "id": "spa_3_14",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Bea ang dalawang dahilan kung bakit nagpumilit ang Espanya na sakupin ang Cordillera: pagpapalaganap ng Kristiyanismo at pagkuha ng ginto. Saang '3G' ng kolonisasyon nabibilang ang dalawang dahilang ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gold at Glory"
+        },
+        {
+          "label": "B",
+          "text": "Gospel at Gold"
+        },
+        {
+          "label": "C",
+          "text": "Glory at Gospel"
+        },
+        {
+          "label": "D",
+          "text": "Gospel at Reduccion"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang pagpapalaganap ng Kristiyanismo ay Gospel, at ang pagkuha ng ginto ay Gold."
+    },
+    {
+      "id": "spa_3_15",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 6–7, paano nakatulong ang paglaban ng mga Igorot at Muslim sa pambansang kasaysayan ng Pilipinas? Piliin ang pinakatamang pahayag:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nawala ang lahat ng ugnayan ng Mindanao at Luzon noon."
+        },
+        {
+          "label": "B",
+          "text": "Napilitan ang Espanya na gawing Sultanato ang buong Luzon."
+        },
+        {
+          "label": "C",
+          "text": "Naging dahilan ito upang umalis agad ang Espanya noong 1571."
+        },
+        {
+          "label": "D",
+          "text": "Pinatunayang may mga Pilipinong nanatiling malaya at nagtanggol."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinatunayan ng mga Igorot at Muslim na may mga Pilipinong nanatiling malaya at nagtanggol ng bayan."
     }
   ],
   "4": [
@@ -914,27 +1364,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong sinaunang panahon, puwedeng maging babaylan ang babae at kapantay siya ng respeto sa datu. Ano ang nagbago sa panahon ng Espanyol?",
+      "questionText": "Bago dumating ang mga Espanyol, si Dayang Kalangitan ay isang iginagalang na babaylan at tagapayo ng datu. Nang dumating ang mga mananakop, inalis sa kanya ang tungkuling panrelihiyon at pampolitika. Ano ang ipinapakita ng pagbabagong ito sa katayuan ng kababaihan sa ilalim ng Espanya?",
       "options": [
         {
           "label": "A",
-          "text": "Tumaas ang katayuan nila"
+          "text": "Naging pantay ang posisyon ng mga prayle at babaylan."
         },
         {
           "label": "B",
-          "text": "Bumaba ang katayuan ng kababaihan"
+          "text": "Nadagdagan ang kapangyarihan ng kababaihan sa simbahan."
         },
         {
           "label": "C",
-          "text": "Walang nagbago"
+          "text": "Pinamunuan ng kababaihan ang mga bagong tatag na pueblo."
         },
         {
           "label": "D",
-          "text": "Naging datu ang lahat ng babae"
+          "text": "Bumaba ang katayuan at nalimitahan ang karapatan ng babae."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Makapangyarihan ang kababaihan noong sinaunang panahon, pero sa ilalim ng Espanya ay naging patriyarkal ang lipunan at bumaba ang katayuan nila."
+      "correctAnswer": "D",
+      "explanation": "Inalis kay Dayang Kalangitan ang tungkuling panrelihiyon at pampolitika, kaya bumaba ang katayuan at nalimitahan ang karapatan ng babae."
     },
     {
       "id": "spa_4_2",
@@ -944,27 +1394,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sabi ng isang ama, siya ang haligi ng tahanan at siya lang ang magpapasya sa pamilya. Anong konsepto ang itinuro ng mga Espanyol?",
+      "questionText": "Sa isang pamilya noong panahon ng Espanyol, ang ama lamang ang nagpapasya sa pagbili ng lupa, pag-aaral ng mga anak, at pakikipag-ugnayan sa pamahalaan. Anong konsepto ang itinuro ng mga Espanyol na naglagay sa ama bilang pangunahing pinuno ng pamilya?",
       "options": [
         {
           "label": "A",
-          "text": "Ang ama ang pangunahing pinuno ng pamilya"
+          "text": "Patronato Real"
         },
         {
           "label": "B",
-          "text": "Pantay ang ama at ina"
+          "text": "Gobernadorcillo"
         },
         {
           "label": "C",
-          "text": "Ang anak ang pinuno"
+          "text": "Haligi ng Tahanan"
         },
         {
           "label": "D",
-          "text": "Ang lola ang pinuno"
+          "text": "Babaylan at Katalonan"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Itinuro ng mga Espanyol ang \"haligi ng tahanan\": ang ama ang pangunahing pinuno at tagapagtaguyod ng pamilya."
+      "correctAnswer": "C",
+      "explanation": "Itinuro ng mga Espanyol ang konseptong Haligi ng Tahanan, kaya ang ama ang pangunahing pinuno ng pamilya."
     },
     {
       "id": "spa_4_3",
@@ -974,27 +1424,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Mahinhin, relihiyoso, at sunud-sunuran si Maria Clara. Ano ang ipinapakita nito?",
+      "questionText": "Sa mga aklat at pangaral noong panahon ng Espanyol, itinuturo sa mga dalagang Pilipina na dapat silang maging mahinhin, tahimik, paladasal, at sunud-sunuran sa magulang at asawa. Sinong tauhan sa panitikan ang naging simbolo ng ganitong 'idealisadong babae' noong panahon ng Espanyol?",
       "options": [
         {
           "label": "A",
-          "text": "Babaeng datu"
+          "text": "Maria Clara"
         },
         {
           "label": "B",
-          "text": "Babaeng mandirigma"
+          "text": "Gabriela Silang"
         },
         {
           "label": "C",
-          "text": "Idealisadong babae noong panahong iyon"
+          "text": "Prinsesa Urduja"
         },
         {
           "label": "D",
-          "text": "Babaeng mangangalakal"
+          "text": "Melchora Aquino"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Si Maria Clara ay simbolo ng \"idealisadong babae\" noong panahon ng Espanyol: mahinhin, relihiyoso at sunud-sunuran."
+      "correctAnswer": "A",
+      "explanation": "Si Maria Clara ang simbolo ng idealisadong babae: mahinhin, tahimik at paladasal."
     },
     {
       "id": "spa_4_4",
@@ -1004,27 +1454,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa bayan ni Rita, may paaralan para sa babae at hiwalay na paaralan para sa lalaki. Anong batas ang nag-utos nito?",
+      "questionText": "Nang paslangin ang kanyang asawang si Diego Silang, hindi nagkulong sa bahay si Gabriela Silang; sa halip, ipinagpatuloy niya ang pag-aalsa sa Ilocos laban sa mga Espanyol. Ano ang pinatunayan ni Gabriela Silang sa kanyang ginawang pamumuno?",
       "options": [
         {
           "label": "A",
-          "text": "Patronato Real"
+          "text": "Dapat manatili sa simbahan ang kababaihan tuwing digmaan."
         },
         {
           "label": "B",
-          "text": "Reduccion"
+          "text": "Tanging mga lalaki lamang ang marunong gumamit ng sandata."
         },
         {
           "label": "C",
-          "text": "Polo y Servicio"
+          "text": "May kakayahan ang kababaihan na mamuno at lumaban sa laya."
         },
         {
           "label": "D",
-          "text": "Educational Decree of 1863"
+          "text": "Sumuko agad ang mga rebolusyonaryo nang mamatay ang pinuno."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang Educational Decree of 1863 ni Reyna Isabel II ang nag-utos na magtayo ng magkahiwalay na paaralan para sa babae at lalaki sa bawat bayan."
+      "correctAnswer": "C",
+      "explanation": "Ipinagpatuloy ni Gabriela Silang ang pag-aalsa, patunay na kayang mamuno at lumaban ng kababaihan para sa laya."
     },
     {
       "id": "spa_4_5",
@@ -1034,27 +1484,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Namatay si Diego Silang. May babaeng nagpatuloy ng pag-aalsa sa Ilocos. Sino siya?",
+      "questionText": "Noong 1863, naglabas ng kautusan si Reyna Isabel II ng Espanya na nag-uutos sa bawat bayan na magtayo ng isang paaralan para sa mga lalaki at isang hiwalay na paaralan para sa mga babae. Ano ang tawag sa batas na ito at ano ang naging kahalagahan nito sa kababaihan?",
       "options": [
         {
           "label": "A",
-          "text": "Gabriela Silang"
+          "text": "Kalakalang Galyon; nagbigay ito ng negosyo sa kababaihan."
         },
         {
           "label": "B",
-          "text": "Maria Clara"
+          "text": "Patronato Real; nagturo ito sa kababaihan na maging pari."
         },
         {
           "label": "C",
-          "text": "Lapu-Lapu"
+          "text": "Sistemang Encomienda; nagbigay ito ng lupain sa kababaihan."
         },
         {
           "label": "D",
-          "text": "Magalat"
+          "text": "Educational Decree of 1863; nagbigay ito ng pormal na edukasyon."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Si Gabriela Silang ang nagpatuloy ng pag-aalsa sa Ilocos matapos mapatay ang asawa niyang si Diego Silang."
+      "correctAnswer": "D",
+      "explanation": "Ang Educational Decree of 1863 ay nagbigay sa kababaihan ng pormal na edukasyon sa paaralan."
     },
     {
       "id": "spa_4_6",
@@ -1064,27 +1514,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nalimitahan ang karapatan ng kababaihan sa panahon ng Espanyol. Bakit ito nangyari?",
+      "questionText": "Pinaghahambing ni Ana ang edukasyon ng mga lalaki at babae sa mga paaralang itinatag noong panahon ng Espanyol. Napansin niyang mas nakatuon sa pagbuburda, pagluluto, at relihiyon ang itinuturo sa kababaihan. Ano ang ipinahihiwatig ng ganitong uri ng kurikulum para sa kababaihan noon?",
       "options": [
         {
           "label": "A",
-          "text": "Ayaw nilang magtrabaho"
+          "text": "Inihahanda sila upang maging mga pinuno ng pamahalaan."
         },
         {
           "label": "B",
-          "text": "Inakalang hindi nila kaya ang mahahalagang posisyon"
+          "text": "Hindi pinapayagang matutong bumasa at sumulat ang babae."
         },
         {
           "label": "C",
-          "text": "Walang babae noon"
+          "text": "Mas mahirap ang mga aralin ng kababaihan kaysa kalalakihan."
         },
         {
           "label": "D",
-          "text": "Utos ito ng mga babae"
+          "text": "Nililimita pa rin sila sa mga gawaing pantahanan at simbahan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Nalimitahan ang karapatan ng kababaihan dahil sa paniniwalang hindi nila kayang gampanan ang mahahalagang posisyon sa pamilya at lipunan."
+      "correctAnswer": "D",
+      "explanation": "Pagbuburda, pagluluto at relihiyon ang itinuro sa babae, kaya nililimita pa rin sila sa gawaing pantahanan at simbahan."
     },
     {
       "id": "spa_4_7",
@@ -1094,27 +1544,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naglista ang klase ng mga inaasahan sa babae noong panahon ng Espanya. Alin ang HINDI kasama?",
+      "questionText": "Bago dumating ang Espanya, maaaring maging pinuno ng barangay ang isang babae kung walang lalaking tagapagmana. Ngunit sa panahon ng Espanyol, walang babaeng pinayagang maging Gobernadorcillo o Alcalde Mayor. Anong larangan ng karapatan ng kababaihan ang tuwirang inalis ng kolonyalismo?",
       "options": [
         {
           "label": "A",
-          "text": "Maging relihiyoso"
+          "text": "Karapatang magsimba at magdasal tuwing Linggo"
         },
         {
           "label": "B",
-          "text": "Maging matiisin"
+          "text": "Karapatang mag-alaga ng mga anak sa loob ng tahanan"
         },
         {
           "label": "C",
-          "text": "Maging pinuno ng barangay"
+          "text": "Karapatang magluto at magtahi ng kasuotan ng pamilya"
         },
         {
           "label": "D",
-          "text": "Mag-asikaso sa asawa"
+          "text": "Karapatang mamuno at humawak ng posisyong pampolitika"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Inaasahan sa babae na maging relihiyoso, matiisin at nakatuon sa gawaing bahay, dahil ang mahahalagang desisyon ay karaniwang nasa kamay ng mga lalaki."
+      "correctAnswer": "D",
+      "explanation": "Inalis ng kolonyalismo ang karapatan ng kababaihang mamuno at humawak ng posisyong pampolitika."
     },
     {
       "id": "spa_4_8",
@@ -1124,27 +1574,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sumali si Tina, isang babae noon, sa kilusang lumaban sa mananakop. Ano ang ipinapakita nito?",
+      "questionText": "Sa kabila ng mahigpit na lipunang patriyarkal, may mga kababaihang tumulong sa mga kilusang rebolusyonaryo sa pamamagitan ng pag-aalaga sa mga sugatan, pagtatago ng dokumento, at pagbibigay ng pagkain. Ano ang ipinapakita ng pagkilos na ito ng mga kababaihang Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Sumunod lahat sa limitasyon"
+          "text": "Natakot silang lumabas ng bahay kaya nagtago sila."
         },
         {
           "label": "B",
-          "text": "Bawal lumaban"
+          "text": "Wala silang pakialam sa kalagayan ng mga mandirigma."
         },
         {
           "label": "C",
-          "text": "Walang naiambag ang kababaihan"
+          "text": "Nagsikap silang makibahagi sa pagtatanggol ng kalayaan."
         },
         {
           "label": "D",
-          "text": "Nagsikap silang mabawi ang karapatan"
+          "text": "Sinunod nila ang utos ng mga prayle na manatili sa kusina."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang mga babaeng sumali sa mga kilusan para sa kalayaan ay nagpapakitang nagsikap silang mabawi ang mga karapatang tinatamasa nila bago dumating ang Espanyol."
+      "correctAnswer": "C",
+      "explanation": "Nagsikap ang mga babae na makibahagi sa pagtatanggol ng kalayaan kahit mahigpit ang lipunan."
     },
     {
       "id": "spa_4_9",
@@ -1154,27 +1604,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa sinaunang panahon, puwedeng magmana ng ari-arian ang babae. Sa panahon ng Espanyol, nalimitahan ang karapatan nila. Alin ang tamang paghahambing?",
+      "questionText": "Nagtatanong si Marco kung bakit itinuring ng mga Espanyol na hindi kaya ng kababaihan na gampanan ang mahahalagang posisyon sa pamilya at lipunan. Saan nagmula ang ganitong paniniwala ng mga mananakop?",
       "options": [
         {
           "label": "A",
-          "text": "Mas mataas ang katayuan noon bago ang Espanyol"
+          "text": "Sa kahilingan mismo ng mga babaylan at katalonan."
         },
         {
           "label": "B",
-          "text": "Pareho lang"
+          "text": "Sa batas ng Kalakalang Galyon sa pagitan ng Asya."
         },
         {
           "label": "C",
-          "text": "Mas mababa noon"
+          "text": "Sa mga lumang alamat ng mga sinaunang Pilipino noon."
         },
         {
           "label": "D",
-          "text": "Walang karapatan noon"
+          "text": "Sa tradisyong patriyarkal na dala nila mula sa Europa."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Makapangyarihan ang kababaihan sa sinaunang lipunan, pero bumaba ang katayuan nila sa ilalim ng Espanyol, kaya mas mataas ito noong una."
+      "correctAnswer": "D",
+      "explanation": "Galing sa tradisyong patriyarkal ng Europa ang paniniwala ng mga Espanyol."
     },
     {
       "id": "spa_4_10",
@@ -1184,27 +1634,177 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtanong si Leo kung bakit mahalaga si Gabriela Silang. Ano ang pinakamahusay na sagot?",
+      "questionText": "Sa isang dula sa klase, ipinakita ni Sofia ang pagkakaiba ng babaylan noon at ng mga kababaihang nagsisimba noong panahon ng Espanyol. Ano ang pangunahing pagkakaiba ng kanilang katayuan sa larangang panrelihiyon?",
       "options": [
         {
           "label": "A",
-          "text": "Siya ang unang reyna"
+          "text": "Magkapareho lamang ang kanilang kapangyarihan sa simbahan."
         },
         {
           "label": "B",
-          "text": "Isa siya sa mga unang babaeng lider-rebolusyonaryo"
+          "text": "Ang babaylan ay nasa simbahan; ang iba ay nasa kabundukan."
         },
         {
           "label": "C",
-          "text": "Siya ang encomendero"
+          "text": "Ang babaylan ay hindi iginagalang; ang iba ay pinuno ng bayan."
         },
         {
           "label": "D",
-          "text": "Siya ang sumuko"
+          "text": "Ang babaylan ay pinunong espiritwal; ang iba ay tagasunod lamang."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinunong espiritwal ang babaylan, samantalang tagasunod lamang ang mga babaeng nagsisimba noong panahon ng Espanyol."
+    },
+    {
+      "id": "spa_4_11",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Napansin ni Lian na noong sinaunang panahon, may karapatan ang babae na magmay-ari ng lupa at makipagkalakalan nang sarili. Sa panahon ng Espanyol, kailangan muna ng pahintulot ng asawa bago makapagnegosyo. Anong pagbabago ang naganap sa karapatang pang-ekonomiya ng kababaihan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging mas mayaman ang lahat ng kababaihan sa pueblo."
+        },
+        {
+          "label": "B",
+          "text": "Nawala ang kanilang kalayaan sa pagpapasya sa ari-arian."
+        },
+        {
+          "label": "C",
+          "text": "Sila ang naging tagasingil ng tributo sa buong lalawigan."
+        },
+        {
+          "label": "D",
+          "text": "Binigyan sila ng pamahalaan ng malalaking barko sa kalakalan."
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Si Gabriela Silang ay isa sa mga unang babaeng lider-rebolusyonaryo; ipinagpatuloy niya ang pag-aalsa sa Ilocos matapos mapatay ang asawang si Diego."
+      "explanation": "Kailangan na ng pahintulot ng asawa, kaya nawala ang kalayaan ng babae na magpasya sa ari-arian."
+    },
+    {
+      "id": "spa_4_12",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang talakayan, sinabi ni Ben na walang anumang mabuting naidulot ang Educational Decree of 1863 sa mga Pilipina dahil magkahiwalay ang paaralan ng babae at lalaki. Paano mo maipapakita ang positibong epekto ng batas na ito sa kabila ng limitasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging Gobernador Heneral ang mga babaeng nakapag-aral."
+        },
+        {
+          "label": "B",
+          "text": "Inalis nito ang lahat ng gawaing bahay para sa kababaihan."
+        },
+        {
+          "label": "C",
+          "text": "Pinayagan nito ang kababaihan na maging sundalo ng Espanya."
+        },
+        {
+          "label": "D",
+          "text": "Natutong bumasa, sumulat, at mag-isip nang malaya ang kababaihan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kahit may limitasyon, natutong bumasa, sumulat at mag-isip nang malaya ang kababaihan dahil sa batas."
+    },
+    {
+      "id": "spa_4_13",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Clara ang tatlong katangian: (1) Sentro ng pamilya, (2) Mataas na paggalang bilang pinunong espiritwal, at (3) Kapantay ng respetong tinatanggap ng datu. Saang panahon tinamasa ng kababaihang Pilipino ang tatlong katangiang ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sa panahon bago dumating ang mga Espanyol"
+        },
+        {
+          "label": "B",
+          "text": "Sa kasagsagan ng pananakop ng mga Espanyol"
+        },
+        {
+          "label": "C",
+          "text": "Sa panahon ng pagpapatupad ng Polo y Servicio"
+        },
+        {
+          "label": "D",
+          "text": "Sa ilalim ng pamamahala ng mga Gobernador Heneral"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Sa panahon bago dumating ang mga Espanyol tinamasa ng kababaihan ang mga katangiang ito."
+    },
+    {
+      "id": "spa_4_14",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kung ikaw ay isang mag-aaral na gumagawa ng poster para sa Buwan ng Kababaihan, nais mong ipagmalaki ang mga kababaihang Pilipino noong panahon ng Espanyol. Aling mensahe ang pinakaangkop na ilagay sa iyong poster?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nanatiling tahimik at walang ginawa ang kababaihan noon."
+        },
+        {
+          "label": "B",
+          "text": "Mas mabuti ang kalagayan ng kababaihan noong sinakop tayo."
+        },
+        {
+          "label": "C",
+          "text": "Ang tanging tungkulin ng babae ay sumunod nang walang tanong."
+        },
+        {
+          "label": "D",
+          "text": "Sa kabila ng limitasyon, nanindigan ang kababaihan para sa laya."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Sa kabila ng limitasyon, nanindigan ang kababaihan para sa kalayaan. Ito ang dapat ipagmalaki sa poster."
+    },
+    {
+      "id": "spa_4_15",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 8, hiniling ng guro na ihambing ang katayuan ng kababaihan bago at sa panahon ng kolonyalismong Espanyol. Aling pahayag ang pinakawastong paghahambing?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magkapareho ang kanilang karapatan sa dalawang panahon."
+        },
+        {
+          "label": "B",
+          "text": "Makapangyarihan noon; nalimitahan sa ilalim ng Espanyol."
+        },
+        {
+          "label": "C",
+          "text": "Walang karapatan noon; naging pinuno sa ilalim ng Espanyol."
+        },
+        {
+          "label": "D",
+          "text": "Nasa bahay lamang noon; naging sundalo sa ilalim ng Espanyol."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Makapangyarihan ang kababaihan noon, ngunit nalimitahan ang kanilang karapatan sa ilalim ng Espanyol."
     }
   ],
   "5": [
@@ -1216,27 +1816,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sinubukan ni Magellan na pasukuin at pasunurin sa Espanya si Lapu-Lapu, ang pinuno ng Mactan. Ano ang ginawa ni Lapu-Lapu?",
+      "questionText": "Noong Abril 27, 1521, sinubukan ni Ferdinand Magellan na pasukuin at pasunurin sa Espanya si Lapu-Lapu, pinuno ng Mactan. Tumanggi ito at nakipaglaban kasama ang kaniyang mga mandirigma. Ano ang naging makasaysayang kahalagahan ng Labanan sa Mactan?",
       "options": [
         {
           "label": "A",
-          "text": "Tumanggi at nakipaglaban"
+          "text": "Dito nagsimula ang pagbabayad ng buwis ng buong Visayas."
         },
         {
           "label": "B",
-          "text": "Sumuko agad"
+          "text": "Ito ang unang matagumpay na pagtatanggol laban sa dayuhan."
         },
         {
           "label": "C",
-          "text": "Nagbayad ng buwis"
+          "text": "Nagkasundo sina Magellan at Lapu-Lapu na maging magkaibigan."
         },
         {
           "label": "D",
-          "text": "Tumakas"
+          "text": "Nagtatag agad ng sentral na pamahalaan ang Espanya sa Mactan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Tumanggi si Lapu-Lapu na magpasakop at nakipaglaban kasama ang kaniyang mga mandirigma, kung saan napatay si Magellan at natalo ang hukbo nito."
+      "correctAnswer": "B",
+      "explanation": "Ang Labanan sa Mactan ang unang matagumpay na pagtatanggol ng mga Pilipino laban sa dayuhan."
     },
     {
       "id": "spa_5_2",
@@ -1246,27 +1846,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naganap ang Labanan sa Mactan noong Abril 27, 1521. Ano ang ipinapakita nito?",
+      "questionText": "Noong 1578, nagpadala si Gobernador-Heneral Francisco Sande ng ekspedisyong militar na pinamunuan ni Kapitan Esteban Rodriguez de Figueroa upang salakayin ang Jolo, Sulu. Ano ang pangunahing layunin ng ekspedisyong ito ng mga Espanyol sa Mindanao?",
       "options": [
         {
           "label": "A",
-          "text": "Huling laban sa Espanya"
+          "text": "Upang pasukuin ang mga Muslim at sakupin ang Sulu."
         },
         {
           "label": "B",
-          "text": "Unang pagtatanggol ng Pilipino sa dayuhan"
+          "text": "Upang makipagpalitan ng perlas at porselana sa Sultan."
         },
         {
           "label": "C",
-          "text": "Pagsuko sa Espanya"
+          "text": "Upang magtayo ng paaralan para sa mga kabataan sa Jolo."
         },
         {
           "label": "D",
-          "text": "Pagbisita ng Espanya"
+          "text": "Upang humingi ng tulong laban sa mga mangangalakal na Tsino."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang Labanan sa Mactan ang pinakaunang halimbawa ng pagtatanggol ng mga Pilipino laban sa dayuhang mananakop."
+      "correctAnswer": "A",
+      "explanation": "Layunin ng ekspedisyon sa Jolo na pasukuin ang mga Muslim at sakupin ang Sulu."
     },
     {
       "id": "spa_5_3",
@@ -1276,27 +1876,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong 1596, nag-alsa si Magalat sa Cagayan. Ano ang dahilan ng pag-aalsa?",
+      "questionText": "Sa kasagsagan ng Digmaang Moro noong ikalabimpitong siglo, napansin ni Sultan Kudarat ng Maguindanao na mas malakas ang kanilang laban kung magsasama-sama ang iba't ibang pangkat sa Mindanao. Paano ipinakita ni Sultan Kudarat ang mahusay na pamumuno sa pagtatanggol ng Mindanao?",
       "options": [
         {
           "label": "A",
-          "text": "Kakulangan ng ginto"
+          "text": "Nakipagkasundo siya sa Espanya na ipaubaya ang Zamboanga."
         },
         {
           "label": "B",
-          "text": "Gusto ng bagong bayan"
+          "text": "Ipinagbawal niya ang pakikipag-ugnayan sa mga karatig-pulo."
         },
         {
           "label": "C",
-          "text": "Mataas na buwis at pang-aabuso"
+          "text": "Inutusan niya ang mga Muslim na lumipat sa kabundukan ng Luzon."
         },
         {
           "label": "D",
-          "text": "Pagpapakasal"
+          "text": "Pinag-isa niya ang Lanao, Cotabato, Basilan, Davao, at Zamboanga."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Nag-alsa si Magalat sa Cagayan noong 1596 dahil sa mataas na buwis at pang-aabuso ng mga encomendero."
+      "correctAnswer": "D",
+      "explanation": "Pinag-isa ni Sultan Kudarat ang Lanao, Cotabato, Basilan, Davao at Zamboanga para mas lumakas ang laban."
     },
     {
       "id": "spa_5_4",
@@ -1306,27 +1906,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Pinag-isa ni Sultan Kudarat ang mga taga-Lanao, Cotabato, Basilan, Davao, at Zamboanga. Ano ang layunin niya?",
+      "questionText": "Noong 1596, namuno si Magalat sa isang pag-aalsa sa Cagayan kasama ang iba't ibang datu ng Tuguegarao. Tumagal ang kanilang paglaban nang walong buwan bago ito nasugpo. Ano ang pangunahing nagtulak kay Magalat at sa mga datu upang mag-alsa laban sa Espanya?",
       "options": [
         {
           "label": "A",
-          "text": "Sakupin ang Luzon"
+          "text": "Ang pagbabawal sa paglalayag ng mga barko sa ilog."
         },
         {
           "label": "B",
-          "text": "Magbayad ng tributo"
+          "text": "Ang mataas na buwis at pang-aabuso ng mga encomendero."
         },
         {
           "label": "C",
-          "text": "Makipagkaibigan sa Espanya"
+          "text": "Ang kakulangan ng mga simbahan sa lalawigan ng Cagayan."
         },
         {
           "label": "D",
-          "text": "Tutulan ang paglaganap ng Kristiyanismo"
+          "text": "Ang pagdating ng mga mangangalakal mula sa bansang Hapon."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Pinag-isa ni Sultan Kudarat ang mga taga-Mindanao para tutulan ang paglaganap ng Kristiyanismo sa kanilang lupain noong ika-17 siglo."
+      "correctAnswer": "B",
+      "explanation": "Nag-alsa si Magalat dahil sa mataas na buwis at pang-aabuso ng mga encomendero."
     },
     {
       "id": "spa_5_5",
@@ -1336,27 +1936,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Natalo ang mga Muslim sa ilang labanan, pero hindi pa rin sila ganap na nasakop. Ano ang dahilan?",
+      "questionText": "Upang makaiwas sa mapang-aliping patakaran at sapilitang paninirahan sa pueblo, mas pinili ng ilang katutubo na tumakas at manirahan sa liblib o matataas na lugar. Ano ang itinawag ng mga Espanyol sa mga katutubong ito na piniling mamuhay nang malaya sa labas ng pueblo?",
       "options": [
         {
           "label": "A",
-          "text": "Matibay ang mga sultanato at paniniwala nila"
+          "text": "Taong Labas o Tulisan"
         },
         {
           "label": "B",
-          "text": "Walang sundalo ang Espanya"
+          "text": "Polista at Encomendero"
         },
         {
           "label": "C",
-          "text": "Sumuko agad ang Espanya"
+          "text": "Principalia at Ilustrado"
         },
         {
           "label": "D",
-          "text": "Malayo ang Mindanao sa dagat"
+          "text": "Gobernadorcillo at Alkalde"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Hindi ganap na nasakop ang mga Muslim dahil sa lakas ng kanilang mga sultanato at sa matibay nilang paniniwala sa Islam na nagbigay sa kanila ng pagkakaisa."
+      "explanation": "Taong Labas o Tulisan ang tawag ng mga Espanyol sa mga katutubong namuhay nang malaya sa labas ng pueblo."
     },
     {
       "id": "spa_5_6",
@@ -1366,27 +1966,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang ilang katutubo ay tumira sa liblib at matataas na lugar para umiwas sa mapang-aliping patakaran. Ano ang tawag sa kanila ng mga Espanyol?",
+      "questionText": "Sa kabila ng pagtatatag ng mga Espanyol ng himpilan sa Zamboanga, hindi nila nagawang sakupin ang buong Mindanao, lalo na sa mga lugar na laganap ang relihiyong Islam. Aling dalawang salik ang pangunahing nagpatatag sa mga Muslim laban sa mga Espanyol?",
       "options": [
         {
           "label": "A",
-          "text": "Datu"
+          "text": "Pagtulong ng mga Gobernador Heneral mula sa Maynila"
         },
         {
           "label": "B",
-          "text": "Taong labas o tulisan"
+          "text": "Pagkakatatag ng Kalakalang Galyon sa katimugang dagat"
         },
         {
           "label": "C",
-          "text": "Encomendero"
+          "text": "Pagkakaroon ng maraming minahan at pabrika sa Zamboanga"
         },
         {
           "label": "D",
-          "text": "Gobernadorcillo"
+          "text": "Lakas ng mga Sultanato at matibay na paniniwala sa Islam"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Tinawag na \"taong labas\" o \"tulisan\" ng mga Espanyol ang mga katutubong lumipat sa liblib o matataas na lugar upang iwasan ang mapang-aliping patakaran."
+      "correctAnswer": "D",
+      "explanation": "Malakas ang mga Sultanato at matibay ang paniniwala ng mga Muslim sa Islam, kaya hindi sila nasakop."
     },
     {
       "id": "spa_5_7",
@@ -1396,27 +1996,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtanong ang isang mag-aaral kung bakit hindi ganap na nasakop ng Espanya ang buong kapuluan. Ano ang pinakamahusay na sagot?",
+      "questionText": "Sinusuri ni Niko kung bakit bigo ang mga ekspedisyon ng Espanya na sakupin ang kabundukan ng Cordillera at kontrolin ang mga minahan ng ginto roon. Paano nagtulungan ang kalikasan at ang mga Igorot upang mabigo ang mga mananakop?",
       "options": [
         {
           "label": "A",
-          "text": "Walang gusto ang Espanya"
+          "text": "Nakipagkalakalan ang mga Igorot upang bilhin ang armas nila."
         },
         {
           "label": "B",
-          "text": "Sumang-ayon ang lahat"
+          "text": "Laging umuulan ng yelo sa Cordillera kaya bumalik ang hukbo."
         },
         {
           "label": "C",
-          "text": "Napapaligiran ng dagat at nagkaisa ang mga katutubo"
+          "text": "Naging hadlang ang matatarik na daanan at matatag na paglaban."
         },
         {
           "label": "D",
-          "text": "Walang dagat sa bansa"
+          "text": "Pinatag ng mga Igorot ang bundok upang hindi makita ang ginto."
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Hindi ganap na nasakop ang kapuluan dahil napapaligiran ito ng dagat at nagkaisa ang mga katutubo sa kanilang paniniwala at paglaban."
+      "explanation": "Hadlang sa mga Espanyol ang matatarik na daanan, at lumaban nang matatag ang mga Igorot."
     },
     {
       "id": "spa_5_8",
@@ -1426,27 +2026,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa Cordillera, matatarik ang daanan at matatag ang paglaban ng mga Igorot. Ano ang naging resulta?",
+      "questionText": "Bagama't nasugpo ng mga Espanyol ang Pag-aalsang Magalat pagkalipas ng walong buwan, naging mahalagang bahagi pa rin ito ng kasaysayan ng Cagayan at ng Pilipinas. Ano ang ipinapakita ng pag-aalsang ito kahit hindi ito nagtagumpay sa huli?",
       "options": [
         {
           "label": "A",
-          "text": "Nasakop agad ang Cordillera"
+          "text": "Na sumang-ayon ang mga mamamayan sa mataas na pagbubuwis."
         },
         {
           "label": "B",
-          "text": "Nakuha ng Espanya ang ginto"
+          "text": "Na mas malakas ang mga encomendero kaysa sa Hari ng Espanya."
         },
         {
           "label": "C",
-          "text": "Sumuko ang mga Igorot"
+          "text": "Na hindi natakot ang mga Pilipino na tutulan ang pang-aabuso."
         },
         {
           "label": "D",
-          "text": "Hindi nakontrol ng Espanya ang mga minahan"
+          "text": "Na walang kakayahang magkaisa ang mga datu sa hilagang Luzon."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Dahil sa matatarik na daanan at matatag na paglaban ng mga Igorot, hindi nakontrol ng Espanya ang mga minahan sa Cordillera."
+      "correctAnswer": "C",
+      "explanation": "Kahit nasugpo, ipinakita ng Pag-aalsang Magalat na hindi natakot ang mga Pilipino na tutulan ang pang-aabuso."
     },
     {
       "id": "spa_5_9",
@@ -1456,27 +2056,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naganap ang Labanan sa Mactan noong 1521. Ipinadala ang unang ekspedisyon sa Mindanao noong 1578. Ilang taon ang pagitan ng dalawa?",
+      "questionText": "Nagtataka si Mia kung bakit tinawag ng mga Espanyol na 'tulisan' o masasamang loob ang mga katutubong lumipat sa bundok, gayong ang nais lamang nila ay mamuhay nang payapa at malaya. Ano ang tunay na layunin ng mga Espanyol sa pagbibigay ng masamang bansag sa mga 'taong labas'?",
       "options": [
         {
           "label": "A",
-          "text": "47"
+          "text": "Upang hikayatinn silang magtayo ng bagong bayan sa bundok."
         },
         {
           "label": "B",
-          "text": "57"
+          "text": "Upang siraan sila at pigilan ang iba na tumakas sa pueblo."
         },
         {
           "label": "C",
-          "text": "67"
+          "text": "Upang bigyan sila ng parangal dahil sa kanilang katapangan."
         },
         {
           "label": "D",
-          "text": "77"
+          "text": "Upang protektahan sila mula sa mababangis na hayop sa gubat."
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Ibawas ang 1521 sa 1578 para makuha ang pagitan ng Labanan sa Mactan at ng unang ekspedisyon sa Mindanao: 57 taon."
+      "explanation": "Tinawag silang tulisan para siraan sila at pigilan ang iba na tumakas sa pueblo."
     },
     {
       "id": "spa_5_10",
@@ -1486,387 +2086,537 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtatalo ang klase kung bakit lumaban ang mga Pilipino sa Espanya. Alin ang pinakamahusay na paliwanag?",
+      "questionText": "Sa isang pagtataya, pinagsusuri ang mga dahilan kung bakit hindi ganap na nasakop ng Espanya ang buong kapuluan ng Pilipinas. Aling kombinasyon ng mga salik ang wastong nagpapaliwanag dito?",
       "options": [
         {
           "label": "A",
-          "text": "Di-makatarungang patakaran tulad ng labis na buwis"
+          "text": "Pagtulong ng mga bansang Europeo sa mga katutubong barangay"
         },
         {
           "label": "B",
-          "text": "Gusto nila ng gulo"
+          "text": "Kakapusan sa barko ng Espanya at kawalan ng mga pari sa kolonya"
         },
         {
           "label": "C",
-          "text": "Inutusan sila ng Espanya"
+          "text": "Pagbabawal ng Santo Papa na sakupin ang timog na bahagi ng bansa"
         },
         {
           "label": "D",
-          "text": "Wala silang ibang gagawin"
+          "text": "Pagiging kapuluan, pagkakaisa sa paniniwala, at paglaban sa pang-aapi"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Lumaban ang mga Pilipino dahil sa di-makatarungang patakaran ng Espanya, gaya ng pangangamkam ng lupa at labis na pagbubuwis."
+      "correctAnswer": "D",
+      "explanation": "Hindi nasakop ang buong kapuluan dahil sa pagiging kapuluan, pagkakaisa sa paniniwala at paglaban sa pang-aapi."
     },
     {
       "id": "spa_5_11",
       "era": "spanish",
-      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "subTopic": "Pagpupunyagi, Kinahinatnan, at Implikasyon ng Pagtatanggol ng mga Pilipino sa Kolonyalismo",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Dumating ang mga Espanyol sa Pilipinas para maghanap ng ginto at yamang-kalakal. Anong dahilan ng kolonisasyon ito?",
+      "questionText": "Pinaghahambing ni Carlo ang Labanan sa Mactan (1521) at ang Pag-aalsang Magalat (1596). Ano ang pangunahing pagkakaiba sa konteksto ng dalawang paglabang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Paghahanap ng ginto"
+          "text": "Ang Mactan ay naganap sa Luzon; ang Magalat ay naganap sa Mindanao."
         },
         {
           "label": "B",
-          "text": "Pagtuturo ng Ingles"
+          "text": "Ang Mactan ay tumagal nang walong buwan; ang Magalat ay isang araw."
         },
         {
           "label": "C",
-          "text": "Pagtulong sa kalakalan ng Pilipino"
+          "text": "Ang Mactan ay pinamunuan ng babae; ang Magalat ay pinamunuan ng pari."
         },
         {
           "label": "D",
-          "text": "Paglilibang sa mga katutubo"
+          "text": "Ang Mactan ay pagpigil sa unang pananakop; ang Magalat ay laban sa pang-aabuso."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Hinanap ng Espanya ang ginto at yamang-kalakal ng Pilipinas; isa ito sa tatlong dahilan ng kolonisasyon, ang \"Gold, Glory, Gospel\"."
+      "correctAnswer": "D",
+      "explanation": "Ang Mactan ay pagpigil sa unang pananakop. Ang Magalat ay paglaban sa pang-aabuso ng mga encomendero."
     },
     {
       "id": "spa_5_12",
       "era": "spanish",
-      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "subTopic": "Pagpupunyagi, Kinahinatnan, at Implikasyon ng Pagtatanggol ng mga Pilipino sa Kolonyalismo",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Mang Tino ay 40 taong gulang. Gumagawa siya ng polo y servicio nang 40 araw bawat taon. Ilang araw siyang gagawa sa loob ng 3 taon?",
+      "questionText": "Sa Labanan sa Mactan, nagsuot ng makakapal na baluting bakal ang mga sundalong Espanyol, ngunit natalo pa rin sila ng mga mandirigma ni Lapu-Lapu. Paano nagawang talunin nina Lapu-Lapu ang mas modernong armas at baluti ng mga Espanyol?",
       "options": [
         {
           "label": "A",
-          "text": "40"
+          "text": "Nagtago sila sa loob ng malalaking barko hanggang gabi."
         },
         {
           "label": "B",
-          "text": "80"
+          "text": "Humingi sila ng tulong sa hukbo mula sa bansang Mexico."
         },
         {
           "label": "C",
-          "text": "120"
+          "text": "Binili nila ang mga baril mula sa mga mangangalakal sa Cebu."
         },
         {
           "label": "D",
-          "text": "160"
+          "text": "Ginamit nila ang kaalaman sa dagat at pinuntirya ang walang baluti."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang polo y servicio ay 40 araw bawat taon, kaya sa loob ng 3 taon ay 40 x 3 = 120 araw."
+      "correctAnswer": "D",
+      "explanation": "Ginamit nina Lapu-Lapu ang kaalaman sa dagat at pinuntirya ang bahaging walang baluti."
     },
     {
       "id": "spa_5_13",
       "era": "spanish",
-      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "subTopic": "Pagpupunyagi, Kinahinatnan, at Implikasyon ng Pagtatanggol ng mga Pilipino sa Kolonyalismo",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtayo ang Espanya ng pamahalaang militar sa isang teritoryo sa Cordillera. Ano ito?",
+      "questionText": "Sinusuri ni Bea ang naging bunga ng iba't ibang pag-aalsa sa Luzon noong panahon ng Espanyol, tulad ng pag-aalsa sa Cagayan na nasugpo pagkalipas ng walong buwan. Ano ang pangunahing dahilan kung bakit nasugpo ng Espanya ang mga lokal na pag-aalsang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Pueblo"
+          "text": "Ayaw lumaban ng mga pinuno kapag may kasamang sundalo."
         },
         {
           "label": "B",
-          "text": "Sultanato"
+          "text": "Ibinigay agad ng Espanya ang lahat ng hiling ng nag-alsa."
         },
         {
           "label": "C",
-          "text": "Comandancia"
+          "text": "Walang dahilan upang magalit ang mga mamamayan sa Espanya."
         },
         {
           "label": "D",
-          "text": "Reduccion"
+          "text": "Kulang sa pagkakaisa at nakatuon lamang sa sariling rehiyon."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang comandancia ay pamahalaang militar na itinatag ng Espanya sa isang teritoryo, gaya ng Cordillera, para mapangasiwaan ito."
+      "correctAnswer": "D",
+      "explanation": "Nasugpo ang mga pag-aalsa dahil kulang sa pagkakaisa at nakatuon lang sa sariling rehiyon ang bawat isa."
     },
     {
       "id": "spa_5_14",
       "era": "spanish",
-      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "subTopic": "Pagpupunyagi, Kinahinatnan, at Implikasyon ng Pagtatanggol ng mga Pilipino sa Kolonyalismo",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa bayan ni Rita, may paaralan para sa babae at hiwalay na paaralan para sa lalaki. Anong batas ang nag-utos nito?",
+      "questionText": "Sa isang talakayan, sinabi ni Leo na ang pagiging 'taong labas' ay tanda ng kaduwagan dahil umalis sila sa bayan sa halip na manatili sa pueblo. Paano mo itatama ang pananaw ni Leo batay sa kasaysayan?",
       "options": [
         {
           "label": "A",
-          "text": "Patronato Real"
+          "text": "Inutusan sila ng mga prayle na magbantay sa kagubatan."
         },
         {
           "label": "B",
-          "text": "Reduccion"
+          "text": "Gusto lamang nilang manghuli ng mga hayop sa kabundukan."
         },
         {
           "label": "C",
-          "text": "Polo y Servicio"
+          "text": "Isa itong matapang na pagtanggi sa pang-aalipin at buwis."
         },
         {
           "label": "D",
-          "text": "Educational Decree of 1863"
+          "text": "Wala nang matirahan sa pueblo kaya sila lumipat sa bundok."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang Educational Decree of 1863 ni Reyna Isabel II ang nag-utos na magtayo ng magkahiwalay na paaralan para sa babae at lalaki sa bawat bayan."
+      "correctAnswer": "C",
+      "explanation": "Matapang na pagtanggi ito sa pang-aalipin at buwis, hindi kaduwagan."
     },
     {
       "id": "spa_5_15",
       "era": "spanish",
-      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "subTopic": "Pagpupunyagi, Kinahinatnan, at Implikasyon ng Pagtatanggol ng mga Pilipino sa Kolonyalismo",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Pinilit ang mga nakakalat na pamayanan na tumira malapit sa simbahan, \"sa ilalim ng kampana.\" Ano ang tawag sa patakarang ito?",
+      "questionText": "Bilang paglalagom sa buong Ikalawang Termino ng Araling Panlipunan 5, tinanong ng guro kung ano ang pinakamahalagang implikasyon ng pagtatanggol ng mga Pilipino laban sa kolonyalismong Espanyol. Aling pahayag ang pinakakomprehensibong naglalarawan sa implikasyon nito sa atin ngayon?",
       "options": [
         {
           "label": "A",
-          "text": "Bandala"
+          "text": "Ipinakitang mas mabuting maghiwa-hiwalay ang bawat rehiyon."
         },
         {
           "label": "B",
-          "text": "Encomienda"
+          "text": "Pinatunayang walang nagawa ang mga ninuno laban sa dayuhan."
         },
         {
           "label": "C",
-          "text": "Reduccion"
+          "text": "Naging dahilan ito upang mawala ang lahat ng kultura natin."
         },
         {
           "label": "D",
-          "text": "Tributo"
+          "text": "Pinatunayang ang diwa ng kalayaan at pagmamahal sa bayan ay buhay."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Reduccion ay sapilitang pagsasama-sama ng mga katutubo sa isang pamayanan malapit sa simbahan para mas madali silang pamahalaan."
+      "correctAnswer": "D",
+      "explanation": "Pinatunayan ng pagtatanggol laban sa Espanya na buhay ang diwa ng kalayaan at pagmamahal sa bayan."
     },
     {
       "id": "spa_5_16",
       "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa panahon ng Espanyol, nagtalaga ang Hari ng Espanya ng mga bagong obispo at pari sa iba't ibang lalawigan sa Pilipinas upang mangasiwa sa mga parokya at simbahan. Aling kasunduan o karapatan ang nagbigay ng kapangyarihang ito sa Hari ng Espanya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Patronato Real"
+        },
+        {
+          "label": "B",
+          "text": "Polo y Servicio"
+        },
+        {
+          "label": "C",
+          "text": "Kalakalang Galyon"
+        },
+        {
+          "label": "D",
+          "text": "Sistemang Bandala"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Ang Patronato Real ang nagbigay sa Hari ng karapatang mag-atas ng mga obispo at pari sa kolonya."
+    },
+    {
+      "id": "spa_5_17",
+      "era": "spanish",
       "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang lugar, ang pamahalaan lang ang puwedeng bumili at magbenta ng tabako. Ano ang tawag dito?",
+      "questionText": "Si Don Mariano ay isang katutubong Pilipino na hinirang bilang Gobernadorcillo sa kanilang pueblo. Siya ang naatasang maningil ng buwis at magpanatili ng kaayusan sa bayan. Ano ang mahalagang katangian ng posisyong Gobernadorcillo sa pamahalaang lokal?",
       "options": [
         {
           "label": "A",
-          "text": "Bandala"
+          "text": "Siya ang pinakamataas na pinuno sa buong Pilipinas."
         },
         {
           "label": "B",
-          "text": "Tributo"
+          "text": "Siya ang nagpapadala ng mga barko patungong Mexico."
         },
         {
           "label": "C",
-          "text": "Polo y Servicio"
+          "text": "Ito ang pinakamataas na posisyong bukas sa katutubo."
         },
         {
           "label": "D",
-          "text": "Monopolyo sa Tabako"
+          "text": "Siya ang pumipili ng bagong Hari sa bansang Espanya."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Sa Monopolyo sa Tabako, tanging ang pamahalaan ang may karapatang bumili at magbenta ng tabako."
+      "correctAnswer": "C",
+      "explanation": "Ang Gobernadorcillo ang pinakamataas na posisyon sa pamahalaan na maaaring hawakan ng katutubo."
     },
     {
-      "id": "spa_5_17",
+      "id": "spa_5_18",
       "era": "spanish",
       "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang serye ng labanan ng Espanya at mga Muslim sa Mindanao ay nagsimula noong 1571. Ano ang tawag dito?",
+      "questionText": "Pinag-aaralan ni Vince kung bakit nagtayo ang Espanya ng comandancia sa Cordillera sa halip na karaniwang alcaldia. Ano ang pangunahing pagkakaiba ng comandancia sa karaniwang lalawigan (alcaldia)?",
       "options": [
         {
           "label": "A",
-          "text": "Labanan sa Mactan"
+          "text": "Matatagpuan lamang ang comandancia sa malalaking lungsod."
         },
         {
           "label": "B",
-          "text": "Digmaang Moro"
+          "text": "Ang comandancia ay pinamumunuan ng mga katutubong Babaylan."
         },
         {
           "label": "C",
-          "text": "Pangangayaw"
+          "text": "Walang binabayarang buwis ang mga tao sa loob ng comandancia."
         },
         {
           "label": "D",
-          "text": "Reduccion"
+          "text": "Ang comandancia ay pinamumunuan ng militar dahil may paglaban."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Digmaang Moro ang tawag sa serye ng labanan ng Espanya at ng mga Muslim sa Mindanao na nagsimula noong 1571."
+      "correctAnswer": "D",
+      "explanation": "Ang comandancia ay pinamumunuan ng militar dahil may paglaban, hindi tulad ng karaniwang alcaldia."
     },
     {
-      "id": "spa_5_18",
+      "id": "spa_5_19",
       "era": "spanish",
       "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naglista ang klase ng mga inaasahan sa babae noong panahon ng Espanya. Alin ang HINDI kasama?",
+      "questionText": "Bilang paglalagom sa Linggo 8, hiniling ng guro na ihambing ang katayuan ng kababaihan bago at sa panahon ng kolonyalismong Espanyol. Aling pahayag ang pinakawastong paghahambing?",
       "options": [
         {
           "label": "A",
-          "text": "Maging relihiyoso"
+          "text": "Magkapareho ang kanilang karapatan sa dalawang panahon."
         },
         {
           "label": "B",
-          "text": "Maging matiisin"
+          "text": "Makapangyarihan noon; nalimitahan sa ilalim ng Espanyol."
         },
         {
           "label": "C",
-          "text": "Maging pinuno ng barangay"
+          "text": "Walang karapatan noon; naging pinuno sa ilalim ng Espanyol."
         },
         {
           "label": "D",
-          "text": "Mag-asikaso sa asawa"
+          "text": "Nasa bahay lamang noon; naging sundalo sa ilalim ng Espanyol."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Inaasahan sa babae na maging relihiyoso, matiisin at nakatuon sa gawaing bahay, dahil ang mahahalagang desisyon ay karaniwang nasa kamay ng mga lalaki."
+      "correctAnswer": "B",
+      "explanation": "Makapangyarihan ang kababaihan noon, ngunit nalimitahan ang kanilang karapatan sa ilalim ng Espanyol."
     },
     {
-      "id": "spa_5_19",
+      "id": "spa_5_20",
       "era": "spanish",
       "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naging magkaugnay ang simbahan at ang pamahalaang kolonyal sa Pilipinas. Anong patakaran ang dahilan nito?",
+      "questionText": "Labis na nalungkot si Apo Lakay nang iwan nila ang kanilang lupain sa tabing-ilog dahil doon nakalibing ang kanilang mga ninuno at naroon ang kanilang mga taniman. Ano ang naging epekto ng patakarang Reduccion sa mga katutubong tulad ni Apo Lakay?",
       "options": [
         {
           "label": "A",
-          "text": "Reduccion"
+          "text": "Nadagdagan ang kanilang kalayaan sa pamimili ng tirahan."
         },
         {
           "label": "B",
-          "text": "Patronato Real"
+          "text": "Naging mayaman agad ang lahat ng lumipat sa bagong bayan."
         },
         {
           "label": "C",
-          "text": "Bandala"
+          "text": "Nawala ang kanilang ugnayan sa sariling lupa at kabuhayan."
         },
         {
           "label": "D",
-          "text": "Barter"
+          "text": "Naging pinuno sila ng mga bagong tayong simbahan sa lugar."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Dahil sa Patronato Real, ang Hari ng Espanya ang namahala sa gawain ng simbahan, kaya naging magkaugnay ang simbahan at pamahalaan."
+      "correctAnswer": "C",
+      "explanation": "Iniwan nila ang lupa ng mga ninuno at taniman, kaya nawala ang kanilang ugnayan sa sariling lupa at kabuhayan."
     },
     {
-      "id": "spa_5_20",
+      "id": "spa_5_21",
       "era": "spanish",
       "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang bayan, katutubong Pilipino ang pinuno. Ano ang tawag sa kaniya?",
+      "questionText": "Sinusuri ni Gabby ang epekto ng mga patakarang pang-ekonomiya ng Espanya (Tributo, Bandala, Polo, Monopolyo) sa kabuhayan ng mga Pilipino. Ano ang pangkalahatang layunin ng lahat ng patakarang pang-ekonomiyang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Alcalde Mayor"
+          "text": "Mapayaman ang mga katutubong magsasaka sa probinsya."
         },
         {
           "label": "B",
-          "text": "Gobernador Heneral"
+          "text": "Makapagpatayo ng sariling negosyo ang bawat Pilipino."
         },
         {
           "label": "C",
-          "text": "Gobernadorcillo"
+          "text": "Maging pantay ang antas ng pamumuhay ng lahat sa bayan."
         },
         {
           "label": "D",
-          "text": "Encomendero"
+          "text": "Mapakinabangan ng Espanya ang yaman at paggawa ng kolonya."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Gobernadorcillo ang katutubong Pilipinong pinuno ng isang bayan o pueblo sa panahon ng Espanyol."
+      "correctAnswer": "D",
+      "explanation": "Iisa ang layunin ng mga patakarang ito: mapakinabangan ng Espanya ang yaman at paggawa ng kolonya."
     },
     {
-      "id": "spa_5_21",
+      "id": "spa_5_22",
       "era": "spanish",
       "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Lumaban ang mga Igorot sa mga kaaway sa tradisyunal nilang paraan na tinatawag na pangangayaw. Ano ang ipinapakita nito?",
+      "questionText": "Nang pilitin ng mga prayle at sundalong Espanyol ang mga Igorot sa Cordillera na bumaba sa kapatagan upang manirahan sa pueblo at magpabinyag, matatag na tumanggi ang mga ito. Ano ang pangunahing dahilan kung bakit tinanggihan ng mga Igorot ang Reduccion at Kristiyanisasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Sumunod sila sa Espanyol"
+          "text": "Wala silang sapat na pagkain kapag nanirahan sa pueblo."
         },
         {
           "label": "B",
-          "text": "Umiwas sila sa laban"
+          "text": "Pinagbawalan sila ng mga mangangalakal na Tsino na bumaba."
         },
         {
           "label": "C",
-          "text": "Nakipagkaibigan sila"
+          "text": "Pinahahalagahan nila ang kalayaan at paniniwala sa kalikasan."
         },
         {
           "label": "D",
-          "text": "Lumaban sila sa sarili nilang paraan"
+          "text": "Takot silang bumaba sa kapatagan dahil sa malalakas na bagyo."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ang pangangayaw o pamumugot ng ulo ay tradisyunal na paraan ng paglaban ng mga Igorot, kaya lumaban sila sa sarili nilang paraan."
+      "correctAnswer": "C",
+      "explanation": "Tinanggihan ng mga Igorot ang Reduccion at Kristiyanisasyon dahil mahalaga sa kanila ang kalayaan at paniniwala sa kalikasan."
     },
     {
-      "id": "spa_5_22",
+      "id": "spa_5_23",
       "era": "spanish",
       "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
       "gradeLevel": "grade5",
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtanong si Leo kung bakit mahalaga si Gabriela Silang. Ano ang pinakamahusay na sagot?",
+      "questionText": "Nang paslangin ang kanyang asawang si Diego Silang, hindi nagkulong sa bahay si Gabriela Silang; sa halip, ipinagpatuloy niya ang pag-aalsa sa Ilocos laban sa mga Espanyol. Ano ang pinatunayan ni Gabriela Silang sa kanyang ginawang pamumuno?",
       "options": [
         {
           "label": "A",
-          "text": "Siya ang unang reyna"
+          "text": "Dapat manatili sa simbahan ang kababaihan tuwing digmaan."
         },
         {
           "label": "B",
-          "text": "Isa siya sa mga unang babaeng lider-rebolusyonaryo"
+          "text": "Tanging mga lalaki lamang ang marunong gumamit ng sandata."
         },
         {
           "label": "C",
-          "text": "Siya ang encomendero"
+          "text": "May kakayahan ang kababaihan na mamuno at lumaban sa laya."
         },
         {
           "label": "D",
-          "text": "Siya ang sumuko"
+          "text": "Sumuko agad ang mga rebolusyonaryo nang mamatay ang pinuno."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Si Gabriela Silang ay isa sa mga unang babaeng lider-rebolusyonaryo; ipinagpatuloy niya ang pag-aalsa sa Ilocos matapos mapatay ang asawang si Diego."
+      "correctAnswer": "C",
+      "explanation": "Ipinagpatuloy ni Gabriela Silang ang pag-aalsa, patunay na kayang mamuno at lumaban ng kababaihan para sa laya."
+    },
+    {
+      "id": "spa_5_24",
+      "era": "spanish",
+      "subTopic": "Kahulugan at Dahilan ng Kolonisasyon; Paraan ng Pagsasailalim sa Lipunang Pilipino",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Clara ang tatlong pangyayari: (1) Paghahanap ng mina ng ginto, (2) Pagpapalawak ng imperyo ng Hari, at (3) Pagbibinyag sa mga katutubo. Aling pagkakasunod-sunod ng '3G' ang tumutugma sa tatlong pangyayaring sinuri ni Clara?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gospel, Gold, Glory"
+        },
+        {
+          "label": "B",
+          "text": "Glory, Gospel, Gold"
+        },
+        {
+          "label": "C",
+          "text": "Gold, Glory, Gospel"
+        },
+        {
+          "label": "D",
+          "text": "Gold, Gospel, Glory"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang ginto ay Gold, ang imperyo ng Hari ay Glory, at ang pagbibinyag ay Gospel."
+    },
+    {
+      "id": "spa_5_25",
+      "era": "spanish",
+      "subTopic": "Mga Patakarang Kolonyal na Ipinatupad ng Espanya sa Bansa",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang lalawigan, inatasan ang lahat ng kalalakihang may edad 16 hanggang 60 na magtrabaho nang walang bayad sa pagtatayo ng tulay at simbahan sa loob ng 40 araw sa isang taon. Ano ang tawag sa sapilitang paggawang ito na ipinatupad sa kalalakihan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Polo y Servicio"
+        },
+        {
+          "label": "B",
+          "text": "Sistemang Bandala"
+        },
+        {
+          "label": "C",
+          "text": "Kalakalang Galyon"
+        },
+        {
+          "label": "D",
+          "text": "Sistemang Encomienda"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Polo y Servicio ang sapilitang paggawa nang walang bayad, 40 araw sa isang taon, ng mga lalaking 16 hanggang 60 taong gulang."
+    },
+    {
+      "id": "spa_5_26",
+      "era": "spanish",
+      "subTopic": "Pag-aangkop at Pagtugon ng mga Pilipino sa Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa ilalim ng Monopolyo sa Tabako, dumanas ng matinding pang-aabuso ang mga Igorot mula sa mga ahente ng pamahalaan na bumibili ng kanilang ani sa itinakdang mababang halaga. Paano tumugon ang mga Igorot sa pang-aabusong ito sa Monopolyo sa Tabako?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naglunsad sila ng pagsuway at rebelyon laban sa ahente."
+        },
+        {
+          "label": "B",
+          "text": "Sumunod sila nang tahimik at nagtanim pa ng mas marami."
+        },
+        {
+          "label": "C",
+          "text": "Lumipat silang lahat sa Maynila upang magreklamo sa Hari."
+        },
+        {
+          "label": "D",
+          "text": "Ibinigay nila nang libre ang lahat ng tabako sa simbahan."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Dahil sa pang-aabuso sa tabako, lumaban ang mga Igorot sa pamamagitan ng pagsuway at rebelyon laban sa mga ahente."
+    },
+    {
+      "id": "spa_5_27",
+      "era": "spanish",
+      "subTopic": "Katayuan ng Kababaihan sa Panahon ng Kolonyalismong Espanyol",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa kabila ng mahigpit na lipunang patriyarkal, may mga kababaihang tumulong sa mga kilusang rebolusyonaryo sa pamamagitan ng pag-aalaga sa mga sugatan, pagtatago ng dokumento, at pagbibigay ng pagkain. Ano ang ipinapakita ng pagkilos na ito ng mga kababaihang Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Natakot silang lumabas ng bahay kaya nagtago sila."
+        },
+        {
+          "label": "B",
+          "text": "Wala silang pakialam sa kalagayan ng mga mandirigma."
+        },
+        {
+          "label": "C",
+          "text": "Nagsikap silang makibahagi sa pagtatanggol ng kalayaan."
+        },
+        {
+          "label": "D",
+          "text": "Sinunod nila ang utos ng mga prayle na manatili sa kusina."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nagsikap ang mga babae na makibahagi sa pagtatanggol ng kalayaan kahit mahigpit ang lipunan."
     }
   ]
 }

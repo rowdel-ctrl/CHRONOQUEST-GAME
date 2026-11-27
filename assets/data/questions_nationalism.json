@@ -8,27 +8,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa barangay, sinabi ni Ana na mahal niya ang Pilipinas, pero hindi siya sumasali sa mga proyekto. Si Ben ay mahal din ang Pilipinas, at tumutulong siya sa paglilinis at pagpapaunlad ng kanilang komunidad. Sino ang nagpapakita ng nasyonalismo, hindi lang paghanga sa bayan?",
+      "questionText": "Sa kanilang barangay, madalas ipagmalaki ni Ana ang magagandang tanawin ng Pilipinas, ngunit hindi siya nakikilahok sa paglilinis at pagpapaunlad ng kanilang komunidad. Si Ben naman ay nagmamahal din sa bansa at aktibong tumutulong sa mga gawaing pampamayanan upang umunlad ito. Sino sa dalawa ang mas nagpapakita ng tunay na diwa ng nasyonalismo at bakit?",
       "options": [
         {
           "label": "A",
-          "text": "Si Ana"
+          "text": "Si Ana, dahil sapat na ang paghanga sa kagandahan ng bansa."
         },
         {
           "label": "B",
-          "text": "Si Ben"
+          "text": "Silang dalawa, dahil pareho silang nakatira sa iisang barangay."
         },
         {
           "label": "C",
-          "text": "Silang dalawa"
+          "text": "Si Ben, dahil kumikilos siya upang makatulong sa pag-unlad ng bansa."
         },
         {
           "label": "D",
-          "text": "Wala sa kanila"
+          "text": "Wala sa kanila, dahil ang nasyonalismo ay paglaban lamang sa digmaan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Hindi sapat ang paghanga lang sa bayan; ang nasyonalismo ay may kasamang pagkilos para umunlad ang bansa, gaya ng pagtulong ni Ben sa komunidad."
+      "correctAnswer": "C",
+      "explanation": "Si Ben ang mas nagpapakita ng nasyonalismo dahil kumikilos siya para umunlad ang bansa, hindi lang pagmamalaki ang ginagawa."
     },
     {
       "id": "nat_1_2",
@@ -38,27 +38,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Bumili si Mila ng bag na gawa ng Pilipino, kahit mas sikat ang bag na gawa sa ibang bansa. Tinanong siya ng kaibigan niya kung bakit. Ano ang pinakamagandang sagot ni Mila?",
+      "questionText": "Bumili si Mila ng bag na gawa ng mga lokal na mananahi sa kanilang lalawigan kahit mas sikat ang mga bag na gawa sa ibang bansa. Tinanong siya ng kanyang kaibigan kung bakit niya ito pinili. Aling paliwanag ni Mila ang pinakamalapit sa pagpapakita ng nasyonalismo?",
       "options": [
         {
           "label": "A",
-          "text": "Mas mura ito"
+          "text": "Mas makulay ang disenyo nito kaysa sa iba."
         },
         {
           "label": "B",
-          "text": "Mas maganda ang kulay"
+          "text": "Mas malaki ang lalagyan nito ng mga gamit."
         },
         {
           "label": "C",
-          "text": "Para makatulong sa kapwa Pilipino"
+          "text": "Mas madali itong mabili sa malapit na tindahan."
         },
         {
           "label": "D",
-          "text": "Mas malaki ito"
+          "text": "Nakatutulong ito sa kabuhayan ng kapwa Pilipino."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Sa pagtangkilik sa sariling produkto, natutulungan ang kapwa Pilipino at naipapakita ang nasyonalismo."
+      "correctAnswer": "D",
+      "explanation": "Pinili ni Mila ang gawa ng lokal na mananahi dahil nakatutulong ito sa kabuhayan ng kapwa Pilipino. Iyan ang pagtangkilik sa sariling atin."
     },
     {
       "id": "nat_1_3",
@@ -68,27 +68,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gagawa ang klase ni Gng. Reyes ng palabas para sa Buwan ng Wika. Sabi ng isang kaklase, wikang banyaga na lang daw ang gamitin para astig. Ano ang pinakamabuting gawin para maipakita ang pagmamahal sa bayan?",
+      "questionText": "Magtatanghal ang klase ni Gng. Reyes para sa pagdiriwang ng Buwan ng Wika. Iminungkahi ng isang mag-aaral na wikang banyaga na lamang ang gamitin sa buong dula upang magmukhang moderno ang palabas. Ano ang pinakamabuting pasya ng klase upang maipakita ang pagpapahalaga sa sariling bansa?",
       "options": [
         {
           "label": "A",
-          "text": "Gumamit ng wikang banyaga lang"
+          "text": "Gayahin ang sikat na palabas mula sa ibang bansa."
         },
         {
           "label": "B",
-          "text": "Huwag nang ituloy ang palabas"
+          "text": "Alisin ang dula at magpalabas na lang ng pelikula."
         },
         {
           "label": "C",
-          "text": "Kopyahin ang palabas ng ibang bansa"
+          "text": "Gumamit ng wikang banyaga sa lahat ng bahagi ng dula."
         },
         {
           "label": "D",
-          "text": "Gamitin ang sariling wika"
+          "text": "Gamitin ang wikang Filipino at ipakita ang kulturang Pilipino sa dula."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ang paggamit ng sariling wika ay isang paraan ng pagpapakita ng nasyonalismo at ng pagpapanatiling buhay ng ating kultura."
+      "explanation": "Ang paggamit ng wikang Filipino at pagpapakita ng kulturang Pilipino sa dula ay pagpapahalaga sa sariling bansa. Ang pagkopya sa banyaga ay hindi."
     },
     {
       "id": "nat_1_4",
@@ -98,27 +98,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nanonood ng laro si Rico. Sumigaw siya ng panlalait sa koponan ng ibang bansa habang winawagayway ang watawat ng Pilipinas. Ano ang mali sa ginawa ni Rico?",
+      "questionText": "Sa pista ng kanilang bayan, nagbebenta ng sariling gawang banig at bayong ang mga taga-roon. Mas pinipili ng maraming mamimili ang mga ito kaysa sa mga imported na gamit. Ano ang ipinakikita ng pagpili sa mga produktong gawa sa sariling bayan?",
       "options": [
         {
           "label": "A",
-          "text": "Hindi siya gumalang sa ibang bansa"
+          "text": "Wala silang pakialam sa ibang bansa."
         },
         {
           "label": "B",
-          "text": "Sinuportahan niya ang Pilipinas"
+          "text": "Mas mura ang lahat ng imported na gamit."
         },
         {
           "label": "C",
-          "text": "Nanood siya ng laro"
+          "text": "Hindi na kailangan ang kalakalan sa ibang bansa."
         },
         {
           "label": "D",
-          "text": "Nagdala siya ng watawat"
+          "text": "Pagpapahalaga at pagtangkilik sa sariling produkto."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Dapat may kalakip na paggalang sa ibang bansa ang nasyonalismo; ang panlalait sa iba ay pagmamataas, hindi tunay na pagmamahal sa bayan."
+      "correctAnswer": "D",
+      "explanation": "Kapag mas pinipili ang banig at bayong na gawa sa sariling bayan, ipinapakita ang pagpapahalaga at pagtangkilik sa sariling produkto."
     },
     {
       "id": "nat_1_5",
@@ -128,27 +128,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Habang inaawit ang Lupang Hinirang, nagkukuwentuhan si Lito. Sabi niya, \"Mahal ko naman ang Pilipinas!\" Ano ang dapat sabihin kay Lito?",
+      "questionText": "Tuwing Lunes sa paaralan, sabay-sabay na inaawit ng mga mag-aaral ang Lupang Hinirang at nakatindig sila nang maayos sa harap ng watawat. Paano ipinapakita ng gawaing ito ang nasyonalismo?",
       "options": [
         {
           "label": "A",
-          "text": "Umalis sa pila"
+          "text": "Natututo silang kumanta nang malakas."
         },
         {
           "label": "B",
-          "text": "Igalang ang awit at watawat"
+          "text": "Natatapos agad ang klase tuwing Lunes."
         },
         {
           "label": "C",
-          "text": "Umawit nang pabulong"
+          "text": "Sinusunod lamang nila ang utos ng guro nang walang dahilan."
         },
         {
           "label": "D",
-          "text": "Hayaan na lang siya"
+          "text": "Ipinapakita nila ang paggalang at pagmamahal sa bansa."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang paggalang sa watawat at sa pag-awit ng Lupang Hinirang ay paraan ng pagpapakita ng nasyonalismo, hindi lang sa salita kundi sa gawa."
+      "correctAnswer": "D",
+      "explanation": "Ang pag-awit ng Lupang Hinirang at pagtindig sa harap ng watawat ay paggalang at pagmamahal sa bansa."
     },
     {
       "id": "nat_1_6",
@@ -158,27 +158,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Tinuturuan ni Lolo Ador ang mga bata ng katutubong sayaw. Ayaw sumali ng ilang bata dahil mas gusto nila ang sayaw ng ibang bansa. Ano ang makatutulong para hindi mawala ang ating kultura?",
+      "questionText": "Tinuturuan ni Lolo Ador ang mga kabataan sa kanilang nayon ng katutubong sayaw. Nag-aalangan ang ilang bata dahil mas sanay sila sa mga makabagong sayaw na napapanood sa internet. Paano makatutulong ang paaralan at komunidad upang mapanatiling buhay ang katutubong sayaw?",
       "options": [
         {
           "label": "A",
-          "text": "Ipagbawal ang ibang sayaw"
+          "text": "Ipagbawal ang panonood ng anumang palabas sa internet."
         },
         {
           "label": "B",
-          "text": "Itigil ang klase"
+          "text": "Pilitin ang mga bata na magsanay kahit walang paliwanag."
         },
         {
           "label": "C",
-          "text": "Isayaw ito sa pista kasama ang mga bata"
+          "text": "Itigil na ang pagtuturo ng katutubong sayaw sa mga bata."
         },
         {
           "label": "D",
-          "text": "Hintayin silang magbago"
+          "text": "Isama ang katutubong sayaw sa mga pista at programa sa paaralan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Napapanatiling buhay ang kultura at tradisyon kapag isinasagawa at ibinabahagi ito sa mga bata, gaya ng pagsasayaw sa pista."
+      "correctAnswer": "D",
+      "explanation": "Kapag isinama ang katutubong sayaw sa mga pista at programa sa paaralan, nananatiling buhay ang kulturang ito."
     },
     {
       "id": "nat_1_7",
@@ -188,27 +188,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa bansang Luntian, mahal ng mga tao ang kanilang kultura at magagandang tanawin. Pero ibang bansa ang nag-uutos kung paano sila pamamahalaan. Ano ang kulang para masabing may nasyonalismo sila?",
+      "questionText": "Sa isang kathang-isip na bansang tinatawag na Luntian, mahal ng mga mamamayan ang kanilang magagandang tanawin at pagkain, ngunit hinahayaan lamang nilang diktahan ng ibang bansa ang kanilang pamahalaan. Aling mahalagang sangkap ng nasyonalismo ang kulang sa mga mamamayan ng bansang Luntian?",
       "options": [
         {
           "label": "A",
-          "text": "Magagandang tanawin"
+          "text": "Pagdiriwang ng masayang pista sa bawat lalawigan"
         },
         {
           "label": "B",
-          "text": "Maraming turista"
+          "text": "Pagkakaroon ng mas maraming turista mula sa Europa"
         },
         {
           "label": "C",
-          "text": "Pag-awit ng pambansang awit"
+          "text": "Pagtatayo ng malalaking gusali sa kabisera ng bansa"
         },
         {
           "label": "D",
-          "text": "Gustong maging malaya ang bansa"
+          "text": "Hangaring maging malaya mula sa panghihimasok ng dayuhan"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "May nasyonalismo lang kapag may hangaring maging malaya ang bansa sa panghihimasok ng ibang bansa sa pamamahala nito, hindi lang pagmamahal sa kultura."
+      "explanation": "Mahal ng mga taga-Luntian ang kanilang bansa pero hinahayaan nilang diktahan ito ng iba. Kulang sa kanila ang hangaring maging malaya sa panghihimasok ng dayuhan."
     },
     {
       "id": "nat_1_8",
@@ -218,27 +218,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nanalo si Chef Dan sa paligsahan sa ibang bansa. Ipinakilala niya roon ang adobo. Paano nagpakita ng nasyonalismo si Chef Dan?",
+      "questionText": "Nanalo si Chef Dan sa isang pandaigdigang paligsahan sa pagluluto. Sa halip na lutuin ang mga pagkaing banyaga, inihanda at ipinakilala niya sa mga hurado ang lutuing Pilipino tulad ng adobo at sinigang. Paano ipinakita ni Chef Dan ang kanyang damdaming nasyonalismo sa paligsahan?",
       "options": [
         {
           "label": "A",
-          "text": "Ipinagmalaki niya ang ating bansa"
+          "text": "Nakapaglakbay siya nang libre patungo sa ibang bansa."
         },
         {
           "label": "B",
-          "text": "Yumaman siya"
+          "text": "Nakatanggap siya ng malaking premyo mula sa mga hurado."
         },
         {
           "label": "C",
-          "text": "Natuto siyang magluto"
+          "text": "Natuto siyang gumamit ng mga makabagong kasangkapan sa kusina."
         },
         {
           "label": "D",
-          "text": "Nakapaglakbay siya"
+          "text": "Ipinagmalaki at ibinahagi niya sa mundo ang kulturang Pilipino."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang pagpapakilala ng sariling pagkain sa ibang bansa ay pagpapahalaga sa kultura at pagbibigay-dangal sa Pilipinas."
+      "correctAnswer": "D",
+      "explanation": "Ipinagmalaki ni Chef Dan ang adobo at sinigang sa mundo. Ito ay pagpapakita ng nasyonalismo sa pamamagitan ng kulturang Pilipino."
     },
     {
       "id": "nat_1_9",
@@ -248,27 +248,27 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa Linggo ng Nasyonalismo, may 4 na booth: (1) lokal na pagkain, (2) laruang gawa sa ibang bansa, (3) katutubong sayaw, (4) tula sa Filipino. Anong booth ang hindi nagpapakita ng nasyonalismo?",
+      "questionText": "Sa pagdiriwang ng Linggo ng Kasaysayan, nagtayo ang mga mag-aaral ng apat na booth: (1) lokal na kakanin, (2) imported na laruan, (3) katutubong kasuotan, at (4) mga tulang isinulat sa wikang Filipino. Aling booth ang HINDI tuwirang nagtataguyod ng diwa ng nasyonalismo sa pagdiriwang?",
       "options": [
         {
           "label": "A",
-          "text": "1"
+          "text": "Booth 3, dahil lumang damit na ang mga kasuotan."
         },
         {
           "label": "B",
-          "text": "2"
+          "text": "Booth 1, dahil pagkain lamang ang ipinapakita rito."
         },
         {
           "label": "C",
-          "text": "3"
+          "text": "Booth 2, dahil banyagang produkto ang itinatampok dito."
         },
         {
           "label": "D",
-          "text": "4"
+          "text": "Booth 4, dahil mahirap basahin ang mga tula sa Filipino."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang laruang gawa sa ibang bansa ay hindi tumatangkilik sa sariling produkto o kultura, kaya hindi ito nagpapakita ng nasyonalismo."
+      "correctAnswer": "C",
+      "explanation": "Ang Booth 2 ay imported na laruan at banyagang produkto, kaya hindi ito tuwirang nagtataguyod ng nasyonalismo."
     },
     {
       "id": "nat_1_10",
@@ -278,27 +278,177 @@
       "level": 1,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sabi ni Tomas, \"Ang nasyonalismo ay ang pagkamuhi sa ibang bansa.\" Tama ba si Tomas?",
+      "questionText": "Sinabi ni Tomas sa kanyang kamag-aral na ang nasyonalismo ay nangangahulugan ng pagkamuhi at pag-iwas sa lahat ng bagay na may kaugnayan sa ibang bansa. Paano mo iwawasto ang maling pananaw ni Tomas tungkol sa nasyonalismo?",
       "options": [
         {
           "label": "A",
-          "text": "Oo, para hindi makialam ang iba"
+          "text": "Tama siya, dahil ang pagmamahal sa bayan ay galit sa iba."
         },
         {
           "label": "B",
-          "text": "Hindi, dapat gumalang sa ibang bansa"
+          "text": "Tama siya, dahil dapat isara ang bansa sa lahat ng dayuhan."
         },
         {
           "label": "C",
-          "text": "Oo, dahil mahal niya ang bansa"
+          "text": "Mali siya, dahil tungkol lamang sa kalakalan ang nasyonalismo."
         },
         {
           "label": "D",
-          "text": "Hindi, walang kinalaman ito sa bansa"
+          "text": "Mali siya, dahil ang nasyonalismo ay may kalakip na paggalang sa iba."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang nasyonalismo ay pagmamahal sa bayan na may kalakip na paggalang sa ibang bansa; hindi ito pagkamuhi sa iba."
+      "correctAnswer": "D",
+      "explanation": "Mali si Tomas dahil ang nasyonalismo ay pagmamahal sa bayan na may kalakip na paggalang sa iba, hindi galit sa dayuhan."
+    },
+    {
+      "id": "nat_1_11",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinaghahambing nina Carla at Marco ang kahulugan ng patriotismo at nasyonalismo sa kanilang takdang-aralin sa Araling Panlipunan. Ano ang pangunahing pagkakaiba ng nasyonalismo sa patriotismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang patriotismo ay para sa pinuno; ang nasyonalismo ay sa bata."
+        },
+        {
+          "label": "B",
+          "text": "Walang anumang pagkakaiba ang dalawang salitang ito sa kasaysayan."
+        },
+        {
+          "label": "C",
+          "text": "Ang nasyonalismo ay may hangaring kalayaan mula sa dayuhang kontrol."
+        },
+        {
+          "label": "D",
+          "text": "Ang patriotismo ay paggalang sa watawat; ang nasyonalismo ay pag-awit."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ang patriotismo ay pagmamahal at paghanga sa bayan. Ang nasyonalismo naman ay may kalakip na hangaring kalayaan mula sa dayuhang kontrol."
+    },
+    {
+      "id": "nat_1_12",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nakita ni Jessa na pinupunit ng isang bata ang lumang pahina ng aklat tungkol sa mga bayaning Pilipino upang gawing eroplanong papel. Bakit mahalagang pigilan ni Jessa ang ginagawa ng bata batay sa natutuhan sa aralin?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil mahal ang presyo ng papel sa tindahan."
+        },
+        {
+          "label": "B",
+          "text": "Dahil hindi marunong magpalipad ng eroplano ang bata."
+        },
+        {
+          "label": "C",
+          "text": "Dahil magagalit ang guro kapag nakita ang kalat sa sahig."
+        },
+        {
+          "label": "D",
+          "text": "Dahil bahagi ng kultura at kasaysayan ang paggalang sa mga bayani."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Bahagi ng kultura at kasaysayan natin ang mga bayani, kaya dapat silang igalang at hindi sirain ang aklat tungkol sa kanila."
+    },
+    {
+      "id": "nat_1_13",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong panahon ng pananakop ng Espanya, unti-unting napagtanto ng mga Pilipino na hindi sila dapat magpaalipin sa sarili nilang lupain. Anong damdamin ang umusbong sa puso ng mga Pilipino dahil sa pagkamulat na ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Takot na lumaban sa mga dayuhan"
+        },
+        {
+          "label": "B",
+          "text": "Pagnanais na lumipat sa ibang bansa"
+        },
+        {
+          "label": "C",
+          "text": "Paghanga sa pamamahala ng mga dayuhan"
+        },
+        {
+          "label": "D",
+          "text": "Damdaming nasyonalismo at paghahangad ng karapatan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Nang mapagtanto ng mga Pilipino na hindi sila dapat magpaalipin, umusbong ang nasyonalismo at paghahangad ng karapatan."
+    },
+    {
+      "id": "nat_1_14",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Si Mateo ay isang batang atleta na kumatawan sa Pilipinas sa paligsahan sa swimming. Bago lumangoy, hinawakan niya ang watawat sa kanyang dibdib at buong pusong naglaro para sa bayan. Anong adhikain ang ipinapakita ni Mateo sa kanyang ginawa?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagnanais na talunin ang kanyang mga kaklase sa paaralan"
+        },
+        {
+          "label": "B",
+          "text": "Pangarap na makilala sa buong mundo bilang sikat na artista"
+        },
+        {
+          "label": "C",
+          "text": "Hangaring makalipat ng tirahan sa bansang pinagdausan ng laro"
+        },
+        {
+          "label": "D",
+          "text": "Layuning makapagbigay ng dangal at karangalan sa sariling bansa"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Naglaro si Mateo para sa bayan kaya ang adhikain niya ay magbigay ng dangal at karangalan sa sariling bansa."
+    },
+    {
+      "id": "nat_1_15",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 1,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang pangwakas na gawain sa Linggo 1, tinanong ng guro kung paano maipapakita ng isang mag-aaral sa Grade 5 ang nasyonalismo sa araw-araw. Aling gawain ang pinakawasto at makatotohanan para sa isang mag-aaral?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pagpupunta sa ibang bansa upang doon na manirahan habambuhay"
+        },
+        {
+          "label": "B",
+          "text": "Pag-iwas sa pagbili ng anumang gamit na gawa sa ibang lalawigan"
+        },
+        {
+          "label": "C",
+          "text": "Pakikipag-away sa mga batang nagsasalita ng ibang wika sa paaralan"
+        },
+        {
+          "label": "D",
+          "text": "Pag-aaral nang mabuti, paggalang sa watawat, at pagtangkilik sa sariling wika"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang pag-aaral nang mabuti, paggalang sa watawat at pagtangkilik sa sariling wika ay mga gawaing kaya at tama para sa isang mag-aaral."
     }
   ],
   "2": [
@@ -310,27 +460,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong ika-18 siglo sa Europa, itinuro ng isang guro na may karapatan ang lahat ng tao at dapat gamitin ang katwiran sa pamamahala. Anong kilusan ang ipinapakita nito?",
+      "questionText": "Noong ika-17 at ika-18 siglo sa Europa, lumaganap ang isang kilusang nagturo na ang lahat ng tao ay may likas na karapatan at dapat gamitin ang katwiran sa pamamahala. Anong kilusan sa Europa ang naging ugat ng kaisipang liberal na nakarating sa Pilipinas?",
       "options": [
         {
           "label": "A",
-          "text": "La Ilustración"
-        },
-        {
-          "label": "B",
           "text": "Kalakalang Galyon"
         },
         {
+          "label": "B",
+          "text": "Kilusang Sekularisasyon"
+        },
+        {
           "label": "C",
-          "text": "Polo y servicio"
+          "text": "Pamahalaang Kolonyal sa Maynila"
         },
         {
           "label": "D",
-          "text": "Cavite Mutiny"
+          "text": "La Ilustración o Panahon ng Kaliwanagan"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang La Ilustración o Panahon ng Kaliwanagan ay kilusan sa Europa na nagturo ng katwiran at karapatan ng tao noong ika-17 at ika-18 siglo."
+      "correctAnswer": "D",
+      "explanation": "Ang La Ilustración o Panahon ng Kaliwanagan sa Europa ang ugat ng kaisipang liberal. Itinuro nito ang karapatan ng tao at paggamit ng katwiran."
     },
     {
       "id": "nat_2_2",
@@ -340,27 +490,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong 1812, may bagong batas ang Espanya na tinatawag na Konstitusyon ng Cádiz. Isang mamamahayag ang nagsulat ng kaniyang opinyon dahil dito. Anong karapatan ang ginamit niya?",
+      "questionText": "Noong 1812, pinagtibay sa Espanya ang Konstitusyon ng Cádiz na nagtataguyod ng kalayaan sa pamamahayag at nagbigay ng kinatawan sa mga kolonya tulad ng Pilipinas. Ano ang naging pinakamahalagang epekto ng Konstitusyon ng Cádiz sa mga Pilipino kahit hindi ito lubusang naipatupad sa bansa?",
       "options": [
         {
           "label": "A",
-          "text": "Sapilitang paggawa"
+          "text": "Agad na naging malaya ang Pilipinas mula sa Espanya."
         },
         {
           "label": "B",
-          "text": "Pagbabayad ng tributo"
+          "text": "Nagsara ang lahat ng paaralan at simbahan sa Maynila."
         },
         {
           "label": "C",
-          "text": "Malayang magsulat ng balita"
+          "text": "Bumalik ang mga Espanyol sa Europa nang walang naiwang pinuno."
         },
         {
           "label": "D",
-          "text": "Kalakalang Galyon"
+          "text": "Natutunan ng mga Pilipino na may mga karapatan silang dapat ipaglaban."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Konstitusyon ng Cádiz ay nagtaguyod ng kalayaan sa pamamahayag, kaya malaya ang mamamahayag na magsulat ng balita at opinyon."
+      "correctAnswer": "D",
+      "explanation": "Kahit hindi ito lubusang naipatupad, natutunan ng mga Pilipino na may mga karapatan silang dapat ipaglaban."
     },
     {
       "id": "nat_2_3",
@@ -370,27 +520,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Dati, napakatagal ng biyahe ng barko mula Europa papuntang Maynila. Noong 1869, binuksan ang Suez Canal at umikli ang biyahe. Ano ang pinakamalamang na nangyari sa Pilipinas?",
+      "questionText": "Bago ang 1869, inaabot nang ilang buwan ang paglalakbay ng mga barko mula Europa patungong Maynila dahil kailangan pang umikot sa dulo ng Africa. Nang buksan ang Suez Canal sa Egypt, umikli nang husto ang biyahe. Paano nakatulong ang pagbubukas ng Suez Canal noong Nobyembre 17, 1869 sa pag-usbong ng nasyonalismong Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Nawala ang mga pantalan"
+          "text": "Natigil ang lahat ng kalakalan sa pagitan ng Asya at Europa."
         },
         {
           "label": "B",
-          "text": "Tumigil ang kalakalan"
+          "text": "Nawala ang pangangailangan sa mga pantalan sa lungsod ng Maynila."
         },
         {
           "label": "C",
-          "text": "Humaba ang biyahe"
+          "text": "Naging libre ang pamasahe ng lahat ng magsasaka patungong Espanya."
         },
         {
           "label": "D",
-          "text": "Mas mabilis dumating ang bagong ideya"
+          "text": "Napadali nito ang pagdating ng mga balita, aklat, at kaisipang liberal."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Nang umikli ang biyahe dahil sa Suez Canal, mas mabilis na dumating sa Maynila ang mga kalakal, balita at kaisipang liberal mula sa ibang bansa."
+      "explanation": "Umikli ang biyahe dahil sa Suez Canal, kaya mas napadali ang pagdating sa Maynila ng mga balita, aklat at kaisipang liberal."
     },
     {
       "id": "nat_2_4",
@@ -400,27 +550,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gumagawa si Nico ng timeline. Ang mga pangyayari: Suez Canal (1869), Konstitusyon ng Cádiz (1812), at ganap na pagbubukas ng mga pantalan (1834). Alin ang tamang pagkakasunod, mula pinakauna?",
+      "questionText": "Inaayos ni Nico ang mga mahahalagang pangyayari sa kanyang timeline: (1) Pagbubukas ng Suez Canal (1869), (2) Pagbuo ng Konstitusyon ng Cádiz (1812), at (3) Ganap na pagbubukas ng mga pantalan ng Pilipinas (1834). Alin ang tamang pagkakasunod-sunod ng mga pangyayaring ito mula sa pinakauna hanggang sa pinakahuli?",
       "options": [
         {
           "label": "A",
-          "text": "Suez → Cádiz → Pantalan"
+          "text": "Suez Canal → Konstitusyon ng Cádiz → Pagbubukas ng mga pantalan"
         },
         {
           "label": "B",
-          "text": "Cádiz → Pantalan → Suez"
+          "text": "Konstitusyon ng Cádiz → Pagbubukas ng mga pantalan → Suez Canal"
         },
         {
           "label": "C",
-          "text": "Pantalan → Suez → Cádiz"
+          "text": "Pagbubukas ng mga pantalan → Suez Canal → Konstitusyon ng Cádiz"
         },
         {
           "label": "D",
-          "text": "Cádiz → Suez → Pantalan"
+          "text": "Konstitusyon ng Cádiz → Suez Canal → Pagbubukas ng mga pantalan"
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Mula sa pinakauna: Konstitusyon ng Cádiz (1812), ganap na pagbubukas ng mga pantalan (1834), at Suez Canal (1869)."
+      "explanation": "Ang tamang pagkakasunod ay Konstitusyon ng Cádiz (1812), pagbubukas ng mga pantalan (1834) at Suez Canal (1869)."
     },
     {
       "id": "nat_2_5",
@@ -430,27 +580,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Umaasa si Don Ramon sa galyon na bumibiyahe sa pagitan ng Maynila at Acapulco para sa kaniyang negosyo. Noong 1815, natigil ang Kalakalang Galyon. Ano ang pinakamatalinong gawin niya?",
+      "questionText": "Si Don Ramon ay isang negosyante sa Maynila na umaasa lamang dati sa Kalakalang Galyon patungong Acapulco, Mexico. Nang matapos ito noong 1815 at buksan ang mga pantalan noong 1834, nagbago ang takbo ng negosyo. Anong pagbabago sa ekonomiya ang nagbigay-daan upang lumago ang negosyo nina Don Ramon at makaugnay ang iba't ibang bansa?",
       "options": [
         {
           "label": "A",
-          "text": "Maghintay ng galyon"
+          "text": "Pagbabawal sa pagtatanim ng mga produktong panluwas"
         },
         {
           "label": "B",
-          "text": "Isara ang negosyo"
+          "text": "Pagbubukas ng Pilipinas sa malayang pandaigdigang kalakalan"
         },
         {
           "label": "C",
-          "text": "Makipagkalakalan sa ibang bansa"
+          "text": "Pagsasara ng lahat ng daungan sa mga dayuhang mangangalakal"
         },
         {
           "label": "D",
-          "text": "Itigil ang pagbebenta"
+          "text": "Pagbabalik ng eksklusibong kalakalan sa pagitan ng Maynila at Mexico"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Natapos ang Kalakalang Galyon noong 1815 at unti-unting nabuksan ang mga pantalan sa pandaigdigang kalakalan, kaya puwede nang makipagkalakalan sa ibang bansa."
+      "correctAnswer": "B",
+      "explanation": "Ang pagbubukas ng Pilipinas sa malayang pandaigdigang kalakalan ang nagpalago sa negosyo ni Don Ramon."
     },
     {
       "id": "nat_2_6",
@@ -460,27 +610,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Hindi lubusang naipatupad sa Pilipinas ang Konstitusyon ng Cádiz. Tanong ng kaklase mo: \"Wala bang naidulot ito?\" Ano ang pinakamagandang sagot?",
+      "questionText": "Sa isang talakayan, nagtanong si Migo: 'Kung pumasok na pala ang kaisipang liberal sa Pilipinas noong ika19 na siglo, bakit hindi agad nakamit ng mga Pilipino ang kalayaan?' Aling paliwanag ang pinakawastong sagot sa tanong ni Migo?",
       "options": [
         {
           "label": "A",
-          "text": "Meron, namulat ang mga Pilipino"
+          "text": "Walang anumang aklat o balita ang nakarating sa kapuluan."
         },
         {
           "label": "B",
-          "text": "Wala, hindi ito naipatupad"
+          "text": "Hindi interesado ang mga Pilipino sa kalayaan at pagkakapantay-pantay."
         },
         {
           "label": "C",
-          "text": "Wala, para sa Espanyol lang"
+          "text": "Kusang ibinigay ng Espanya ang kalayaan kaya hindi na lumaban ang bayan."
         },
         {
           "label": "D",
-          "text": "Meron, malaya na ang bansa"
+          "text": "Nagsisimula pa lamang mamulat ang mga Pilipino at naging ugat pa lamang ito."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Hindi man ito ganap na naipatupad, natutunan ng mga Pilipino na may karapatan silang dapat ipaglaban, kaya namulat sila."
+      "correctAnswer": "D",
+      "explanation": "Nagsisimula pa lang mamulat ang mga Pilipino noon. Ugat pa lang ang kaisipang liberal, kaya hindi agad nakamit ang kalayaan."
     },
     {
       "id": "nat_2_7",
@@ -490,27 +640,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Tanong ni Migo: \"Kung may kaisipang liberal na noon, bakit hindi agad naging malaya ang Pilipinas?\" Ano ang pinakatamang sagot?",
+      "questionText": "Bahagyang binuksan ang mga pantalan ng Pilipinas sa pandaigdigang kalakalan noong 1789, at ganap itong binuksan sa buong mundo noong 1834. Ano ang naging bunga ng pagbubukas ng mga pantalan ng Pilipinas sa pandaigdigang kalakalan?",
       "options": [
         {
           "label": "A",
-          "text": "Walang natutunan ang mga Pilipino"
+          "text": "Naging sarado ang bansa sa anumang impluwensya mula sa ibang bansa."
         },
         {
           "label": "B",
-          "text": "Ayaw ng buong Europa"
+          "text": "Bumalik sa sinaunang sistemang barter ang buong ekonomiya ng kolonya."
         },
         {
           "label": "C",
-          "text": "Hindi totoo ang liberalismo"
+          "text": "Pumasok ang mga dayuhang mangangalakal na nagdala rin ng bagong ideya."
         },
         {
           "label": "D",
-          "text": "Nagsisimula pa lang mamulat ang mga Pilipino"
+          "text": "Nawalan ng hanapbuhay ang lahat ng magsasaka at mangangalakal sa Maynila."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Hindi agad nagdulot ng kalayaan ang kaisipang liberal; nagsisimula pa lang mamulat ang mga Pilipino sa kanilang karapatan, at ito ang naging ugat ng nasyonalismo."
+      "correctAnswer": "C",
+      "explanation": "Pumasok ang mga dayuhang mangangalakal sa pagbubukas ng mga pantalan at nagdala rin sila ng bagong ideya."
     },
     {
       "id": "nat_2_8",
@@ -520,27 +670,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Bahagyang binuksan ang mga pantalan ng Pilipinas noong 1789. Ganap itong binuksan noong 1834. Ilang taon ang pagitan ng dalawang pangyayari?",
+      "questionText": "Pinagtatalunan nina Ella at Paolo kung paano nakatulong ang kaisipang liberal sa mga Pilipino. Sabi ni Ella, namulat ang mga Pilipino dahil sa mga bagong ideya at balita mula sa labas. Sabi ni Paolo, dahil daw agad na naging pantay ang batas para sa lahat. Sino sa kanila ang may tamang pagsusuri batay sa kasaysayan?",
       "options": [
         {
           "label": "A",
-          "text": "35"
+          "text": "Si Paolo, dahil agad na inalis ng Espanya ang lahat ng pang-aabuso."
         },
         {
           "label": "B",
-          "text": "45"
+          "text": "Pareho silang tama, dahil sabay na nangyari ang dalawang bagay na ito."
         },
         {
           "label": "C",
-          "text": "55"
+          "text": "Pareho silang mali, dahil walang epekto ang kaisipang liberal sa bansa."
         },
         {
           "label": "D",
-          "text": "65"
+          "text": "Si Ella, dahil nagbukas ito ng isipan sa tunay na kalagayan ng malalayang bansa."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ibawas ang 1789 sa 1834 para makuha ang pagitan ng bahagyang at ganap na pagbubukas ng mga pantalan: 45 taon."
+      "correctAnswer": "D",
+      "explanation": "Tama si Ella. Namulat ang mga Pilipino dahil sa mga bagong ideya at balita, na nagbukas ng isip sa kalagayan ng malalayang bansa."
     },
     {
       "id": "nat_2_9",
@@ -550,27 +700,27 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sabi ni Ella, namulat ang mga Pilipino dahil sa mga bagong ideya at paninda na dumating sa bansa. Sabi ni Paolo, dahil daw naipatupad na ng Espanya ang lahat ng liberal na batas. Sino ang mas tama?",
+      "questionText": "Ang kaisipang liberal ay nakabatay sa paniniwalang dapat maging malaya at pantay-pantay ang lahat ng tao sa harap ng batas. Aling sitwasyon sa loob ng paaralan ang pinakamahusay na nagsasabuhay ng kaisipang liberal?",
       "options": [
         {
           "label": "A",
-          "text": "Si Paolo"
+          "text": "Tanging ang pinuno lamang ng klase ang maaaring magbigay ng opinyon."
         },
         {
           "label": "B",
-          "text": "Parehong tama"
+          "text": "Pantay ang karapatan ng bawat mag-aaral na magpahayag at mapakinggan."
         },
         {
           "label": "C",
-          "text": "Si Ella"
+          "text": "May espesyal na patakaran para sa mayayaman at iba para sa mahihirap."
         },
         {
           "label": "D",
-          "text": "Parehong mali"
+          "text": "Pinagbabawalan ang mga mag-aaral na magtanong tungkol sa mga patakaran."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Namulat ang mga Pilipino dahil sa mga bagong kaisipan at kalakal na dumating, at hindi ganap na naipatupad ng Espanya ang mga liberal na batas."
+      "correctAnswer": "B",
+      "explanation": "Isinasabuhay ang kaisipang liberal kapag pantay ang karapatan ng bawat mag-aaral na magpahayag at mapakinggan."
     },
     {
       "id": "nat_2_10",
@@ -580,27 +730,177 @@
       "level": 2,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ang kaisipang liberal ay naniniwalang malaya at pantay ang lahat. Gusto ng Grade 6 na ipakita ito sa kanilang paaralan. Alin ang pinakaangkop na gawin?",
+      "questionText": "Nagtapos noong 1815 ang mahigit dalawang siglong Kalakalang Galyon sa pagitan ng Maynila at Acapulco, Mexico. Alin sa mga sumusunod ang isa sa mga dahilan ng pagtatapos ng Kalakalang Galyon?",
       "options": [
         {
           "label": "A",
-          "text": "Pantay ang tingin sa lahat"
+          "text": "Pagkawala ng lahat ng barko sa karagatang Pasipiko"
         },
         {
           "label": "B",
-          "text": "Iisa lang ang nagpapasya"
+          "text": "Pagbabawal ng Santo Papa sa anumang kalakalan sa Asya"
         },
         {
           "label": "C",
-          "text": "May bawal magsalita"
+          "text": "Paglipat ng kabisera ng Pilipinas mula Maynila patungong Mexico"
         },
         {
           "label": "D",
-          "text": "Iba ang patakaran sa mayaman"
+          "text": "Paglaganap ng ideya ng malayang kalakalan at pananakop ng Ingles"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Naniniwala ang kaisipang liberal sa kalayaan at pagkakapantay-pantay, kaya dapat pantay ang pagtrato sa lahat, mayaman man o mahirap."
+      "correctAnswer": "D",
+      "explanation": "Isa sa mga dahilan ng pagtatapos ng Kalakalang Galyon ang paglaganap ng ideya ng malayang kalakalan at pananakop ng Ingles."
+    },
+    {
+      "id": "nat_2_11",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang eksibit sa museo, ipinapakita ang isang lumang mapa ng Suez Canal na nag-uugnay sa Dagat Mediteraneo at Dagat Pula sa Egypt. Bakit itinuturing na mahalagang tulay ng kaisipan ang Suez Canal para sa Pilipinas noong 1869?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil dito itinayo ang pinakamalaking simbahan sa buong Asya."
+        },
+        {
+          "label": "B",
+          "text": "Dahil dito dumadaan ang mga magsasaka patungo sa kanilang bukid."
+        },
+        {
+          "label": "C",
+          "text": "Dahil ginamit ito upang harangan ang mga barkong galing sa Espanya."
+        },
+        {
+          "label": "D",
+          "text": "Dahil pinaglapit nito ang Europa at Asya sa pagpapalitan ng kaalaman."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinaglapit ng Suez Canal ang Europa at Asya, kaya mas napadali ang pagpapalitan ng kaalaman."
+    },
+    {
+      "id": "nat_2_12",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa ilalim ng Konstitusyon ng Cádiz noong 1812, ipinagkaloob sa mga mamamayan ang kalayaan sa pamamahayag at karapatang magkaroon ng kinatawan sa pamahalaan. Bakit ikinabahala ng ilang opisyal na Espanyol sa Pilipinas ang pagdating ng balita tungkol sa Konstitusyon ng Cádiz?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil hindi sila marunong bumasa ng wikang Espanyol."
+        },
+        {
+          "label": "B",
+          "text": "Dahil mawawalan sila ng suweldo mula sa Hari ng Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Dahil baka humingi na ng pantay na karapatan ang mga Pilipino."
+        },
+        {
+          "label": "D",
+          "text": "Dahil ipinagbabawal nito ang pagdiriwang ng mga pista sa bayan."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ikinabahala ng ilang opisyal na baka humingi na ng pantay na karapatan ang mga Pilipino."
+    },
+    {
+      "id": "nat_2_13",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinag-aaralan ni Leo ang koneksyon ng pagbabago sa ekonomiya at pagbabago sa kaisipan ng mga Pilipino noong ika-19 na siglo. Paano nagkaugnay ang pagbubukas ng mga pantalan (1834) at pagbubukas ng Suez Canal (1869)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pareho nitong pinahinto ang pagpasok ng mga dayuhan sa Maynila."
+        },
+        {
+          "label": "B",
+          "text": "Pareho nitong ibinalik ang sistemang tributo at polo y servicio."
+        },
+        {
+          "label": "C",
+          "text": "Pareho nitong pinatagal ang paglalakbay patungo sa bansang Mexico."
+        },
+        {
+          "label": "D",
+          "text": "Pareho nitong binuksan ang Pilipinas sa kalakalan at kaisipang liberal."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Parehong binuksan ng pantalan noong 1834 at ng Suez Canal noong 1869 ang Pilipinas sa kalakalan at kaisipang liberal."
+    },
+    {
+      "id": "nat_2_14",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinabi ni Clara na ang La Ilustración sa Europa ay may malaking kinalaman sa paggising ng damdaming makabayan ng mga Pilipino. Aling pangunahing turo ng La Ilustración ang pinakamahalaga sa pagkamulat ng mga Pilipino?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang pagbabawal sa pag-aaral ng agham at kasaysayan"
+        },
+        {
+          "label": "B",
+          "text": "Ang pagpapalawak ng mga kolonya sa pamamagitan ng digmaan"
+        },
+        {
+          "label": "C",
+          "text": "Ang pagsunod nang walang tanong sa lahat ng utos ng pinuno"
+        },
+        {
+          "label": "D",
+          "text": "Ang paggamit ng katwiran at pagkilala sa likas na karapatan ng tao"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Itinuro ng La Ilustración ang paggamit ng katwiran at pagkilala sa likas na karapatan ng tao, na gumising sa mga Pilipino."
+    },
+    {
+      "id": "nat_2_15",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 2,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 2–3, hiniling ng guro na ipaliwanag ang papel ng kaisipang liberal sa kasaysayan ng Pilipinas. Aling pahayag ang pinakatamang paglalagom?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagdulot ito ng digmaan sa pagitan ng Pilipinas at Mexico."
+        },
+        {
+          "label": "B",
+          "text": "Inalis nito ang lahat ng kalakalan sa mga pantalan ng Maynila."
+        },
+        {
+          "label": "C",
+          "text": "Pinatibay nito ang kapangyarihan ng mga prayle sa buong kapuluan."
+        },
+        {
+          "label": "D",
+          "text": "Nagsilbi itong binhi na gumising sa kamalayang makabayan ng Pilipino."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang kaisipang liberal ay binhing gumising sa kamalayang makabayan ng mga Pilipino."
     }
   ],
   "3": [
@@ -612,27 +912,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong 1850s, nagtatanim ng asukal at tabako ang pamilya ni Don Berto at ipinagbibili ito sa ibang bansa. Naipag-aral nila ang anak nila sa Europa. Saang pangkat sila pinakamalamang kabilang?",
+      "questionText": "Noong kalagitnaan ng ika-19 na siglo, yumaman ang pamilya ni Don Berto dahil sa pagtatanim at pagbebenta ng asukal at abaka sa mga dayuhang mangangalakal. Dahil dito, nakapag-aral ang kanyang anak sa Maynila at Europa. Saang pangkat panlipunan nabibilang ang pamilya ni Don Berto noong panahong iyon?",
       "options": [
         {
           "label": "A",
-          "text": "Panggitnang uri"
+          "text": "Sa mga paring regular o prayle"
         },
         {
           "label": "B",
-          "text": "Karaniwang magsasaka"
+          "text": "Sa panggitnang uri o middle class"
         },
         {
           "label": "C",
-          "text": "Mahirap na manggagawa"
+          "text": "Sa mga karaniwang magsasaka at manggagawa"
         },
         {
           "label": "D",
-          "text": "Prayle"
+          "text": "Sa mga matataas na opisyal mula sa Espanya"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang panggitnang uri ay mga mangangalakal at may-ari ng lupa na yumaman sa pagtatanim at pagbebenta ng asukal at tabako, at naipapag-aral ang kanilang mga anak."
+      "correctAnswer": "B",
+      "explanation": "Yumaman si Don Berto sa asukal at abaka at napag-aral ang anak, kaya nabibilang siya sa panggitnang uri."
     },
     {
       "id": "nat_3_2",
@@ -642,27 +942,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong ika-19 na siglo, yumaman ang maraming mangangalakal at may-ari ng lupa. Dumami ang panggitnang uri. Bakit dumami ang panggitnang uri?",
+      "questionText": "Napansin ni Sofia sa kanyang binasang aklat na biglang dumami ang mga pamilyang kabilang sa panggitnang uri sa Pilipinas pagkatapos ng taong 1834. Ano ang pangunahing pangyayaring pang-ekonomiya na nagbigay-daan sa pag-usbong ng panggitnang uri?",
       "options": [
         {
           "label": "A",
-          "text": "Nagsara ang mga pantalan"
+          "text": "Ang pagbabawal sa pagtatanim ng tabako at asukal"
         },
         {
           "label": "B",
-          "text": "Nabuksan ang Maynila sa kalakalan"
+          "text": "Ang pagsasara ng lahat ng sakahan sa Gitnang Luzon"
         },
         {
           "label": "C",
-          "text": "Natigil ang pagtatanim"
+          "text": "Ang pagbubukas ng Maynila sa pandaigdigang kalakalan"
         },
         {
           "label": "D",
-          "text": "Nawala ang mga mangangalakal"
+          "text": "Ang pagbabalik ng sapilitang paggawa sa mga kababaihan"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Nang buksan ang Maynila sa pandaigdigang kalakalan noong 1834, lumago ang pagtatanim at pangangalakal at dumami ang panggitnang uri."
+      "correctAnswer": "C",
+      "explanation": "Ang pagbubukas ng Maynila sa pandaigdigang kalakalan ang nagpayaman sa mga pamilya at nagpalaki sa panggitnang uri."
     },
     {
       "id": "nat_3_3",
@@ -672,27 +972,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Carlos ay anak ng mayamang mangangalakal. Nag-aral siya sa Europa at sumulat para sa pagbabago sa Pilipinas. Bakit siya tinawag na ilustrado?",
+      "questionText": "Si Carlos ay anak ng isang mayamang mangangalakal na mestizo. Nagtungo siya sa Espanya upang mag-aral ng medisina at abogasya, at doon ay natutuhan niya ang mga kaisipang liberal. Ano ang itinawag sa mga nakapag-aral na kabataang Pilipino na tulad ni Carlos at ano ang kahulugan nito?",
       "options": [
         {
           "label": "A",
-          "text": "Naging prayle siya"
+          "text": "Ilustrado; ibig sabihin ay 'naliwanagan'"
         },
         {
           "label": "B",
-          "text": "Naging gobernador siya"
+          "text": "Polista; ibig sabihin ay sapilitang manggagawa"
         },
         {
           "label": "C",
-          "text": "Naging sundalo siya"
+          "text": "Encomendero; ibig sabihin ay tagasingil ng buwis"
         },
         {
           "label": "D",
-          "text": "Nakapag-aral siya at naliwanagan"
+          "text": "Gobernadorcillo; ibig sabihin ay pinuno ng bayan"
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Ilustrado ang tawag sa mga kabataang nakapag-aral sa Maynila o sa Europa; ang ibig sabihin ng salita ay \"naliwanagan\"."
+      "correctAnswer": "A",
+      "explanation": "Ilustrado ang tawag sa mga nakapag-aral na Pilipino, at ang ibig sabihin ay 'naliwanagan'."
     },
     {
       "id": "nat_3_4",
@@ -702,27 +1002,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa Europa, tinawag na \"indio\" ang isang Pilipinong estudyante kahit matalino siya. Ano ang pinakamalamang na nangyari sa kaniya?",
+      "questionText": "Habang nag-aaral sa Europa, nakita ng mga ilustrado na malaya at pantay ang karapatan ng mga mamamayan doon. Ngunit sa kabila ng kanilang talino, nakaranas pa rin sila ng diskriminasyon at tinawag na 'indio' ng ilang Espanyol. Paano nakaapekto sa damdamin ng mga ilustrado ang karanasang ito sa Europa?",
       "options": [
         {
           "label": "A",
-          "text": "Nakalimutan niya ang bayan"
+          "text": "Tumigil sila sa pag-aaral at bumalik agad sa pagsasaka."
         },
         {
           "label": "B",
-          "text": "Tumigil siyang mag-aral"
+          "text": "Sumang-ayon sila na mas mababa ang uri ng mga Pilipino."
         },
         {
           "label": "C",
-          "text": "Namulat siya sa kalagayan ng bayan"
+          "text": "Nakalimutan nila ang kanilang pamilya at pinagmulang bayan."
         },
         {
           "label": "D",
-          "text": "Ayaw na niyang bumalik"
+          "text": "Namulat sila sa hindi patas na pagtrato at humingi ng reporma."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Nakaranas siya ng diskriminasyon bilang \"indio\", kaya namulat siya sa tunay na kalagayan ng Pilipinas."
+      "correctAnswer": "D",
+      "explanation": "Sa Europa nakita nilang pantay ang karapatan doon, pero dinidiskrimina sila. Kaya namulat sila at humingi ng reporma."
     },
     {
       "id": "nat_3_5",
@@ -732,27 +1032,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Mang Ben ay magsasakang hindi nakapag-aral. Sabi ng anak niya, \"Tay, hindi po tayo kasali sa mga ilustrado.\" Anong limitasyon ng mga ilustrado ang ipinapakita nito?",
+      "questionText": "Si Mang Ben ay isang karaniwang magsasaka na hindi nakapag-aral sa Maynila o Europa. Sabi ng kanyang anak, 'Tay, hindi po tayo kasali sa pangkat ng mga ilustrado.' Anong limitasyon sa lipunan noong ika-19 na siglo ang ipinapakita ng kalagayan ni Mang Ben?",
       "options": [
         {
           "label": "A",
-          "text": "Ayaw nilang tumulong"
+          "text": "Hindi lahat ng Pilipino noon ay may kakayahang makapag-aral."
         },
         {
           "label": "B",
-          "text": "Hindi lahat ay nakapag-aral"
+          "text": "Ayaw tumulong ng mga ilustrado sa mga mahihirap na magsasaka."
         },
         {
           "label": "C",
-          "text": "Iisang wika lang sila"
+          "text": "Ipinagbawal sa mga magsasaka ang pagtatanim ng palay at gulay."
         },
         {
           "label": "D",
-          "text": "Kaaway nila ang magsasaka"
+          "text": "Tanging mga dayuhan lamang ang pinapayagang manirahan sa bayan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Mayayamang pamilya lang ang nakapag-aral ng mga anak sa Maynila at Europa, kaya hindi lahat ng Pilipino ay may pagkakataong maging ilustrado."
+      "correctAnswer": "A",
+      "explanation": "Hindi lahat ng Pilipino noon ay may kakayahang mag-aral sa Maynila o Europa, kaya iilan lang ang mga ilustrado."
     },
     {
       "id": "nat_3_6",
@@ -762,27 +1062,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa museo, may larawan ng apat na bayani. Sino ang HINDI ilustrado ayon sa aralin?",
+      "questionText": "Sa isang eksibit sa paaralan, nakalagay ang larawan ng apat na kilalang Pilipino: Jose Rizal, Marcelo H. del Pilar, Graciano López Jaena, at isang karaniwang manggagawa na hindi nakapag-aral sa unibersidad. Aling pahayag ang wastong naglalarawan kina Rizal, Del Pilar, at López Jaena?",
       "options": [
         {
           "label": "A",
-          "text": "Andres Bonifacio"
+          "text": "Sila ay mga paring regular na nangasiwa sa mga parokya."
         },
         {
           "label": "B",
-          "text": "Jose Rizal"
+          "text": "Sila ay mga Gobernador-Heneral na nagpatupad ng tributo."
         },
         {
           "label": "C",
-          "text": "Marcelo H. del Pilar"
+          "text": "Sila ay mga mangangalakal ng Kalakalang Galyon sa Mexico."
         },
         {
           "label": "D",
-          "text": "Graciano López Jaena"
+          "text": "Sila ay mga ilustradong gumamit ng panulat para sa reporma."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Sina Rizal, Del Pilar at López Jaena ay mga ilustrado; si Bonifacio ang nagtatag ng Katipunan, kaya hindi siya kabilang sa mga ilustradong nabanggit sa aralin."
+      "correctAnswer": "D",
+      "explanation": "Sina Rizal, Del Pilar at López Jaena ay mga ilustrado na gumamit ng panulat para sa reporma."
     },
     {
       "id": "nat_3_7",
@@ -792,27 +1092,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sumulat ang isang ilustrado tungkol sa kasaysayan ng Pilipinas para mabasa ng lahat ng Pilipino. Ano ang pinakamalamang na layunin niya?",
+      "questionText": "Nagsulat ang mga ilustrado ng mga aklat at artikulo tungkol sa tunay na kasaysayan at kultura ng Pilipinas bago pa dumating ang mga Espanyol. Ano ang pangunahing layunin ng muling pagsasalaysay ng kasaysayan ng Pilipinas ng mga ilustrado?",
       "options": [
         {
           "label": "A",
-          "text": "Palitan ang wika natin"
+          "text": "Upang palitan ang wikang Tagalog ng wikang Pranses"
         },
         {
           "label": "B",
-          "text": "Magpasikat sa Europa"
+          "text": "Upang maging sikat na manunulat sa bansang Amerika"
         },
         {
           "label": "C",
-          "text": "Libangin ang mga prayle"
+          "text": "Upang purihin ang pananakop at pang-aabuso ng mga dayuhan"
         },
         {
           "label": "D",
-          "text": "Pagbuklurin ang mga Pilipino"
+          "text": "Upang pagbuklurin ang mga Pilipino sa iisang pagkakakilanlan"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Isinulat ng mga ilustrado ang kasaysayan ng Pilipinas para magkaroon ng kamalayang pambansa at mapag-isa ang lahat ng Pilipino sa iisang pagkakakilanlan."
+      "explanation": "Muling isinalaysay ng mga ilustrado ang kasaysayan para pagbuklurin ang mga Pilipino sa iisang pagkakakilanlan."
     },
     {
       "id": "nat_3_8",
@@ -822,27 +1122,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gusto ng mga mag-aaral na ipaglaban ang pagbabago sa paaralan sa mapayapang paraan, tulad ng mga ilustrado. Alin ang pinakamalapit sa ginawa ng mga ilustrado?",
+      "questionText": "Nais ng mga mag-aaral sa Grade 5 na humiling ng pagbabago sa patakaran ng silid-aklatan sa mapayapang paraan, tulad ng paraang ginamit ng mga ilustrado. Aling kilos ang pinakamalapit sa mapayapang paraan ng mga ilustrado?",
       "options": [
         {
           "label": "A",
-          "text": "Magsigawan sa silid"
+          "text": "Pagsira sa mga mesa at upuan bilang protesta"
         },
         {
           "label": "B",
-          "text": "Sirain ang gamit"
+          "text": "Pagsigaw at pagkakagulo sa harap ng silid-aklatan"
         },
         {
           "label": "C",
-          "text": "Sumulat ng liham at artikulo"
+          "text": "Pagtatago ng mga aklat upang walang makabasa nito"
         },
         {
           "label": "D",
-          "text": "Takutin ang guro"
+          "text": "Pagsulat ng maayos na liham at mungkahi sa punong-guro"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Nanawagan ang mga ilustrado ng reporma sa mapayapang paraan gamit ang edukasyon at panulat, tulad ng pagsulat ng liham at artikulo."
+      "correctAnswer": "D",
+      "explanation": "Mapayapa ang pagsulat ng maayos na liham at mungkahi, gaya ng paraan ng mga ilustrado."
     },
     {
       "id": "nat_3_9",
@@ -852,27 +1152,27 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Pangkat A: napakayaman at makapangyarihan. Pangkat B: mangangalakal, may-ari ng lupa, at propesyonal. Pangkat C: karaniwang magsasaka at manggagawa. Alin ang panggitnang uri?",
+      "questionText": "Pinag-aaralan ni Mia ang tatlong pangkat sa lipunan noong ika-19 na siglo: Pangkat A (napakayaman at makapangyarihang opisyal), Pangkat B (mangangalakal, may-ari ng lupa, at propesyonal), at Pangkat C (karaniwang magsasaka at manggagawa). Aling pangkat ang kumakatawan sa panggitnang uri at bakit ito tinawag na gayon?",
       "options": [
         {
           "label": "A",
-          "text": "Pangkat A"
+          "text": "Wala sa kanila, dahil dalawang uri lamang ang tao noon."
         },
         {
           "label": "B",
-          "text": "Pangkat B"
+          "text": "Pangkat C, dahil sila ang pinakamaraming mamamayan sa bansa."
         },
         {
           "label": "C",
-          "text": "Pangkat C"
+          "text": "Pangkat A, dahil sila ang nasa gitna ng kapangyarihan sa Espanya."
         },
         {
           "label": "D",
-          "text": "Wala sa kanila"
+          "text": "Pangkat B, dahil nasa pagitan sila ng napakayaman at karaniwang tao."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ang panggitnang uri ay nasa pagitan ng napakayayaman at ng mga karaniwang magsasaka at manggagawa: mga mangangalakal, may-ari ng lupa at propesyonal."
+      "correctAnswer": "D",
+      "explanation": "Pangkat B ang panggitnang uri dahil nasa pagitan sila ng napakayaman at karaniwang tao."
     },
     {
       "id": "nat_3_10",
@@ -882,27 +1182,177 @@
       "level": 3,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Kung hindi binuksan ang Maynila sa kalakalan noong 1834, hindi sana yumaman ang marami sa pagtatanim at pangangalakal. Ano ang mangyayari sa panggitnang uri?",
+      "questionText": "Sinusuri ni Carlo ang komposisyon ng panggitnang uri na nabuo noong ika-19 na siglo sa Pilipinas. Sino-sino ang bumubuo sa pangkat ng panggitnang uri ayon sa kasaysayan?",
       "options": [
         {
           "label": "A",
-          "text": "Hindi sana ito lumaki"
+          "text": "Mga sundalong Espanyol at mga prayle mula sa Europa"
         },
         {
           "label": "B",
-          "text": "Lalaki pa rin ito"
+          "text": "Mga dayuhang mangangalakal mula sa Mexico at Amerika"
         },
         {
           "label": "C",
-          "text": "Mawawala ang mayayaman"
+          "text": "Mga aliping namamahay at aliping saguiguilid sa barangay"
         },
         {
           "label": "D",
-          "text": "Magiging pinakamayaman silang lahat"
+          "text": "Mga mestizong Tsino at Espanyol at ilang mayayamang katutubo"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Binubuo ang panggitnang uri ng mga mestizong Tsino at Espanyol at ilang mayayamang katutubo."
+    },
+    {
+      "id": "nat_3_11",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Kung hindi binuksan ang Maynila sa pandaigdigang kalakalan noong 1834, hindi sana lumago ang pagluluwas ng asukal, tabako, at abaka. Ano ang malamang na naging epekto nito sa pag-usbong ng mga ilustrado?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mas maraming magsasaka ang nakapag-aral sa Europa."
+        },
+        {
+          "label": "B",
+          "text": "Agad na nagkaroon ng unibersidad sa bawat barangay."
+        },
+        {
+          "label": "C",
+          "text": "Naging Gobernador-Heneral ang lahat ng mestizong Tsino."
+        },
+        {
+          "label": "D",
+          "text": "Nahirapan ang mga pamilya na magpaaral ng anak sa Europa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kung hindi lumago ang kalakalan, kakaunti ang yayaman at mahihirapan silang magpaaral ng anak sa Europa."
+    },
+    {
+      "id": "nat_3_12",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bago ang ika-19 na siglo, ang mga Tagalog, Ilokano, Bisaya, at Kapampangan ay madalas na nagtuturingan lamang bilang magkakahiwalay na pangkat sa kani-kanilang rehiyon. Paano binago ng mga ilustrado ang ganitong pagtingin ng mga katutubo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tinuruan nila ang bawat rehiyon na humiwalay sa isa't isa."
+        },
+        {
+          "label": "B",
+          "text": "Hinikayat nila ang lahat na lumipat sa lungsod ng Maynila."
+        },
+        {
+          "label": "C",
+          "text": "Pinagbawalan nila ang paggamit ng mga katutubong wika sa bansa."
+        },
+        {
+          "label": "D",
+          "text": "Ipinakilala nila ang kamalayang pambansa na sila ay iisang bayan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ipinakilala ng mga ilustrado ang kamalayang pambansa: iisang bayan ang lahat ng Pilipino."
+    },
+    {
+      "id": "nat_3_13",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang debate sa klase, sinabi ni Rafael na ang edukasyon ang naging pinakamahalagang sandata ng mga ilustrado laban sa pang-aabuso. Aling patunay ang sumusuporta sa pahayag ni Rafael?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Naging pinuno sila ng mga sundalong Espanyol sa Maynila."
+        },
+        {
+          "label": "B",
+          "text": "Bumili sila ng maraming baril at kanyon sa bansang Europa."
+        },
+        {
+          "label": "C",
+          "text": "Ginamit nila ang kanilang kaalaman upang sumulat at magmulat."
+        },
+        {
+          "label": "D",
+          "text": "Itinigil nila ang pagtatanim ng abaka at asukal sa probinsya."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Ginamit ng mga ilustrado ang kanilang kaalaman sa pagsulat at pagmulat ng mga tao, kaya edukasyon ang kanilang sandata."
+    },
+    {
+      "id": "nat_3_14",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nakaranas ng hindi patas na pagtingin ang isang Pilipinong abogado sa hukuman kahit mas magaling siya kaysa sa kanyang katunggaling Espanyol. Anong konsepto sa aralin ang inilalarawan ng hindi patas na pagtratong ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Diskriminasyon"
+        },
+        {
+          "label": "B",
+          "text": "Sekularisasyon"
+        },
+        {
+          "label": "C",
+          "text": "Malayang kalakalan"
+        },
+        {
+          "label": "D",
+          "text": "Kamalayang pambansa"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Nabuo ang panggitnang uri dahil sa pagbubukas ng Maynila sa kalakalan noong 1834, kaya kung hindi ito nangyari ay hindi sana ito lumaki."
+      "explanation": "Diskriminasyon ang hindi patas na pagtrato sa tao dahil sa kanyang lahi o pinanggalingan."
+    },
+    {
+      "id": "nat_3_15",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 3,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 4–5, tinanong ng guro kung ano ang pangunahing ambag ng panggitnang uri at ng mga ilustrado sa pag-usbong ng nasyonalismo. Aling pahayag ang pinakatamang buod ng kanilang ambag?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Namuno sila sa armadong pakikidigma sa kabundukan ng Luzon."
+        },
+        {
+          "label": "B",
+          "text": "Pinatatag nila ang kapangyarihan ng mga prayle sa bawat parokya."
+        },
+        {
+          "label": "C",
+          "text": "Isinara nila ang mga pantalan upang hindi makapasok ang mga dayuhan."
+        },
+        {
+          "label": "D",
+          "text": "Pinukaw nila ang kamalayang pambansa sa pamamagitan ng edukasyon at panulat."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinukaw ng panggitnang uri at ng mga ilustrado ang kamalayang pambansa sa pamamagitan ng edukasyon at panulat."
     }
   ],
   "4": [
@@ -914,27 +1364,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang parokya sa Maynila, Espanyol na prayle ang pari. Pero may Pilipinong paring sekular na kayang mamuno. Bakit hindi ito patas?",
+      "questionText": "Sa isang parokya sa Maynila noong panahon ng Espanyol, isang Espanyol na prayle ang namamahala kahit mayroong Pilipinong paring sekular na nakapagtapos ng pag-aaral at handang mamuno. Bakit itinuring ng mga paring Pilipino na labag sa alituntunin ng Simbahan ang kalagayang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Bawal ang Pilipino sa Simbahan"
+          "text": "Dahil bawal pumasok ang mga Espanyol sa mga simbahan sa Maynila."
         },
         {
           "label": "B",
-          "text": "Ayon sa Simbahan, paring sekular ang dapat mamuno"
+          "text": "Dahil pag-aari ng mga katutubo ang lahat ng gusali ng pamahalaan."
         },
         {
           "label": "C",
-          "text": "Dapat prayle ang lahat ng pari"
+          "text": "Dahil walang kakayahan ang mga prayle na magmisa sa wikang Espanyol."
         },
         {
           "label": "D",
-          "text": "Walang parokya noon"
+          "text": "Dahil ayon sa Simbahan, paring sekular ang dapat mamahala sa parokya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ayon sa alituntunin ng Simbahan, ang mga paring sekular ang dapat mamahala sa parokya, pero nanatili ito sa mga prayle, kaya hindi ito patas sa paring Pilipino."
+      "correctAnswer": "D",
+      "explanation": "Ayon sa Simbahan, paring sekular ang dapat mamahala sa parokya, kaya mali na prayle ang namamahala."
     },
     {
       "id": "nat_4_2",
@@ -944,7 +1394,7 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Padre Jun ay pari na hindi kasapi ng anumang samahang panrelihiyon tulad ng Agustino o Dominiko. Anong uri ng pari siya?",
+      "questionText": "Si Padre Jun ay isang paring Pilipino na hindi kabilang sa anumang samahang panrelihiyon tulad ng Agustino, Dominiko, o Pransiskano, at direktang nasa ilalim ng obispo. Anong uri ng pari si Padre Jun ayon sa pagkakahati ng kaparian noon?",
       "options": [
         {
           "label": "A",
@@ -952,19 +1402,19 @@
         },
         {
           "label": "B",
-          "text": "Paring regular"
+          "text": "Encomendero ng parokya"
         },
         {
           "label": "C",
-          "text": "Prayle"
+          "text": "Paring regular o prayle"
         },
         {
           "label": "D",
-          "text": "Ilustrado"
+          "text": "Gobernadorcillo ng bayan"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Ang paring sekular ay hindi kabilang sa anumang samahang panrelihiyon, at marami sa kanila ay mga Pilipino."
+      "explanation": "Paring sekular ang pari na hindi kabilang sa samahang panrelihiyon at direktang nasa ilalim ng obispo."
     },
     {
       "id": "nat_4_3",
@@ -974,27 +1424,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Inilipat ng Simbahan ang pamamahala ng parokya mula sa prayle papunta sa paring sekular. Ano ang tawag dito?",
+      "questionText": "Pinaghahambing ni Ana ang dalawang salita sa kanyang talasalitaan: ang paglilipat ng pamamahala ng parokya sa paring sekular, at ang pagbibigay-pagkakataon sa mga paring Pilipino na mamuno. Aling pares ng termino ang tumutugma sa dalawang kahulugang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Pilipinisasyon"
+          "text": "Tributo at Polo y Servicio"
         },
         {
           "label": "B",
-          "text": "Garote"
+          "text": "Liberalismo at Nasyonalismo"
         },
         {
           "label": "C",
-          "text": "Tributo"
+          "text": "Kultura at Kamalayang Pambansa"
         },
         {
           "label": "D",
-          "text": "Sekularisasyon"
+          "text": "Sekularisasyon at Pilipinisasyon"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ang sekularisasyon ay paglilipat ng pamamahala ng mga parokya mula sa mga prayle tungo sa mga paring sekular."
+      "explanation": "Sekularisasyon ang paglilipat ng parokya sa paring sekular. Pilipinisasyon naman ang pagbibigay ng pagkakataong mamuno sa mga paring Pilipino."
     },
     {
       "id": "nat_4_4",
@@ -1004,45 +1454,15 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Binigyan ng pagkakataon ang mga paring Pilipino na mamuno sa mga parokyang dating hawak ng mga Espanyol. Ano ang tawag dito?",
+      "questionText": "Sa isang eksibit sa kasaysayan, nakita ni Leo ang larawan ng isang paring unang nanguna sa kampanya para sa sekularisasyon ng mga parokya bago siya nasawi sa lindol noong Hunyo 3, 1863. Sino ang paring ito na nanguna sa kilusan para sa sekularisasyon?",
       "options": [
         {
           "label": "A",
-          "text": "Sekularisasyon"
+          "text": "Padre José Burgos"
         },
         {
           "label": "B",
-          "text": "Liberalismo"
-        },
-        {
-          "label": "C",
-          "text": "Pilipinisasyon"
-        },
-        {
-          "label": "D",
-          "text": "Kamalayang pambansa"
-        }
-      ],
-      "correctAnswer": "C",
-      "explanation": "Ang Pilipinisasyon ay pagbibigay ng pagkakataon sa mga paring Pilipino na mamuno sa mga parokya."
-    },
-    {
-      "id": "nat_4_5",
-      "era": "nationalism",
-      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
-      "gradeLevel": "grade5",
-      "level": 4,
-      "difficulty": "medium",
-      "questionType": "multiple_choice",
-      "questionText": "Sa museo, may larawan ng paring namatay noong Hunyo 3, 1863 sa lindol. Siya ang unang nanguna sa kilusan. Sino siya?",
-      "options": [
-        {
-          "label": "A",
           "text": "Padre Pedro Peláez"
-        },
-        {
-          "label": "B",
-          "text": "Padre Jose Burgos"
         },
         {
           "label": "C",
@@ -1053,8 +1473,38 @@
           "text": "Padre Jacinto Zamora"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Si Padre Pedro Peláez ang nanguna sa kilusan para sa sekularisasyon; namatay siya noong Hunyo 3, 1863 sa lindol na sumira sa Katedral ng Maynila."
+      "correctAnswer": "B",
+      "explanation": "Si Padre Pedro Peláez ang nanguna sa kilusang sekularisasyon bago siya nasawi sa lindol noong 1863."
+    },
+    {
+      "id": "nat_4_5",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Matapos masawi si Padre Pedro Peláez sa lindol noong 1863, inakala ng ilan na matitigil na ang panawagan para sa pantay na karapatan ng mga paring Pilipino. Ano ang tunay na nangyari sa kilusan matapos ang pagkamatay ni Padre Peláez?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tuluyang naglaho ang kilusan at sumuko ang mga paring Pilipino."
+        },
+        {
+          "label": "B",
+          "text": "Ipinagpatuloy ito nina Padre Gómez, Burgos, at Zamora (GOMBURZA)."
+        },
+        {
+          "label": "C",
+          "text": "Lumipat sa bansang Mexico ang lahat ng paring sekular sa Maynila."
+        },
+        {
+          "label": "D",
+          "text": "Ibinigay agad ng mga prayle ang lahat ng parokya sa mga Pilipino."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ipinagpatuloy nina Padre Gómez, Burgos at Zamora (GOMBURZA) ang kilusan matapos mamatay si Padre Peláez."
     },
     {
       "id": "nat_4_6",
@@ -1064,27 +1514,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Namatay si Padre Peláez, pero nagpatuloy ang kampanya para sa sekularisasyon. Bakit ito nagpatuloy?",
+      "questionText": "Sa isang paaralan ngayon, laging taga-ibang lalawigan ang pinipiling punong-guro kahit mayroong mahuhusay at kuwalipikadong guro mula sa sariling bayan. Aling hakbang ang pinakakatulad ng layunin ng Pilipinisasyon noong panahon ng Espanyol?",
       "options": [
         {
           "label": "A",
-          "text": "Natupad na ang layunin"
+          "text": "Paalisin ang lahat ng guro at isara ang paaralan."
         },
         {
           "label": "B",
-          "text": "Ipinagpatuloy ito ng GOMBURZA"
+          "text": "Mag-imbita pa ng mas maraming pinuno mula sa ibang bansa."
         },
         {
           "label": "C",
-          "text": "Tumigil na ang mga paring Pilipino"
+          "text": "Bigyan ng pagkakataong mamuno ang mahuhusay na gurong lokal."
         },
         {
           "label": "D",
-          "text": "Nakalimutan na ito ng lahat"
+          "text": "Hayaang ang mga mag-aaral na lamang ang magpatakbo ng opisina."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ipinagpatuloy ang kampanya nina Padre Mariano Gómez, José Burgos at Jacinto Zamora, na kalaunan ay makikilala bilang GOMBURZA."
+      "correctAnswer": "C",
+      "explanation": "Ang pagbibigay ng pagkakataong mamuno sa mahuhusay na lokal ay kapareho ng layunin ng Pilipinisasyon."
     },
     {
       "id": "nat_4_7",
@@ -1094,27 +1544,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ayon sa Simbahan, ang mga paring sekular dapat ang namamahala sa parokya. Pero nanatili ito sa mga prayle. Bakit ito hindi makatarungan para sa mga paring Pilipino?",
+      "questionText": "Bagama't hindi agad nagtagumpay ang kilusan sa sekularisasyon at idinawit pa ang GOMBURZA sa Cavite Mutiny noong 1872, mahalaga pa rin ito sa kasaysayan. Ano ang naging pinakamahalagang bunga ng isyu ng sekularisasyon sa mga Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Dayuhan sila"
+          "text": "Naging mayaman ang lahat ng paring sekular sa mga lalawigan."
         },
         {
           "label": "B",
-          "text": "Ayaw nilang mamuno"
+          "text": "Natigil ang pagdiriwang ng mga misa at pista sa buong bansa."
         },
         {
           "label": "C",
-          "text": "Hindi sinunod ang alituntunin ng Simbahan"
+          "text": "Agad nitong pinaalis ang lahat ng Espanyol sa buong kapuluan."
         },
         {
           "label": "D",
-          "text": "Walang parokya sa Pilipinas"
+          "text": "Namulat ang marami sa kawalan ng katarungan at humingi ng pantay na karapatan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Dapat paring sekular ang namamahala sa parokya, pero nanatili ito sa mga prayle, kaya hindi nasunod ang alituntunin ng Simbahan."
+      "correctAnswer": "D",
+      "explanation": "Kahit hindi agad nagtagumpay, namulat ang marami sa kawalan ng katarungan at humingi ng pantay na karapatan."
     },
     {
       "id": "nat_4_8",
@@ -1124,27 +1574,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Hindi agad natupad ang hiling ng kilusan para sa sekularisasyon. Ano ang naging halaga nito?",
+      "questionText": "Pinag-aaralan ni Marco ang pagkakaiba ng paring regular at paring sekular noong panahon ng Espanyol. Aling pahayag ang wastong naghahambing sa dalawang uri ng pari?",
       "options": [
         {
           "label": "A",
-          "text": "Natapos ang pamamahala ng Espanya"
+          "text": "Pareho silang hindi pinapayagang magmisa sa mga simbahan."
         },
         {
           "label": "B",
-          "text": "Nawala ang lahat ng prayle"
+          "text": "Ang paring regular ay Pilipino; ang paring sekular ay Espanyol."
         },
         {
           "label": "C",
-          "text": "Naging malaya ang bansa"
+          "text": "Ang paring regular ay nagbabayad ng tributo; ang sekular ay hindi."
         },
         {
           "label": "D",
-          "text": "Ipinakita ang hangaring pantay na karapatan"
+          "text": "Ang paring regular ay may samahang panrelihiyon; ang sekular ay wala."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Kahit hindi agad natupad, ipinakita ng isyu ng sekularisasyon ang hangarin ng mga Pilipino sa pantay na karapatan at nagmulat ito sa kawalan ng katarungan."
+      "explanation": "May samahang panrelihiyon ang paring regular, tulad ng Agustino. Ang sekular ay wala."
     },
     {
       "id": "nat_4_9",
@@ -1154,27 +1604,27 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang paaralan, laging taga-ibang bayan ang punong-guro kahit may mahuhusay na gurong taga-roon. Alin ang pinakakatulad sa layunin ng Pilipinisasyon?",
+      "questionText": "Sa isang bayan, may 20 parokya. Kung susundin ang sitwasyon noon kung saan 2 lamang sa bawat 5 parokya ang pinamamahalaan ng paring sekular at ang natitira ay hawak ng mga prayle: Ilang parokya sa bayang ito ang hawak pa rin ng mga Espanyol na prayle?",
       "options": [
         {
           "label": "A",
-          "text": "Hayaang mamuno ang taga-roon"
+          "text": "8 parokya"
         },
         {
           "label": "B",
-          "text": "Paalisin ang lahat ng guro"
+          "text": "10 parokya"
         },
         {
           "label": "C",
-          "text": "Isara ang paaralan"
+          "text": "12 parokya"
         },
         {
           "label": "D",
-          "text": "Dagdagan ang bakasyon"
+          "text": "15 parokya"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Ang Pilipinisasyon ay pagbibigay ng pagkakataon sa mga taga-rito na mamuno, tulad ng pagpapamuno sa mahuhusay na gurong taga-roon."
+      "correctAnswer": "C",
+      "explanation": "Sa 20 parokya, 8 ang hawak ng sekular (2 sa bawat 5). Ang natitirang 12 ay hawak pa rin ng mga prayle."
     },
     {
       "id": "nat_4_10",
@@ -1184,27 +1634,177 @@
       "level": 4,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "May 20 parokya. Sa halimbawang ito, 2 sa bawat 5 parokya ay hawak ng paring sekular. Ang iba ay hawak ng prayle. Ilang parokya ang hawak ng prayle?",
+      "questionText": "Tinututulan ng mga prayle ang paglilipat ng mga parokya sa mga paring Pilipino dahil ayaw nilang mawala ang kanilang impluwensya at kapangyarihan sa mga bayan. Anong damdamin ang nag-udyok sa mga paring Pilipino upang ipaglaban ang sekularisasyon?",
       "options": [
         {
           "label": "A",
-          "text": "8"
+          "text": "Takot na maparusahan ng Gobernador-Heneral sa Maynila"
         },
         {
           "label": "B",
-          "text": "10"
+          "text": "Pagnanais na makapaglakbay sa iba't ibang bansa sa Europa"
         },
         {
           "label": "C",
-          "text": "12"
+          "text": "Pagsunod sa utos ng mga mangangalakal na Tsino sa pantalan"
         },
         {
           "label": "D",
-          "text": "15"
+          "text": "Hangaring makamit ang katarungan at pantay na pagkilala sa kakayahan"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Kung 2 sa bawat 5 ay hawak ng paring sekular, 20 ÷ 5 = 4 at 2 x 4 = 8 ang kanila; 20 - 8 = 12 ang hawak ng prayle."
+      "correctAnswer": "D",
+      "explanation": "Hangad ng mga paring Pilipino na makamit ang katarungan at pantay na pagkilala sa kanilang kakayahan."
+    },
+    {
+      "id": "nat_4_11",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Bea ang salitang 'parokya' na madalas banggitin sa aralin tungkol sa sekularisasyon. Ano ang ibig sabihin ng parokya sa konteksto ng kasaysayan at lipunan noon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang malaking barkong pangkalakalan patungong Mexico"
+        },
+        {
+          "label": "B",
+          "text": "Isang pamayanan ng simbahan na pinamumunuan ng isang pari"
+        },
+        {
+          "label": "C",
+          "text": "Isang uri ng buwis na binabayaran ng mga magsasaka taon-taon"
+        },
+        {
+          "label": "D",
+          "text": "Isang lihim na samahan ng mga manggagawa sa arsenal ng Cavite"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ang parokya ay pamayanan ng simbahan na pinamumunuan ng isang pari."
+    },
+    {
+      "id": "nat_4_12",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit itinuturing na bahagi ng pag-usbong ng nasyonalismo ang kilusan ng mga paring Pilipino kahit nagsimula ito sa loob ng Simbahan? Piliin ang pinakamahusay na paliwanag:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil ipinagbawal nila ang pagbabayad ng buwis sa buong kapuluan."
+        },
+        {
+          "label": "B",
+          "text": "Dahil pinatalsik nila ang lahat ng opisyal ng pamahalaan sa Maynila."
+        },
+        {
+          "label": "C",
+          "text": "Dahil nagtayo sila ng bagong relihiyon na hiwalay sa Simbahang Katoliko."
+        },
+        {
+          "label": "D",
+          "text": "Dahil ipinakita nito ang pagkakaisa at paninindigan ng mga Pilipino laban sa pang-aapi."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Bahagi ito ng nasyonalismo dahil ipinakita ng mga paring Pilipino ang pagkakaisa at paninindigan laban sa pang-aapi."
+    },
+    {
+      "id": "nat_4_13",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang talakayan, sinabi ni Carlo na sina Padre Gómez, Burgos, at Zamora ay pawang mga Espanyol na prayle na nagtanggol sa pamahalaan. Paano mo itatama ang pahayag ni Carlo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sila ay mga sundalong namuno sa pag-aalsa sa Cavite."
+        },
+        {
+          "label": "B",
+          "text": "Sila ay mga ilustradong nagsulat ng pahayagan sa Espanya."
+        },
+        {
+          "label": "C",
+          "text": "Sila ay mga Gobernador-Heneral na nagpatupad ng liberalismo."
+        },
+        {
+          "label": "D",
+          "text": "Sila ay tatlong paring sekular na Pilipino na nagtanggol sa karapatan ng kaparian."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hindi sila prayleng Espanyol. Sila ay tatlong paring sekular na Pilipino na nagtanggol sa karapatan ng kaparian."
+    },
+    {
+      "id": "nat_4_14",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong Hunyo 3, 1863, niyanig ng malakas na lindol ang Maynila na sumira sa Katedral ng Maynila at ikinasawi ni Padre Pedro Peláez. Ano ang naging hamon ng pangyayaring ito sa kilusang sekularisasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ipinagbawal na ng Hari ng Espanya ang pag-aaral ng pagkapari."
+        },
+        {
+          "label": "B",
+          "text": "Naging dahilan ito upang bumalik sa Espanya ang lahat ng prayle."
+        },
+        {
+          "label": "C",
+          "text": "Nasira ang lahat ng simbahan kaya wala nang parokyang pamamahalaan."
+        },
+        {
+          "label": "D",
+          "text": "Nawala ang unang pinuno nito, kaya kinailangang ipagpatuloy ng bagong henerasyon."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Namatay si Peláez, ang unang pinuno, kaya kinailangang ipagpatuloy ng bagong henerasyon ang laban."
+    },
+    {
+      "id": "nat_4_15",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 4,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 6, hiniling ng guro na ipaliwanag ang kaugnayan ng sekularisasyon sa pagkamulat ng mga Pilipino. Aling pahayag ang pinakawasto?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagbigay ito ng maraming ginto sa mga parokya sa probinsya."
+        },
+        {
+          "label": "B",
+          "text": "Ipinakita nito na walang pakialam ang mga Pilipino sa pamumuno."
+        },
+        {
+          "label": "C",
+          "text": "Naging dahilan ito upang matigil ang Kalakalang Galyon sa Maynila."
+        },
+        {
+          "label": "D",
+          "text": "Nagmulat ito na ang diskriminasyon ay nangyayari maging sa Simbahan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Napatunayan sa sekularisasyon na nangyayari ang diskriminasyon kahit sa loob ng Simbahan, kaya namulat ang mga Pilipino."
     }
   ],
   "5": [
@@ -1216,27 +1816,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong Enero 20, 1872, nag-aklas ang mga sundalo at manggagawa sa arsenal ng Cavite. Dati, hindi sila nagbabayad ng tributo (buwis) o gumagawa ng sapilitang paggawa. Ano ang pinakamalamang na dahilan ng pag-aklas nila?",
+      "questionText": "Noong Enero 20, 1872, nag-aklas ang mga sundalo at manggagawang Pilipino sa arsenal ng Cavite sa pangunguna ni Sarhento Fernando La Madrid matapos baguhin ni Gobernador-Heneral Rafael de Izquierdo ang kanilang kalagayan. Ano ang pangunahing dahilan ng pag-aaklas ng mga manggagawa at sundalo sa Cavite?",
       "options": [
         {
           "label": "A",
-          "text": "Inalis ang espesyal nilang karapatan"
+          "text": "Pinalitan ang kanilang mga armas ng mga lumang espada at sibat."
         },
         {
           "label": "B",
-          "text": "Gusto nilang maging gobernador"
+          "text": "Pinagbawalan silang magsimba sa Katedral ng Maynila tuwing Linggo."
         },
         {
           "label": "C",
-          "text": "Nasira ang simbahan"
+          "text": "Inutusan silang maglayag patungong Acapulco, Mexico nang walang sahod."
         },
         {
           "label": "D",
-          "text": "Ipinagbawal ang pagsulat"
+          "text": "Inalis ang kanilang pribilehiyong hindi magbayad ng tributo at gumawa ng polo."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Inalis ni Izquierdo ang pribilehiyo nilang hindi magbayad ng tributo o gumawa ng polo y servicio, kaya nag-aklas sila noong Enero 20, 1872."
+      "correctAnswer": "D",
+      "explanation": "Inalis ni Izquierdo ang pribilehiyo nilang hindi magbayad ng tributo at hindi gumawa ng polo, kaya sila nag-aklas."
     },
     {
       "id": "nat_5_2",
@@ -1246,27 +1846,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Gobernador-Heneral Carlos de la Torre ay pantay ang tingin sa Pilipino at Espanyol. Nang palitan siya ni Rafael de Izquierdo, marami ang nagbago. Ano ang pagkakaiba nila?",
+      "questionText": "Mula 1869 hanggang 1871, namuno si Gobernador-Heneral Carlos María de la Torre na pantay ang tingin sa Pilipino at Espanyol. Nang palitan siya ni Rafael de Izquierdo, naging mahigpit at mapaniil ang pamamahala. Ano ang ipinahihiwatig ng pagpapalit na ito sa pamumuno sa Pilipinas?",
       "options": [
         {
           "label": "A",
-          "text": "Mahigpit si de la Torre; liberal si Izquierdo"
+          "text": "Naging mas malaya ang mga Pilipino sa ilalim ni Izquierdo."
         },
         {
           "label": "B",
-          "text": "Liberal si de la Torre; mahigpit si Izquierdo"
+          "text": "Walang anumang nagbago sa buhay ng mga mamamayan sa Cavite."
         },
         {
           "label": "C",
-          "text": "Parehong liberal"
+          "text": "Parehong mahigpit at malupit ang dalawang Gobernador-Heneral."
         },
         {
           "label": "D",
-          "text": "Parehong mahigpit"
+          "text": "Nawala ang mga liberal na patakaran at bumalik ang pang-aapi."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Si de la Torre ay liberal na pantay ang tingin sa Pilipino at Espanyol, habang si Izquierdo ay naging mahigpit sa pamamahala."
+      "correctAnswer": "D",
+      "explanation": "Pagpalit ni Izquierdo kay De la Torre, nawala ang mga liberal na patakaran at bumalik ang pang-aapi."
     },
     {
       "id": "nat_5_3",
@@ -1276,27 +1876,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ayon sa mga Espanyol, planong ibagsak ang pamahalaan ang aklas. Ayon sa maraming Pilipinong mananalaysay, pag-aaklas lang ito ng mga manggagawa. Ano ang dapat gawin ng mag-aaral para malaman ang totoo?",
+      "questionText": "Sa isang klase sa kasaysayan, nabasa ni Mia ang dalawang ulat tungkol sa Cavite Mutiny: ayon sa mga Espanyol, isa itong malawakang plano upang ibagsak ang pamahalaan; ayon sa mga Pilipinong mananalaysay, isa lamang itong pag-aalsa ng mga manggagawa. Ano ang pinakamatalinong paraan upang suriin ng isang mag-aaral ang dalawang bersiyong ito?",
       "options": [
         {
           "label": "A",
-          "text": "Piliin agad ang kuwento ng Espanyol"
+          "text": "Huwag na lamang pag-aralan ang pangyayari dahil magkaiba ang kuwento."
         },
         {
           "label": "B",
-          "text": "Huwag na lang alamin"
+          "text": "Piliin ang mas maikling kuwento upang madaling tandaan sa pagsusulit."
         },
         {
           "label": "C",
-          "text": "Ihambing ang dalawang kuwento"
+          "text": "Ihambing ang dalawang bersiyon at suriin ang motibo ng mga awtoridad."
         },
         {
           "label": "D",
-          "text": "Piliin ang pinakamaikling kuwento"
+          "text": "Paniwalaan agad ang ulat ng Espanyol dahil sila ang nasa kapangyarihan."
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Dahil may dalawang bersiyon ang pangyayari, dapat ihambing ang dalawang kuwento at suriin ang mga batayan bago humatol kung alin ang totoo."
+      "explanation": "Ang pinakamatalinong paraan ay paghambingin ang dalawang bersyon at suriin kung bakit ganoon ang sinasabi ng mga awtoridad."
     },
     {
       "id": "nat_5_4",
@@ -1306,27 +1906,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Pinagbintangan ni Izquierdo ang mga paring nanawagan ng sekularisasyon na sila raw ang nasa likod ng aklas. Ano ang pinakamalamang na dahilan niya?",
+      "questionText": "Matapos masupil ang pag-aalsa sa Cavite sa loob ng ilang araw, ipinadakip at pinaratangan ni Izquierdo sina Padre Mariano Gómez, José Burgos, at Jacinto Zamora bilang mga pinuno ng pag-aalsa. Bakit idinawit ni Izquierdo ang tatlong pari sa Cavite Mutiny kahit walang matibay na ebidensya?",
       "options": [
         {
           "label": "A",
-          "text": "Sila ang namuno sa aklas"
+          "text": "Dahil tumanggi silang magbayad ng buwis sa kanilang parokya."
         },
         {
           "label": "B",
-          "text": "Sila ang nagbayad ng tributo"
+          "text": "Upang gawing bagong Gobernador-Heneral ang isa sa tatlong pari."
         },
         {
           "label": "C",
-          "text": "Sila ay mga sundalo"
+          "text": "Dahil nakita silang nakikipaglaban sa loob ng arsenal ng Cavite."
         },
         {
           "label": "D",
-          "text": "Sisihin ang mga humihingi ng reporma"
+          "text": "Upang patahimikin ang mga nananawagan ng sekularisasyon at reporma."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ginamit ni Izquierdo ang pangyayari para pagbintangan ang mga liberal na Pilipino at ang mga paring nanawagan ng sekularisasyon."
+      "explanation": "Idinawit ang tatlong pari para patahimikin ang mga nananawagan ng sekularisasyon at reporma, kahit walang matibay na ebidensya."
     },
     {
       "id": "nat_5_5",
@@ -1336,27 +1936,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naganap ang Cavite Mutiny noong Enero 20, 1872. Iginarote ang GOMBURZA noong Pebrero 17, 1872. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "questionText": "Naganap ang Cavite Mutiny noong Enero 20, 1872, at makalipas ang halos isang buwan, noong Pebrero 17, 1872, iginarote ang GOMBURZA sa Bagumbayan (Luneta). Ilang araw ang pagitan mula sa pagsiklab ng Cavite Mutiny hanggang sa paggarote sa GOMBURZA?",
       "options": [
         {
           "label": "A",
-          "text": "18"
+          "text": "18 araw"
         },
         {
           "label": "B",
-          "text": "28"
+          "text": "28 araw"
         },
         {
           "label": "C",
-          "text": "38"
+          "text": "38 araw"
         },
         {
           "label": "D",
-          "text": "48"
+          "text": "48 araw"
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Mula Enero 20 hanggang Enero 31 ay 11 araw, dagdag ang 17 araw sa Pebrero: 11 + 17 = 28 araw."
+      "explanation": "Mula Enero 20 hanggang Pebrero 17, 1872 ay 28 araw."
     },
     {
       "id": "nat_5_6",
@@ -1366,27 +1966,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Alam ng mga Pilipino na hindi totoo ang bintang sa tatlong pari. Pero pinatay pa rin sila sa garote. Ano ang naramdaman ng mga Pilipino?",
+      "questionText": "Nang igarote ang GOMBURZA sa Bagumbayan noong Pebrero 17, 1872, naniniwala maging ang ilang pinuno ng Simbahan na walang kasalanan ang tatlong pari. Ano ang naging agarang reaksyon ng mga Pilipino nang makita ang pagpatay sa tatlong inosenteng pari?",
       "options": [
         {
           "label": "A",
-          "text": "Galit, at mas lumakas ang nasyonalismo"
+          "text": "Natuwa sila dahil natapos na ang kaguluhan sa Cavite."
         },
         {
           "label": "B",
-          "text": "Pagsang-ayon sa pamahalaan"
+          "text": "Nakalimutan agad nila ang pangyayari pagkalipas ng ilang araw."
         },
         {
           "label": "C",
-          "text": "Tuwa dahil natapos ang aklas"
+          "text": "Sumang-ayon sila sa hatol ng pamahalaang Espanyol sa Bagumbayan."
         },
         {
           "label": "D",
-          "text": "Walang naramdaman"
+          "text": "Nagalit sila sa kawalan ng katarungan at napukaw ang nasyonalismo."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Hindi totoo ang bintang sa tatlong pari, kaya nagalit ang mga Pilipino at ganap na napukaw ang kanilang damdaming nasyonalismo."
+      "correctAnswer": "D",
+      "explanation": "Nagalit ang mga Pilipino sa kawalan ng katarungan, kaya napukaw ang nasyonalismo."
     },
     {
       "id": "nat_5_7",
@@ -1396,27 +1996,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagalit ang mga Pilipinong estudyante sa Espanya sa balita ng paggarote sa GOMBURZA. Ano ang pinakamalamang na ginawa nila?",
+      "questionText": "Nang makarating sa Espanya ang balita tungkol sa paggarote sa GOMBURZA, labis na nagdalamhati at nagalit ang mga Pilipinong mag-aaral doon. Ano ang ibinunga ng pangyayaring ito sa pagkilos ng mga Pilipino sa Espanya?",
       "options": [
         {
           "label": "A",
-          "text": "Bumalik at naging prayle"
+          "text": "Nagpasya silang huwag nang bumalik sa Pilipinas kailanman."
         },
         {
           "label": "B",
-          "text": "Tumigil mag-aral"
+          "text": "Huminto sila sa pagsusulat at sumunod na lamang sa mga prayle."
         },
         {
           "label": "C",
-          "text": "Palakasin ang paghingi ng reporma"
+          "text": "Nag-udyok ito upang itatag at palakasin ang Kilusang Propaganda."
         },
         {
           "label": "D",
-          "text": "Sumang-ayon kay Izquierdo"
+          "text": "Nakipagkasundo sila kay Izquierdo upang maging opisyal sa Maynila."
         }
       ],
       "correctAnswer": "C",
-      "explanation": "Dahil sa galit, ipinagpatuloy at pinalakas ng mga Pilipino sa Espanya ang paghingi ng reporma sa pamamagitan ng Kilusang Propaganda."
+      "explanation": "Dahil sa galit at lungkot, nag-udyok ang pangyayari na itatag at palakasin ang Kilusang Propaganda."
     },
     {
       "id": "nat_5_8",
@@ -1426,27 +2026,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Inialay ni Jose Rizal ang nobelang El Filibusterismo sa GOMBURZA. Ano ang ipinapakita nito?",
+      "questionText": "Sa kanyang ikalawang nobelang El Filibusterismo, isinulat ni Jose Rizal ang isang espesyal na pag-aalay para kina Padre Gómez, Burgos, at Zamora. Ano ang ipinapakita ng pag-aalay na ito ni Rizal sa GOMBURZA?",
       "options": [
         {
           "label": "A",
-          "text": "Kaaway ni Rizal ang tatlong pari"
+          "text": "Na tutol si Rizal sa ginawang pangangampanya ng tatlong pari."
         },
         {
           "label": "B",
-          "text": "Sila ang sumulat ng nobela"
+          "text": "Na nais ni Rizal na kalimutan na ng mga Pilipino ang nakaraan."
         },
         {
           "label": "C",
-          "text": "Walang kinalaman ang mga pari sa mga Pilipino"
+          "text": "Na ang tatlong pari ang tumulong kay Rizal sa pagsulat ng nobela."
         },
         {
           "label": "D",
-          "text": "Hindi nalimutan ang GOMBURZA"
+          "text": "Na nagsilbing inspirasyon at hindi nalimutan ang sakripisyo ng GOMBURZA."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Inialay ni Rizal sa GOMBURZA ang El Filibusterismo bilang pag-alaala sa tatlong pari na hindi nalimutan ng mga Pilipino."
+      "explanation": "Inialay ni Rizal ang El Filibusterismo sa GOMBURZA para ipakitang hindi nalimutan ang kanilang sakripisyo at naging inspirasyon sila."
     },
     {
       "id": "nat_5_9",
@@ -1456,27 +2056,27 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Dati, hindi nagbabayad ng tributo o gumagawa ng sapilitang paggawa (polo y servicio) si Mang Andoy. Inalis ito ni Izquierdo. Ano ang mangyayari kay Mang Andoy?",
+      "questionText": "Si Mang Andoy ay isang manggagawa sa arsenal ng Cavite noong 1871. Dati ay hindi siya nagbabayad ng tributo at hindi rin kasali sa polo y servicio. Ano ang naging pagbabago sa buhay ni Mang Andoy nang ipatupad ni Izquierdo ang bagong kautusan noong 1872?",
       "options": [
         {
           "label": "A",
-          "text": "Mas kaunti ang babayaran niya"
+          "text": "Pinayagan siyang mamuno sa mga sundalong Espanyol sa Cavite."
         },
         {
           "label": "B",
-          "text": "Kailangan na niyang magbayad at magtrabaho"
+          "text": "Nadagdagan ang kanyang suweldo at nabigyan siya ng bagong lupa."
         },
         {
           "label": "C",
-          "text": "Wala pa ring babayaran"
+          "text": "Inilibre na rin pati ang kanyang mga anak sa pagbabayad ng buwis."
         },
         {
           "label": "D",
-          "text": "Makakakuha siya ng lupa"
+          "text": "Kinailangan na niyang magbayad ng buwis at magtrabaho nang sapilitan."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Kapag inalis ang pribilehiyo, kailangan nang magbayad ng tributo at gumawa ng polo y servicio, kaya mas bibigat ang pasanin niya."
+      "correctAnswer": "D",
+      "explanation": "Nawalan ng pribilehiyo si Mang Andoy, kaya kinailangan na niyang magbayad ng buwis at magtrabaho nang sapilitan."
     },
     {
       "id": "nat_5_10",
@@ -1486,27 +2086,177 @@
       "level": 5,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naniniwala ang ilang pinuno ng Simbahan na walang kasalanan ang tatlong pari. Pero pinatay pa rin sila sa Bagumbayan. Alin ang pinakamalakas na dahilan para sabihing hindi patas ang hatol?",
+      "questionText": "Inakala ng pamahalaang Espanyol na sa pamamagitan ng paggarote sa GOMBURZA sa harap ng maraming tao sa Bagumbayan, matatakot ang mga Pilipino at titigil na sa paghingi ng pagbabago. Bakit masasabing kabaligtaran ang naging resulta ng plano ng mga Espanyol?",
       "options": [
         {
           "label": "A",
-          "text": "Inosente sila, ayon sa ilang pinuno ng Simbahan"
+          "text": "Dahil nawala ang lahat ng simbahan sa paligid ng Bagumbayan."
         },
         {
           "label": "B",
-          "text": "Sa Luneta sila pinatay"
+          "text": "Dahil naging masaya ang mga Pilipino sa paraan ng pagpaparusa."
         },
         {
           "label": "C",
-          "text": "Mga pari sila"
+          "text": "Dahil lumipat ang mga Espanyol sa Cavite upang humingi ng tawad."
         },
         {
           "label": "D",
-          "text": "Nangyari ito noong Pebrero"
+          "text": "Dahil sa halip na matakot, nagkaisa at lalong nag-alab ang nasyonalismo."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Naniniwala ang ilang pinuno ng Simbahan na walang kasalanan ang tatlong pari, kaya hindi patas ang hatol na pagpatay sa kanila."
+      "correctAnswer": "D",
+      "explanation": "Kabaligtaran ang resulta dahil sa halip na matakot, nagkaisa ang mga Pilipino at lalong nag-alab ang nasyonalismo."
+    },
+    {
+      "id": "nat_5_11",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinusuri ni Gabby ang salitang 'garote' na ginamit bilang parusa sa tatlong paring martir noong 1872. Ano ang ibig sabihin ng garote noong panahon ng Espanyol?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Isang uri ng barkong pandigma sa look ng Maynila"
+        },
+        {
+          "label": "B",
+          "text": "Isang dokumentong nagbibigay ng kalayaan sa mga bilanggo"
+        },
+        {
+          "label": "C",
+          "text": "Isang parangal na ibinibigay sa mga tapat na sundalo ng Hari"
+        },
+        {
+          "label": "D",
+          "text": "Paraan ng pagpatay sa pamamagitan ng pagsakal gamit ang bakal"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang garote ay paraan ng pagpatay sa pamamagitan ng pagsakal gamit ang bakal."
+    },
+    {
+      "id": "nat_5_12",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinaghahambing ni Lian ang kilusang sekularisasyon (Linggo 6) at ang paggarote sa GOMBURZA (Linggo 7). Paano nagkaugnay ang dalawang pangyayaring ito sa kasaysayan?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Walang anumang kinalaman ang sekularisasyon sa pagdakip sa GOMBURZA."
+        },
+        {
+          "label": "B",
+          "text": "Nagtagumpay ang sekularisasyon bago pa man naganap ang Cavite Mutiny."
+        },
+        {
+          "label": "C",
+          "text": "Ang Cavite Mutiny ang nagpasimula sa pagtatayo ng Katedral ng Maynila."
+        },
+        {
+          "label": "D",
+          "text": "Ang pamumuno ng GOMBURZA sa sekularisasyon ang dahilan kaya sila pinag-initan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Pinag-initan ang GOMBURZA dahil sa pamumuno nila sa sekularisasyon, kaya magkaugnay ang dalawang pangyayari."
+    },
+    {
+      "id": "nat_5_13",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang pagtatanghal sa klase, ipinakita ang pag-aaklas ni Sarhento Fernando La Madrid sa Cavite noong Enero 20, 1872. Ano ang naging kahihinatnan ng pag-aaklas na ito sa loob ng ilang araw?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nasakop ng mga manggagawa ang buong lungsod ng Maynila."
+        },
+        {
+          "label": "B",
+          "text": "Agad itong nasupil ng malakas na hukbo ng mga Espanyol."
+        },
+        {
+          "label": "C",
+          "text": "Nagtatag sila ng bagong pamahalaan sa lalawigan ng Cavite."
+        },
+        {
+          "label": "D",
+          "text": "Napaalis nila si Gobernador-Heneral Izquierdo pabalik sa Espanya."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Agad nasupil ng malakas na hukbo ng mga Espanyol ang pag-aaklas sa Cavite sa loob ng ilang araw."
+    },
+    {
+      "id": "nat_5_14",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bakit itinuturing na 'turning point' o mahalagang yugto sa kasaysayan ng Pilipinas ang taong 1872? Piliin ang pinakawastong paliwanag:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil sa taong ito binuksan ang Suez Canal sa bansang Egypt."
+        },
+        {
+          "label": "B",
+          "text": "Dahil sa taong ito nagsimula ang Kalakalang Galyon sa Mexico."
+        },
+        {
+          "label": "C",
+          "text": "Dahil sa taong ito ipinanganak ang lahat ng bayani ng Pilipinas."
+        },
+        {
+          "label": "D",
+          "text": "Dahil ang pagkamartir ng GOMBURZA ang gumising sa pambansang kamalayan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Turning point ang 1872 dahil ang pagkamartir ng GOMBURZA ang gumising sa pambansang kamalayan."
+    },
+    {
+      "id": "nat_5_15",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 5,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 7, tinanong ng guro kung paano nakatulong ang trahedya ng GOMBURZA sa pag-usbong ng nasyonalismong Pilipino. Aling pahayag ang pinakatamang buod?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pinatunayan nito na mabait at makatarungan ang pamahalaang Espanyol."
+        },
+        {
+          "label": "B",
+          "text": "Nagbigay ito ng maraming trabaho sa mga manggagawa sa arsenal ng Cavite."
+        },
+        {
+          "label": "C",
+          "text": "Naging dahilan ito upang tumigil ang mga ilustrado sa pag-aaral sa Europa."
+        },
+        {
+          "label": "D",
+          "text": "Iminulat nito ang mga Pilipino sa kawalan ng katarungan at nagpaalab ng pagkakaisa."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Iminulat ng trahedya ng GOMBURZA ang mga Pilipino sa kawalan ng katarungan at nagpaalab ng pagkakaisa."
     }
   ],
   "6": [
@@ -1518,27 +2268,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gusto ng isang propagandista na may Pilipinong makaupo sa Cortes, ang batasan ng Espanya, para marinig ang boses ng mga Pilipino. Anong layunin ng kilusan ito?",
+      "questionText": "Nais ng mga propagandista sa Espanya na magkaroon ng isang kinatawang Pilipino sa Cortes (ang batasan ng Espanya) upang maiparating sa Hari at pamahalaan ang tunay na kalagayan ng Pilipinas. Anong layunin ng Kilusang Propaganda ang ipinapakita ng kahilingang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Bagong buwis"
+          "text": "Pagtatatag ng bagong hukbo upang makipagdigma sa Espanya"
         },
         {
           "label": "B",
-          "text": "Paglaban gamit ang armas"
+          "text": "Pagbabalik ng Kalakalang Galyon sa pagitan ng Asya at Amerika"
         },
         {
           "label": "C",
-          "text": "Pagpapaalis sa mga Espanyol"
+          "text": "Pagpapaalis sa lahat ng mga mangangalakal sa lungsod ng Maynila"
         },
         {
           "label": "D",
-          "text": "May kinatawang Pilipino"
+          "text": "Pagkakaroon ng boses at kinatawan ang mga Pilipino sa paggawa ng batas"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Isa sa mga layunin ng Kilusang Propaganda ang magkaroon ng kinatawang Pilipino sa Cortes ng Espanya para marinig ang boses ng mga Pilipino."
+      "explanation": "Ang pagkakaroon ng kinatawan sa Cortes ay nagbibigay ng boses sa mga Pilipino sa paggawa ng batas."
     },
     {
       "id": "nat_6_2",
@@ -1548,27 +2298,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naglista si Ria ng mga mapayapang paraan ng Kilusang Propaganda sa paghingi ng reporma. Alin ang HINDI dapat isama?",
+      "questionText": "Gumagawa si Ria ng listahan ng mga mapayapang pamamaraang ginamit ng Kilusang Propaganda upang isulong ang reporma sa Pilipinas. Alin sa mga sumusunod ang HINDI kabilang sa mapayapang pamamaraan ng Kilusang Propaganda?",
       "options": [
         {
           "label": "A",
-          "text": "Pag-aalsa gamit ang armas"
+          "text": "Pagsulat ng mga sanaysay at nobela"
         },
         {
           "label": "B",
-          "text": "Pagsulat"
+          "text": "Paglulunsad ng armadong paghihimagsik"
         },
         {
           "label": "C",
-          "text": "Paglilimbag"
+          "text": "Paglilimbag ng pahayagang La Solidaridad"
         },
         {
           "label": "D",
-          "text": "Pagtatalumpati"
+          "text": "Pagtatalumpati sa mga pagtitipon sa Espanya"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Mapayapa ang kampanya ng Kilusang Propaganda: nagsulong sila ng reporma sa pamamagitan ng pagsulat, paglilimbag at pagtatalumpati, hindi ng armas."
+      "correctAnswer": "B",
+      "explanation": "Mapayapang paraan ang pagsulat at paghiling ng reporma. Ang armadong paghihimagsik ay hindi."
     },
     {
       "id": "nat_6_3",
@@ -1578,27 +2328,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sumulat si Marcelo H. del Pilar gamit ang sagisag-panulat na Plaridel. Ang sagisag-panulat ay ibang pangalan ng manunulat. Bakit gumamit ng sagisag-panulat ang mga propagandista?",
+      "questionText": "Sa kanilang mga artikulo, gumamit si Jose Rizal ng mga pangalang 'Laong Laan' at 'Dimasalang,' habang si Marcelo H. del Pilar ay gumamit ng 'Plaridel.' Bakit gumamit ng mga sagisag-panulat ang mga propagandista sa kanilang mga akda?",
       "options": [
         {
           "label": "A",
-          "text": "Para maging sikat"
+          "text": "Upang maging sikat na makata sa mga paligsahan sa Europa"
         },
         {
           "label": "B",
-          "text": "Mapanganib ang kanilang kampanya"
+          "text": "Upang maprotektahan ang sarili at pamilya mula sa panganib"
         },
         {
           "label": "C",
-          "text": "Bawal ang Tagalog"
+          "text": "Dahil nakalimutan na nila ang kanilang pangalan sa Pilipinas"
         },
         {
           "label": "D",
-          "text": "Nakalimutan nila ang pangalan"
+          "text": "Dahil ipinagbabawal ng batas ang paggamit ng tunay na apelyido"
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Mapanganib ang kampanya ng mga propagandista, kaya gumamit sila ng sagisag-panulat, tulad nina Rizal at Del Pilar, para maprotektahan ang sarili."
+      "explanation": "Gumamit sila ng sagisag-panulat para maprotektahan ang sarili at pamilya mula sa panganib."
     },
     {
       "id": "nat_6_4",
@@ -1608,27 +2358,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ginamit ng Diaryong Tagalog ang wikang Tagalog at Espanyol. Ano ang pinakamalamang na dahilan?",
+      "questionText": "Noong 1882, itinatag ni Marcelo H. del Pilar ang Diaryong Tagalog, isa sa mga unang pahayagang gumamit ng wikang Tagalog at Espanyol. Ano ang pangunahing pakinabang ng paggamit ng wikang Tagalog sa pahayagang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Itago ang balita sa Pilipino"
+          "text": "Upang turuan ang mga dayuhan na magsalita ng wikang katutubo"
         },
         {
           "label": "B",
-          "text": "Para sa Espanyol lang ito"
+          "text": "Upang hindi mabasa ng mga opisyal na Espanyol ang mga balita"
         },
         {
           "label": "C",
-          "text": "Maunawaan ng mas maraming Pilipino"
+          "text": "Upang maipagbili ang pahayagan sa mas mahal na halaga sa Maynila"
         },
         {
           "label": "D",
-          "text": "Magpasikat sa Europa"
+          "text": "Upang mas maunawaan ng karaniwang Pilipino ang mga isyung panlipunan"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ginamit ng Diaryong Tagalog ang Tagalog at Espanyol para mas maraming Pilipino ang makaunawa sa mga isyung panlipunan noon."
+      "correctAnswer": "D",
+      "explanation": "Wikang Tagalog ang mas nauunawaan ng karaniwang Pilipino, kaya mas naiintindihan nila ang mga isyung panlipunan."
     },
     {
       "id": "nat_6_5",
@@ -1638,11 +2388,11 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Inayos ni Tina ang mga akda ayon sa taon: Diaryong Tagalog (1882), Noli Me Tangere (1887), La Solidaridad (1889), at El Filibusterismo (1891). Alin ang huling nailathala?",
+      "questionText": "Inaayos ni Tina ang mga mahahalagang lathalain ng Kilusang Propaganda ayon sa taon ng pagkakalimbag: Diaryong Tagalog (1882), Noli Me Tangere (1887), La Solidaridad (1889), at El Filibusterismo (1891). Alin sa mga akdang ito ang huling nailathala at nagbabala tungkol sa posibleng paghihimagsik kung hindi ibibigay ang reporma?",
       "options": [
         {
           "label": "A",
-          "text": "Diaryong Tagalog"
+          "text": "La Solidaridad"
         },
         {
           "label": "B",
@@ -1650,7 +2400,7 @@
         },
         {
           "label": "C",
-          "text": "La Solidaridad"
+          "text": "Diaryong Tagalog"
         },
         {
           "label": "D",
@@ -1658,7 +2408,7 @@
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ayon sa taon: Diaryong Tagalog (1882), Noli Me Tangere (1887), La Solidaridad (1889), at pinakahuli ang El Filibusterismo (1891)."
+      "explanation": "Ang El Filibusterismo (1891) ang huling nailathala sa apat at nagbabala tungkol sa posibleng paghihimagsik."
     },
     {
       "id": "nat_6_6",
@@ -1668,27 +2418,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "May isang nobela ni Rizal na nagsabing puwedeng maging huling paraan ang paghihimagsik (pag-aaklas) para sa pagbabago. Aling nobela ito?",
+      "questionText": "Noong Pebrero 15, 1889, unang inilabas sa Barcelona, Espanya ang pahayagang La Solidaridad na naglalaman ng mga sanaysay nina Rizal, Del Pilar, at López Jaena. Ano ang naging pangunahing tungkulin ng La Solidaridad sa Kilusang Propaganda?",
       "options": [
         {
           "label": "A",
-          "text": "El Filibusterismo"
+          "text": "Nagsilbi itong aklat-aralin sa matematika at agham para sa mga bata."
         },
         {
           "label": "B",
-          "text": "Noli Me Tangere"
+          "text": "Nagsilbi itong kautusan ng Hari upang dakpin ang lahat ng ilustrado."
         },
         {
           "label": "C",
-          "text": "La Solidaridad"
+          "text": "Nagsilbi itong listahan ng mga produktong ibinebenta sa Kalakalang Galyon."
         },
         {
           "label": "D",
-          "text": "Diaryong Tagalog"
+          "text": "Nagsilbi itong opisyal na pahayagan na naglantad ng pang-aabuso at humingi ng reporma."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Tinalakay sa El Filibusterismo, na nalathala sa Ghent noong 1891, ang posibleng paghihimagsik bilang huling paraan para sa pagbabago."
+      "correctAnswer": "D",
+      "explanation": "Opisyal na pahayagan ng Kilusang Propaganda ang La Solidaridad. Naglantad ito ng pang-aabuso at humingi ng reporma."
     },
     {
       "id": "nat_6_7",
@@ -1698,27 +2448,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Itinatago sa mga kahon ang mga kopya ng La Solidaridad bago ipasok sa Pilipinas. Bakit ito palihim ipinasok?",
+      "questionText": "Itinatago sa loob ng mga kahon ng kalakal ang mga kopya ng La Solidaridad at Noli Me Tangere bago ipasok sa mga daungan ng Pilipinas. Bakit kinailangang palihim na ipasok sa Pilipinas ang mga babasahing ito?",
       "options": [
         {
           "label": "A",
-          "text": "Mahal ang papel"
+          "text": "Dahil mabilis masira ang papel kapag nabasa ng tubig-dagat"
         },
         {
           "label": "B",
-          "text": "Makabayan ang nilalaman nito"
+          "text": "Dahil mahal ang buwis para sa mga papel na galing sa Europa"
         },
         {
           "label": "C",
-          "text": "Para hindi mabasa ng Pilipino"
+          "text": "Dahil ipinagbabawal ng pamahalaan ang makabayang nilalaman nito"
         },
         {
           "label": "D",
-          "text": "Nasa Barcelona ito"
+          "text": "Dahil ayaw ng mga ilustrado na mabasa ito ng kanilang mga kababayan"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Palihim itong ipinasok sa Pilipinas dahil sa makabayang nilalaman nito na naglantad ng pang-aabuso ng mga prayle."
+      "correctAnswer": "C",
+      "explanation": "Palihim silang ipinasok dahil ipinagbabawal ng pamahalaan ang makabayang nilalaman ng mga ito."
     },
     {
       "id": "nat_6_8",
@@ -1728,27 +2478,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nahatulan ang isang Espanyol at isang Pilipino sa parehong kasalanan. Alin ang tugma sa layunin ng kilusan na pantay na pagtrato sa batas?",
+      "questionText": "Sa isang hukuman noong panahon ng Espanyol, magkaiba ang parusang ipinapataw sa isang Espanyol at sa isang Pilipino kahit magkapareho lamang ang kanilang nagawang pagkakasala. Aling layunin ng Kilusang Propaganda ang direktang tumutugon sa suliraning ito?",
       "options": [
         {
           "label": "A",
-          "text": "Mas mabigat ang parusa ng Pilipino"
+          "text": "Pagpapalawak ng mga parokya sa mga liblib na kabundukan"
         },
         {
           "label": "B",
-          "text": "Malaya ang Espanyol"
+          "text": "Pagbabawal sa paglalathala ng mga pahayagan sa wikang Espanyol"
         },
         {
           "label": "C",
-          "text": "Pareho ang parusa nila"
+          "text": "Pagtatayo ng mas maraming pantalan sa katimugang bahagi ng bansa"
         },
         {
           "label": "D",
-          "text": "Walang paglilitis"
+          "text": "Pantay na pagtrato sa mga Pilipino at Espanyol sa ilalim ng batas"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Isa sa mga layunin ng kilusan ang pantay na pagtrato sa mga Pilipino at Espanyol sa ilalim ng batas, kaya dapat pareho ang parusa nila."
+      "correctAnswer": "D",
+      "explanation": "Ang layunin ng pantay na pagtrato sa Pilipino at Espanyol sa ilalim ng batas ang sagot sa hindi patas na parusa."
     },
     {
       "id": "nat_6_9",
@@ -1758,27 +2508,27 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang lugar, bawal magsulat ng puna tungkol sa pamahalaan. Aling layunin ng kilusan ang tumutugon dito?",
+      "questionText": "Sa isang bayan, pinaparusahan ang sinumang magsusulat o magpapahayag ng puna laban sa mga maling gawain ng mga opisyal ng pamahalaan. Aling layunin ng Kilusang Propaganda ang ipinaglalaban laban sa ganitong paghihigpit?",
       "options": [
         {
           "label": "A",
-          "text": "Malayang magsalita at magsulat"
+          "text": "Kalayaan sa pagsasalita at pamamahayag"
         },
         {
           "label": "B",
-          "text": "Sekularisasyon ng parokya"
+          "text": "Pagbabayad ng mas mataas na tributo taon-taon"
         },
         {
           "label": "C",
-          "text": "Kinatawan sa Cortes"
+          "text": "Pagpapanatili ng mga prayle sa lahat ng parokya"
         },
         {
           "label": "D",
-          "text": "Pag-alis ng tributo"
+          "text": "Paglilimita sa edukasyon para sa mayayaman lamang"
         }
       ],
       "correctAnswer": "A",
-      "explanation": "Isa sa mga layunin ng Kilusang Propaganda ang kalayaan sa pagsasalita at pamamahayag, kaya tumutugon ito sa pagbabawal na magsulat ng puna."
+      "explanation": "Ang kalayaan sa pagsasalita at pamamahayag ang laban sa paghihigpit sa pagsulat ng puna."
     },
     {
       "id": "nat_6_10",
@@ -1788,27 +2538,177 @@
       "level": 6,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nakita ni Ben ang mga sagisag-panulat na \"Laong Laan\" at \"Dimasalang\" sa lumang sulatin. Sino ang gumamit ng mga ito?",
+      "questionText": "Hiniling din ng Kilusang Propaganda na gawing lalawigan ng Espanya ang Pilipinas sa halip na ituring lamang bilang isang kolonya. Ano ang magiging pakinabang ng mga Pilipino kung naging lalawigan ng Espanya ang Pilipinas?",
       "options": [
         {
           "label": "A",
-          "text": "Marcelo H. del Pilar"
+          "text": "Mawawala na ang lahat ng pamahalaang lokal sa mga probinsya."
         },
         {
           "label": "B",
-          "text": "Jose Rizal"
+          "text": "Lilipat na silang lahat upang manirahan sa lungsod ng Madrid."
         },
         {
           "label": "C",
-          "text": "Graciano López Jaena"
+          "text": "Hindi na sila kailangang magtrabaho at mag-aral sa mga paaralan."
         },
         {
           "label": "D",
-          "text": "Andres Bonifacio"
+          "text": "Magkakaroon sila ng pantay na karapatan bilang mamamayan ng Espanya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Ginamit ni Jose Rizal ang mga sagisag-panulat na Laong Laan at Dimasalang; Plaridel naman ang kay Marcelo H. del Pilar."
+      "correctAnswer": "D",
+      "explanation": "Kung lalawigan ng Espanya, magkakaroon ng pantay na karapatan ang mga Pilipino bilang mamamayan ng Espanya."
+    },
+    {
+      "id": "nat_6_11",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinaghahambing ni Marco ang dalawang nobela ni Jose Rizal: ang Noli Me Tangere (Berlin, 1887) at ang El Filibusterismo (Ghent, 1891). Ano ang pangunahing pagkakaiba ng tema ng dalawang nobelang ito?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pareho lamang ang kuwento at tauhan ng dalawang nobelang ito."
+        },
+        {
+          "label": "B",
+          "text": "Ang Noli ay tungkol sa kalakalan; ang Fili ay tungkol sa paglalayag."
+        },
+        {
+          "label": "C",
+          "text": "Ang Noli ay isinulat sa Tagalog; ang Fili ay isinulat sa wikang Ingles."
+        },
+        {
+          "label": "D",
+          "text": "Ang Noli ay naglarawan ng kaapihan; ang Fili ay nagbabala ng himagsikan."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Inilarawan ng Noli ang kaapihan ng mga Pilipino, samantalang nagbabala ang Fili ng himagsikan."
+    },
+    {
+      "id": "nat_6_12",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang sanaysay na pinamagatang 'Filipinas dentro de cien años' (Ang Pilipinas sa Loob ng Sandaang Taon) na nailathala sa La Solidaridad, ipinahayag ni Rizal ang hinaharap ng bansa. Ano ang ipinapakita ng pagsusulat ni Rizal ng ganitong mga sanaysay?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ang pagnanais na manghula ng kapalaran para sa mga mangangalakal"
+        },
+        {
+          "label": "B",
+          "text": "Ang paghikayat sa mga Pilipino na sumuko na sa pamamahala ng Espanya"
+        },
+        {
+          "label": "C",
+          "text": "Ang pagpapakita na walang magbabago sa Pilipinas kahit lumipas ang panahon"
+        },
+        {
+          "label": "D",
+          "text": "Ang paggamit ng malalim na pagsusuri upang gisingin ang kamalayan ng bayan"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ang malalim na pagsusuri sa mga sanaysay ni Rizal ay paraan ng paggising sa kamalayan ng bayan."
+    },
+    {
+      "id": "nat_6_13",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Isinama rin ng Kilusang Propaganda sa kanilang mga kahilingan ang sekularisasyon ng mga parokya sa Pilipinas. Bakit ipinagpatuloy ng mga propagandista ang layuning ito nina Padre Peláez at GOMBURZA?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Dahil nais nilang isara ang lahat ng simbahan sa mga lalawigan."
+        },
+        {
+          "label": "B",
+          "text": "Dahil gusto nilang maging pari ang lahat ng kasapi ng Propaganda."
+        },
+        {
+          "label": "C",
+          "text": "Dahil pinilit sila ng mga prayle na isulat ito sa La Solidaridad."
+        },
+        {
+          "label": "D",
+          "text": "Dahil bahagi ito ng laban para sa pantay na karapatan ng mga Pilipino."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Ipinagpatuloy ang sekularisasyon dahil bahagi ito ng laban para sa pantay na karapatan ng mga Pilipino."
+    },
+    {
+      "id": "nat_6_14",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang pagsusulit, tinanong kung bakit sa Espanya itinatag ng mga ilustrado ang Kilusang Propaganda sa halip na sa Pilipinas. Aling paliwanag ang pinakatama?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ipinatapon silang lahat ng Hari sa Espanya upang magtrabaho roon."
+        },
+        {
+          "label": "B",
+          "text": "Mas gusto nilang mamasyal sa Europa kaysa manirahan sa Pilipinas."
+        },
+        {
+          "label": "C",
+          "text": "Walang palimbagan o papel na mabibili sa buong lungsod ng Maynila."
+        },
+        {
+          "label": "D",
+          "text": "Mas malaya silang nakapagsusulat at nakapagpapahayag sa Espanya noon."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mas malaya silang nakapagsusulat at nakapagpapahayag sa Espanya noon kaysa sa Pilipinas."
+    },
+    {
+      "id": "nat_6_15",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 6,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Bilang paglalagom sa Linggo 8–9, tinanong ng guro kung ano ang pangkalahatang layunin ng Kilusang Propaganda. Aling pahayag ang pinakawasto?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Magdeklara ng agarang digmaan laban sa lahat ng bansang Europeo"
+        },
+        {
+          "label": "B",
+          "text": "Magtatag ng bagong kaharian sa ilalim ng pamumuno ng mga ilustrado"
+        },
+        {
+          "label": "C",
+          "text": "Ibenta ang kapuluan ng Pilipinas sa iba pang makapangyarihang bansa"
+        },
+        {
+          "label": "D",
+          "text": "Humingi ng mapayapang reporma para sa pantay na karapatan ng Pilipino"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Humingi ang Kilusang Propaganda ng mapayapang reporma para sa pantay na karapatan ng mga Pilipino."
     }
   ],
   "7": [
@@ -1820,27 +2720,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Binasa ng mga Pilipino ang mga artikulo sa La Solidaridad na nagpapakita ng pang-aabuso. Ano ang pinakamalamang na nangyari?",
+      "questionText": "Nang palihim na makarating sa Pilipinas ang mga kopya ng La Solidaridad at ang mga nobelang Noli Me Tangere at El Filibusterismo, maraming Pilipino ang nagbasa at nagbahagi nito sa isa't isa. Ano ang naging pinakamahalagang epekto ng mga babasahing ito sa mga Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Sumuko sila"
+          "text": "Naging masunurin sila sa lahat ng utos ng mga encomendero."
         },
         {
           "label": "B",
-          "text": "Tumigil silang magbasa"
+          "text": "Sumuko sila at tinanggap na lamang ang lahat ng pang-aabuso."
         },
         {
           "label": "C",
-          "text": "Namulat sila sa kanilang karapatan"
+          "text": "Tumigil sila sa pagbabasa ng anumang aklat na galing sa Europa."
         },
         {
           "label": "D",
-          "text": "Naging masunurin sila"
+          "text": "Namulat sila sa kanilang karapatan at nag-alab ang pagmamahal sa bayan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Nailantad ng mga artikulo sa La Solidaridad ang mga pang-aabuso at katiwalian, kaya namulat ang maraming Pilipino sa kanilang karapatan at sa pagmamahal sa bayan."
+      "correctAnswer": "D",
+      "explanation": "Dahil sa mga babasahin, namulat ang mga Pilipino sa kanilang karapatan at nag-alab ang pagmamahal sa bayan."
     },
     {
       "id": "nat_7_2",
@@ -1850,27 +2750,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Rizal ay taga-Calamba, si Del Pilar ay taga-Bulacan, at si López Jaena ay taga-Iloilo. Nagtulungan silang tatlo sa Kilusang Propaganda. Ano ang ipinapakita nito?",
+      "questionText": "Sa Kilusang Propaganda, nagtulungan sina Jose Rizal na taga-Calamba (Laguna), Marcelo H. del Pilar na taga-Bulacan, at Graciano López Jaena na taga-Iloilo para sa iisang layunin. Ano ang ipinapakita ng pagtutulungang ito ng mga bayaning mula sa iba't ibang lalawigan?",
       "options": [
         {
           "label": "A",
-          "text": "Nagkakaisa ang mga Pilipino"
+          "text": "Na tanging tatlong lalawigan lamang ang may pakialam sa kalayaan."
         },
         {
           "label": "B",
-          "text": "Iisang lugar ang pinanggalingan nila"
+          "text": "Na magkakamag-anak ang lahat ng nakatira sa Laguna, Bulacan, at Iloilo."
         },
         {
           "label": "C",
-          "text": "Iisa ang wika nila"
+          "text": "Na iisang diyalekto lamang ang ginagamit sa buong kapuluan ng Pilipinas."
         },
         {
           "label": "D",
-          "text": "Magkakamag-anak sila"
+          "text": "Na iisang bayan ang mga Pilipino sa kabila ng pagkakaiba ng lugar at wika."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Nagtulungan sa iisang layunin ang mga Pilipinong mula sa iba't ibang lugar, na nagpapakitang iisang bayan ang mga Pilipino sa kabila ng pagkakaiba ng lugar at wika."
+      "correctAnswer": "D",
+      "explanation": "Nagtulungan ang mga bayani mula sa iba't ibang lalawigan, patunay na iisang bayan ang mga Pilipino kahit magkaiba ang lugar at wika."
     },
     {
       "id": "nat_7_3",
@@ -1880,27 +2780,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sabi ni Jomar, \"Bigo ang Kilusang Propaganda, kaya walang silbi ito.\" Ano ang pinakamahusay na sagot kay Jomar?",
+      "questionText": "Sa isang talakayan, sinabi ni Jomar: 'Hindi naman ibinigay ng Espanya ang mga repormang hiniling ng Kilusang Propaganda, kaya masasabing wala itong nagawa para sa bansa.' Aling tugon ang pinakamahusay na magwawasto sa sinabi ni Jomar?",
       "options": [
         {
           "label": "A",
-          "text": "Tama ka, walang silbi ito"
+          "text": "Mali ka, dahil agad na naging malaya ang Pilipinas noong 1895."
         },
         {
           "label": "B",
-          "text": "Natupad ang lahat ng hiniling nito"
+          "text": "Tama ka, kaya dapat kalimutan na ang mga akda nina Rizal at Del Pilar."
         },
         {
           "label": "C",
-          "text": "Walang natutunan ang mga Pilipino"
+          "text": "Tama ka, dahil walang sinumang Pilipino ang nakabasa ng La Solidaridad."
         },
         {
           "label": "D",
-          "text": "Inihanda nito ang isip ng mga Pilipino"
+          "text": "Mali ka, dahil inihanda nito ang isip at damdamin ng Pilipino para sa kalayaan."
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Hindi man nakamit ang mga reporma, inihanda ng Kilusang Propaganda ang isip at damdamin ng mga Pilipino para sa mga susunod na yugto ng pakikibaka."
+      "explanation": "Mali si Jomar dahil inihanda ng Kilusang Propaganda ang isip at damdamin ng mga Pilipino para sa kalayaan."
     },
     {
       "id": "nat_7_4",
@@ -1910,27 +2810,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Tumigil ang paglalathala ng La Solidaridad noong Nobyembre 1895. Bakit ito tumigil?",
+      "questionText": "Noong Nobyembre 1895, tuluyang natigil ang paglalathala ng pahayagang La Solidaridad sa Espanya matapos ang ilang taong pagpapalaganap ng reporma. Ano ang pangunahing dahilan kung bakit natigil ang paglalathala ng La Solidaridad?",
       "options": [
         {
           "label": "A",
-          "text": "Natupad na ang reporma"
+          "text": "Humina ang suporta at kinulang sa pondo para sa paglilimbag."
         },
         {
           "label": "B",
-          "text": "Kulang ang pera at suporta"
+          "text": "Ipinagbawal ng mga Pilipino ang pagbabasa ng anumang pahayagan."
         },
         {
           "label": "C",
-          "text": "Wala nang manunulat"
+          "text": "Wala nang natirang manunulat dahil bumalik silang lahat sa Mexico."
         },
         {
           "label": "D",
-          "text": "Ipinagbawal ito ng Simbahan"
+          "text": "Natupad na ang lahat ng repormang hiniling nila sa Hari ng Espanya."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Humina ang suporta at nagkulang sa pondo ang kilusan, kaya natigil ang paglalathala ng La Solidaridad noong Nobyembre 1895."
+      "correctAnswer": "A",
+      "explanation": "Natigil ang La Solidaridad dahil humina ang suporta at kinulang sa pondo para sa paglilimbag."
     },
     {
       "id": "nat_7_5",
@@ -1940,27 +2840,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Itinatag ni Rizal ang La Liga Filipina noong Hulyo 3, 1892. Itinatag ang Katipunan noong Hulyo 7, 1892. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "questionText": "Pagbalik ni Jose Rizal sa Pilipinas, itinatag niya ang La Liga Filipina noong Hulyo 3, 1892. Makalipas ang ilang araw, noong Hulyo 7, 1892, itinatag naman nina Andres Bonifacio ang Katipunan (KKK). Ilang araw ang pagitan mula sa pagkakatatag ng La Liga Filipina hanggang sa pagkakatatag ng Katipunan?",
       "options": [
         {
           "label": "A",
-          "text": "3"
+          "text": "3 araw"
         },
         {
           "label": "B",
-          "text": "4"
+          "text": "4 araw"
         },
         {
           "label": "C",
-          "text": "5"
+          "text": "5 araw"
         },
         {
           "label": "D",
-          "text": "7"
+          "text": "7 araw"
         }
       ],
       "correctAnswer": "B",
-      "explanation": "Mula Hulyo 3 hanggang Hulyo 7, 1892 ay 4 na araw: 7 - 3 = 4."
+      "explanation": "Mula Hulyo 3 hanggang Hulyo 7, 1892 ay 4 na araw."
     },
     {
       "id": "nat_7_6",
@@ -1970,27 +2870,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Humingi ng reporma sa mapayapang paraan ang Kilusang Propaganda. Iba naman ang paraan ng Katipunan. Ano ang paraan ng Katipunan?",
+      "questionText": "Pinaghahambing ni Ana ang pamamaraan ng Kilusang Propaganda at ng Katipunan (Kataas-taasan, Kagalang-galangang Katipunan ng mga Anak ng Bayan). Ano ang pangunahing pagkakaiba sa layunin at paraan ng dalawang kilusang ito?",
       "options": [
         {
           "label": "A",
-          "text": "Mapayapang reporma"
+          "text": "Pareho silang humiling na manatiling kolonya ng Espanya ang Pilipinas."
         },
         {
           "label": "B",
-          "text": "Pagsulat ng pahayagan"
+          "text": "Ang Propaganda ay gumamit ng armas; ang Katipunan ay nagsulat ng nobela."
         },
         {
           "label": "C",
-          "text": "Pag-aaklas gamit ang armas"
+          "text": "Ang Propaganda ay lihim na samahan; ang Katipunan ay pahayagan sa Espanya."
         },
         {
           "label": "D",
-          "text": "Pagtatalumpati sa Espanya"
+          "text": "Ang Propaganda ay humingi ng reporma; ang Katipunan ay naghangad ng kalayaan sa himagsikan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Katipunan ay lihim na samahang naglayong makamit ang kalayaan sa pamamagitan ng armadong paghihimagsik, hindi ng mapayapang reporma."
+      "correctAnswer": "D",
+      "explanation": "Humingi ng reporma ang Propaganda sa mapayapang paraan. Ang Katipunan ay naghangad ng kalayaan sa pamamagitan ng himagsikan."
     },
     {
       "id": "nat_7_7",
@@ -2000,27 +2900,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gumawa si Ana ng talaan ng mga pangyayaring humantong sa Rebolusyong Pilipino. Alin ang tamang pagkakasunod?",
+      "questionText": "Gumagawa si Marco ng balangkas ng mga pangyayaring humantong sa Rebolusyong Pilipino noong 1896. Aling pagkakasunod-sunod ang nagpapakita ng tamang daloy ng kasaysayan?",
       "options": [
         {
           "label": "A",
-          "text": "Propaganda → Katipunan → Rebolusyon"
+          "text": "Katipunan → Kilusang Propaganda → Rebolusyong Pilipino"
         },
         {
           "label": "B",
-          "text": "Katipunan → Propaganda → Rebolusyon"
+          "text": "Rebolusyong Pilipino → Kilusang Propaganda → La Liga Filipina"
         },
         {
           "label": "C",
-          "text": "Rebolusyon → Propaganda → Katipunan"
+          "text": "La Liga Filipina → Rebolusyong Pilipino → Kilusang Propaganda"
         },
         {
           "label": "D",
-          "text": "Propaganda → Rebolusyon → Katipunan"
+          "text": "Kilusang Propaganda → La Liga Filipina at Katipunan → Rebolusyong Pilipino"
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Inihanda ng Kilusang Propaganda ang isip ng mga Pilipino, sumunod ang Katipunan noong 1892, at ito ang nagpasimula ng Rebolusyong Pilipino noong 1896."
+      "correctAnswer": "D",
+      "explanation": "Ang tamang daloy ay Kilusang Propaganda, La Liga Filipina at Katipunan, at saka Rebolusyong Pilipino."
     },
     {
       "id": "nat_7_8",
@@ -2030,27 +2930,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong Hulyo 3, 1892, nagtatag si Rizal ng grupo para pagkaisahin ang mga Pilipino. Aling grupo ito?",
+      "questionText": "Noong Hulyo 3, 1892, itinatag ni Jose Rizal ang La Liga Filipina pagkabalik niya sa Maynila. Ano ang pangunahing layunin ng pagtatatag ni Rizal ng La Liga Filipina?",
       "options": [
         {
           "label": "A",
-          "text": "La Solidaridad"
+          "text": "Upang magsimula agad ng digmaan sa mga pantalan ng Maynila"
         },
         {
           "label": "B",
-          "text": "Diaryong Tagalog"
+          "text": "Upang ipagbawal ang pagbabasa ng La Solidaridad sa Pilipinas"
         },
         {
           "label": "C",
-          "text": "Katipunan"
+          "text": "Upang mangolekta ng buwis para sa mga prayle sa mga lalawigan"
         },
         {
           "label": "D",
-          "text": "La Liga Filipina"
+          "text": "Upang pagkaisahin ang mga Pilipino at isulong ang mapayapang pagbabago"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Itinatag ni Rizal ang La Liga Filipina noong Hulyo 3, 1892 para pagkaisahin ang mga Pilipino."
+      "explanation": "Itinatag ni Rizal ang La Liga Filipina para pagkaisahin ang mga Pilipino at isulong ang mapayapang pagbabago."
     },
     {
       "id": "nat_7_9",
@@ -2060,27 +2960,27 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Gumawa si Kaye ng blog na nagpapakita ng maling gawain sa barangay sa mapayapang paraan. Aling gawain ng Propaganda ang ginaya niya?",
+      "questionText": "Napansin ni Kaye na may maling gawain sa kanilang proyekto sa komunidad. Sa halip na makipag-away, nagsulat siya ng maayos at makatotohanang ulat upang malaman ito ng mga pinuno at mamamayan. Aling gawain ng Kilusang Propaganda ang tinularan ni Kaye?",
       "options": [
         {
           "label": "A",
-          "text": "Pag-aaklas gamit ang armas"
+          "text": "Pagtatago ng katotohanan upang walang magalit"
         },
         {
           "label": "B",
-          "text": "Paglalantad ng mali sa sulatin"
+          "text": "Paggamit ng dahas upang mapilitan ang iba na sumunod"
         },
         {
           "label": "C",
-          "text": "Paglilihim ng lahat"
+          "text": "Pag-alis sa komunidad upang hindi madamay sa problema"
         },
         {
           "label": "D",
-          "text": "Pagtakas papuntang Espanya"
+          "text": "Paglalantad ng mali at pagmumulat sa pamamagitan ng panulat"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Nilantad ng Kilusang Propaganda ang pang-aabuso at mali sa pamamagitan ng mapayapang pagsusulat, tulad ng ginawang blog ni Kaye."
+      "correctAnswer": "D",
+      "explanation": "Tinularan ni Kaye ang paglalantad ng mali at pagmumulat sa pamamagitan ng panulat, gaya ng Kilusang Propaganda."
     },
     {
       "id": "nat_7_10",
@@ -2090,387 +2990,537 @@
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nagtatalo ang klase kung bakit mahalaga pa rin ang Kilusang Propaganda kahit hindi natupad ang hiniling nitong reporma. Alin ang pinakamahusay na patunay ng kahalagahan nito?",
+      "questionText": "Nang makita nina Andres Bonifacio na hindi pinakinggan ng Espanya ang mapayapang panawagan ng Kilusang Propaganda at ipinatapon pa si Rizal, nagpasya silang itatag ang Katipunan. Ano ang ipinahihiwatig ng pagkakatatag ng Katipunan pagkatapos ng Kilusang Propaganda?",
       "options": [
         {
           "label": "A",
-          "text": "Natupad ang lahat ng reporma"
+          "text": "Na sumang-ayon na ang mga Pilipino sa patuloy na pananakop ng Espanya."
         },
         {
           "label": "B",
-          "text": "Sumali ang lahat ng Espanyol"
+          "text": "Na walang natutunan si Andres Bonifacio sa mga isinulat ni Jose Rizal."
         },
         {
           "label": "C",
-          "text": "Nagmulat ito sa maraming Pilipino"
+          "text": "Na mas gusto ng mga Pilipino na manatili sa ilalim ng mga encomendero."
         },
         {
           "label": "D",
-          "text": "Hindi natigil ang La Solidaridad"
+          "text": "Na handa na ang mga Pilipino na ipaglaban ang kalayaan sa mas mataas na antas."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Kahit hindi natupad ang reporma, nagmulat ito sa maraming Pilipino sa kanilang karapatan at pagmamahal sa bayan, at inihanda sila para sa susunod na pakikibaka."
+      "correctAnswer": "D",
+      "explanation": "Ipinapahiwatig ng Katipunan na handa na ang mga Pilipino na ipaglaban ang kalayaan sa mas mataas na antas."
     },
     {
       "id": "nat_7_11",
       "era": "nationalism",
-      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa barangay, sinabi ni Ana na mahal niya ang Pilipinas, pero hindi siya sumasali sa mga proyekto. Si Ben ay mahal din ang Pilipinas, at tumutulong siya sa paglilinis at pagpapaunlad ng kanilang komunidad. Sino ang nagpapakita ng nasyonalismo, hindi lang paghanga sa bayan?",
+      "questionText": "Sa isang museo, nakalagay ang buong pangalan ng samahang itinatag nina Andres Bonifacio noong Hulyo 7, 1892: Kataas-taasan, Kagalang-galangang Katipunan ng mga Anak ng Bayan (KKK). Bakit naging 'lihim na samahan' ang Katipunan nang ito ay itatag?",
       "options": [
         {
           "label": "A",
-          "text": "Si Ana"
+          "text": "Dahil ayaw nilang makilala sila ng kanilang mga kamag-anak"
         },
         {
           "label": "B",
-          "text": "Si Ben"
+          "text": "Dahil ipinagbawal ni Rizal ang pagsali ng mga karaniwang manggagawa"
         },
         {
           "label": "C",
-          "text": "Silang dalawa"
+          "text": "Dahil mapanganib ang kanilang layuning paghihimagsik laban sa Espanya"
         },
         {
           "label": "D",
-          "text": "Wala sa kanila"
+          "text": "Dahil wala silang sapat na papel upang ilathala ang kanilang pangalan"
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Hindi sapat ang paghanga lang sa bayan; ang nasyonalismo ay may kasamang pagkilos para umunlad ang bansa, gaya ng pagtulong ni Ben sa komunidad."
+      "correctAnswer": "C",
+      "explanation": "Lihim ang Katipunan dahil mapanganib ang layunin nitong maghimagsik laban sa Espanya."
     },
     {
       "id": "nat_7_12",
       "era": "nationalism",
-      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Noong 1812, may bagong batas ang Espanya na tinatawag na Konstitusyon ng Cádiz. Isang mamamahayag ang nagsulat ng kaniyang opinyon dahil dito. Anong karapatan ang ginamit niya?",
+      "questionText": "Binasa ni Leo ang isang bahagi ng Noli Me Tangere na nagpapakita ng pang-aabuso sa mga mahihirap na pamilya. Paano nakatulong ang paglalantad ng ganitong mga kuwento sa pagkakaisa ng mga Pilipino?",
       "options": [
         {
           "label": "A",
-          "text": "Sapilitang paggawa"
+          "text": "Nagpasya silang lumipat sa Espanya upang doon na manirahan."
         },
         {
           "label": "B",
-          "text": "Pagbabayad ng tributo"
+          "text": "Naniwala silang walang solusyon sa kahirapan ng mga magsasaka."
         },
         {
           "label": "C",
-          "text": "Malayang magsulat ng balita"
+          "text": "Naging dahilan ito upang mag-away-away ang iba't ibang lalawigan."
         },
         {
           "label": "D",
-          "text": "Kalakalang Galyon"
+          "text": "Nalaman nilang pare-pareho pala ang dinaranas nilang kaapihan sa bansa."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Konstitusyon ng Cádiz ay nagtaguyod ng kalayaan sa pamamahayag, kaya malaya ang mamamahayag na magsulat ng balita at opinyon."
+      "correctAnswer": "D",
+      "explanation": "Nalaman ng mga Pilipino na pare-pareho ang kanilang dinaranas na kaapihan, kaya lumakas ang pagkakaisa."
     },
     {
       "id": "nat_7_13",
       "era": "nationalism",
-      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Si Carlos ay anak ng mayamang mangangalakal. Nag-aral siya sa Europa at sumulat para sa pagbabago sa Pilipinas. Bakit siya tinawag na ilustrado?",
+      "questionText": "Pinag-aaralan ni Mia kung sino-sino ang mga nakinabang sa mga akda ng Kilusang Propaganda. Paano nakarating sa mga karaniwang Pilipino ang mensahe ng Kilusang Propaganda kahit nasa Espanya ito?",
       "options": [
         {
           "label": "A",
-          "text": "Naging prayle siya"
+          "text": "Sa pamamagitan ng libreng pagbibigay nito ng Gobernador-Heneral"
         },
         {
           "label": "B",
-          "text": "Naging gobernador siya"
+          "text": "Sa pamamagitan ng pagpapadala ng mga radyo at telebisyon sa baryo"
         },
         {
           "label": "C",
-          "text": "Naging sundalo siya"
+          "text": "Sa pamamagitan ng pagbabasa nito ng mga prayle sa lahat ng simbahan"
         },
         {
           "label": "D",
-          "text": "Nakapag-aral siya at naliwanagan"
+          "text": "Sa pamamagitan ng palihim na pagpapasok at pagpapasa-pasa ng mga babasahin"
         }
       ],
       "correctAnswer": "D",
-      "explanation": "Ilustrado ang tawag sa mga kabataang nakapag-aral sa Maynila o sa Europa; ang ibig sabihin ng salita ay \"naliwanagan\"."
+      "explanation": "Palihim na ipinasok at ipinasa-pasa ang mga babasahin, kaya umabot ito sa karaniwang Pilipino."
     },
     {
       "id": "nat_7_14",
       "era": "nationalism",
-      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Binigyan ng pagkakataon ang mga paring Pilipino na mamuno sa mga parokyang dating hawak ng mga Espanyol. Ano ang tawag dito?",
+      "questionText": "Sa isang pagtataya sa klase, tinanong kung alin sa mga sumusunod ang HINDI naging papel ng Kilusang Propaganda. Piliin ang tamang sagot:",
       "options": [
         {
           "label": "A",
-          "text": "Sekularisasyon"
+          "text": "Pamumuno sa armadong labanan sa kabundukan noong 1896"
         },
         {
           "label": "B",
-          "text": "Liberalismo"
+          "text": "Paglalantad ng mga pang-aabuso at katiwalian sa kolonya"
         },
         {
           "label": "C",
-          "text": "Pilipinisasyon"
+          "text": "Pagbubuklod sa mga Pilipino mula sa iba't ibang rehiyon"
         },
         {
           "label": "D",
-          "text": "Kamalayang pambansa"
+          "text": "Paghahanda sa isipan ng bayan para sa pakikibaka sa kalayaan"
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Ang Pilipinisasyon ay pagbibigay ng pagkakataon sa mga paring Pilipino na mamuno sa mga parokya."
+      "correctAnswer": "A",
+      "explanation": "Hindi pinamunuan ng Kilusang Propaganda ang armadong labanan noong 1896. Mapayapa ang kanilang paraan."
     },
     {
       "id": "nat_7_15",
       "era": "nationalism",
-      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "subTopic": "Ang Papel ng Kilusang Propaganda sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Naganap ang Cavite Mutiny noong Enero 20, 1872. Iginarote ang GOMBURZA noong Pebrero 17, 1872. Ilang araw ang pagitan ng dalawang pangyayari?",
+      "questionText": "Bilang pangwakas na tanong sa buong Ikatlong Termino ng Araling Panlipunan 5, hiniling ng guro na ibuod ang pinakamahalagang pamana ng Kilusang Propaganda sa kasalukuyang henerasyon. Aling pahayag ang pinakakomprehensibong naglalarawan sa pamanang ito?",
       "options": [
         {
           "label": "A",
-          "text": "18"
+          "text": "Ipinakitang hindi mahalaga ang pagkamulat sa mga karapatan ng mamamayan."
         },
         {
           "label": "B",
-          "text": "28"
+          "text": "Naging dahilan ito upang mawala ang pagpapahalaga sa sariling wika at kultura."
         },
         {
           "label": "C",
-          "text": "38"
+          "text": "Ipinakitang tanging mga nakapag-aral sa Europa lamang ang maaaring magmahal sa bayan."
         },
         {
           "label": "D",
-          "text": "48"
+          "text": "Pinatunayang ang katalinuhan, panulat, at pagkakaisa ay makapangyarihang sandata sa pagbabago."
         }
       ],
-      "correctAnswer": "B",
-      "explanation": "Mula Enero 20 hanggang Enero 31 ay 11 araw, dagdag ang 17 araw sa Pebrero: 11 + 17 = 28 araw."
+      "correctAnswer": "D",
+      "explanation": "Pinatunayan ng Kilusang Propaganda na ang katalinuhan, panulat at pagkakaisa ay makapangyarihang sandata sa pagbabago."
     },
     {
       "id": "nat_7_16",
-      "era": "nationalism",
-      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
-      "gradeLevel": "grade5",
-      "level": 7,
-      "difficulty": "medium",
-      "questionType": "multiple_choice",
-      "questionText": "May isang nobela ni Rizal na nagsabing puwedeng maging huling paraan ang paghihimagsik (pag-aaklas) para sa pagbabago. Aling nobela ito?",
-      "options": [
-        {
-          "label": "A",
-          "text": "El Filibusterismo"
-        },
-        {
-          "label": "B",
-          "text": "Noli Me Tangere"
-        },
-        {
-          "label": "C",
-          "text": "La Solidaridad"
-        },
-        {
-          "label": "D",
-          "text": "Diaryong Tagalog"
-        }
-      ],
-      "correctAnswer": "A",
-      "explanation": "Tinalakay sa El Filibusterismo, na nalathala sa Ghent noong 1891, ang posibleng paghihimagsik bilang huling paraan para sa pagbabago."
-    },
-    {
-      "id": "nat_7_17",
       "era": "nationalism",
       "subTopic": "Ang Konsepto ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Nanonood ng laro si Rico. Sumigaw siya ng panlalait sa koponan ng ibang bansa habang winawagayway ang watawat ng Pilipinas. Ano ang mali sa ginawa ni Rico?",
+      "questionText": "Tinuturuan ni Lolo Ador ang mga kabataan sa kanilang nayon ng katutubong sayaw. Nag-aalangan ang ilang bata dahil mas sanay sila sa mga makabagong sayaw na napapanood sa internet. Paano makatutulong ang paaralan at komunidad upang mapanatiling buhay ang katutubong sayaw?",
       "options": [
         {
           "label": "A",
-          "text": "Hindi siya gumalang sa ibang bansa"
+          "text": "Ipagbawal ang panonood ng anumang palabas sa internet."
         },
         {
           "label": "B",
-          "text": "Sinuportahan niya ang Pilipinas"
+          "text": "Pilitin ang mga bata na magsanay kahit walang paliwanag."
         },
         {
           "label": "C",
-          "text": "Nanood siya ng laro"
+          "text": "Itigil na ang pagtuturo ng katutubong sayaw sa mga bata."
         },
         {
           "label": "D",
-          "text": "Nagdala siya ng watawat"
+          "text": "Isama ang katutubong sayaw sa mga pista at programa sa paaralan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Dapat may kalakip na paggalang sa ibang bansa ang nasyonalismo; ang panlalait sa iba ay pagmamataas, hindi tunay na pagmamahal sa bayan."
+      "correctAnswer": "D",
+      "explanation": "Kapag isinama ang katutubong sayaw sa mga pista at programa sa paaralan, nananatiling buhay ang kulturang ito."
     },
     {
-      "id": "nat_7_18",
+      "id": "nat_7_17",
       "era": "nationalism",
       "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Umaasa si Don Ramon sa galyon na bumibiyahe sa pagitan ng Maynila at Acapulco para sa kaniyang negosyo. Noong 1815, natigil ang Kalakalang Galyon. Ano ang pinakamatalinong gawin niya?",
+      "questionText": "Ang kaisipang liberal ay nakabatay sa paniniwalang dapat maging malaya at pantay-pantay ang lahat ng tao sa harap ng batas. Aling sitwasyon sa loob ng paaralan ang pinakamahusay na nagsasabuhay ng kaisipang liberal?",
       "options": [
         {
           "label": "A",
-          "text": "Maghintay ng galyon"
+          "text": "Tanging ang pinuno lamang ng klase ang maaaring magbigay ng opinyon."
         },
         {
           "label": "B",
-          "text": "Isara ang negosyo"
+          "text": "Pantay ang karapatan ng bawat mag-aaral na magpahayag at mapakinggan."
         },
         {
           "label": "C",
-          "text": "Makipagkalakalan sa ibang bansa"
+          "text": "May espesyal na patakaran para sa mayayaman at iba para sa mahihirap."
         },
         {
           "label": "D",
-          "text": "Itigil ang pagbebenta"
+          "text": "Pinagbabawalan ang mga mag-aaral na magtanong tungkol sa mga patakaran."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Natapos ang Kalakalang Galyon noong 1815 at unti-unting nabuksan ang mga pantalan sa pandaigdigang kalakalan, kaya puwede nang makipagkalakalan sa ibang bansa."
+      "correctAnswer": "B",
+      "explanation": "Isinasabuhay ang kaisipang liberal kapag pantay ang karapatan ng bawat mag-aaral na magpahayag at mapakinggan."
     },
     {
-      "id": "nat_7_19",
+      "id": "nat_7_18",
       "era": "nationalism",
       "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa museo, may larawan ng apat na bayani. Sino ang HINDI ilustrado ayon sa aralin?",
+      "questionText": "Bago ang ika-19 na siglo, ang mga Tagalog, Ilokano, Bisaya, at Kapampangan ay madalas na nagtuturingan lamang bilang magkakahiwalay na pangkat sa kani-kanilang rehiyon. Paano binago ng mga ilustrado ang ganitong pagtingin ng mga katutubo?",
       "options": [
         {
           "label": "A",
-          "text": "Andres Bonifacio"
+          "text": "Tinuruan nila ang bawat rehiyon na humiwalay sa isa't isa."
         },
         {
           "label": "B",
-          "text": "Jose Rizal"
+          "text": "Hinikayat nila ang lahat na lumipat sa lungsod ng Maynila."
         },
         {
           "label": "C",
-          "text": "Marcelo H. del Pilar"
+          "text": "Pinagbawalan nila ang paggamit ng mga katutubong wika sa bansa."
         },
         {
           "label": "D",
-          "text": "Graciano López Jaena"
+          "text": "Ipinakilala nila ang kamalayang pambansa na sila ay iisang bayan."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Sina Rizal, Del Pilar at López Jaena ay mga ilustrado; si Bonifacio ang nagtatag ng Katipunan, kaya hindi siya kabilang sa mga ilustradong nabanggit sa aralin."
+      "correctAnswer": "D",
+      "explanation": "Ipinakilala ng mga ilustrado ang kamalayang pambansa: iisang bayan ang lahat ng Pilipino."
     },
     {
-      "id": "nat_7_20",
+      "id": "nat_7_19",
       "era": "nationalism",
       "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Ayon sa Simbahan, ang mga paring sekular dapat ang namamahala sa parokya. Pero nanatili ito sa mga prayle. Bakit ito hindi makatarungan para sa mga paring Pilipino?",
+      "questionText": "Bilang paglalagom sa Linggo 6, hiniling ng guro na ipaliwanag ang kaugnayan ng sekularisasyon sa pagkamulat ng mga Pilipino. Aling pahayag ang pinakawasto?",
       "options": [
         {
           "label": "A",
-          "text": "Dayuhan sila"
+          "text": "Nagbigay ito ng maraming ginto sa mga parokya sa probinsya."
         },
         {
           "label": "B",
-          "text": "Ayaw nilang mamuno"
+          "text": "Ipinakita nito na walang pakialam ang mga Pilipino sa pamumuno."
         },
         {
           "label": "C",
-          "text": "Hindi sinunod ang alituntunin ng Simbahan"
+          "text": "Naging dahilan ito upang matigil ang Kalakalang Galyon sa Maynila."
         },
         {
           "label": "D",
-          "text": "Walang parokya sa Pilipinas"
+          "text": "Nagmulat ito na ang diskriminasyon ay nangyayari maging sa Simbahan."
         }
       ],
-      "correctAnswer": "C",
-      "explanation": "Dapat paring sekular ang namamahala sa parokya, pero nanatili ito sa mga prayle, kaya hindi nasunod ang alituntunin ng Simbahan."
+      "correctAnswer": "D",
+      "explanation": "Napatunayan sa sekularisasyon na nangyayari ang diskriminasyon kahit sa loob ng Simbahan, kaya namulat ang mga Pilipino."
     },
     {
-      "id": "nat_7_21",
+      "id": "nat_7_20",
       "era": "nationalism",
       "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Inialay ni Jose Rizal ang nobelang El Filibusterismo sa GOMBURZA. Ano ang ipinapakita nito?",
+      "questionText": "Sa isang klase sa kasaysayan, nabasa ni Mia ang dalawang ulat tungkol sa Cavite Mutiny: ayon sa mga Espanyol, isa itong malawakang plano upang ibagsak ang pamahalaan; ayon sa mga Pilipinong mananalaysay, isa lamang itong pag-aalsa ng mga manggagawa. Ano ang pinakamatalinong paraan upang suriin ng isang mag-aaral ang dalawang bersiyong ito?",
       "options": [
         {
           "label": "A",
-          "text": "Kaaway ni Rizal ang tatlong pari"
+          "text": "Huwag na lamang pag-aralan ang pangyayari dahil magkaiba ang kuwento."
         },
         {
           "label": "B",
-          "text": "Sila ang sumulat ng nobela"
+          "text": "Piliin ang mas maikling kuwento upang madaling tandaan sa pagsusulit."
         },
         {
           "label": "C",
-          "text": "Walang kinalaman ang mga pari sa mga Pilipino"
+          "text": "Ihambing ang dalawang bersiyon at suriin ang motibo ng mga awtoridad."
         },
         {
           "label": "D",
-          "text": "Hindi nalimutan ang GOMBURZA"
+          "text": "Paniwalaan agad ang ulat ng Espanyol dahil sila ang nasa kapangyarihan."
         }
       ],
-      "correctAnswer": "D",
-      "explanation": "Inialay ni Rizal sa GOMBURZA ang El Filibusterismo bilang pag-alaala sa tatlong pari na hindi nalimutan ng mga Pilipino."
+      "correctAnswer": "C",
+      "explanation": "Ang pinakamatalinong paraan ay paghambingin ang dalawang bersyon at suriin kung bakit ganoon ang sinasabi ng mga awtoridad."
     },
     {
-      "id": "nat_7_22",
+      "id": "nat_7_21",
       "era": "nationalism",
       "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
       "gradeLevel": "grade5",
       "level": 7,
       "difficulty": "medium",
       "questionType": "multiple_choice",
-      "questionText": "Sa isang lugar, bawal magsulat ng puna tungkol sa pamahalaan. Aling layunin ng kilusan ang tumutugon dito?",
+      "questionText": "Noong Pebrero 15, 1889, unang inilabas sa Barcelona, Espanya ang pahayagang La Solidaridad na naglalaman ng mga sanaysay nina Rizal, Del Pilar, at López Jaena. Ano ang naging pangunahing tungkulin ng La Solidaridad sa Kilusang Propaganda?",
       "options": [
         {
           "label": "A",
-          "text": "Malayang magsalita at magsulat"
+          "text": "Nagsilbi itong aklat-aralin sa matematika at agham para sa mga bata."
         },
         {
           "label": "B",
-          "text": "Sekularisasyon ng parokya"
+          "text": "Nagsilbi itong kautusan ng Hari upang dakpin ang lahat ng ilustrado."
         },
         {
           "label": "C",
-          "text": "Kinatawan sa Cortes"
+          "text": "Nagsilbi itong listahan ng mga produktong ibinebenta sa Kalakalang Galyon."
         },
         {
           "label": "D",
-          "text": "Pag-alis ng tributo"
+          "text": "Nagsilbi itong opisyal na pahayagan na naglantad ng pang-aabuso at humingi ng reporma."
         }
       ],
-      "correctAnswer": "A",
-      "explanation": "Isa sa mga layunin ng Kilusang Propaganda ang kalayaan sa pagsasalita at pamamahayag, kaya tumutugon ito sa pagbabawal na magsulat ng puna."
+      "correctAnswer": "D",
+      "explanation": "Opisyal na pahayagan ng Kilusang Propaganda ang La Solidaridad. Naglantad ito ng pang-aabuso at humingi ng reporma."
+    },
+    {
+      "id": "nat_7_22",
+      "era": "nationalism",
+      "subTopic": "Ang Konsepto ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sinabi ni Tomas sa kanyang kamag-aral na ang nasyonalismo ay nangangahulugan ng pagkamuhi at pag-iwas sa lahat ng bagay na may kaugnayan sa ibang bansa. Paano mo iwawasto ang maling pananaw ni Tomas tungkol sa nasyonalismo?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tama siya, dahil ang pagmamahal sa bayan ay galit sa iba."
+        },
+        {
+          "label": "B",
+          "text": "Tama siya, dahil dapat isara ang bansa sa lahat ng dayuhan."
+        },
+        {
+          "label": "C",
+          "text": "Mali siya, dahil tungkol lamang sa kalakalan ang nasyonalismo."
+        },
+        {
+          "label": "D",
+          "text": "Mali siya, dahil ang nasyonalismo ay may kalakip na paggalang sa iba."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mali si Tomas dahil ang nasyonalismo ay pagmamahal sa bayan na may kalakip na paggalang sa iba, hindi galit sa dayuhan."
+    },
+    {
+      "id": "nat_7_23",
+      "era": "nationalism",
+      "subTopic": "Ang Pagbabagong Dulot ng Kaisipang Liberal sa Pag-usbong ng Nasyonalismo",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Pinag-aaralan ni Leo ang koneksyon ng pagbabago sa ekonomiya at pagbabago sa kaisipan ng mga Pilipino noong ika-19 na siglo. Paano nagkaugnay ang pagbubukas ng mga pantalan (1834) at pagbubukas ng Suez Canal (1869)?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Pareho nitong pinahinto ang pagpasok ng mga dayuhan sa Maynila."
+        },
+        {
+          "label": "B",
+          "text": "Pareho nitong ibinalik ang sistemang tributo at polo y servicio."
+        },
+        {
+          "label": "C",
+          "text": "Pareho nitong pinatagal ang paglalakbay patungo sa bansang Mexico."
+        },
+        {
+          "label": "D",
+          "text": "Pareho nitong binuksan ang Pilipinas sa kalakalan at kaisipang liberal."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Parehong binuksan ng pantalan noong 1834 at ng Suez Canal noong 1869 ang Pilipinas sa kalakalan at kaisipang liberal."
+    },
+    {
+      "id": "nat_7_24",
+      "era": "nationalism",
+      "subTopic": "Ang Ambag ng Panggitnang Uri sa Pag-usbong ng Nasyonalismong Pilipino",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Noong kalagitnaan ng ika-19 na siglo, yumaman ang pamilya ni Don Berto dahil sa pagtatanim at pagbebenta ng asukal at abaka sa mga dayuhang mangangalakal. Dahil dito, nakapag-aral ang kanyang anak sa Maynila at Europa. Saang pangkat panlipunan nabibilang ang pamilya ni Don Berto noong panahong iyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sa mga paring regular o prayle"
+        },
+        {
+          "label": "B",
+          "text": "Sa panggitnang uri o middle class"
+        },
+        {
+          "label": "C",
+          "text": "Sa mga karaniwang magsasaka at manggagawa"
+        },
+        {
+          "label": "D",
+          "text": "Sa mga matataas na opisyal mula sa Espanya"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Yumaman si Don Berto sa asukal at abaka at napag-aral ang anak, kaya nabibilang siya sa panggitnang uri."
+    },
+    {
+      "id": "nat_7_25",
+      "era": "nationalism",
+      "subTopic": "Ang Kilusan para sa Sekularisasyon at Pilipinisasyon ng mga Parokya",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Sa isang eksibit sa kasaysayan, nakita ni Leo ang larawan ng isang paring unang nanguna sa kampanya para sa sekularisasyon ng mga parokya bago siya nasawi sa lindol noong Hunyo 3, 1863. Sino ang paring ito na nanguna sa kilusan para sa sekularisasyon?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Padre José Burgos"
+        },
+        {
+          "label": "B",
+          "text": "Padre Pedro Peláez"
+        },
+        {
+          "label": "C",
+          "text": "Padre Mariano Gómez"
+        },
+        {
+          "label": "D",
+          "text": "Padre Jacinto Zamora"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Si Padre Pedro Peláez ang nanguna sa kilusang sekularisasyon bago siya nasawi sa lindol noong 1863."
+    },
+    {
+      "id": "nat_7_26",
+      "era": "nationalism",
+      "subTopic": "Ang Cavite Mutiny at ang Paggarote sa GOMBURZA",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Nang makarating sa Espanya ang balita tungkol sa paggarote sa GOMBURZA, labis na nagdalamhati at nagalit ang mga Pilipinong mag-aaral doon. Ano ang ibinunga ng pangyayaring ito sa pagkilos ng mga Pilipino sa Espanya?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Nagpasya silang huwag nang bumalik sa Pilipinas kailanman."
+        },
+        {
+          "label": "B",
+          "text": "Huminto sila sa pagsusulat at sumunod na lamang sa mga prayle."
+        },
+        {
+          "label": "C",
+          "text": "Nag-udyok ito upang itatag at palakasin ang Kilusang Propaganda."
+        },
+        {
+          "label": "D",
+          "text": "Nakipagkasundo sila kay Izquierdo upang maging opisyal sa Maynila."
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Dahil sa galit at lungkot, nag-udyok ang pangyayari na itatag at palakasin ang Kilusang Propaganda."
+    },
+    {
+      "id": "nat_7_27",
+      "era": "nationalism",
+      "subTopic": "Ang mga Layunin ng Pagkakatatag ng Kilusang Propaganda",
+      "gradeLevel": "grade5",
+      "level": 7,
+      "difficulty": "medium",
+      "questionType": "multiple_choice",
+      "questionText": "Hiniling din ng Kilusang Propaganda na gawing lalawigan ng Espanya ang Pilipinas sa halip na ituring lamang bilang isang kolonya. Ano ang magiging pakinabang ng mga Pilipino kung naging lalawigan ng Espanya ang Pilipinas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mawawala na ang lahat ng pamahalaang lokal sa mga probinsya."
+        },
+        {
+          "label": "B",
+          "text": "Lilipat na silang lahat upang manirahan sa lungsod ng Madrid."
+        },
+        {
+          "label": "C",
+          "text": "Hindi na sila kailangang magtrabaho at mag-aral sa mga paaralan."
+        },
+        {
+          "label": "D",
+          "text": "Magkakaroon sila ng pantay na karapatan bilang mamamayan ng Espanya."
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Kung lalawigan ng Espanya, magkakaroon ng pantay na karapatan ang mga Pilipino bilang mamamayan ng Espanya."
     }
   ]
 }

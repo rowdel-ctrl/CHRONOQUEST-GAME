@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants.dart';
 import '../../game/chrono_game.dart';
 import '../../core/combat_constants.dart';
-import '../../data/question_bank.dart';
 import '../../game/answer_point_handler.dart';
 import '../../game/bonus/bonus_session.dart';
 import '../../game/cave/cave_session.dart';
@@ -139,7 +138,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // with no wrong answer gives one at random (never a Time Freeze in a level with no
       // timer, where it could not be used).
       final isBoss = widget.level == getEraById(widget.eraId).levels.length;
-      final timed = QuestionBank.timerSecondsFor(widget.eraId, widget.level) > 0;
+      // Every question of a level has a clock now (the teacher's, or the default), so a Time Freeze
+      // can always be used.
+      const timed = true;
       final List<PowerUpKind> freeUps = !firstClear
           ? const []
           : isBoss

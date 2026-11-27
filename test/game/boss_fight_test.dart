@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:chronoquest/core/boss_attack_constants.dart';
+import 'package:chronoquest/data/question_bank.dart';
 import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/game/boss_attack_profile.dart';
 import 'package:chronoquest/game/boss_plan.dart';
@@ -40,6 +41,19 @@ Question _q(int i) => Question(
         QuestionOption(label: 'B', text: 'Pangalawa'),
         QuestionOption(label: 'C', text: 'Pangatlo'),
         QuestionOption(label: 'D', text: 'Pang-apat'),
+      ],
+      correctAnswer: 'A',
+      explanation: '',
+    );
+
+/// A card of 63 words (a typical question of the new lessons): the boss adds reading time.
+Question _longQ(int i) => Question(
+      id: 'long$i',
+      era: 'spanish',
+      questionText: List.filled(27, 'salita').join(' '),
+      options: [
+        for (final l in ['A', 'B', 'C', 'D'])
+          QuestionOption(label: l, text: List.filled(9, 'sagot').join(' ')),
       ],
       correctAnswer: 'A',
       explanation: '',
@@ -88,11 +102,12 @@ class _TestPlayer extends PlayerComponent {
 }
 
 class _BossGame extends ChronoGame {
-  _BossGame({this.era = 'spanish', this.level = 5, this.poolSize = 22});
+  _BossGame({this.era = 'spanish', this.level = 5, this.poolSize = 22, this.longText = false});
 
   final String era;
   final int level;
   final int poolSize;
+  final bool longText;
 
   @override
   Future<void> onLoad() async {
@@ -111,7 +126,7 @@ class _BossGame extends ChronoGame {
     currentEra = era;
     currentLevel = level;
     questionPool =
-        QuestionPool(questions: [for (var i = 0; i < poolSize; i++) _q(i)]);
+        QuestionPool(questions: [for (var i = 0; i < poolSize; i++) longText ? _longQ(i) : _q(i)]);
     bossPhase = true;
     hearts = 5;
   }
@@ -124,8 +139,9 @@ Future<(_BossGame, BossComponent)> _start(WidgetTester tester,
     String era = 'spanish',
     int level = 5,
     int poolSize = 22,
+    bool longText = false,
     bool realOverlays = false}) async {
-  final game = _BossGame(era: era, level: level, poolSize: poolSize);
+  final game = _BossGame(era: era, level: level, poolSize: poolSize, longText: longText);
   game.tiledLevel = arena;
   await tester.pumpWidget(MaterialApp(
     home: GameWidget(
@@ -762,6 +778,38 @@ void main() {
       // 21 rounds won: this is round 22, the missed question again, with phase 3's 10 s.
       expect(boss.answerSeconds, 10);
       expect(boss.secondsLeft, closeTo(10, 0.1));
+      await _flush(tester);
+    });
+
+    testWidgets('a long question gets reading time added to the clock and the label',
+        (tester) async {
+      final (game, boss) = await _start(tester, longText: true);
+      _untilAsking(game, boss);
+      expect(boss.answerSeconds, 27, reason: '15 s + 12 s for 63 words');
+      expect(boss.phaseTag, 'Phase 1 · 27 s');
+      expect(boss.secondsLeft, closeTo(27, 0.1));
+      await _flush(tester);
+    });
+
+    testWidgets('the teacher\'s boss seconds set the clock, with no reading time on top',
+        (tester) async {
+      QuestionBank.applyTimer({'boss': 30});
+      addTearDown(() => QuestionBank.applyTimer(null));
+      final (game, boss) = await _start(tester, longText: true);
+      _untilAsking(game, boss);
+      expect(boss.answerSeconds, 30);
+      expect(boss.phaseTag, 'Phase 1 · 30 s');
+      expect(boss.secondsLeft, closeTo(30, 0.1));
+      await _flush(tester);
+    });
+
+    testWidgets('a short question keeps the normal clock when the teacher left it automatic',
+        (tester) async {
+      QuestionBank.applyTimer(null);
+      final (game, boss) = await _start(tester);
+      _untilAsking(game, boss);
+      expect(boss.answerSeconds, 15);
+      expect(boss.phaseTag, 'Phase 1 · 15 s');
       await _flush(tester);
     });
 

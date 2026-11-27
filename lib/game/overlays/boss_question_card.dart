@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants.dart';
 import '../../models/question.dart';
+import '../boss_plan.dart';
 import 'answer_feedback.dart';
 import 'question_layout.dart';
 import 'question_widgets.dart';
@@ -21,9 +22,30 @@ class BossQuestionCard extends StatelessWidget {
   /// Space kept free above the card for the boss's name and health bar.
   static const double topInset = 58;
 
-  /// The card never reaches lower than this share of the screen: below it stand the boss's head
-  /// and the attack.
+  /// The card of a short question never reaches lower than this share of the screen: below it
+  /// stand the boss's head and the attack.
   static const double lowestShare = 0.62;
+
+  /// A long question (the lessons' PISA-type questions run to 60 words and more) would have to be
+  /// drawn at half size to fit, too small to read. So the card takes more room as the words
+  /// grow: from [roomFromWords] to [roomToWords] on the card it goes smoothly from the normal
+  /// card to the roomiest one, which hides the boss's lower half and the attack but stays
+  /// readable (the bar in its header still shows the attack's flight).
+  static const int roomFromWords = 40;
+  static const int roomToWords = 70;
+  static const double roomiestShare = 0.72;
+  static const double normalWidthShare = 0.56;
+  static const double roomiestWidthShare = 0.75;
+
+  /// How low the card may reach and how wide it is, as shares of the screen, for [question].
+  static ({double heightShare, double widthShare}) roomFor(Question question) {
+    final words = BossPlan.cardWords(question);
+    final t = ((words - roomFromWords) / (roomToWords - roomFromWords)).clamp(0.0, 1.0);
+    return (
+      heightShare: lowestShare + (roomiestShare - lowestShare) * t,
+      widthShare: normalWidthShare + (roomiestWidthShare - normalWidthShare) * t,
+    );
+  }
 
   final Question question;
 
@@ -90,9 +112,11 @@ class BossQuestionCard extends StatelessWidget {
             ? constraints.maxWidth
             : MediaQuery.sizeOf(context).width;
         const layout = QuestionLayout.bossTop;
-        final width =
-            math.max(260.0, math.min(layout.maxWidth, screenW * 0.56));
-        final maxHeight = math.max(80.0, screenH * lowestShare - topInset);
+        final room = roomFor(question);
+        // The normal card stops at its own widest; a card given more room may grow with the screen.
+        final widest = room.widthShare > normalWidthShare ? layout.maxWidth * 1.5 : layout.maxWidth;
+        final width = math.max(260.0, math.min(widest, screenW * room.widthShare));
+        final maxHeight = math.max(80.0, screenH * room.heightShare - topInset);
         return Align(
           alignment: Alignment.topCenter,
           child: Padding(

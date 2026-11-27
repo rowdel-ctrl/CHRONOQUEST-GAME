@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import '../../core/boss_attack_constants.dart';
 import '../../core/combat_constants.dart';
 import '../../core/constants.dart';
+import '../../data/question_bank.dart';
 import '../../models/question.dart';
 import '../art_scale.dart';
 import '../boss_attack_profile.dart';
@@ -153,11 +154,13 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   /// 1 to 3.
   int get phase => BossPlan.phaseOfRound(round);
 
-  /// Seconds the student has in this round: the attack's flight time.
-  double get answerSeconds => BossPlan.secondsForRound(round);
+  /// Seconds the student has in this round: the attack's flight time. The teacher can set the
+  /// number (QuestionBank.bossSeconds); otherwise a long question gets reading time added.
+  double get answerSeconds => BossPlan.secondsFor(round,
+      question: _current, teacherSeconds: QuestionBank.bossSeconds);
 
   String get roundTag => BossPlan.roundTag(round, maxHealth);
-  String get phaseTag => BossPlan.phaseTag(round);
+  String get phaseTag => BossPlan.phaseTag(round, seconds: answerSeconds);
 
   /// The attack thrown in this round (null before the first).
   BossAttackKind? get attackKind => _kind;

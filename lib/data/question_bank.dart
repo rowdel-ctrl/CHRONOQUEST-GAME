@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart' show rootBundle;
 import '../models/question.dart';
+import '../utils/reading_time.dart';
 import '../core/constants.dart';
 
 /// Loads MELC-aligned quiz questions from JSON assets
@@ -137,6 +138,11 @@ class QuestionBank {
   static const int timerMinSeconds = 15;
   static const int timerMaxSeconds = 120;
 
+  /// The seconds a teacher set for each boss question (the first phase; the later phases are
+  /// shorter, see BossPlan.phaseShare), or null when the teacher left it automatic.
+  static int? _bossSeconds;
+  static int? get bossSeconds => _bossSeconds;
+
   /// Uses the timer a teacher published ([raw] is the download's `timer`:
   /// `{era: {level: seconds}}`, or null when the teacher has no timer on).
   /// Anything that is not a whole number of seconds from 15 to 120 is ignored,
@@ -144,7 +150,14 @@ class QuestionBank {
   /// is too short to read the question.
   static void applyTimer(Object? raw) {
     _timer.clear();
+    _bossSeconds = null;
     if (raw is! Map) return;
+    // `boss` is the boss fight's number of seconds, the same 15 to 120 rule as a level's. An older
+    // game ignores the key (it is not an era).
+    final boss = raw['boss'];
+    if (boss is num && boss == boss.toInt() && boss >= timerMinSeconds && boss <= timerMaxSeconds) {
+      _bossSeconds = boss.toInt();
+    }
     raw.forEach((era, byLevel) {
       if (!_eraIds.contains(era) || byLevel is! Map) return;
       byLevel.forEach((levelKey, seconds) {
@@ -157,14 +170,29 @@ class QuestionBank {
     });
   }
 
-  /// How long a student has for each question in this level, or 0 for no timer.
+  /// How long the teacher gave for each question in this level, or 0 when the teacher gave no
+  /// number. See [levelSecondsFor] for what a student really gets.
   static int timerSecondsFor(String era, int level) => _timer[era]?[level] ?? 0;
+
+  /// Seconds for a question when the teacher set nothing for the level. A question never waits
+  /// for ever: a student who stops and thinks for minutes holds the whole class up.
+  static const int defaultLevelSeconds = 45;
+
+  /// The clock on a question in a level (not the boss, which has its own): the teacher's number
+  /// when there is one, as it is; otherwise [defaultLevelSeconds] plus reading time for a long
+  /// question ([ReadingTime]). Never 0.
+  static int levelSecondsFor(String era, int level, {Question? question}) {
+    final teacher = timerSecondsFor(era, level);
+    if (teacher > 0) return teacher;
+    return defaultLevelSeconds + (question == null ? 0 : ReadingTime.bonus(question));
+  }
 
   /// Goes back to the bundled questions only (on logout).
   static void clearSynced() {
     _synced.clear();
     _picks.clear();
     _timer.clear();
+    _bossSeconds = null;
   }
 
   /// The levels currently using downloaded questions, as `era/level` keys.

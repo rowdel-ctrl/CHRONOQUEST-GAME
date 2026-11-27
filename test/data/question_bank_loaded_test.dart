@@ -43,12 +43,15 @@ void main() {
   });
 
   test('a question keeps its correct answer text across reshuffles', () {
-    final texts = <String>{};
-    for (var seed = 0; seed < 10; seed++) {
-      final qs = QuestionBank.getQuestions('pre-colonial', 1, random: Random(seed));
-      texts.add(_correctText(qs.firstWhere((q) => q.id == 'pre_1_1')));
+    // A level has more questions than it asks (15 a Linggo), so each attempt picks some of them.
+    final texts = <String, Set<String>>{};
+    for (var seed = 0; seed < 20; seed++) {
+      for (final q in QuestionBank.getQuestions('pre-colonial', 1, random: Random(seed))) {
+        (texts[q.id] ??= {}).add(_correctText(q));
+      }
     }
-    expect(texts, {'Talaarawan ni Lola'});
+    expect(texts, isNotEmpty);
+    texts.forEach((id, set) => expect(set.length, 1, reason: '$id changed its right answer'));
   });
 
   test('boss level returns 22 distinct questions', () {

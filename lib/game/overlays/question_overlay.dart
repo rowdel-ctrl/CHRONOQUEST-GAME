@@ -30,8 +30,8 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
   late async.Timer timer;
   async.Timer? _clock;
 
-  /// The clock on this question: the boss's 15 seconds, or the teacher's time
-  /// for the level. Null on a question with no timer.
+  /// The clock on this question: the boss's, or the teacher's time for the level, or the default
+  /// (QuestionBank.levelSecondsFor). A level question always has one.
   BossCountdown? _countdown;
   late AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
@@ -65,22 +65,19 @@ class _QuestionOverlayWidgetState extends State<QuestionOverlayWidget>
       }
     });
 
-    // Any question here is timed only when the student's teacher set a timer for this
-    // level (the boss's question has its own clock, above).
-    final seconds =
-        QuestionBank.timerSecondsFor(widget.game.currentEra, widget.game.currentLevel);
-    if (seconds > 0) {
-      _countdown = BossCountdown(seconds: seconds.toDouble());
-    }
-    if (_countdown != null) {
-      const step = Duration(milliseconds: 100);
-      _clock = async.Timer.periodic(step, (_) {
-        final countdown = _countdown;
-        if (!mounted || answered || countdown == null) return;
-        setState(() => countdown.tick(step.inMilliseconds / 1000));
-        if (countdown.expired) _timeUp();
-      });
-    }
+    // Every question here is timed: with the number the student's teacher set for this level, or
+    // the default, which grows for a long question (the boss's question has its own clock, above).
+    final seconds = QuestionBank.levelSecondsFor(
+        widget.game.currentEra, widget.game.currentLevel,
+        question: widget.game.currentQuestion);
+    _countdown = BossCountdown(seconds: seconds.toDouble());
+    const step = Duration(milliseconds: 100);
+    _clock = async.Timer.periodic(step, (_) {
+      final countdown = _countdown;
+      if (!mounted || answered || countdown == null) return;
+      setState(() => countdown.tick(step.inMilliseconds / 1000));
+      if (countdown.expired) _timeUp();
+    });
 
     _initSlide();
   }

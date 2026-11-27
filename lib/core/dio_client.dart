@@ -36,11 +36,18 @@ class DioClient {
         onError: (error, handler) async {
           if (error.response?.statusCode == 401) {
             await StorageService.clearToken();
-            // The same account was signed in on another device: say so, over any screen.
-            if (SessionReplaced.isReplaced(error.response)) {
-              SessionReplaced.notifier.value = true;
+            // Say so over any screen, and send the student back to the login screen: the same
+            // account was signed in on another device, or the server no longer knows this login
+            // (it ran out, the account is gone). Without this the phone kept a ghost session,
+            // played on and queued results that a later sign-in would have sent as its own.
+            switch (SessionReplaced.classify(error)) {
+              case LoginRefusal.replaced:
+                SessionReplaced.notifier.value = true;
+              case LoginRefusal.ended:
+                SessionReplaced.endedNotifier.value = true;
+              case LoginRefusal.none:
+                break;
             }
-            // The router redirect will handle navigation to login
           }
           handler.next(error);
         },

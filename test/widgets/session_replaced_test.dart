@@ -16,8 +16,56 @@ Response<dynamic> _response(int status, dynamic data) => Response<dynamic>(
 
 void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
-  setUp(() => SessionReplaced.notifier.value = false);
-  tearDown(() => SessionReplaced.notifier.value = false);
+  void reset() {
+    SessionReplaced.notifier.value = false;
+    SessionReplaced.endedNotifier.value = false;
+  }
+
+  setUp(reset);
+  tearDown(reset);
+
+  DioException refused(int status, {dynamic data, bool withLogin = true}) {
+    final options = RequestOptions(
+      path: '/student/profile',
+      headers: {if (withLogin) 'Authorization': 'Bearer old-token'},
+    );
+    return DioException(
+      requestOptions: options,
+      response: Response<dynamic>(requestOptions: options, statusCode: status, data: data),
+      type: DioExceptionType.badResponse,
+    );
+  }
+
+  group('what a refusal of a request means', () {
+    test('a 401 coded SESSION_REPLACED is "signed in elsewhere"', () {
+      expect(SessionReplaced.classify(refused(401, data: {'code': 'SESSION_REPLACED'})),
+          LoginRefusal.replaced);
+    });
+
+    test('any other 401 on a request that carried a saved login means the login ended', () {
+      expect(SessionReplaced.classify(refused(401, data: {'message': 'Invalid token.'})),
+          LoginRefusal.ended);
+      expect(SessionReplaced.classify(refused(401, data: 'Not found')), LoginRefusal.ended);
+      expect(SessionReplaced.classify(refused(401)), LoginRefusal.ended);
+    });
+
+    test('a 401 with no saved login (a wrong password at the sign-in screen) is nothing', () {
+      expect(SessionReplaced.classify(refused(401, data: {'message': 'Incorrect password'}, withLogin: false)),
+          LoginRefusal.none);
+    });
+
+    test('other answers, and no answer at all, are nothing', () {
+      for (final status in [400, 403, 404, 409, 429, 500]) {
+        expect(SessionReplaced.classify(refused(status, data: {'code': 'SESSION_REPLACED'})),
+            LoginRefusal.none, reason: '$status');
+      }
+      final noAnswer = DioException(
+        requestOptions: RequestOptions(path: '/x', headers: {'Authorization': 'Bearer t'}),
+        type: DioExceptionType.connectionError,
+      );
+      expect(SessionReplaced.classify(noAnswer), LoginRefusal.none);
+    });
+  });
 
   group('which refusals mean "signed in elsewhere"', () {
     test('only a 401 with the SESSION_REPLACED code', () {
@@ -67,6 +115,32 @@ void main() {
       expect(returned, 1);
       expect(SessionReplaced.notifier.value, isFalse, reason: 'acknowledged: it does not come back');
       expect(find.byKey(SessionReplacedGate.cardKey), findsNothing);
+    });
+
+    testWidgets('"your login ended" has its own words and the same one button', (tester) async {
+      var returned = 0;
+      await tester.pumpWidget(app(onReturn: () async => returned++));
+      SessionReplaced.endedNotifier.value = true;
+      await tester.pump();
+
+      expect(find.text('Tapos na ang login mo'), findsOneWidget);
+      expect(find.text('Ginamit ang account mo sa ibang device'), findsNothing);
+      expect(find.textContaining('Mag-login ulit'), findsOneWidget);
+
+      await tester.tap(find.byKey(SessionReplacedGate.buttonKey));
+      await tester.pump();
+      expect(returned, 1);
+      expect(SessionReplaced.endedNotifier.value, isFalse);
+      expect(find.byKey(SessionReplacedGate.cardKey), findsNothing);
+    });
+
+    testWidgets('"signed in elsewhere" wins when both are raised', (tester) async {
+      await tester.pumpWidget(app(onReturn: () async {}));
+      SessionReplaced.endedNotifier.value = true;
+      SessionReplaced.notifier.value = true;
+      await tester.pump();
+      expect(find.text('Ginamit ang account mo sa ibang device'), findsOneWidget);
+      expect(find.text('Tapos na ang login mo'), findsNothing);
     });
 
     testWidgets('blocks taps on the screen under it', (tester) async {

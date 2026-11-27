@@ -71,7 +71,7 @@ void main() {
           final where = '$e ${c.weeks}';
           expect(c.title.trim(), isNotEmpty, reason: where);
           expect(c.paragraphs.length, greaterThanOrEqualTo(2), reason: where);
-          expect(c.wordCount, greaterThan(100), reason: where);
+          expect(c.wordCount, greaterThan(80), reason: where); // the shortest DepEd Linggo of Grade 6 has 93 words
           expect(c.terms.length, greaterThanOrEqualTo(3), reason: where);
           for (final (term, meaning) in c.terms) {
             expect(term.trim(), isNotEmpty, reason: where);

@@ -6,7 +6,8 @@ import '../services/session_replaced.dart';
 import 'game_ui.dart';
 
 /// Puts the "your account is open on another device" notice over everything while
-/// [SessionReplaced.notifier] is true. Nothing under it can be touched; the one button ends this
+/// [SessionReplaced.notifier] is true, or "your login ended" while [SessionReplaced.endedNotifier]
+/// is. Nothing under it can be touched; the one button ends this
 /// phone's session ([onReturnToLogin]) and goes back to the login screen.
 class SessionReplacedGate extends StatelessWidget {
   static const cardKey = ValueKey('session-replaced-card');
@@ -25,14 +26,17 @@ class SessionReplacedGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: SessionReplaced.notifier,
-      builder: (context, replaced, _) {
+    return ListenableBuilder(
+      listenable: Listenable.merge([SessionReplaced.notifier, SessionReplaced.endedNotifier]),
+      builder: (context, _) {
+        final replaced = SessionReplaced.notifier.value;
+        final ended = SessionReplaced.endedNotifier.value;
+        final showing = replaced || ended;
         return Stack(
           fit: StackFit.expand,
           children: [
             child,
-            if (replaced) ...[
+            if (showing) ...[
               const ModalBarrier(color: Color(0xCC000000), dismissible: false),
               Center(
                 child: SingleChildScrollView(
@@ -59,7 +63,9 @@ class SessionReplacedGate extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Ginamit ang account mo sa ibang device',
+                            replaced
+                                ? 'Ginamit ang account mo sa ibang device'
+                                : 'Tapos na ang login mo',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontSize: 15,
@@ -70,8 +76,11 @@ class SessionReplacedGate extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Isang device lang ang puwede sa isang account. Para hindi '
-                            'magkagulo ang progress, coins at power-ups mo, na-logout ka na rito.',
+                            replaced
+                                ? 'Isang device lang ang puwede sa isang account. Para hindi '
+                                    'magkagulo ang progress, coins at power-ups mo, na-logout ka na rito.'
+                                : 'Hindi na makilala ng server ang login na ito (matagal na ito, o nabura na '
+                                    'ang account). Mag-login ulit para ma-save ang progress mo.',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontSize: 12.5,
@@ -87,6 +96,7 @@ class SessionReplacedGate extends StatelessWidget {
                             width: double.infinity,
                             onPressed: () async {
                               SessionReplaced.notifier.value = false;
+                              SessionReplaced.endedNotifier.value = false;
                               await onReturnToLogin();
                             },
                           ),
