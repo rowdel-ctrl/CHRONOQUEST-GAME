@@ -26,7 +26,9 @@ import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/coin_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
+import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/game_collision.dart';
 import 'package:chronoquest/game/game_spawning.dart';
 
 const double _playerHeight = 120;
@@ -208,22 +210,62 @@ void main() {
     expect(game.world.children.whereType<CoinComponent>().length, 0);
   });
 
-  testWidgets('a Heavy flinches back and settles on its first hit',
+  testWidgets('a Heavy is thrown back 120 units on its first hit and stays there',
       (tester) async {
     final enemy =
         EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank', worldX: 400);
     final game = await _mount(tester, enemy);
     final startX = enemy.position.x;
+    final p = game.player; // the student stands right beside it, on its left
+    p.position.x = startX + enemy.size.x / 2 - 60 - p.size.x / 2;
 
     enemy.takeHit();
-    game.updateTree(0.001);
-    game.updateTree(0.07); // at the top of the shove
-    expect(enemy.position.x, greaterThan(startX + 5));
-
+    expect(enemy.isShoved, true);
+    game.updateTree(0.07); // part of the way
+    expect(enemy.isShoved, true);
     for (var i = 0; i < 20; i++) {
       game.updateTree(0.02);
     }
-    expect(enemy.position.x, closeTo(startX, 0.5), reason: 'it settles back');
+    expect(enemy.isShoved, false);
+    expect((enemy.position.x - startX).abs(), closeTo(CombatConstants.hitShoveDistance, 1),
+        reason: 'it went the whole shove and did not slide back');
     expect(enemy.defeated, false);
+  });
+
+  testWidgets('the shove goes away from the student, on either side', (tester) async {
+    for (final side in [-1, 1]) {
+      final enemy =
+          EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank', worldX: 600);
+      final game = await _mount(tester, enemy);
+      final startX = enemy.position.x;
+      final p = game.player;
+      p.position.x = enemy.position.x + enemy.size.x / 2 + side * 60 - p.size.x / 2;
+      enemy.takeHit();
+      for (var i = 0; i < 20; i++) {
+        game.updateTree(0.02);
+      }
+      expect((enemy.position.x - startX).sign, -side, reason: 'student on side $side');
+    }
+  });
+
+  testWidgets('the shove stops at a ledge instead of throwing the enemy off it', (tester) async {
+    final enemy =
+        EnemyComponent(eraId: 'ww2', enemyTypeOverride: 'tank', worldX: 400);
+    final game = await _mount(tester, enemy);
+    final centre = enemy.position.x + enemy.size.x / 2;
+    // Ground that ends 40 units beyond the enemy's middle, on the side it is thrown to.
+    final p = game.player;
+    p.position.x = centre - 60 - p.size.x / 2; // student to its left: thrown right
+    game.groundSections.add(GroundSection(
+        sectionWidth: centre + 40 + 2000, sectionPosition: Vector2(-2000, game.groundY))
+      ..size = Vector2(centre + 40 + 2000, 60));
+    enemy.takeHit();
+    for (var i = 0; i < 20; i++) {
+      game.updateTree(0.02);
+    }
+    final half = enemy.size.x * footSpanFraction / 2;
+    final now = enemy.position.x + enemy.size.x / 2;
+    expect(game.isGroundUnder(now - half, now + half), true, reason: 'still on the ground');
+    expect(now - centre, lessThan(CombatConstants.hitShoveDistance));
   });
 }

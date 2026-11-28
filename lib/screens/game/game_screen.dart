@@ -115,6 +115,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     // A power-up used leaves the wallet, and is saved, the moment it is used.
     game.onPowerUpUsed = (kind) => _hearts.usePowerUp(PowerUpKind.values.byName(kind));
+    // One picked up in the boss room (a minion dropped it) goes into the wallet and is saved at once.
+    game.onPowerUpGained = (kind) => _hearts.addPowerUp(PowerUpKind.values.byName(kind));
 
     // Hearts stop regenerating while the level is on screen. Deferred a frame:
     // changing a provider is not allowed while the widget tree is building.

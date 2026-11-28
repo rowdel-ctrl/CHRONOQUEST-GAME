@@ -128,8 +128,31 @@ class ProgressNotifier extends StateNotifier<ProgressState> {
     );
   }
 
+  /// What the server says, with the levels saved on this phone added in: the server's answer
+  /// can be behind (a level just won, a result still on its way, offline), and the level map
+  /// already counts the phone's save, so the books and the level map now agree.
   EraProgress getEraProgress(String eraId) {
-    return state.eraProgress[eraId] ?? EraProgress(eraId: eraId);
+    final server = state.eraProgress[eraId] ?? EraProgress(eraId: eraId);
+    try {
+      final eras = allEras.where((e) => e.id == eraId);
+      if (eras.isEmpty) return server;
+      final levels = eras.first.levels.length;
+      final local = StorageService.getCompletedLevels(eraId);
+      final onPhone = local.keys.where((l) => l >= 1 && l <= levels).length;
+      final bossOnPhone = local.containsKey(levels);
+      if (onPhone <= server.levelsCompleted && (!bossOnPhone || server.bossDefeated)) {
+        return server;
+      }
+      return EraProgress(
+        eraId: server.eraId.isEmpty ? eraId : server.eraId,
+        levelsCompleted: onPhone > server.levelsCompleted ? onPhone : server.levelsCompleted,
+        levelResults: server.levelResults,
+        bossDefeated: server.bossDefeated || bossOnPhone,
+        postTestScore: server.postTestScore,
+      );
+    } catch (_) {
+      return server; // no local storage (a test)
+    }
   }
 
   bool isEraUnlocked(String eraId, List<String> visibleEraIds) {

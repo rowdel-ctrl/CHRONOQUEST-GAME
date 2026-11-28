@@ -52,7 +52,7 @@ void main() {
       test('${era.name}: level $bossLevel', () {
         final level = _load(e, bossLevel);
         expect(level.isArena, isTrue);
-        expect(level.mapWidth, 1824, reason: 'wider than the widest screen the game allows (1800)');
+        expect(level.mapWidth, 2736, reason: 'one and a half screens: wider than the widest screen the game allows (1800), the camera follows the hero');
 
         // Two walls close the room, and it is the same on both sides.
         final blocks = level.blocks;

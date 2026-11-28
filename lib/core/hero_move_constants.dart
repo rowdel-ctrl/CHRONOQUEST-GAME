@@ -185,8 +185,8 @@ const Map<String, HeroMove> heroMoves = {
     name: 'Alon ng Sable',
     kind: HeroMoveKind.wave,
     shape: HeroMoveShape.saber,
-    range: 180,
-    speed: 380,
+    range: 230, // 180 until 2026-11-28 (short-reach heroes got more reach)
+    speed: 420, // 380 until 2026-11-28
     cooldown: 0.80,
     hitWidth: 40,
     hitHeight: 90,
@@ -196,8 +196,8 @@ const Map<String, HeroMove> heroMoves = {
     name: 'Hangin ng Talulot',
     kind: HeroMoveKind.wave,
     shape: HeroMoveShape.petals,
-    range: 160,
-    speed: 340,
+    range: 210, // 160 until 2026-11-28
+    speed: 420, // 340 until 2026-11-28
     cooldown: 0.70,
     hitWidth: 56,
     hitHeight: 76,
@@ -207,12 +207,12 @@ const Map<String, HeroMove> heroMoves = {
     name: 'Sabog ng Pahina',
     kind: HeroMoveKind.burst,
     shape: HeroMoveShape.page,
-    range: 150,
+    range: 200, // 150 until 2026-11-28
     speed: 480,
     count: 3,
     gap: 0.09,
     cooldown: 0.90,
-    hitWidth: 22,
+    hitWidth: 34, // 22 until 2026-11-28: the smallest target of any flying move
   ),
 };
 

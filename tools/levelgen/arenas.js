@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 'use strict';
-// The six boss arenas: one fixed room per era, 76 tiles (1824 units) wide so a phone at the widest
-// aspect the game allows (2.5:1, 1800 units) still sees only the arena. Each is described once, for
-// its left half, and mirrored, so the two sides of the fight are fair.
+// The six boss arenas: one fixed room per era, 114 tiles (2736 units) wide, one and a half times the
+// 76 tiles (1824 units) it was, which a phone at the widest aspect the game allows (2.5:1, 1800 units) saw
+// whole. Now the camera follows the hero inside the room. Each is described once, for its left half, and
+// mirrored, so the two sides of the fight are fair.
 //
 //   node tools/levelgen/arenas.js              write assets/tiles/levels/era<N>_<boss>.tmx and the manifest
 //   node tools/levelgen/arenas.js --check      only check them
@@ -29,7 +30,9 @@ const { solve } = require('./solve');
 const { real } = require('./sim');
 const { writeManifest } = require('./generate');
 
-const COLS = 76;
+const COLS = 114;
+const BASE_COLS = 76; // the room before 2026-11-28; the specs below are drawn for it
+const GROW = (COLS - BASE_COLS) / 2; // columns added to each half: all flat ground, in front of the towers
 const WALL = 7; // tiles; 168 units, over the 128-unit jump peak
 const STAGE_TIERS = 2; // the boss stands this many tiles (24 units each) above the base ground
 const STAGE_HALF = 7; // columns of stage top each side of the middle: 14 in all (336 units)
@@ -46,37 +49,37 @@ const OUT = path.join(__dirname, '..', '..', 'assets', 'tiles', 'levels');
 //
 // The obstacle of each era sits in columns 8 to 12 so the ground from column 13 to the stage is flat: a
 // minion paces 150 (6 tiles) each way and stays on one height, so its spot needs 6 flat columns either
-// side (columns 19 and 23 are the first and last that have them).
+// side (columns 19 and 23 are the first and last that have them, before the room grew by GROW).
 const SPECS = {
   // Bakunawa, on a shore: a tide pool by each wall.
   'pre-colonial': {
-    left: [[2, WALL], [6, 0], [5, -1], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [6, 0], [5, -1], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
   // The Governor in the courtyard of a fort: a bastion at each end.
   spanish: {
-    left: [[2, WALL], [6, 0], [1, 1], [3, 2], [1, 1], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [6, 0], [1, 1], [3, 2], [1, 1], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
   // The plaza bowl: start on the high terrace and drop in.
   nationalism: {
-    left: [[2, WALL], [8, 2], [3, 1], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [8, 2], [3, 1], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
   // The trench line: a sandbag mound with a trench behind it.
   american: {
-    left: [[2, WALL], [6, 0], [2, 1], [2, 0], [1, 1], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [6, 0], [2, 1], [2, 0], [1, 1], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
   // The broken bridge: a gap over water and the stump of the bridge beyond it.
   ww2: {
-    left: [[2, WALL], [6, 0], [4, -1], [1, 1], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [6, 0], [4, -1], [1, 1], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
   // The palace steps: a short staircase up, then down to the courtyard.
   modern: {
-    left: [[2, WALL], [6, 0], [2, 1], [3, 2], [17, 0]],
-    towers: [18, 25], startCol: 5, minions: [19, 23],
+    left: [[2, WALL], [6, 0], [2, 1], [3, 2], [17 + GROW, 0]],
+    towers: [18 + GROW, 25 + GROW], startCol: 5, minions: [19 + GROW, 23 + GROW],
   },
 };
 

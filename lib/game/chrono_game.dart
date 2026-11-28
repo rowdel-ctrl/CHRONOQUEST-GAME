@@ -326,6 +326,27 @@ class ChronoGame extends FlameGame with HasCollisionDetection, ChangeNotifier {
   /// 'timeFreeze', the names of `PowerUpKind`).
   void Function(String kind)? onPowerUpUsed;
 
+  /// Called when a power-up is picked up in the level (one a minion of the boss's wave dropped),
+  /// with its kind's name. The screen puts it in the wallet and saves it at once, like a bought one.
+  void Function(String kind)? onPowerUpGained;
+
+  /// One more power-up of [kind] ('fiftyFifty', 'shield' or 'timeFreeze'): for this level's own
+  /// copy (the question card shows it) and, through [onPowerUpGained], for the wallet.
+  void gainPowerUp(String kind) {
+    switch (kind) {
+      case 'fiftyFifty':
+        playerPowerUps.fiftyFifty++;
+      case 'shield':
+        playerPowerUps.shield++;
+      case 'timeFreeze':
+        playerPowerUps.timeFreeze++;
+      default:
+        return;
+    }
+    onPowerUpGained?.call(kind);
+    notifyListeners();
+  }
+
   // Services
   final AudioService audioService = AudioService();
   final ApiService apiService = ApiService();

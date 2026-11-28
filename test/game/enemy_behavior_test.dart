@@ -13,7 +13,9 @@ import 'package:chronoquest/core/combat_constants.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/enemy_behavior.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
+import 'package:chronoquest/game/components/gap_component.dart';
 import 'package:chronoquest/game/components/player_component.dart';
+import 'package:chronoquest/game/game_collision.dart' show footSpanFraction;
 
 ChronoGame _bareGame() {
   final game = ChronoGame();
@@ -230,6 +232,76 @@ void main() {
       }
       expect(spawn - enemy.position.x,
           lessThanOrEqualTo(CombatConstants.chaserLeash + 0.01));
+    });
+
+    test('a minion of a boss wave hunts: it notices a student 900 away and the leash does not stop it',
+        () async {
+      final game = _bareGame();
+      final enemy = EnemyComponent(
+          eraId: 'spanish', enemyTypeOverride: 'dark_spirit', blasts: false, hunts: true);
+      game.world.add(enemy);
+      await game.ready();
+      final spawn = enemy.position.x;
+      placePlayerBeside(game, enemy, -900); // an ordinary chaser notices at 440 and goes 380 at most
+      for (var i = 0; i < 60 * 10; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(spawn - enemy.position.x, greaterThan(CombatConstants.chaserLeash + 100),
+          reason: 'it walked past where the leash would have stopped an ordinary chaser');
+    });
+
+    test('a hunting minion stops at a raised block (a wall) instead of walking through it', () async {
+      final game = _bareGame();
+      final enemy = EnemyComponent(
+          eraId: 'spanish', enemyTypeOverride: 'dark_spirit', blasts: false, hunts: true);
+      game.world.add(enemy);
+      await game.ready();
+      // A tower 96 up and 200 wide whose right side is 300 to the minion's left; the student is
+      // 900 away, beyond it.
+      final left = enemy.position.x - 300;
+      final wall = GroundSection(sectionWidth: 200, sectionPosition: Vector2(left - 200, game.groundY - 96))
+        ..size = Vector2(200, 156);
+      game.groundSections.add(wall);
+      placePlayerBeside(game, enemy, -900);
+      for (var i = 0; i < 60 * 12; i++) {
+        enemy.update(1 / 60);
+      }
+      final footHalf = enemy.size.x * footSpanFraction / 2;
+      final footLeft = enemy.position.x + enemy.size.x / 2 - footHalf;
+      expect(footLeft, greaterThanOrEqualTo(left - 0.01), reason: 'it did not go into the tower');
+      expect(footLeft, lessThan(left + 6), reason: 'but it did walk up to the tower');
+    });
+
+    test('a hunting minion still walks along flat ground (a block no higher than the floor is no wall)',
+        () async {
+      final game = _bareGame();
+      final enemy = EnemyComponent(
+          eraId: 'spanish', enemyTypeOverride: 'dark_spirit', blasts: false, hunts: true);
+      game.world.add(enemy);
+      await game.ready();
+      game.groundSections.add(GroundSection(sectionWidth: 4000, sectionPosition: Vector2(-2000, game.groundY))
+        ..size = Vector2(4000, 60));
+      final spawn = enemy.position.x;
+      placePlayerBeside(game, enemy, -900);
+      for (var i = 0; i < 60 * 8; i++) {
+        enemy.update(1 / 60);
+      }
+      expect(spawn - enemy.position.x, greaterThan(300));
+    });
+
+    test('an ordinary chaser does not notice a student 900 away', () async {
+      final game = _bareGame();
+      final enemy = EnemyComponent(
+          eraId: 'spanish', enemyTypeOverride: 'dark_spirit', blasts: false);
+      game.world.add(enemy);
+      await game.ready();
+      final spawn = enemy.position.x;
+      placePlayerBeside(game, enemy, -900);
+      for (var i = 0; i < 60 * 10; i++) {
+        enemy.update(1 / 60);
+      }
+      expect((enemy.position.x - spawn).abs(), lessThanOrEqualTo(CombatConstants.patrolRange + 1),
+          reason: 'it only paces');
     });
 
     test('does not chase a student on another level', () async {

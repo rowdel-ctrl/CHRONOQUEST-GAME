@@ -62,6 +62,10 @@ class BossAttackConstants {
   /// at the farthest one). Walking up to it makes the boss throw.
   static const double runeMinDistance = 450;
 
+  /// A rune is put no farther than this from the hero when the floor allows it, so the bigger
+  /// room (2736 wide) does not make every round a long walk.
+  static const double runeMaxDistance = 900;
+
   /// The hero touches a rune when he is this close to it (world x).
   static const double runeTouchRange = 36;
 
@@ -84,9 +88,33 @@ class BossAttackConstants {
   static const List<int> waveSizes = [2, 3, 4];
   static const int waveMaxAlive = 6;
 
-  /// Minions appear at least this far, and at most [waveSpawnMax] from the hero so they notice him.
-  static const double waveSpawnMin = 200;
-  static const double waveSpawnMax = 380;
+  /// Minions appear at least this far, and at most [waveSpawnMax] from the hero: far, past the edge
+  /// of the screen on most phones, so he sees them coming and has time to get ready (they were
+  /// 200 to 380 until 2026-11-28 and popped up beside him).
+  static const double waveSpawnMin = 420;
+  static const double waveSpawnMax = 620;
+
+  /// When the floor has no spot that far, the farthest ones it has are used, but never nearer than this.
+  static const double waveSpawnNearest = 150;
+
+  /// A red warning shows this long at each spot before its minion appears, and the minions of a
+  /// wave come this far apart. The wave's 30 second timeout counts from the warning.
+  static const double waveWarnSeconds = 1.4;
+  static const double waveSpawnGapSeconds = 0.35;
+
+  // ---------- what a fallen minion may drop (besides coins) ----------
+
+  /// The chance, for each minion that falls, of a heart (only while the student has fewer than the
+  /// five; at full hearts the heart is two coins instead) and of a power-up of a random kind.
+  static const double minionHeartChance = 0.12;
+  static const double minionPowerUpChance = 0.08;
+
+  /// No wave drops more than this many hearts or power-ups, however it rolls.
+  static const int waveMaxHearts = 1;
+  static const int waveMaxPowerUps = 2;
+
+  /// The coins a heart turns into when the hearts are already full.
+  static const int heartFullCoins = 2;
 
   /// A moment between a wave's last minion falling and the next rune.
   static const double waveClearSeconds = 0.8;

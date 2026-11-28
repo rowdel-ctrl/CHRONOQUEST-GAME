@@ -115,6 +115,17 @@ class CombatConstants {
   /// A lunge never takes a Heavy further than this from where it stood.
   static const double lungeLeash = 200;
 
+  // ─── Shove from a hit that does not defeat (a Heavy's first) ────────────
+  /// A hit that leaves an enemy alive throws it this far away from the student, in
+  /// [hitShoveSeconds], and it stays there (it never goes off a ledge or into a wall). Before
+  /// 2026-11-28 it was nudged 14 units and slid back to the same place, so a hero who had
+  /// closed in to hit it (a dash ends beside or inside the body) was still touching it when the
+  /// safe moment of the dash ran out, and lost a heart for hitting. Clear of the student's
+  /// body (0.6 of 96) and the enemy's (0.55 of 90) is 54 centre to centre; 120 leaves room to
+  /// walk or dash in for the second hit.
+  static const double hitShoveDistance = 120;
+  static const double hitShoveSeconds = 0.18;
+
   // ─── Enemy HP (Section 5 table) ─────────────────────────────────────────
   static const int walkerHp = 1;
   static const int chaserHp = 1;

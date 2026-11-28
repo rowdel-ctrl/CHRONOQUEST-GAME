@@ -14,6 +14,10 @@ import 'package:chronoquest/game/boss_plan.dart';
 import 'package:chronoquest/game/chrono_game.dart';
 import 'package:chronoquest/game/components/boss_attack_component.dart';
 import 'package:chronoquest/game/components/boss_component.dart';
+import 'package:chronoquest/game/components/boss_wave_warning.dart';
+import 'package:chronoquest/game/components/coin_component.dart';
+import 'package:chronoquest/game/components/heart_pickup_component.dart';
+import 'package:chronoquest/game/components/powerup_pickup_component.dart';
 import 'package:chronoquest/game/components/enemy_component.dart';
 import 'package:chronoquest/game/enemy_behavior.dart';
 import 'package:chronoquest/game/components/player_component.dart';
@@ -860,6 +864,11 @@ void main() {
         game.updateTree(0.05);
       }
       expect(boss.state, BossRoundState.wave);
+      // The warnings come first; the minions appear in their places a moment later.
+      expect(boss.warnings, hasLength(2), reason: 'phase 1: 2 minions on the way');
+      expect(boss.minions, isEmpty);
+      _step(game, BossAttackConstants.waveWarnSeconds + BossAttackConstants.waveSpawnGapSeconds + 0.2);
+      expect(boss.warnings, isEmpty);
       expect(boss.minions, hasLength(2), reason: 'phase 1: 2 minions');
       expect(boss.minions.every((m) => m.parent == game.world), isTrue);
       expect(boss.minions.every((m) => m.eraId == 'spanish'), isTrue);
@@ -1089,15 +1098,214 @@ void main() {
         if (boss.explaining) boss.continueAfterExplanation();
         game.updateTree(0.05);
       }
+      _step(game, BossAttackConstants.waveWarnSeconds + BossAttackConstants.waveSpawnGapSeconds + 0.2);
       expect(boss.minions, hasLength(2));
       for (final m in boss.minions) {
         expect(m.eraId, 'spanish');
         expect(m.behaviorOverride, EnemyBehavior.chaser);
+        expect(m.hunts, isTrue, reason: 'one that appears far away still walks all the way in');
         expect(m.blasts, isFalse, reason: 'plain chasers: no bursts in the boss room');
       }
       game.kaalaman = 1;
       boss.minions.first.onDefeated!.call();
       expect(game.kaalaman, 2);
+      await _flush(tester);
+    });
+  });
+
+  group('far minions with a warning, and what a fallen one drops', () {
+    Future<(_BossGame, BossComponent)> toWave(WidgetTester tester) async {
+      final (game, boss) = await _start(tester, arena: _arena('era2_5'));
+      _untilAsking(game, boss);
+      game.handleAnswer(_right(game));
+      _stepReading(game, boss, 2.5);
+      _untilAsking(game, boss);
+      game.handleAnswer(_right(game));
+      for (var t = 0.0; t < 6 && boss.state != BossRoundState.wave; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
+        game.updateTree(0.05);
+      }
+      expect(boss.state, BossRoundState.wave);
+      return (game, boss);
+    }
+
+    testWidgets('the spots are far from the hero (420 to 620 units, or the farthest the floor has)',
+        (tester) async {
+      final (game, boss) = await toWave(tester);
+      final hero = game.player.position.x + game.player.size.x / 2;
+      final spots = boss.waveSpots(3);
+      expect(spots, isNotEmpty);
+      for (final s in spots) {
+        expect((s.x - hero).abs(), greaterThanOrEqualTo(BossAttackConstants.waveSpawnMin),
+            reason: 'spot ${s.x} from the hero at $hero');
+        expect((s.x - hero).abs(), lessThanOrEqualTo(BossAttackConstants.waveSpawnMax));
+      }
+      await _flush(tester);
+    });
+
+    testWidgets('each minion waits under a warning for 1.4 s, and they appear 0.35 s apart', (tester) async {
+      final (game, boss) = await toWave(tester);
+      expect(boss.warnings, hasLength(2));
+      expect(boss.minions, isEmpty);
+      expect(boss.minionsComing, 2);
+      _step(game, 1.3);
+      expect(boss.minions, isEmpty, reason: 'still under the warning');
+      _step(game, 0.2); // 1.5 s: the first one is out (at 1.4), the second is not (at 1.75)
+      expect(boss.minions, hasLength(1));
+      expect(boss.warnings, hasLength(1));
+      _step(game, 0.3); // 1.8 s
+      expect(boss.minions, hasLength(2));
+      expect(boss.warnings, isEmpty);
+      expect(boss.minionsComing, 0);
+      await _flush(tester);
+    });
+
+    testWidgets('the wave is not over while a minion is still on its way', (tester) async {
+      final (game, boss) = await toWave(tester);
+      _step(game, 1.0);
+      expect(boss.minionsAlive, 0, reason: 'none has appeared yet');
+      expect(boss.state, BossRoundState.wave, reason: 'but the wave is not clear: two are still coming');
+      await _flush(tester);
+    });
+
+    testWidgets('the wave is cleared when the fight is won or lost: no warning is left', (tester) async {
+      final (game, boss) = await toWave(tester);
+      expect(boss.warnings, isNotEmpty);
+      boss.endWave();
+      expect(boss.warnings, isEmpty);
+      await _flush(tester);
+    });
+
+    testWidgets('in the bigger room a rune is put 450 to 900 units from the hero, not at the far end',
+        (tester) async {
+      final (game, boss) = await _start(tester, arena: _arena('era2_5'));
+      for (var t = 0.0; t < 3 && boss.state != BossRoundState.rune; t += 0.05) {
+        game.updateTree(0.05);
+      }
+      expect(boss.state, BossRoundState.rune);
+      final hero = game.player.position.x + game.player.size.x / 2;
+      final d = (boss.rune!.centreX - hero).abs();
+      expect(d, inInclusiveRange(BossAttackConstants.runeMinDistance, BossAttackConstants.runeMaxDistance));
+      await _flush(tester);
+    });
+
+    testWidgets('a warning is a ring when its spot is on the screen and an arrow on the edge when it is off',
+        (tester) async {
+      final (game, boss) = await toWave(tester);
+      final left = game.cameraLeftEdgeX, right = game.cameraRightEdgeX;
+      final onScreen = BossWaveWarning(spotX: (left + right) / 2, surfaceY: game.groundY);
+      final offLeft = BossWaveWarning(spotX: left - 100, surfaceY: game.groundY);
+      final offRight = BossWaveWarning(spotX: right + 100, surfaceY: game.groundY);
+      game.world.addAll([onScreen, offLeft, offRight]);
+      await _settle(tester);
+      expect(onScreen.edge, 0);
+      expect(offLeft.edge, -1);
+      expect(offRight.edge, 1);
+      // All three can be drawn.
+      for (final w in [onScreen, offLeft, offRight]) {
+        final rec = ui.PictureRecorder();
+        w.render(ui.Canvas(rec));
+        rec.endRecording();
+      }
+      await _flush(tester);
+    });
+
+    int count<T extends Component>(_BossGame game) => game.world.children.whereType<T>().length;
+
+    testWidgets('a heart can drop while hearts are below 5, and a wave drops at most one', (tester) async {
+      final (game, boss) = await toWave(tester);
+      game.hearts = 3;
+      final at = Vector2(1000, game.groundY - 108);
+      boss.dropBonusWith(at, 0.0, 1.0, 0);
+      boss.dropBonusWith(at, 0.0, 1.0, 0); // the same wave: capped at one
+      await _settle(tester);
+      expect(count<HeartPickupComponent>(game), 1);
+      expect(count<PowerUpPickupComponent>(game), 0);
+      await _flush(tester);
+    });
+
+    testWidgets('at full hearts a heart is two coins instead', (tester) async {
+      final (game, boss) = await toWave(tester);
+      game.hearts = 5;
+      final coinsBefore = count<CoinComponent>(game);
+      boss.dropBonusWith(Vector2(1000, game.groundY - 108), 0.0, 1.0, 0);
+      await _settle(tester);
+      expect(count<HeartPickupComponent>(game), 0);
+      expect(count<CoinComponent>(game) - coinsBefore, BossAttackConstants.heartFullCoins);
+      await _flush(tester);
+    });
+
+    testWidgets('a power-up of any of the three kinds can drop, and a wave drops at most two',
+        (tester) async {
+      final (game, boss) = await toWave(tester);
+      final at = Vector2(1000, game.groundY - 108);
+      for (var kind = 0; kind < 3; kind++) {
+        boss.dropBonusWith(at, 1.0, 0.0, kind);
+      }
+      await _settle(tester);
+      final drops = game.world.children.whereType<PowerUpPickupComponent>().toList();
+      expect(drops, hasLength(2), reason: 'the third was over the cap');
+      expect(drops.map((d) => d.kind), ['fiftyFifty', 'shield']);
+      await _flush(tester);
+    });
+
+    testWidgets('a roll over the chance drops nothing, and the chances are what the plan says', (tester) async {
+      final (game, boss) = await toWave(tester);
+      expect(BossAttackConstants.minionHeartChance, 0.12);
+      expect(BossAttackConstants.minionPowerUpChance, 0.08);
+      boss.dropBonusWith(Vector2(1000, game.groundY - 108), 0.5, 0.5, 0);
+      await _settle(tester);
+      expect(count<HeartPickupComponent>(game), 0);
+      expect(count<PowerUpPickupComponent>(game), 0);
+      await _flush(tester);
+    });
+
+    testWidgets('a new wave starts with fresh caps', (tester) async {
+      final (game, boss) = await toWave(tester);
+      game.hearts = 2;
+      final at = Vector2(1000, game.groundY - 108);
+      boss.dropBonusWith(at, 0.0, 0.0, 0);
+      boss.endWave();
+      // the next two rounds, then the next wave
+      _untilAsking(game, boss);
+      game.handleAnswer(_right(game));
+      _stepReading(game, boss, 2.5);
+      _untilAsking(game, boss);
+      game.handleAnswer(_right(game));
+      for (var t = 0.0; t < 8 && boss.state != BossRoundState.wave; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
+        game.updateTree(0.05);
+      }
+      expect(boss.state, BossRoundState.wave);
+      boss.dropBonusWith(at, 0.0, 0.0, 0);
+      await _settle(tester);
+      expect(count<HeartPickupComponent>(game), 2, reason: 'one in each wave');
+      await _flush(tester);
+    });
+
+    testWidgets('picking a power-up up adds one to the level and tells the wallet', (tester) async {
+      final (game, boss) = await toWave(tester);
+      final told = <String>[];
+      game.onPowerUpGained = told.add;
+      final before = game.playerPowerUps.shield;
+      final pickup = PowerUpPickupComponent(kind: 'shield', spawnPosition: Vector2(1000, 400));
+      game.world.add(pickup);
+      await _settle(tester);
+      pickup.collect();
+      pickup.collect(); // only once
+      expect(game.playerPowerUps.shield, before + 1);
+      expect(told, ['shield']);
+      expect(pickup.collected, isTrue);
+      await _flush(tester);
+    });
+
+    testWidgets('the wave minions are wired to the drop (an ordinary enemy has none)', (tester) async {
+      final (game, boss) = await toWave(tester);
+      _step(game, 2.0);
+      for (final m in boss.minions) {
+        expect(m.onDropped, isNotNull);
+      }
+      expect(EnemyComponent(eraId: 'spanish').onDropped, isNull);
       await _flush(tester);
     });
   });

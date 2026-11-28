@@ -436,7 +436,8 @@ test('the arena check catches a platform nobody can reach, a trap and a minion s
   assert.ok(arenas.validateArena(high).some((p) => /cannot be reached/.test(p)));
   // A pit in the middle of the floor with no way back
   const pit = { ...level, H: Int8Array.from(level.H) };
-  for (let c = 20; c < 30; c++) pit.H[c] = -1;
+  // (16 columns: a jump carries about 11, so a shorter pit can be crossed)
+  for (let c = 20; c < 36; c++) pit.H[c] = -1;
   assert.ok(arenas.validateArena(pit).length > 0);
   // A minion spot on ground that is not flat
   const bad = { ...level, arena: { ...level.arena, minions: [...level.arena.minions, { x: 12 * 24, y: 660 }] } };
@@ -470,7 +471,8 @@ test('the arena check catches a narrow stage, a scroll spot off a platform or in
   const level = arenas.buildArena('pre-colonial');
   // a stage top 12 wide
   const narrow = { ...level, H: Int8Array.from(level.H) };
-  for (const c of [31, 32, 43, 44]) narrow.H[c] = 1;
+  const mid = arenas.COLS / 2;
+  for (const c of [mid - 7, mid - 6, mid + 5, mid + 6]) narrow.H[c] = 1;
   assert.ok(arenas.validateArena(narrow).some((p) => /stage top is \d+ tiles wide/.test(p)));
   // a scroll spot in the air, and on the lower platform (reachable from the ground in one jump)
   const air = { ...level, arena: { ...level.arena, scrolls: [{ x: 700, y: 400 }, ...level.arena.scrolls.slice(1)] } };

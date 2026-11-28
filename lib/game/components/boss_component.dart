@@ -22,6 +22,10 @@ import 'enemy_component.dart';
 import '../enemy_behavior.dart';
 import 'boss_attack_paint.dart' show star;
 import 'boss_fx_component.dart';
+import 'boss_wave_warning.dart';
+import 'coin_component.dart';
+import 'heart_pickup_component.dart';
+import 'powerup_pickup_component.dart';
 
 /// Where a boss round is.
 enum BossRoundState {
@@ -117,7 +121,14 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
 
   /// The minions of the wave being fought, and how many rounds have been played (right or wrong).
   final List<EnemyComponent> _minions = [];
+
+  /// Minions of the wave that have not appeared yet: each waits at its spot under a red warning.
+  final List<_PendingSpawn> _pending = [];
   int _played = 0;
+
+  /// The hearts and power-ups this wave has dropped so far (capped, see BossAttackConstants).
+  int _waveHearts = 0;
+  int _wavePowerUps = 0;
   double _waveClear = 0;
   final math.Random _random = math.Random();
 
@@ -183,6 +194,13 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   @visibleForTesting
   List<EnemyComponent> get minions => _minions;
 
+  /// The red warnings still showing, one for each minion that has not appeared yet (for tests).
+  @visibleForTesting
+  List<BossWaveWarning> get warnings => [for (final p in _pending) p.warning];
+
+  /// How many minions of the wave have not appeared yet.
+  int get minionsComing => _pending.length;
+
   /// Ends the wave now, minions or not (for tests, and nothing else calls it).
   @visibleForTesting
   void endWave() {
@@ -191,6 +209,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
       if (m.isMounted) m.removeFromParent();
     }
     _minions.clear();
+    _clearPending();
     _beginRune();
   }
 
@@ -518,10 +537,21 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
       _startRound(); // nowhere to put a rune: just go on
       return;
     }
-    final far = [for (final s in spots) if ((s.x - _heroCentre).abs() >= BossAttackConstants.runeMinDistance) s];
+    double away(({double x, double y}) s) => (s.x - _heroCentre).abs();
+    // Far from the hero but not too far: the room is big, and every round should not be a long walk.
+    var far = [
+      for (final s in spots)
+        if (away(s) >= BossAttackConstants.runeMinDistance && away(s) <= BossAttackConstants.runeMaxDistance) s
+    ];
+    if (far.isEmpty) {
+      // None in that band: the nearest one beyond it.
+      final beyond = [for (final s in spots) if (away(s) >= BossAttackConstants.runeMinDistance) s]
+        ..sort((a, b) => away(a).compareTo(away(b)));
+      if (beyond.isNotEmpty) far = [beyond.first];
+    }
     final pick = far.isNotEmpty
         ? far[_random.nextInt(far.length)]
-        : (spots.toList()..sort((a, b) => (b.x - _heroCentre).abs().compareTo((a.x - _heroCentre).abs()))).first;
+        : (spots.toList()..sort((a, b) => away(b).compareTo(away(a)))).first;
     final r = BossRuneComponent(x: pick.x, surfaceY: pick.y);
     rune = r;
     game.world.add(r);
@@ -547,66 +577,150 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     }
   }
 
-  void _beginWave() {
-    state = BossRoundState.wave;
-    _t = 0;
-    _waveClear = 0;
-    _minions.clear();
-    final n = math.min(BossAttackConstants.waveMaxAlive, BossAttackConstants.waveSizes[phase - 1]);
-    // Minions walk on the floor and cannot cross a pool, a gap or the stage: they start on the
-    // stretch of floor nearest to the hero, so they can reach him (and he them).
+  /// The spots for a wave of [n] minions, in the order they will be used. They are on the stretch of
+  /// floor nearest to the hero (a minion cannot cross a pool, a gap or the stage), as far from him as
+  /// BossAttackConstants.waveSpawnMin to waveSpawnMax allows. When the floor has no [n] spots that far,
+  /// the farthest it has are used, never nearer than waveSpawnNearest.
+  @visibleForTesting
+  List<({double x, double y})> waveSpots(int n) {
     final runs = floorRuns();
     double gapTo(List<({double x, double y})> run) {
       final lo = run.first.x, hi = run.last.x;
       return _heroCentre < lo ? lo - _heroCentre : (_heroCentre > hi ? _heroCentre - hi : 0.0);
     }
+
     var spots = <({double x, double y})>[];
     if (runs.isNotEmpty) {
       final byDistance = runs.toList()..sort((a, b) => gapTo(a).compareTo(gapTo(b)));
       // The nearest stretch that is long enough for the wave (else simply the nearest).
       spots = byDistance.firstWhere((r) => r.length >= 6, orElse: () => byDistance.first);
     }
-    final near = [
+    double away(({double x, double y}) s) => (s.x - _heroCentre).abs();
+    final far = [
       for (final s in spots)
-        if ((s.x - _heroCentre).abs() >= BossAttackConstants.waveSpawnMin &&
-            (s.x - _heroCentre).abs() <= BossAttackConstants.waveSpawnMax)
-          s
+        if (away(s) >= BossAttackConstants.waveSpawnMin && away(s) <= BossAttackConstants.waveSpawnMax) s
     ];
-    if (near.length >= n) {
-      spots = near;
+    if (far.length >= n) {
+      spots = far;
     } else {
-      spots = (spots.toList()..sort((a, b) => (a.x - _heroCentre).abs().compareTo((b.x - _heroCentre).abs())))
-          .where((s) => (s.x - _heroCentre).abs() >= 150)
-          .toList();
+      final farthest = [for (final s in spots) if (away(s) >= BossAttackConstants.waveSpawnNearest) s]
+        ..sort((a, b) => away(b).compareTo(away(a)));
+      spots = farthest.take(math.max(n * 3, 6)).toList();
     }
-    spots = spots.toList()..shuffle(_random);
+    return spots.toList()..shuffle(_random);
+  }
+
+  void _beginWave() {
+    state = BossRoundState.wave;
+    _t = 0;
+    _waveClear = 0;
+    _waveHearts = 0;
+    _wavePowerUps = 0;
+    _minions.clear();
+    _clearPending();
+    final n = math.min(BossAttackConstants.waveMaxAlive, BossAttackConstants.waveSizes[phase - 1]);
+    final spots = waveSpots(n);
+    // Each minion waits at its spot under a red warning, and they come one after another.
     for (var i = 0; i < n; i++) {
-      final s = spots.isEmpty ? (x: _heroCentre + 200, y: game.groundY) : spots[i % spots.length];
-      final m = EnemyComponent(
-        eraId: eraId,
-        worldX: s.x - EnemyComponent.spriteWidth / 2 + (i >= spots.length ? 40.0 * i : 0),
-        surfaceY: (s.y - game.groundY).abs() < 1 ? null : s.y,
-        behaviorOverride: EnemyBehavior.chaser,
-        blasts: false,
-        onDefeated: _payCharge,
-      );
-      _minions.add(m);
-      game.world.add(m);
+      final s = spots.isEmpty
+          ? (x: _heroCentre + BossAttackConstants.waveSpawnMin, y: game.groundY)
+          : spots[i % spots.length];
+      final x = s.x + (spots.isNotEmpty && i >= spots.length ? 40.0 * i : 0);
+      final warning = BossWaveWarning(spotX: x, surfaceY: s.y);
+      game.world.add(warning);
+      _pending.add(_PendingSpawn(
+        x: x,
+        y: s.y,
+        onGround: (s.y - game.groundY).abs() < 1,
+        at: BossAttackConstants.waveWarnSeconds + i * BossAttackConstants.waveSpawnGapSeconds,
+        warning: warning,
+      ));
     }
-    _float('Minion wave: $n', const Color(0xFFFF6B5E));
+    _float('Paparating ang mga kalaban! ($n)', const Color(0xFFFF6B5E));
     game.notifyState();
   }
 
+  /// A minion appears at the spot its warning marked and starts walking in: it hunts, so it comes
+  /// all the way however far it is.
+  void _spawnMinion(_PendingSpawn p) {
+    final m = EnemyComponent(
+      eraId: eraId,
+      worldX: p.x - EnemyComponent.spriteWidth / 2,
+      surfaceY: p.onGround ? null : p.y,
+      behaviorOverride: EnemyBehavior.chaser,
+      blasts: false,
+      hunts: true,
+      onDefeated: _payCharge,
+      onDropped: _dropBonus,
+    );
+    _minions.add(m);
+    game.world.add(m);
+  }
+
+  void _clearPending() {
+    for (final p in _pending) {
+      p.warning.removeFromParent();
+    }
+    _pending.clear();
+  }
+
+  /// What a fallen minion may leave besides its coins: a heart or a power-up, by chance.
+  void _dropBonus(Vector2 spot) =>
+      dropBonusWith(spot, _random.nextDouble(), _random.nextDouble(), _random.nextInt(3));
+
+  /// The drop with its dice given (for tests): [heartRoll] and [powerRoll] are 0 to 1 and win
+  /// when under the chance; [kindIndex] picks the power-up (0 50/50, 1 Kalasag, 2 Hinto).
+  /// A heart drops only while the student has fewer than the five (at full hearts it is a few
+  /// coins), and no wave drops more than BossAttackConstants.waveMaxHearts hearts or
+  /// waveMaxPowerUps power-ups.
+  @visibleForTesting
+  void dropBonusWith(Vector2 spot, double heartRoll, double powerRoll, int kindIndex) {
+    if (state == BossRoundState.ended || isDefeated) return;
+    // Lying on the floor where the minion fell: its box is 90 wide and 108 high.
+    final floorY = spot.y + EnemyComponent.spriteHeight - 44 - 6;
+    final middleX = spot.x + EnemyComponent.spriteWidth / 2 - 22;
+    var shifted = false;
+    if (heartRoll < BossAttackConstants.minionHeartChance && _waveHearts < BossAttackConstants.waveMaxHearts) {
+      _waveHearts++;
+      if (game.hearts < GameConstants.maxHearts) {
+        game.world.add(HeartPickupComponent(spawnPosition: Vector2(middleX - 28, floorY)));
+        shifted = true;
+      } else {
+        // Full hearts: nothing to give back, so a few coins instead.
+        for (var i = 0; i < BossAttackConstants.heartFullCoins; i++) {
+          game.world.add(CoinComponent(spawnPosition: Vector2(middleX + i * 22.0, floorY)));
+        }
+      }
+    }
+    if (powerRoll < BossAttackConstants.minionPowerUpChance && _wavePowerUps < BossAttackConstants.waveMaxPowerUps) {
+      _wavePowerUps++;
+      const kinds = ['fiftyFifty', 'shield', 'timeFreeze'];
+      game.world.add(PowerUpPickupComponent(
+        kind: kinds[kindIndex.clamp(0, kinds.length - 1)],
+        spawnPosition: Vector2(middleX + (shifted ? 28 : 0), floorY),
+      ));
+    }
+  }
+
   void _tickWave(double dt) {
+    // The warnings run out one at a time, and each minion appears at its own spot.
+    for (final p in _pending.toList()) {
+      if (_t >= p.at) {
+        _pending.remove(p);
+        p.warning.removeFromParent();
+        _spawnMinion(p);
+      }
+    }
     if (_t >= GameConstants.bossWaveTimeoutSeconds) {
       for (final m in _minions) {
         if (_isAlive(m)) m.removeFromParent();
       }
       _minions.clear();
+      _clearPending();
       _beginRune();
       return;
     }
-    if (minionsAlive > 0) {
+    if (_pending.isNotEmpty || minionsAlive > 0) {
       _waveClear = 0;
       return;
     }
@@ -880,6 +994,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   /// The fight stops without a winner here (the hero has no hearts left).
   void _endFight() {
     state = BossRoundState.ended;
+    _clearPending();
     attack?.removeFromParent();
     attack = null;
     _cardClosed = true;
@@ -891,6 +1006,7 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     if (isDefeated) return;
     isDefeated = true;
     state = BossRoundState.ended;
+    _clearPending();
     attack?.removeFromParent();
     attack = null;
     _cardClosed = true;
@@ -919,4 +1035,21 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     removeFromParent();
     game.levelComplete();
   }
+}
+
+/// A minion of a wave that has not appeared yet: where it will stand, when (seconds after the wave
+/// began) and the red warning marking the spot until then.
+class _PendingSpawn {
+  final double x;
+  final double y;
+  final bool onGround;
+  final double at;
+  final BossWaveWarning warning;
+  const _PendingSpawn({
+    required this.x,
+    required this.y,
+    required this.onGround,
+    required this.at,
+    required this.warning,
+  });
 }

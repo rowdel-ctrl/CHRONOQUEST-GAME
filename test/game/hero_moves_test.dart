@@ -149,9 +149,9 @@ void main() {
       ranged('boy', HeroMoveKind.boomerang, 200, 420, 0.90);
       ranged('girl', HeroMoveKind.shot, 220, 400, 0.60);
       ranged('delpilar', HeroMoveKind.shot, 320, 700, 0.80);
-      ranged('luna', HeroMoveKind.wave, 180, 380, 0.80);
-      ranged('mariaclara', HeroMoveKind.wave, 160, 340, 0.70);
-      ranged('rizal', HeroMoveKind.burst, 150, 480, 0.90);
+      ranged('luna', HeroMoveKind.wave, 230, 420, 0.80);
+      ranged('mariaclara', HeroMoveKind.wave, 210, 420, 0.70);
+      ranged('rizal', HeroMoveKind.burst, 200, 480, 0.90);
       expect(heroMoveFor('girl').groupRadius, 45);
       expect(heroMoveFor('rizal').count, 3);
       expect(heroMoveFor('rizal').gap, 0.09);
@@ -227,6 +227,23 @@ void main() {
         expect(outside.defeated, isFalse,
             reason: '$id: an enemy beyond its range is safe');
         expect(far.kaalaman, 5, reason: '$id: a miss is free');
+      }
+    });
+
+    test(
+        'the short-reach heroes (Rizal, Maria Clara, Luna) reach at least 200 and are not the smallest target',
+        () {
+      // They were 150, 160 and 180 (against Del Pilar's 320) and Rizal's pages were 22 wide, the
+      // smallest target of any flying move. The far minions of the boss waves made that worse.
+      for (final id in ['rizal', 'mariaclara', 'luna']) {
+        expect(heroMoveFor(id).range, greaterThanOrEqualTo(200), reason: id);
+      }
+      expect(heroMoveFor('rizal').hitWidth, greaterThanOrEqualTo(34));
+      // A shot takes about the same time to cover its whole reach for every ranged hero but Del
+      // Pilar's, whose speed is the point of it: none is slower than half a second.
+      for (final id in _rangedHeroes) {
+        final m = heroMoveFor(id);
+        expect(m.range / m.speed, lessThanOrEqualTo(0.55), reason: '$id takes too long to land');
       }
     });
 

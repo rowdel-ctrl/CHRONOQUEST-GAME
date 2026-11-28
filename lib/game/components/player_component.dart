@@ -19,6 +19,7 @@ import 'enemy_component.dart';
 import 'coin_component.dart';
 import 'gate_component.dart';
 import 'heart_pickup_component.dart';
+import 'powerup_pickup_component.dart';
 
 /// Player character — `position.x` is the player's real world x-position,
 /// `worldX`. Horizontal movement is driven by the on-screen joystick
@@ -780,6 +781,7 @@ class PlayerComponent extends SpriteAnimationComponent
       game.collectCoin(onHighPlatform: other.onHighPlatform);
     }
     if (other is HeartPickupComponent) other.collect();
+    if (other is PowerUpPickupComponent) other.collect();
     if (other is ArtifactComponent && other.isInteractable) {
       // Walk into it and the question opens (GAMEPLAY-V2.md Section 6).
       // No damage, ever — an artifact is an opportunity, not a hazard.

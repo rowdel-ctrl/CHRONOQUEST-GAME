@@ -94,6 +94,15 @@ class EnemyComponent extends SpriteAnimationComponent
   /// a Kaalaman charge for each minion.
   final VoidCallback? onDefeated;
 
+  /// Called once, with the spot where it fell, when its coins drop. The boss fight uses it to
+  /// roll the heart and power-up drops of a wave minion; an ordinary enemy drops coins only.
+  final void Function(Vector2 spot)? onDropped;
+
+  /// A minion of the boss's waves hunts: as a chaser it notices the student from anywhere on its
+  /// floor and the leash never holds it back, so one that appears far away still walks all the
+  /// way in. Ordinary chasers keep their notice range and leash.
+  final bool hunts;
+
   /// Makes this enemy act as another kind than its table entry says. The map's
   /// `behavior="chaser"` on a soldier uses it: that soldier then chases and dashes.
   final EnemyBehavior? behaviorOverride;
@@ -114,6 +123,8 @@ class EnemyComponent extends SpriteAnimationComponent
     this.patrolRangeOverride,
     this.surfaceY,
     this.onDefeated,
+    this.onDropped,
+    this.hunts = false,
     this.behaviorOverride,
     this.blasts = true,
     this.surprise = EnemySurprise.none,
@@ -223,6 +234,14 @@ class EnemyComponent extends SpriteAnimationComponent
   /// Seconds the hurt picture still shows after a hit that did not defeat it.
   double _hurtLeft = 0;
 
+  /// The shove a hit that did not defeat it gives: units still to go, and the way (1 right, -1 left).
+  double _shoveLeft = 0;
+  int _shoveDir = 1;
+
+  /// Whether it is being thrown back by a hit right now (for tests).
+  @visibleForTesting
+  bool get isShoved => _shoveLeft > 0;
+
   Future<Sprite?> _tryLoad(String name) async {
     try {
       return await game.loadSprite('enemies/$name.png');
@@ -325,6 +344,9 @@ class EnemyComponent extends SpriteAnimationComponent
     return p;
   }
 
+  double get _noticeRange => hunts ? double.infinity : CombatConstants.chaserNoticeRange;
+  double get _leash => hunts ? double.infinity : CombatConstants.chaserLeash;
+
   /// 1 when [p] is to the right of this enemy, -1 to the left.
   int _towards(PlayerComponent p) =>
       (p.position.x + p.size.x / 2) >= (position.x + size.x / 2) ? 1 : -1;
@@ -334,6 +356,12 @@ class EnemyComponent extends SpriteAnimationComponent
     super.update(dt);
     if (_hurtLeft > 0) _hurtLeft -= dt;
     if (defeated) return;
+
+    // Thrown back by a hit that did not defeat it: nothing else this frame.
+    if (_shoveLeft > 0) {
+      _stepShove(dt);
+      return;
+    }
 
     // A surprise move may take over the whole frame (a squat, a hop, a throw, a run).
     if (_move?.update(this, dt) ?? false) return;
@@ -403,7 +431,7 @@ class EnemyComponent extends SpriteAnimationComponent
       case _ChaserState.chase:
         break;
     }
-    final target = _playerWithin(CombatConstants.chaserNoticeRange);
+    final target = _playerWithin(_noticeRange);
     if (target == null) {
       _growled = false;
     } else if (!_growled) {
@@ -418,10 +446,9 @@ class EnemyComponent extends SpriteAnimationComponent
           (position.x + size.x / 2);
       if (dx.abs() < 8) return; // right on top: no jitter
       final nextX = position.x + CombatConstants.chaserSpeed * dir * dt;
-      final withinLeash =
-          (nextX - _spawnX).abs() <= CombatConstants.chaserLeash;
+      final withinLeash = (nextX - _spawnX).abs() <= _leash;
       final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
-      if (withinLeash && ledgeOk) position.x = nextX;
+      if (withinLeash && ledgeOk && !_wallAhead(nextX)) position.x = nextX;
       return;
     }
     if ((position.x - _spawnX).abs() > _patrolRange) {
@@ -514,9 +541,9 @@ class EnemyComponent extends SpriteAnimationComponent
     final step =
         min(speed * dt, CombatConstants.dashDistance - _dashTravelled);
     final nextX = position.x + step * _dashDirection;
-    final withinLeash = (nextX - _spawnX).abs() <= CombatConstants.chaserLeash;
+    final withinLeash = (nextX - _spawnX).abs() <= _leash;
     final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
-    if (withinLeash && ledgeOk) {
+    if (withinLeash && ledgeOk && !_wallAhead(nextX)) {
       position.x = nextX;
       _dashTravelled += step;
     } else {
@@ -603,6 +630,28 @@ class EnemyComponent extends SpriteAnimationComponent
           _heavyCooldown = CombatConstants.lungeCooldown;
         }
     }
+  }
+
+  /// Whether a step to world x [x] would walk into raised ground (a wall: the boss's stage, a
+  /// tower) that rises more than [wallBand] above the feet, as the student is held back by.
+  /// Only a minion that [hunts] checks: it crosses the whole boss room, so without this it
+  /// walked straight through the stage and the towers. Other enemies stay as the levels were
+  /// made for them.
+  bool _wallAhead(double x, {bool always = false}) {
+    if (!hunts && !always) return false;
+    final footHalfWidth = size.x * footSpanFraction / 2;
+    final centre = x + size.x / 2;
+    final left = centre - footHalfWidth;
+    final right = centre + footHalfWidth;
+    final feet = position.y + size.y;
+    for (final s in game.groundSections) {
+      if (right > s.position.x &&
+          left < s.position.x + s.size.x &&
+          feet > s.position.y + wallBand) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// Whether the centre of the sprite, at world x [x], is over solid ground —
@@ -828,21 +877,36 @@ class EnemyComponent extends SpriteAnimationComponent
     }
   }
 
-  /// A hit that does not kill (a Heavy's first): it flashes white and is
-  /// shoved back a few units and settles, so the swing visibly landed.
+  /// A hit that does not kill (a Heavy's first): it flashes white and is thrown back
+  /// [CombatConstants.hitShoveDistance] away from the student, and stays there, so the student
+  /// is not left touching it and can step in again for the second hit.
   void _flinch() {
-    final away = _awayFromPlayer();
-    _hurtLeft = 0.14; // the flash is 0.07 s in and 0.07 s out
+    _shoveDir = _awayFromPlayer();
+    _shoveLeft = CombatConstants.hitShoveDistance;
+    _hurtLeft = max(0.14, CombatConstants.hitShoveSeconds); // the flash is 0.07 s in and 0.07 s out
     add(ColorEffect(
       Colors.white,
       EffectController(duration: 0.07, reverseDuration: 0.07),
       opacityFrom: 0,
       opacityTo: 0.9,
     ));
-    add(MoveByEffect(
-      Vector2(away * 14.0, 0),
-      EffectController(duration: 0.07, reverseDuration: 0.07),
-    ));
+  }
+
+  /// One frame of the shove: along the way it was thrown, stopping at a ledge or a wall. It
+  /// then shuffles home like a Heavy that lunged, once nobody is near.
+  void _stepShove(double dt) {
+    final step = min(
+        CombatConstants.hitShoveDistance / CombatConstants.hitShoveSeconds * dt, _shoveLeft);
+    final nextX = position.x + step * _shoveDir;
+    final ledgeOk = !_isSupportedAt(position.x) || _isSupportedAt(nextX);
+    if (ledgeOk && !_wallAhead(nextX, always: true)) {
+      position.x = nextX;
+      _shoveLeft -= step;
+    } else {
+      _shoveLeft = 0; // stopped short: spent
+    }
+    if (_shoveLeft < 0.01) _shoveLeft = 0;
+    _lunged = true;
   }
 
   void _die() {
@@ -958,6 +1022,7 @@ class EnemyComponent extends SpriteAnimationComponent
         CoinComponent(spawnPosition: _deathSpot + Vector2(i * 10.0, 0)),
       );
     }
+    onDropped?.call(_deathSpot.clone());
   }
 
   /// How many bonus coins the golden runner drops, and where: 8 to 10 in two rows over

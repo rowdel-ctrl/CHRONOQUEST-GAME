@@ -497,6 +497,13 @@ class GameNotifier extends StateNotifier<GameState> {
     saveWallet();
   }
 
+  /// One power-up of [kind] found in a level (dropped by a minion of the boss's waves): into the
+  /// wallet and saved at once, so a level that is closed or killed afterwards does not lose it.
+  void addPowerUp(PowerUpKind kind) {
+    _giveFree(kind);
+    saveWallet();
+  }
+
   /// Gives back a Shield that was switched on in a level and never needed.
   void refundShield() {
     state.powerUps.shield++;
