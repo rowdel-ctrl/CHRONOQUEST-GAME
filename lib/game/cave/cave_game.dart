@@ -10,6 +10,7 @@ import '../components/gap_component.dart';
 import '../components/pipe_component.dart';
 import '../enemy_behavior.dart' show EnemyBehavior;
 import 'cave_layout.dart';
+import 'cave_obstacle_components.dart';
 import 'cave_scenery.dart';
 import 'cave_session.dart';
 
@@ -111,12 +112,33 @@ class CaveGame extends ChronoGame {
       color: look.earthEdge,
     ));
     for (final p in layout.platforms) {
-      world.add(CavePlatformComponent(
-        widthInTiles: p.widthInTiles,
-        surfaceY: p.surfaceY,
-        spawnPosition: Vector2(p.x, p.surfaceY),
+      // A crumbling slab is an ordinary slab to the hero until it falls.
+      world.add(p.crumbling
+          ? CrumblingSlabComponent(
+              widthInTiles: p.widthInTiles,
+              surfaceY: p.surfaceY,
+              spawnPosition: Vector2(p.x, p.surfaceY),
+              look: look,
+            )
+          : CavePlatformComponent(
+              widthInTiles: p.widthInTiles,
+              surfaceY: p.surfaceY,
+              spawnPosition: Vector2(p.x, p.surfaceY),
+              look: look,
+            ));
+    }
+    for (final s in layout.spikes) {
+      world.add(CaveSpikesComponent(spot: s, look: look));
+    }
+    for (final s in layout.stalactites) {
+      world.add(CaveStalactiteComponent(
+        spotX: s.x,
+        surfaceY: groundY,
         look: look,
       ));
+    }
+    for (final c in layout.crushers) {
+      world.add(CaveCrusherComponent(spot: c, surfaceY: groundY, look: look));
     }
     for (final c in layout.coins) {
       world.add(CoinComponent(spawnPosition: c.clone()));

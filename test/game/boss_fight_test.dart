@@ -166,6 +166,7 @@ Future<(_BossGame, BossComponent)> _start(WidgetTester tester,
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 16));
   final boss = BossComponent(eraId: era, arena: arena);
+  boss.runeRaisedRollOverride = 1.0; // the older tests walk to a rune on the floor; the raised-rune tests set 0
   game.boss = boss;
   game.world.add(boss);
   for (var i = 0; i < 10; i++) {
@@ -1052,6 +1053,112 @@ void main() {
       }
       expect(boss.state, BossRoundState.rune);
       expect(boss.rune, isNotNull);
+      await _flush(tester);
+    });
+  });
+
+  group('a rune on raised ground', () {
+    void untilRune(_BossGame game, BossComponent boss) {
+      for (var t = 0.0; t < 6 && boss.state != BossRoundState.rune; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
+        game.updateTree(0.05);
+      }
+      expect(boss.state, BossRoundState.rune);
+    }
+
+    testWidgets('the places a rune may stand include the tops of ledges, never the stage or an end wall',
+        (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      final spots = boss.runeSpots();
+      final raised = [for (final s in spots) if (s.y < game.groundY - 1) s];
+      expect(raised, isNotEmpty, reason: 'the ledges of the towers');
+      expect(spots.length, greaterThan(boss.floorSpots().length));
+      final ledges = level.entities.where((e) => e.type == 'platform').toList();
+      for (final s in raised) {
+        final onLedge = ledges.any((p) => (p.y - s.y).abs() < 1 && s.x >= p.x && s.x <= p.x + p.width);
+        final onBlock = level.blocks.any((b) => (b.topY - s.y).abs() < 1 && s.x >= b.startX && s.x <= b.endX);
+        expect(onLedge || onBlock, isTrue, reason: 'raised spot ${s.x}, ${s.y} stands on something');
+        expect((s.x - level.boss!.x).abs(), greaterThanOrEqualTo(168), reason: 'not on the stage');
+        expect(s.x, greaterThan(48));
+        expect(s.x, lessThan(level.mapWidth - 48));
+      }
+      // The old floor spots are all still there.
+      for (final f in boss.floorSpots()) {
+        expect(spots.any((s) => s.x == f.x && s.y == f.y), isTrue);
+      }
+      await _flush(tester);
+    });
+
+    testWidgets('a low roll puts the rune up on a ledge, a high roll on the floor', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      boss.runeRaisedRollOverride = 0.0;
+      game.player.position.x = level.spawnX;
+      untilRune(game, boss);
+      expect(boss.rune!.surfaceY, lessThan(game.groundY - 1));
+      await _flush(tester);
+
+      final (game2, boss2) = await _start(tester, arena: level);
+      boss2.runeRaisedRollOverride = 1.0;
+      game2.player.position.x = level.spawnX;
+      untilRune(game2, boss2);
+      expect(boss2.rune!.surfaceY, game2.groundY);
+      await _flush(tester);
+    });
+
+    testWidgets('a rune on a ledge is not picked up from the floor under it, only from the ledge',
+        (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      boss.runeRaisedRollOverride = 0.0;
+      game.player.position.x = level.spawnX;
+      untilRune(game, boss);
+      final r = boss.rune!;
+      // Standing on the floor right under it: not touching.
+      game.player.position.x = r.centreX - game.player.size.x / 2;
+      game.player.position.y = game.groundY - game.player.size.y;
+      _step(game, 0.05);
+      expect(boss.state, BossRoundState.rune);
+      // On the ledge at the rune: touched.
+      game.player.position.y = r.surfaceY - game.player.size.y;
+      _step(game, 0.05);
+      expect(boss.state, isNot(BossRoundState.rune));
+      await _flush(tester);
+    });
+
+    testWidgets('a climb gets more time before the boss throws anyway', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      boss.runeRaisedRollOverride = 0.0;
+      game.player.position.x = level.spawnX;
+      untilRune(game, boss);
+      final up = game.groundY - boss.rune!.surfaceY;
+      expect(up, greaterThan(90));
+      final limit = BossAttackConstants.runeStallSeconds + up / 100 * BossAttackConstants.runeClimbSecondsPer100;
+      _step(game, BossAttackConstants.runeStallSeconds + 0.3);
+      expect(boss.state, BossRoundState.rune, reason: 'a floor rune would have given up by now');
+      _step(game, limit - BossAttackConstants.runeStallSeconds + 0.5);
+      expect(boss.state, isNot(BossRoundState.rune));
+      await _flush(tester);
+    });
+
+    testWidgets('two runes in a row are never on the same surface', (tester) async {
+      final level = _arena('era2_5');
+      final (game, boss) = await _start(tester, arena: level);
+      boss.runeRaisedRollOverride = 0.0;
+      game.player.position.x = level.spawnX;
+      untilRune(game, boss);
+      final first = boss.lastRuneSurface;
+      expect(first, greaterThanOrEqualTo(1000), reason: 'a ledge or a block, not a floor run');
+      _untilAsking(game, boss);
+      game.handleAnswer(_right(game));
+      for (var t = 0.0; t < 8 && boss.state != BossRoundState.rune; t += 0.05) {
+        if (boss.explaining) boss.continueAfterExplanation();
+        game.updateTree(0.05);
+      }
+      expect(boss.state, BossRoundState.rune);
+      expect(boss.lastRuneSurface, isNot(first));
       await _flush(tester);
     });
   });

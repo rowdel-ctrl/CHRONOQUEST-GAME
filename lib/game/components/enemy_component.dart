@@ -10,10 +10,13 @@ import '../art_scale.dart';
 import '../chrono_game.dart';
 import '../enemy_behavior.dart';
 import '../enemy_moves.dart';
+import '../enemy_warning_art.dart';
 import '../game_collision.dart';
+import '../surprise_art.dart';
 import '../surprise_rules.dart';
 import 'coin_component.dart';
 import 'enemy_burst_component.dart';
+import 'enemy_notice_arrow.dart';
 import 'player_component.dart';
 import 'praise_component.dart';
 
@@ -50,6 +53,25 @@ class EnemyComponent extends SpriteAnimationComponent
   late final String _enemyType;
   late final EnemyBehavior _behavior;
   late int _hp;
+
+  /// The hits this enemy took to start with (1 or 2). An enemy of 2 shows a health bar of that many
+  /// segments over its head, one draining at each hit that does not defeat it. It is the real hit
+  /// points, not the picture: a thrower wears the heavy's art but takes one hit, so it shows none.
+  late int _startHp;
+
+  /// Seconds this enemy has existed, for the little bounces of its marks.
+  double _clock = 0;
+
+  /// The [_clock] time of the last hit that did not defeat it (its health bar drains from then).
+  double _lastHitAt = -100;
+
+  /// Seconds the small red "!" of a chaser that just noticed the student still shows.
+  double _noticeLeft = 0;
+
+  /// The floor strip of a warning move (a chaser's dash, a Heavy's lunge): which way, how far,
+  /// planned when the warning starts from what the move will really be allowed to cover.
+  int _stripDir = 1;
+  double _stripLen = 0;
 
   /// Walker only: the world-x this enemy spawned at, and which direction
   /// it's currently walking — patrol range is measured from this anchor,
@@ -178,6 +200,7 @@ class EnemyComponent extends SpriteAnimationComponent
     _hp = surprise == EnemySurprise.thrower
         ? SurpriseConstants.throwerHits
         : typeData.maxHp;
+    _startHp = _hp;
     _move = switch (surprise) {
       EnemySurprise.hopper => HopperMove(),
       EnemySurprise.popper => RiseMove(),
@@ -354,7 +377,9 @@ class EnemyComponent extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
+    _clock += dt;
     if (_hurtLeft > 0) _hurtLeft -= dt;
+    if (_noticeLeft > 0) _noticeLeft -= dt;
     if (defeated) return;
 
     // Thrown back by a hit that did not defeat it: nothing else this frame.
@@ -437,6 +462,7 @@ class EnemyComponent extends SpriteAnimationComponent
     } else if (!_growled) {
       _growled = true;
       game.audioService.playChaserNotice();
+      if (!hunts) _showNotice(); // a wave minion already had its own warning where it appeared
     }
     if (target != null) {
       final dir = _towards(target);
@@ -478,6 +504,7 @@ class EnemyComponent extends SpriteAnimationComponent
     _direction = _towards(near);
     _chaserState = _ChaserState.crouch;
     _chaserTime = 0;
+    _planStrip(_direction, CombatConstants.dashDistance, leash: _leash);
     return true;
   }
 
@@ -578,6 +605,9 @@ class EnemyComponent extends SpriteAnimationComponent
           _direction = _lungeDirection;
           _heavyState = _HeavyState.windup;
           _heavyTime = 0;
+          _planStrip(_lungeDirection,
+              CombatConstants.lungeSpeed * CombatConstants.lungeDuration,
+              leash: CombatConstants.lungeLeash);
           game.audioService.playHeavyWindup();
           add(ColorEffect(
             Colors.white,
@@ -841,6 +871,96 @@ class EnemyComponent extends SpriteAnimationComponent
       move.paintOver(canvas, this);
       canvas.restore();
     }
+    if (!defeated) {
+      canvas.save();
+      canvas.translate(size.x / 2, size.y);
+      _paintMarks(canvas);
+      canvas.restore();
+    }
+  }
+
+  // ─── Shield marks and warnings (drawn in code) ───────────────────────────────
+
+  /// How many segments of its health bar are still full (for tests): its hit points, when it started
+  /// with more than one; 0 when it has no bar.
+  @visibleForTesting
+  int get healthSegments => _startHp >= 2 ? _hp : 0;
+
+  /// Whether it shows a health bar at all: it started with two hits to take.
+  @visibleForTesting
+  bool get showsHealthBar => _startHp >= 2;
+
+  /// Seconds the chaser's small red "!" still shows (for tests).
+  @visibleForTesting
+  double get noticeLeft => _noticeLeft;
+
+  /// The floor strip planned for the warning in progress: which way (1 right, -1 left) and how
+  /// far, in units (for tests).
+  @visibleForTesting
+  ({int dir, double length}) get plannedStrip => (dir: _stripDir, length: _stripLen);
+
+  /// A chaser has just noticed the student: a small red "!" over its head, and, when it is past
+  /// the edge of the screen (behind the student, say), an arrow on that screen edge.
+  void _showNotice() {
+    _noticeLeft = 0.45;
+    final cx = position.x + size.x / 2;
+    if (cx < game.cameraLeftEdgeX + 8 || cx > game.cameraRightEdgeX - 8) {
+      game.world.add(EnemyNoticeArrow(enemy: this));
+    }
+  }
+
+  /// Plans the floor strip of a dash or a lunge: from where it stands, [dir] for up to [maxLength]
+  /// units, cut short where the move would be stopped (a ledge, a wall, its leash).
+  void _planStrip(int dir, double maxLength, {required double leash}) {
+    _stripDir = dir;
+    var reach = 0.0;
+    for (var d = 8.0; reach < maxLength; d += 8) {
+      final step = min(d, maxLength);
+      final nextX = position.x + dir * step;
+      if ((nextX - _spawnX).abs() > leash) break;
+      if (_isSupportedAt(position.x) && !_isSupportedAt(nextX)) break;
+      if (_wallAhead(nextX)) break;
+      reach = step;
+    }
+    _stripLen = reach;
+  }
+
+  /// The marks over and under the enemy, in its own coordinates (feet at the origin).
+  void _paintMarks(Canvas canvas) {
+    final top = -drawnHeight;
+    // The floor strip of a warning move, and the "!" over its head (above the health bar).
+    var bangLift = showsHealthBar ? 30.0 : 0.0;
+    if (_heavyState == _HeavyState.windup || _heavyState == _HeavyState.lunge) {
+      final f = _heavyState == _HeavyState.lunge
+          ? 1.0
+          : (_heavyTime / CombatConstants.lungeWindup).clamp(0.0, 1.0);
+      EnemyWarningArt.floorStrip(canvas,
+          fromX: 0, toX: _stripDir * _stripLen, filled: f);
+      if (_heavyState == _HeavyState.windup) {
+        SurpriseArt.bang(canvas, 0, top - bangLift, _clock);
+      }
+    }
+    if (_chaserState == _ChaserState.crouch || _chaserState == _ChaserState.dash) {
+      final f = _chaserState == _ChaserState.dash
+          ? 1.0
+          : (_chaserTime / CombatConstants.dashCrouch).clamp(0.0, 1.0);
+      EnemyWarningArt.floorStrip(canvas,
+          fromX: 0,
+          toX: _stripDir * _stripLen,
+          filled: f,
+          color: const Color(0xFFFFB84A));
+      if (_chaserState == _ChaserState.crouch) {
+        SurpriseArt.bang(canvas, 0, top - bangLift, _clock);
+      }
+    }
+    if (_noticeLeft > 0 && _chaserState == _ChaserState.chase) {
+      EnemyWarningArt.noticeBang(canvas, 0, top, _clock);
+    }
+    // The health bar of an enemy that takes two hits.
+    if (showsHealthBar) {
+      EnemyWarningArt.healthBar(canvas, 0, top - 12,
+          total: _startHp, left: _hp, sinceHit: _clock - _lastHitAt);
+    }
   }
 
   /// Called when the player's attack hitbox connects. Decrements HP and
@@ -857,6 +977,9 @@ class EnemyComponent extends SpriteAnimationComponent
     if (_hp <= 0) {
       _die();
     } else {
+      // A segment of its health bar drains.
+      _lastHitAt = _clock;
+      game.audioService.playShieldPop();
       // A hit knocks the wind-up out of a Heavy: it has to start over.
       _heavyState = _HeavyState.idle;
       _heavyCooldown = CombatConstants.lungeCooldown;

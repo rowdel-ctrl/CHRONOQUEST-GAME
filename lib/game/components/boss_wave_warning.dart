@@ -46,7 +46,6 @@ class BossWaveWarning extends PositionComponent with HasGameReference<ChronoGame
   void render(Canvas canvas) {
     final pulse = 0.5 + 0.5 * math.sin(_t * 13);
     final red = Color.fromRGBO(232, 67, 58, 0.55 + 0.45 * pulse);
-    const dark = Color(0xFF7A1E18);
     final e = edge;
     if (e == 0) {
       // A ring on the floor, growing and fading a little with each pulse.
@@ -68,7 +67,16 @@ class BossWaveWarning extends PositionComponent with HasGameReference<ChronoGame
     }
     // A badge on the edge the minion will come from.
     final cx = e < 0 ? game.cameraLeftEdgeX + edgeInset : game.cameraRightEdgeX - edgeInset;
-    final cy = surfaceY - 150;
+    paintEdgeBadge(canvas, cx: cx, cy: surfaceY - 150, edge: e, pulse: pulse);
+  }
+
+  /// The red "!" badge on a screen edge with a little arrow pointing out toward what is coming:
+  /// [edge] is -1 for the left edge and 1 for the right. Shared with the chaser's notice arrow.
+  static void paintEdgeBadge(Canvas canvas,
+      {required double cx, required double cy, required int edge, required double pulse}) {
+    final red = Color.fromRGBO(232, 67, 58, 0.55 + 0.45 * pulse);
+    const dark = Color(0xFF7A1E18);
+    final e = edge;
     final badge = RRect.fromRectAndRadius(
         Rect.fromCenter(center: Offset(cx, cy), width: 46, height: 46), const Radius.circular(12));
     canvas.drawRRect(badge.shift(const Offset(0, 3)), Paint()..color = const Color(0x66000000));

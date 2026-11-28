@@ -91,7 +91,10 @@ class CombatConstants {
   /// then stands tired for [dashTired] before it chases again. Touching a student
   /// costs a heart as for any enemy; a jump over it avoids that.
   static const double dashArmRange = 140;
-  static const double dashCrouch = 0.35;
+  /// 0.35 until 2026-11-28, then 0.5: the game's own rule is that nothing hurts before a warning of
+  /// at least SurpriseConstants.minWarning (0.5 s) has shown; the crouch now also has a "!" and an
+  /// orange strip on the floor that shows where the dash ends.
+  static const double dashCrouch = 0.5;
   static const double dashDuration = 0.3;
   static const double dashDistance = 130;
   static const double dashTired = 0.7;

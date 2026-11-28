@@ -1,0 +1,189 @@
+<title>Boss Rooms Mockup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: six era cards, each with the room as it is now and as proposed, drawn wall to wall at one scale. Dark like the game's menus. */
+:root{
+  --bg:#17121f; --panel:#221a2e; --line:#3b2f4d; --ink:#f4ecd8; --dim:#b9aac9;
+  --gold:#ffc83d; --red:#ff6a5a; --good:#7fd69a;
+  --font:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 6px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(19px,3.2vw,25px);margin:0 0 2px;text-wrap:balance}
+h3{font-size:12px;margin:12px 0 4px;letter-spacing:.12em;text-transform:uppercase}
+p{margin:0 0 10px;color:var(--dim);max-width:70ch}
+.lead{font-size:16px;color:var(--ink);max-width:64ch}
+.tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:20px;min-width:0}
+.card canvas{display:block;width:100%;height:auto;border-radius:6px;background:#000}
+.now{color:var(--red)} .new{color:var(--good)}
+.sub{font-size:13px;color:var(--dim);margin:0 0 6px}
+.cap{font-size:13px;color:var(--dim);margin:8px 2px 0;max-width:none}
+.cap b{color:var(--ink);font-weight:600}
+.kpi{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.kpi span{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--dim)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin-top:10px}
+.legend i{display:inline-block;width:22px;height:0;border-top:3px dashed var(--gold);vertical-align:middle;margin-right:6px}
+.ask{margin-top:44px;border:1px solid var(--gold);border-radius:10px;padding:16px 18px;background:var(--panel)}
+.ask ul{margin:6px 0 0;padding-left:20px;color:var(--dim)} .ask li{margin:3px 0}
+</style>
+
+<div class="wrap">
+  <div class="tag">ChronoQuest · GAME · mockup, nothing built yet</div>
+  <h1>Six boss rooms, six different layouts</h1>
+  <p class="lead">Each room is drawn wall to wall (2,736 units) at one scale, as it is now and as proposed, with its own boss and look. Every room has its own kind of structure, and none is taller than 4 tiles (96 units, under a jump's 128). Boulders on the shore, a fort gatehouse, a plaza dais, sandbag barricades, a collapsed bridge ramp, a marble ziggurat.</p>
+  <div class="legend"><span><i></i>Where the question rune can land (new)</span><span>Gold marks them: the floor and the top of any raised block 2 tiles wide or more. Today the rune lands only on the flat floor.</span></div>
+  <div id="cards"></div>
+  <div class="ask"><h2 style="font-size:18px">Tell me what to change</h2>
+    <ul>
+      <li>Any room whose structure you don't like, or a different idea for it.</li>
+      <li>Walkway or lookout too long or too high?</li>
+      <li>Rune on small blocks: it sits in the middle of a 2-tile block. Too fiddly, or fine?</li>
+    </ul></div>
+</div>
+
+<script>
+const SRC=/*SRC*/{};
+const LAYOUTS=/*LAYOUTS*/{};
+const IMG={};
+function loadAll(){return Promise.all(Object.entries(SRC).map(([k,v])=>new Promise(r=>{const i=new Image();i.onload=()=>{IMG[k]=i;r()};i.onerror=()=>r();i.src=v})))}
+const DPR=1.5, COLS=114, W=COLS*24, H=380, gy=300;
+const rng=s=>()=>((s=(s*1664525+1013904223)>>>0)/4294967296);
+function mk(id){const c=document.getElementById(id);c.width=W*DPR;c.height=H*DPR;const x=c.getContext('2d');x.scale(DPR,DPR);return x}
+function spr(x,img,fx,fy,h,flip){if(!img)return;const w=img.width*h/img.height;x.save();x.translate(fx,fy);if(flip)x.scale(-1,1);x.drawImage(img,-w/2,-h,w,h);x.restore()}
+
+/* block looks: pat bricks | bags | slabs | rock */
+const ERAS=[
+ {id:'pre-colonial',tall:3,name:'Sinaunang Pilipinas',boss:'bakunawa_idle',enemy:'dark_spirit_1',sky:['#3F9AA3','#F4E2A0'],water:'#2f9ab8',
+  st:{pat:'rock',c0:'#a89a7c',c1:'#6d6247',mortar:'rgba(50,40,26,.6)',top:'#e0cf9a',lip:'#c4b07a',bw:24,rh:14},
+  now:'A shore with a tide pool by each wall. Two ledges per side float over the sand.',
+  neu:'<b>Boulders</b> across the sand: three rocks of different sizes (2, 3 and 2 tiles high) with gaps you jump between. The tide pools stay. Nothing is a staircase here.'},
+ {id:'spanish',tall:3,name:'Pananakop ng Espanya',boss:'governor_idle',enemy:'spanish_soldier_1',sky:['#5A3D86','#FFB06A'],water:'#2f9ab8',
+  st:{pat:'bricks',c0:'#aa9b7c',c1:'#6a604d',mortar:'rgba(52,44,32,.7)',top:'#e3d6b5',lip:'#c8b995',bw:24,rh:12},
+  now:'A courtyard with a 48-unit bump at each end and two floating ledges per side.',
+  neu:'A <b>gatehouse</b>: two stone bastions 3 tiles high, with battlements and a flag, and the gate open between them. Minions can come through the gate.'},
+ {id:'nationalism',tall:3,name:'Nasyonalismo',boss:'governor_idle',enemy:'spanish_soldier_1',sky:['#7A5C7E','#F0C27A'],water:'#2f9ab8',
+  st:{pat:'bricks',c0:'#b9806a',c1:'#774a3e',mortar:'rgba(235,215,190,.55)',top:'#f0dcc2',lip:'#d7bf9f',bw:24,rh:12},
+  now:'A plaza bowl: you start on a high terrace and drop in. Two floating ledges per side.',
+  neu:'The terrace start stays. A <b>plaza dais</b>: a stepped brick platform (2 then 3 tiles) with a kiosk roof over the top step. The same Governor, in a very different room.'},
+ {id:'american',tall:3,name:'Panahon ng Amerikano',boss:'general_idle',enemy:'american_soldier_1',sky:['#4A8CD8','#CFE8F4'],water:'#2f9ab8',
+  st:{pat:'bags',c0:'#c2ab72',c1:'#8d7a48',mortar:'rgba(60,46,24,.7)',top:'#e0cf9c',lip:'#b9a468',bw:24,rh:11},
+  now:'A trench line: a sandbag mound with a trench behind it. Two floating ledges per side.',
+  neu:'Two <b>sandbag barricades</b> (2 and 3 tiles high) with barbed wire, and open ground between them. The trench stays.'},
+ {id:'ww2',tall:4,name:'Ikalawang Digmaang Pandaigdig',boss:'commander_idle',enemy:'japanese_soldier_1',sky:['#232C3D','#8C9194'],water:'#26566c',
+  st:{pat:'slabs',c0:'#8e9088',c1:'#5b5d57',mortar:'rgba(30,30,28,.65)',top:'#b5b7ae',lip:'#9a9c93',bw:48,rh:24},
+  now:'A broken bridge: a gap over water and the stump of the bridge. Two floating ledges per side.',
+  neu:'A <b>collapsed bridge ramp</b>: rubble steps up to a broken concrete slab 4 tiles high, with bent rebar, then a sheer drop on the stage side. The gap stays.'},
+ {id:'modern',tall:4,name:'Makabagong Panahon',boss:'corruption_boss_idle',enemy:'misinfo_cloud_1',sky:['#3C6E86','#B9D8DC'],water:'#2f9ab8',
+  st:{pat:'slabs',c0:'#dcdde4',c1:'#9d9eae',mortar:'rgba(120,120,150,.55)',top:'#f6f6fa',lip:'#d3d3de',bw:48,rh:24},
+  now:'The palace steps: a short staircase up, then down to the courtyard. Two floating ledges per side.',
+  neu:'A <b>marble ziggurat</b>: wide steps up 4 tiles and down again, with columns and a flag on top. Symmetrical, unlike the others.'},
+];
+
+function blk(x,x0,y0,w,h,st){
+  const g=x.createLinearGradient(0,y0,0,y0+Math.min(h,200));g.addColorStop(0,st.c0);g.addColorStop(1,st.c1);x.fillStyle=g;x.fillRect(x0,y0,w,h);
+  const r=rng((x0*7+y0*13+w)|0);
+  for(let row=0,yy=y0+4;yy<y0+h;row++,yy+=st.rh){
+    const o=(row%2)*(st.bw/2);
+    for(let bx=x0-o;bx<x0+w;bx+=st.bw){
+      let bw=st.bw;if(st.pat==='rock')bw=16+r()*18;
+      const l=Math.max(bx,x0),rr=Math.min(bx+bw,x0+w);if(rr<=l)continue;
+      const tone=r();
+      if(st.pat==='bags'){x.fillStyle=tone>.5?`rgba(255,240,200,${.06+.12*r()})`:`rgba(40,28,10,${.06+.14*r()})`;
+        x.beginPath();x.roundRect(l+.5,yy,rr-l-1,st.rh-1.5,5);x.fill();x.strokeStyle=st.mortar;x.lineWidth=1.4;x.stroke()}
+      else{x.fillStyle=tone>.5?`rgba(255,240,210,${.04+.10*r()})`:`rgba(24,20,14,${.05+.12*r()})`;x.fillRect(l+1.2,yy,rr-l-1.2,st.rh-1.5);
+        x.fillStyle=st.mortar;x.fillRect(l,yy+st.rh-1.5,rr-l,1.5);if(bx>x0)x.fillRect(bx,yy,1.4,st.rh)}
+      if(st.id==='x'){}
+    }
+    if(st.pat==='slabs'){x.strokeStyle='rgba(255,255,255,.12)';x.lineWidth=1;for(let k=0;k<2;k++){const sx=x0+r()*w;x.beginPath();x.moveTo(sx,yy);x.lineTo(sx+18,yy+st.rh);x.stroke()}}
+  }
+  x.fillStyle=st.top;x.fillRect(x0,y0,w,3);x.fillStyle=st.lip;x.fillRect(x0,y0+3,w,2);
+  x.fillStyle='rgba(0,0,0,.2)';x.fillRect(x0,y0,2,h);x.fillRect(x0+w-2,y0,2,h);
+}
+function sheetTile(x,sheet,r,c,dx,dy,dw=24,dh=24,sh=16){x.imageSmoothingEnabled=false;x.drawImage(sheet,c*16,r*16,16,sh,dx,dy,dw,dh)}
+function runsOf(Hs){const out=[];let c=0;while(c<COLS){let e=c;while(e+1<COLS&&Hs[e+1]===Hs[c])e++;out.push({c0:c,c1:e,h:Hs[c]});c=e+1}return out}
+function sky(x,a,b){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);x.fillStyle=g;x.fillRect(0,0,W,H)}
+
+function deco(x,era,Hs){
+  const runs=runsOf(Hs);
+  for(const r of runs){
+    if(r.h<1||r.h===7||r.c0<8||r.c1>COLS-9)continue;
+    if(r.c0>=COLS/2-8&&r.c1<=COLS/2+7)continue; // the stage
+    const x0=r.c0*24,x1=(r.c1+1)*24,top=gy-r.h*24,w=x1-x0,cx=(x0+x1)/2;
+    const rr=rng(r.c0*31+7);
+    if(era.id==='pre-colonial'){x.fillStyle='#4f9a4a';for(let k=0;k<3;k++){const px=x0+8+rr()*(w-16);x.beginPath();x.moveTo(px-6,top);x.lineTo(px,top-12-rr()*6);x.lineTo(px+6,top);x.fill()}}
+    if(era.id==='spanish'&&w>=96){x.fillStyle='#b9aa86';for(let px=x0+3;px<x1-8;px+=26)x.fillRect(px,top-11,14,11);
+      x.fillStyle='#4a3a2a';x.fillRect(cx-1,top-44,2,34);x.fillStyle='#d23b3b';x.fillRect(cx+1,top-44,16,9)}
+    if(era.id==='nationalism'&&r.h===3){x.save();x.globalAlpha=.8;x.fillStyle='#5b2a20';x.fillRect(x0+4,top-40,4,40);x.fillRect(x1-8,top-40,4,40);
+      x.fillStyle='#b23a32';x.beginPath();x.moveTo(x0-8,top-40);x.lineTo(cx,top-64);x.lineTo(x1+8,top-40);x.closePath();x.fill();x.restore()}
+    if(era.id==='nationalism'&&r.h===2&&w<=72){x.fillStyle='#8f1f27';x.fillRect(x0+10,top,w-20,3)}
+    if(era.id==='american'){x.strokeStyle='#3a3a3a';x.lineWidth=1.6;x.beginPath();x.moveTo(x0-4,top-14);for(let px=x0;px<=x1+4;px+=8){x.lineTo(px+4,top-24);x.lineTo(px+8,top-14)}x.stroke();
+      x.fillStyle='#5a4220';x.fillRect(x0+2,top-26,3,26);x.fillRect(x1-6,top-26,3,26)}
+    if(era.id==='ww2'&&r.h===4){x.strokeStyle='#4a2c1e';x.lineWidth=2;for(let k=0;k<4;k++){const px=x0+8+k*14;x.beginPath();x.moveTo(px,top);x.lineTo(px+(k%2?5:-4),top-20-k*3);x.stroke()}
+      x.fillStyle='#6f716b';x.save();x.translate(x1-10,top);x.rotate(-.5);x.fillRect(-26,-6,44,6);x.restore()}
+    if(era.id==='modern'&&r.h===4&&w>=72){for(let px=x0+10;px<x1-10;px+=30){x.fillStyle='#f6f6fa';x.fillRect(px,top-44,9,44);x.fillRect(px-3,top-48,15,6);x.fillStyle='rgba(0,0,0,.12)';x.fillRect(px+6,top-44,3,44)}
+      x.fillStyle='#c9a24a';x.fillRect(cx-1,top-70,2,24);x.fillRect(cx+1,top-70,14,8)}
+  }
+}
+function runeSpots(x,Hs){
+  const runs=runsOf(Hs);x.save();x.strokeStyle='#ffc83d';x.fillStyle='#ffc83d';x.lineWidth=3;x.setLineDash([10,7]);
+  for(const r of runs){
+    if(r.h<0||r.h===7)continue; // pits and the end walls
+    if(r.c0>=COLS/2-8&&r.c1<=COLS/2+7)continue; // the stage
+    const n=r.c1-r.c0+1;if(r.c0<2||r.c1>COLS-3)continue;
+    const w=n*24;let m;
+    if(r.h===0)m=72;else{if(n<2)continue;m=Math.min(72,(w-24)/2)}
+    if(w-2*m<0)continue;
+    const y=gy-r.h*24-9,xa=r.c0*24+m,xb=r.c1*24+24-m;
+    if(xb-xa>1){x.beginPath();x.moveTo(xa,y);x.lineTo(xb,y);x.stroke()}
+    for(const px of(xb-xa>1?[xa,xb]:[xa])){x.save();x.translate(px,y);x.rotate(.785);x.fillRect(-5,-5,10,10);x.restore()}
+  }
+  x.restore();
+}
+function room(id,era,which){
+  const x=mk(id);const L=LAYOUTS[era.id];
+  sky(x,era.sky[0],era.sky[1]);
+  // a far hill band so the room is not floating
+  x.fillStyle='rgba(30,20,40,.25)';x.beginPath();x.moveTo(0,gy-70);for(let px=0;px<=W;px+=120)x.lineTo(px,gy-90-Math.sin(px/230)*24);x.lineTo(W,gy);x.lineTo(0,gy);x.fill();
+  const Hs=which==='now'?L.now.H:L.neu.H;
+  // water in pits
+  Hs.forEach((h,c)=>{if(h<0){x.fillStyle=era.water;x.fillRect(c*24,gy+6,24,H-gy);x.fillStyle='rgba(255,255,255,.25)';x.fillRect(c*24,gy+6,24,3)}});
+  if(which==='now'){
+    const sh=IMG['sheet_'+era.id];
+    Hs.forEach((h,c)=>{if(h<0)return;const top=gy-h*24;const l=c>0&&Hs[c-1]<h,r=c<COLS-1&&Hs[c+1]<h;
+      sheetTile(x,sh,0,l?3:r?5:1,c*24,top);
+      for(let yy=top+24;yy<H;yy+=24){sheetTile(x,sh,1,l?3:r?5:4,c*24,yy)}});
+    for(const p of L.now.platforms){const top=gy-p.h*24,x0=p.c*24;
+      sheetTile(x,sh,1,1,x0,top);for(let i=1;i<p.w-1;i++)sheetTile(x,sh,0,1,x0+i*24,top);sheetTile(x,sh,1,2,x0+(p.w-1)*24,top);
+      sheetTile(x,sh,1,3,x0,top+24,24,8,5.33);for(let i=1;i<p.w-1;i++)sheetTile(x,sh,1,4,x0+i*24,top+24,24,8,5.33);sheetTile(x,sh,1,5,x0+(p.w-1)*24,top+24,24,8,5.33)}
+  }else{
+    for(const r of runsOf(Hs)){if(r.h<0)continue;const hh=r.h*24;blk(x,r.c0*24,gy-hh,(r.c1-r.c0+1)*24,hh+(H-gy),era.st)}
+    deco(x,era,Hs);
+    runeSpots(x,Hs);
+  }
+  // boss, hero, minion spots
+  spr(x,IMG[era.boss],W/2,gy-48,150,false);
+  spr(x,IMG.boy_idle,5*24,gy-(Hs[5]*24),120,false);
+  for(const c of[38,42,COLS-39,COLS-43])spr(x,IMG[era.enemy],c*24+12,gy,72,true);
+  x.font='600 20px Poppins,sans-serif';x.fillStyle='rgba(244,236,216,.85)';x.textAlign='center';
+  x.fillText('start',5*24,gy+34);x.fillText('stage',W/2,gy+34);x.fillText('minion spots',40*24,gy+34);x.fillText('minion spots',(COLS-41)*24,gy+34);
+}
+
+loadAll().then(()=>{
+  const cards=document.getElementById('cards');
+  ERAS.forEach((e,i)=>{
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<h2>${i+1} · ${e.name}</h2><p class="sub">Boss: ${e.boss.replace('_idle','').replace('_',' ')}</p>
+      <h3 class="now">Now</h3><canvas id="n_${e.id}"></canvas><p class="cap">${e.now}</p>
+      <h3 class="new">Proposed</h3><canvas id="p_${e.id}"></canvas><p class="cap">${e.neu}</p>
+      <div class="kpi"><span>Solver: 0 trap spots</span><span>Every block reachable</span><span>Tallest: ${e.tall} tiles (${e.tall*24} units)</span><span>Minion spots unchanged</span></div>`;
+    cards.appendChild(d);
+  });
+  ERAS.forEach(e=>{room('n_'+e.id,e,'now');room('p_'+e.id,e,'new')});
+});
+</script>

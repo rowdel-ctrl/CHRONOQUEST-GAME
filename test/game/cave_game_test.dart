@@ -10,6 +10,8 @@ import 'package:chronoquest/core/constants.dart';
 import 'package:chronoquest/data/question_pool.dart';
 import 'package:chronoquest/game/answer_point_handler.dart';
 import 'package:chronoquest/game/cave/cave_game.dart';
+import 'package:chronoquest/game/cave/cave_obstacle_components.dart';
+import 'package:chronoquest/game/cave/cave_scenery.dart';
 import 'package:chronoquest/game/cave/cave_session.dart';
 import 'package:chronoquest/game/cave_handler.dart';
 import 'package:chronoquest/game/chrono_game.dart';
@@ -464,6 +466,40 @@ void main() {
       expect(cave.exitPipe!.isExit, isTrue);
       expect(cave.exitPipe!.enabled, isFalse, reason: 'the way out opens after the question');
       expect(cave.player.position.x, closeTo(CaveConstants.spawnX, 1));
+    });
+
+    _test('builds the obstacles its level has: all four from level 8',
+        (tester) async {
+      final level = await _mountLevel(tester);
+      level.currentEra = 'pre-colonial';
+      level.currentLevel = 8;
+      final cave = await _mountCave(tester, level);
+      await _settle(tester, frames: 6);
+      final kids = cave.world.children;
+      expect(kids.whereType<CaveSpikesComponent>().length,
+          cave.layout.spikes.length);
+      expect(kids.whereType<CaveSpikesComponent>().length, 2);
+      expect(kids.whereType<CaveStalactiteComponent>().length,
+          cave.layout.stalactites.length);
+      expect(kids.whereType<CaveStalactiteComponent>().length, 2);
+      expect(kids.whereType<CaveCrusherComponent>().length, 1);
+      final crumbling = cave.layout.platforms.where((p) => p.crumbling).length;
+      expect(crumbling, inInclusiveRange(1, 2));
+      expect(kids.whereType<CrumblingSlabComponent>().length, crumbling);
+      expect(kids.whereType<CavePlatformComponent>().length,
+          cave.layout.platforms.length,
+          reason: 'a crumbling slab is a slab too: none is left out');
+    });
+
+    _test('an early cave has only spikes', (tester) async {
+      final level = await _mountLevel(tester); // level 2
+      final cave = await _mountCave(tester, level);
+      await _settle(tester, frames: 6);
+      final kids = cave.world.children;
+      expect(kids.whereType<CaveSpikesComponent>().length, 2);
+      expect(kids.whereType<CaveStalactiteComponent>(), isEmpty);
+      expect(kids.whereType<CaveCrusherComponent>(), isEmpty);
+      expect(kids.whereType<CrumblingSlabComponent>(), isEmpty);
     });
 
     _test('the exit pipe opens once the artifact is answered, right or wrong',

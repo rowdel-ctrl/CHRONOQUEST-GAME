@@ -96,6 +96,13 @@ class HopperMove extends EnemyMove {
   double _baseY = 0;
   SurpriseRegistry? _counted;
 
+  /// World x of the middle of the spot where the hop will end (a ring on the floor marks it).
+  double _landX = 0;
+
+  /// Where the landing ring is, for tests: null when no hop is on its way.
+  double? get landingX =>
+      phase == HopperPhase.squat || phase == HopperPhase.hop ? _landX : null;
+
   @override
   String get phaseName => phase.name;
 
@@ -152,6 +159,7 @@ class HopperMove extends EnemyMove {
     _dir = dx >= 0 ? 1 : -1;
     e.facing = _dir;
     _distance = min(SurpriseConstants.hopDistance, dx.abs());
+    _landX = _centreX(e) + _dir * _distance;
     phase = HopperPhase.squat;
     _t = 0;
     e.game.audioService.playHopper();
@@ -218,6 +226,18 @@ class HopperMove extends EnemyMove {
   @override
   void paintOver(Canvas canvas, EnemyComponent e) {
     final h = e.drawnHeight;
+    if (phase == HopperPhase.squat || phase == HopperPhase.hop) {
+      // A ring on the floor where the hop ends. While it is in the air the floor is below it.
+      final floorBelow = phase == HopperPhase.hop ? _baseY - e.position.y : 0.0;
+      canvas.save();
+      canvas.translate(0, floorBelow);
+      final u = phase == HopperPhase.squat
+          ? (_t / SurpriseConstants.hopSquat).clamp(0.0, 1.0)
+          : 1.0;
+      SurpriseArt.ring(canvas, _landX - _centreX(e), SurpriseConstants.ringRadius,
+          0.95, 0.12 + 0.18 * u);
+      canvas.restore();
+    }
     if (phase == HopperPhase.squat) {
       final p = (_t / SurpriseConstants.hopSquat).clamp(0.0, 1.0);
       final sy = 1 - SurpriseConstants.hopSquashDepth * sin(p * pi * 0.8);

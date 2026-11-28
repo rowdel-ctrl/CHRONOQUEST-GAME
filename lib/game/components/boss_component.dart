@@ -132,6 +132,20 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
   double _waveClear = 0;
   final math.Random _random = math.Random();
 
+  /// Which surface the last rune stood on, so the next one is on another, and how long the student has
+  /// to reach this rune before the boss throws anyway (more for a rune up a block).
+  int _lastRuneSurface = -1;
+
+  /// For tests: replaces the random roll that decides whether this rune goes up on raised ground (a roll under
+  /// [BossAttackConstants.runeRaisedChance] does): 0 always, 1 never.
+  @visibleForTesting
+  double? runeRaisedRollOverride;
+
+  /// Which surface the last rune stood on (for tests).
+  @visibleForTesting
+  int get lastRuneSurface => _lastRuneSurface;
+  double _runeLimit = BossAttackConstants.runeStallSeconds;
+
   /// Whether the last round began because the student waited too long for the rune.
   bool stalled = false;
 
@@ -509,6 +523,52 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     return runs;
   }
 
+  /// Where a rune may stand: every floor spot (as in [floorSpots]) and, in an arena, the top of every
+  /// raised block and ledge the student can stand on (the arena solver has proven each reachable).
+  /// [surface] tells which floor, block or ledge a spot is on. The stage and its steps and the end walls
+  /// are left out, and a rune keeps off the edge of what it stands on (less on a small block, so a block
+  /// 2 tiles wide still gets one in its middle).
+  @visibleForTesting
+  List<({double x, double y, int surface})> runeSpots() {
+    final out = <({double x, double y, int surface})>[];
+    final runs = floorRuns();
+    for (var i = 0; i < runs.length; i++) {
+      for (final s in runs[i]) {
+        out.add((x: s.x, y: s.y, surface: i));
+      }
+    }
+    final room = arena;
+    final stage = room?.boss;
+    if (room == null || stage == null) return out;
+    final base = game.groundY;
+    final lastEnd = room.blocks.isEmpty ? 0.0 : room.blocks.map((b) => b.endX).reduce(math.max);
+    void top(double x0, double x1, double y, int surface) {
+      final w = x1 - x0;
+      if (w < 48) return;
+      final m = math.min(BossAttackConstants.runeEdgeMargin, (w - 24) / 2);
+      var any = false;
+      for (var x = x0 + m; x <= x1 - m + 0.01; x += 24) {
+        out.add((x: x, y: y, surface: surface));
+        any = true;
+      }
+      if (!any) out.add((x: (x0 + x1) / 2, y: y, surface: surface));
+    }
+
+    for (var i = 0; i < room.blocks.length; i++) {
+      final b = room.blocks[i];
+      if (b.topY >= base - 1) continue; // base ground: the floor spots above
+      if (b.startX <= 1 || b.endX >= lastEnd - 1) continue; // an end wall
+      if (b.startX < stage.x + 168 && b.endX > stage.x - 168) continue; // the stage and its steps
+      top(b.startX, b.endX, b.topY, 1000 + i);
+    }
+    var p = 0;
+    for (final e in room.entities) {
+      if (e.type != 'platform') continue;
+      top(e.x, e.x + e.width, e.y, 2000 + p++);
+    }
+    return out;
+  }
+
   /// A fallen minion pays one Kaalaman charge back.
   void _payCharge() {
     game.kaalaman = (game.kaalaman + 1).clamp(0, CombatConstants.kaalamanDisplayMax);
@@ -532,26 +592,41 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     state = BossRoundState.rune;
     _t = 0;
     stalled = false;
-    final spots = floorSpots();
-    if (spots.isEmpty) {
+    final all = runeSpots();
+    if (all.isEmpty) {
       _startRound(); // nowhere to put a rune: just go on
       return;
     }
-    double away(({double x, double y}) s) => (s.x - _heroCentre).abs();
+    // Half the rounds (when the room has raised ground) the rune is on a block or a ledge, so the
+    // student sometimes has to climb for it; never on the same surface twice in a row.
+    final raisedSpots = [for (final s in all) if (s.y < game.groundY - 1) s];
+    final floorOnly = [for (final s in all) if (s.y >= game.groundY - 1) s];
+    final preferRaised = raisedSpots.isNotEmpty && (runeRaisedRollOverride ?? _random.nextDouble()) < BossAttackConstants.runeRaisedChance;
+    var pool = preferRaised ? raisedSpots : floorOnly;
+    if (pool.isEmpty) pool = all;
+    final fresh = [for (final s in pool) if (s.surface != _lastRuneSurface) s];
+    if (fresh.isNotEmpty) pool = fresh;
+    double away(({double x, double y, int surface}) s) => (s.x - _heroCentre).abs();
     // Far from the hero but not too far: the room is big, and every round should not be a long walk.
-    var far = [
-      for (final s in spots)
-        if (away(s) >= BossAttackConstants.runeMinDistance && away(s) <= BossAttackConstants.runeMaxDistance) s
-    ];
-    if (far.isEmpty) {
+    ({double x, double y, int surface})? pickFrom(List<({double x, double y, int surface})> list) {
+      final band = [
+        for (final s in list)
+          if (away(s) >= BossAttackConstants.runeMinDistance && away(s) <= BossAttackConstants.runeMaxDistance) s
+      ];
+      if (band.isNotEmpty) return band[_random.nextInt(band.length)];
       // None in that band: the nearest one beyond it.
-      final beyond = [for (final s in spots) if (away(s) >= BossAttackConstants.runeMinDistance) s]
+      final beyond = [for (final s in list) if (away(s) >= BossAttackConstants.runeMinDistance) s]
         ..sort((a, b) => away(a).compareTo(away(b)));
-      if (beyond.isNotEmpty) far = [beyond.first];
+      return beyond.isNotEmpty ? beyond.first : null;
     }
-    final pick = far.isNotEmpty
-        ? far[_random.nextInt(far.length)]
-        : (spots.toList()..sort((a, b) => away(b).compareTo(away(a)))).first;
+
+    final pick = pickFrom(pool) ??
+        pickFrom(all) ??
+        (all.toList()..sort((a, b) => away(b).compareTo(away(a)))).first;
+    _lastRuneSurface = pick.surface;
+    // A climb takes longer than a walk: the "boss throws anyway" timer gets a little more for the height.
+    _runeLimit = BossAttackConstants.runeStallSeconds +
+        math.max(0.0, game.groundY - pick.y) / 100 * BossAttackConstants.runeClimbSecondsPer100;
     final r = BossRuneComponent(x: pick.x, surfaceY: pick.y);
     rune = r;
     game.world.add(r);
@@ -567,9 +642,11 @@ class BossComponent extends SpriteComponent with HasGameReference<ChronoGame> {
     }
     final p = game.player;
     final feet = p.position.y + p.size.y;
+    // At the rune's own height: from below (the floor under a ledge) does not count.
     final near = (_heroCentre - r.centreX).abs() <= BossAttackConstants.runeTouchRange &&
-        feet >= r.surfaceY - 90;
-    if (near || _t >= BossAttackConstants.runeStallSeconds) {
+        feet >= r.surfaceY - 90 &&
+        feet <= r.surfaceY + 30;
+    if (near || _t >= _runeLimit) {
       stalled = !near;
       r.collect();
       rune = null;

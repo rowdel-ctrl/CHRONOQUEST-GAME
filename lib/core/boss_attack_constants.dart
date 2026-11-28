@@ -75,6 +75,14 @@ class BossAttackConstants {
   /// A rune never sits nearer than this to the edge of the floor it stands on.
   static const double runeEdgeMargin = 72;
 
+  /// In an arena with raised ground (blocks, ledges) this share of the rounds puts the rune up there
+  /// instead of on the floor, so the student sometimes has to climb for it.
+  static const double runeRaisedChance = 0.5;
+
+  /// A rune up a block gives the student this many more seconds (per 100 units of height) before the
+  /// boss throws anyway: a climb takes longer than a walk.
+  static const double runeClimbSecondsPer100 = 1.5;
+
   /// How long the rune takes to appear and to vanish when touched.
   static const double runeBornSeconds = 0.5;
   static const double runeTakenSeconds = 0.4;

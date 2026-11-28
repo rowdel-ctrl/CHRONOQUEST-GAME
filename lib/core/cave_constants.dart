@@ -72,4 +72,87 @@ class CaveConstants {
 
   /// Seconds the wipe in and out of the cave takes.
   static const double fadeSeconds = 0.5;
+
+  // ─── The four obstacles of the cave ───────────────────────────────────────
+  /// Which obstacles a cave has, by the number of the level it belongs to. The
+  /// spikes come first and every later step keeps what the one before had:
+  /// level 3 and under: spikes; 4 and 5: and stalactites; 6 and 7: and crumbling
+  /// slabs; 8 and up: and the stone crusher.
+  static Set<CaveObstacle> obstaclesFor(int levelNo) => {
+        CaveObstacle.spikes,
+        if (levelNo >= firstStalactiteLevel) CaveObstacle.stalactite,
+        if (levelNo >= firstCrumblingLevel) CaveObstacle.crumblingSlab,
+        if (levelNo >= firstCrusherLevel) CaveObstacle.crusher,
+      };
+
+  static const int firstStalactiteLevel = 4;
+  static const int firstCrumblingLevel = 6;
+  static const int firstCrusherLevel = 8;
+
+  /// How many of each a cave has (the crumbling slabs are 1 or 2 of the cave's
+  /// own slabs, so this is the most).
+  static const int spikeClusters = 2;
+  static const int stalactiteCount = 2;
+  static const int crumblingSlabsMax = 2;
+  static const int crusherCount = 1;
+
+  // Spikes: a cluster of 1 to 3, each 24 wide and 40 tall, on flat floor with
+  // room to run up to it and to land after it (one jump clears the widest).
+  static const double spikeWidth = 24;
+  static const double spikeHeight = 40;
+  static const int spikeMaxInCluster = 3;
+  static const double spikeRunUp = 260;
+  static const double spikeLanding = 200;
+
+  // Stalactite: wakes when the hero is between these distances to its left. The
+  // warning and the fall use the surprise numbers (SurpriseConstants.rockWarn,
+  // rockDrop, rockRadius, rockClearHeight), so a stalactite is as fair as a rock.
+  static const double stalactiteTriggerNear = 220;
+  static const double stalactiteTriggerFar = 520;
+  static const double stalactiteBaseWidth = 64;
+
+  /// How high above the floor the tip hangs while it waits.
+  static const double stalactiteTipHeight = 420;
+
+  /// Flat floor wanted each side of the spot.
+  static const double stalactiteRoom = 220;
+
+  // Crumbling slab: shakes after the hero lands, falls, comes back later.
+  static const double crumbleShake = 0.6;
+  static const double crumbleFall = 0.45;
+
+  /// Seconds from the end of the fall to the slab coming back.
+  static const double crumbleGone = 3.0;
+  static const double crumbleReturn = 0.4;
+
+  // Stone crusher: a block on a chain over flat floor. One cycle is up (waits),
+  // shakes with a "!" (the warning), slams, holds on the floor, rises.
+  static const double crusherWidth = 100;
+  static const double crusherHeight = 70;
+
+  /// How far the bottom of the block is above the floor while it waits (the hero
+  /// is 120 tall and walks under it).
+  static const double crusherRestHeight = 175;
+  static const double crusherUp = 1.5;
+  static const double crusherWarn = 0.6;
+  static const double crusherSlam = 0.3;
+  static const double crusherHold = 0.3;
+  static const double crusherRise = 0.6;
+  static const double crusherCycle =
+      crusherUp + crusherWarn + crusherSlam + crusherHold + crusherRise;
+
+  /// Flat floor wanted each side of the crusher, and the clear space round the
+  /// block itself (no enemy's patrol under it).
+  static const double crusherRoom = 300;
+
+  /// The crusher only runs while the hero is this close (it costs nothing far away).
+  static const double crusherActiveRange = 1100;
+
+  // Where obstacles may go: not before this x (clear of where the hero lands),
+  // and every obstacle is at least this far from the next one.
+  static const double obstacleMinX = 800;
+  static const double obstacleSpacing = 600;
 }
+
+/// The four obstacles a cave can have.
+enum CaveObstacle { spikes, stalactite, crumblingSlab, crusher }
